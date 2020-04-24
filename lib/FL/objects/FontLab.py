@@ -189,6 +189,10 @@ class FakeLab(object):
             del self.fonts[fontindex]
         if self.count == 0:
             self.ifont = -1
+            self._font = None
+        else:
+            self.ifont = self.count - 1
+            self._font = self.fonts[self.ifont]
 
     def Open(self, filename, addtolist=False):
         """
