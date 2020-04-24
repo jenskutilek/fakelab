@@ -26,6 +26,50 @@ class Font(object):
 
     # Additions for FakeLab
 
+    def fake_save(self, fp, sparse=True):
+        if sparse:
+            font_dict = {
+                k: v
+                for k, v in self.__dict__.items()
+                if k not in (
+                    "_file_name", "fake_sparse_json"
+                ) and v
+            }
+
+            def sub_dict(obj):
+                return {
+                    k: v
+                    for k, v in obj.__dict__.items()
+                    if k not in (
+                        "_parent",
+                    )
+                }
+
+        else:
+            font_dict = {
+                k: v
+                for k, v in self.__dict__.items()
+                if k not in (
+                    "_file_name", "fake_sparse_json"
+                ) and v
+            }
+
+            def sub_dict(obj):
+                return {
+                    k: v
+                    for k, v in obj.__dict__.items()
+                    if k not in (
+                        "_parent",
+                    ) and v
+                }
+
+        json.dump(
+                obj=font_dict,
+                fp=fp,
+                default=lambda o: sub_dict(o),
+                indent=4
+            )
+
     def fake_update(self):
         """
         Is called from FontLab.UpdateFont()
@@ -91,24 +135,7 @@ class Font(object):
         format.
         """
         with codecs.open(filename, "wb", "utf-8") as f:
-            json.dump(
-                obj={
-                    k: v
-                    for k, v in self.__dict__.items()
-                    if k not in (
-                        "_file_name",
-                    )
-                },
-                fp=f,
-                default=lambda o: {
-                    k: v
-                    for k, v in o.__dict__.items()
-                    if k not in (
-                        "_parent",
-                    )
-                },
-                indent=4
-            )
+            self.fake_save(f, self.fake_sparse_json)
             self._file_name = filename
 
     def OpenAFM(self, filename, mode, layer):
@@ -219,6 +246,10 @@ class Font(object):
     # Defaults
 
     def set_defaults(self):
+        # Additions for FakeLab
+
+        self.fake_sparse_json = True
+
         # Identification
 
         self._file_name = None      # full path of the file from which the font was opened/saved
