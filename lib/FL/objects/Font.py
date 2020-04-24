@@ -1,6 +1,8 @@
 import codecs
 import json
 
+from .TTInfo import TTInfo
+
 
 class Font(object):
     def __init__(self, font_or_path=None, instances=None):
@@ -321,7 +323,7 @@ class Font(object):
         self.features = []  # [<a href="Feature.xml.html">Feature</a>]      - list of OpenType features
         self.customdata = ""  # (string)     - font custom data field
         self.truetypetables = []  # [<a href="TrueTypeTable.xml.html">TrueTypeTable</a>] - list of custom TrueType tables
-        self.ttinfo = None  # (<a href="TTInfo.xml.html">TTInfo</a>)         - loaded TrueType information 
+        self.ttinfo = TTInfo()  # (<a href="TTInfo.xml.html">TTInfo</a>)         - loaded TrueType information 
         #                                    (mostly hinting-related tables)
         self.encoding = None  # (<a href="Encoding.xml.html">Encoding</a>)     - current encoding of the font
         self.codepages = []  # [integer]     - list of codepage-numbers (see OT-specs)

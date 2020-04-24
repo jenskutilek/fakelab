@@ -6,6 +6,7 @@ from .Point import Point
 from .Rect import Rect
 from .TTH import TTH
 from .TTHCommand import TTHCommand
+from .TTInfo import TTInfo
 
 
 __all__ = [
@@ -120,10 +121,6 @@ class TrueTypeTable(object):
 
 
 class TTHPoint(object):
-    pass
-
-
-class TTInfo(object):
     pass
 
 
