@@ -189,10 +189,18 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def DefineAxis(self, name_type_shortname):
+    def DefineAxis(self, name, type, shortname):
         """
-        (string Name, string Type, string ShortName)
-        - defines the new Multiple Master axis
+        Defines a new Multiple Master axis.
+
+        :param name: Name
+        :type name:  str
+
+        :param name: Type
+        :type name:  str
+
+        :param name: ShortName
+        :type name:  str
         """
         raise NotImplementedError
 
