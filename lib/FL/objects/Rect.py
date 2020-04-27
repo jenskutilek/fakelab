@@ -52,10 +52,10 @@ class Rect(object):
             self._y1 = rect_or_point_or_x0._y1
         elif isinstance(rect_or_point_or_x0, Point):
             if isinstance(point_or_y0, Point):
-                self._x0 = rect_or_point_or_x0._x0
-                self._y0 = rect_or_point_or_x0._y0
-                self._x1 = point_or_y0._x1
-                self._y1 = point_or_y0._y1
+                self._x0 = rect_or_point_or_x0.x
+                self._y0 = rect_or_point_or_x0.y
+                self._x1 = point_or_y0.x
+                self._y1 = point_or_y0.y
             else:
                 # The doc is not correct, x/y don't stay at 0,
                 # but the point is used for all coords
