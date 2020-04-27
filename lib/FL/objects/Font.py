@@ -84,6 +84,15 @@ class Font(object):
         return self._file_name
 
     @property
+    def axis(self):
+        """
+        Array of font axes. Not reported by docstring nor e-font.
+
+        Example: [('Weight', 'Wt', 'Weight')]
+        """
+        return self._axis
+
+    @property
     def glyphs(self):
         """
         Return the array of glyphs.
@@ -381,6 +390,7 @@ class Font(object):
         self.vguides = []  # [<a href="Guide.xml.html">Guide</a>]        - list of vertical guides
         #                           <font color="red">(new in v4.5.4 and not reported by docstring)</font>
 
+        self._axis = []
 
 if __name__ == "__main__":
     import doctest
