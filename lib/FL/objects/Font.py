@@ -107,7 +107,6 @@ class Font(object):
             self._selection |= {glyph_index}
         else:
             self._selection -= {glyph_index}
-        print("New selection:", self._selection)
 
     # Attributes
 
