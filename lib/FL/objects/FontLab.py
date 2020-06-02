@@ -9,7 +9,7 @@ class FakeLab(object):
         self._font = None
 
         # (integer)  - index of currently active font
-        self.ifont = -1
+        self._ifont = -1
 
         self.fonts = []
 
@@ -71,6 +71,21 @@ class FakeLab(object):
         Return the currently active font or None.
         """
         return self._font
+
+    @property
+    def ifont(self):
+        """
+        index of currently active font
+        """
+        return self._ifont
+
+    @ifont.setter
+    def ifont(self, value):
+        self._ifont = value
+        if self._ifont == -1:
+            self._font = None
+        else:
+            self._font = self.fonts[self._ifont]
 
     @property
     def glyph(self):
@@ -184,15 +199,13 @@ class FakeLab(object):
         () | (fontindex)      - closes the current or 'fontindex' font
         """
         if fontindex is None:
-            del self.fonts[self.ifont]
+            del self.fonts[self._ifont]
         else:
             del self.fonts[fontindex]
         if self.count == 0:
             self.ifont = -1
-            self._font = None
         else:
             self.ifont = self.count - 1
-            self._font = self.fonts[self.ifont]
 
     def Open(self, filename, addtolist=False):
         """
@@ -247,7 +260,6 @@ class FakeLab(object):
         Add 'font' to list of opened fonts and opens the Font Window for it.
         """
         self.fonts.append(font)
-        self._font = font
         self.ifont = len(self.fonts) - 1
         # As long as no glyph window is open,
         # delta and scale will be points at (0, 0)
