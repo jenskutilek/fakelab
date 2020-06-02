@@ -14,6 +14,10 @@ class Component(object):
 
         elif isinstance(component_or_index, int):
             self._index = component_or_index
+            if delta is not None:
+                self.delta = delta
+                if scale is not None:
+                    self.scale = scale
         # else: Empty Component
 
     # Attributes
@@ -47,7 +51,7 @@ class Component(object):
     @delta.setter
     def delta(self, value):
         assert isinstance(value, Point)
-        self._deltas = value * len(self._deltas)
+        self._deltas = [value] * len(self._deltas)
 
     @property
     def scale(self):
@@ -59,7 +63,7 @@ class Component(object):
     @scale.setter
     def scale(self, value):
         assert isinstance(value, Point)
-        self._scales = value * len(self._scales)
+        self._scales = [value] * len(self._scales)
 
     @property
     def deltas(self):
