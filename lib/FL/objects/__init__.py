@@ -1,12 +1,14 @@
-from .Font import Font
-from .FontLab import FakeLab
-from .Glyph import Glyph
-from .Node import Node
-from .Point import Point
-from .Rect import Rect
-from .TTH import TTH
-from .TTHCommand import TTHCommand
-from .TTInfo import TTInfo
+from FL.objects.Component import Component
+from FL.objects.Font import Font
+from FL.objects.FontLab import FakeLab
+from FL.objects.Glyph import Glyph
+from FL.objects.KerningPair import KerningPair
+from FL.objects.Node import Node
+from FL.objects.Point import Point
+from FL.objects.Rect import Rect
+from FL.objects.TTH import TTH
+from FL.objects.TTHCommand import TTHCommand
+from FL.objects.TTInfo import TTInfo
 
 
 __all__ = [
@@ -60,10 +62,6 @@ class Canvas(object):
     pass
 
 
-class Component(object):
-    pass
-
-
 class Dialog(object):
     pass
 
@@ -89,10 +87,6 @@ class Hint(object):
 
 
 class Image(object):
-    pass
-
-
-class KerningPair(object):
     pass
 
 
