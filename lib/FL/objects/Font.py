@@ -24,6 +24,9 @@ class Font(object):
             self._file_name = font_or_path
         # else: Empty font
 
+    def __repr__(self):
+        return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
+
     # Additions for FakeLab
 
     def fake_save(self, fp, sparse=True):
