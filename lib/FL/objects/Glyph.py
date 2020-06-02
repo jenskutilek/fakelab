@@ -20,6 +20,9 @@ class Glyph(object):
                     self._nodes.append(node)
         # else: Empty Glyph
 
+    def __repr__(self):
+        return "<Glyph: '%s', %i nodes, orphan>" % (self.name, len(self))
+
     # Additions for FakeLab
 
     def fake_update(self, font=None, index=-1):
