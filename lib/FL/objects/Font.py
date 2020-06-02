@@ -35,7 +35,9 @@ class Font(object):
                 k: v
                 for k, v in self.__dict__.items()
                 if k not in (
-                    "_file_name", "fake_sparse_json"
+                    "_file_name",
+                    "fake_sparse_json",
+                    "_selection",
                 ) and v
             }
 
@@ -53,7 +55,9 @@ class Font(object):
                 k: v
                 for k, v in self.__dict__.items()
                 if k not in (
-                    "_file_name", "fake_sparse_json"
+                    "_file_name",
+                    "fake_sparse_json",
+                    "_selection",
                 ) and v
             }
 
