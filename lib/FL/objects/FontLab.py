@@ -316,13 +316,16 @@ class FakeLab(object):
         """
         () | (glyphindex)
 
-        Return True if current glyph or 'glyphindex' glyph is selected.
+        Return 1 if current glyph or 'glyphindex' glyph is selected.
         """
         if glyphindex is None:
             raise NotImplementedError
             # return 1 if fl.glyph.selected
 
-        return 1 if glyphindex in self.font._selection else 0
+        if glyphindex in self.font._selection:
+            return 1
+
+        return 0
 
     def Select(self, glyphid, value=None):
         """
@@ -334,6 +337,8 @@ class FakeLab(object):
         """
         if isinstance(glyphid, str):
             glyphid = self.font.FindGlyph(glyphid)
+        if value is None:
+            value = True
         self.font.fake_select(glyphid, value)
 
     def Unselect(self):
