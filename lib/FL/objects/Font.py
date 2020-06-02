@@ -228,7 +228,21 @@ class Font(object):
         (string name) | (Uni unicode) | (integer Unicode)
         - finds glyph and return its index or -1
         """
-        raise NotImplementedError
+        if isinstance(name_unicode_uniint, str):
+            # name
+            for i, g in enumerate(self._glyphs):
+                if g.name == name_unicode_uniint:
+                    return i
+            return -1
+        elif isinstance(name_unicode_uniint, int):
+            # int (unicode value)
+            for i, g in enumerate(self._glyphs):
+                if name_unicode_uniint in g.unicodes:
+                    return i
+            return -1
+        else:
+            # What is Uni supposed to be? I don't know
+            raise TypeError
 
     def DefineAxis(self, name, type, shortname):
         """
