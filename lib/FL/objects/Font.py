@@ -77,6 +77,38 @@ class Font(object):
         for index, glyph in enumerate(self.glyphs):
             glyph.fake_update(self, index)
 
+    def fake_deselect_all(self):
+        """
+        Deselect all glyphs. Is called from FontLab.Unselect().
+        """
+        self._selection = set()
+
+    def fake_select(self, glyph_index, value=None):
+        """
+        Change selection status for glyph_index.
+        >>> f = Font()
+        >>> f.fake_select(1, False)
+        >>> print(f._selection)
+        set()
+        >>> f.fake_select(1, True)
+        >>> print(f._selection)
+        {1}
+        >>> f.fake_select(3, True)
+        >>> print(f._selection)
+        {1, 3}
+        >>> f.fake_select(2, False)
+        >>> print(f._selection)
+        {1, 3}
+        >>> f.fake_select(1, False)
+        >>> print(f._selection)
+        {3}
+        """
+        if value:
+            self._selection |= {glyph_index}
+        else:
+            self._selection -= {glyph_index}
+        print("New selection:", self._selection)
+
     # Attributes
 
     @property
@@ -266,6 +298,7 @@ class Font(object):
         # Additions for FakeLab
 
         self.fake_sparse_json = True
+        self.fake_deselect_all()
 
         # Identification
 
@@ -391,6 +424,7 @@ class Font(object):
         #                           <font color="red">(new in v4.5.4 and not reported by docstring)</font>
 
         self._axis = []
+
 
 if __name__ == "__main__":
     import doctest
