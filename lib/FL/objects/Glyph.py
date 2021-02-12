@@ -1,4 +1,5 @@
 from .Rect import Rect
+# from FL.helpers.ListParent import ListParent
 
 
 class Glyph(object):
@@ -679,7 +680,7 @@ class Glyph(object):
         self._vguides = []
         self._components = []
         self._replace_table = []
-        self._kerning = []
+        self._kerning = []  # ListParent()
         self._layers_number = 1
 
         # (integer)         - flags set for this glyph
