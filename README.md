@@ -234,7 +234,7 @@ platform darwin -- Python 3.8.7, pytest-6.0.1, py-1.9.0, pluggy-0.13.1
 rootdir: /Users/jens/Code/fakelab
 collected 1 item
 
-tests/fakeLabDemo/selection/composites_test.py .                                                                             [100%]
+tests/fakeLabDemo/selection/composites_test.py .                          [100%]
 
 ============================= 1 passed in 0.02s ================================
 ```
