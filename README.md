@@ -74,13 +74,14 @@ The `Select Composites.py` script looks like this:
 
 ```python
 #FLM: Select composites
+# Studio 5/Macros/Selection/Select Composites.py
 from fakeLabDemo.selection.composites import selectComposites
 selectComposites(fl.font)
 ```
 
 And the module:
 ```python
-# Studio 5/System/Modules/fakeLabDemo/selection/composites.py
+# Studio 5/Macros/System/Modules/fakeLabDemo/selection/composites.py
 from __future__ import absolute_import, division, print_function
 
 from FL import fl
@@ -161,6 +162,7 @@ The file `composites_test.py`, which is named analogous to the module file it
 relates to, is where we will implement our tests:
 
 ```python
+# Studio 5/Macros/System/Modules/tests/fakeLabDemo/selection/composites_test.py
 import pytest
 
 from FL import fl, Component, Font, Glyph, Point
