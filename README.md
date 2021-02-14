@@ -235,7 +235,7 @@ active:
 
 ```bash
 cd "Studio 5/Macros/System/Modules"
-python -m pytest tests/jkFlTools/selection/composites_test.py
+python -m pytest tests/fakeLabDemo/selection/composites_test.py
 ```
 
 If everything works out, you will see some output like this:
