@@ -1,3 +1,4 @@
+from .Font import Font
 from .Point import Point
 
 
@@ -207,7 +208,7 @@ class FakeLab(object):
         else:
             self.ifont = self.count - 1
 
-    def Open(self, filename, addtolist=False):
+    def Open(self, filename: str, addtolist: bool = True) -> Font:
         """
         (string filename) | (string filename, boolean addtolist)
 
@@ -215,6 +216,11 @@ class FakeLab(object):
 
         If 'addtolist' is True, font is added to FontLab's font list
         """
+        font = Font()
+        font.Open(filename)
+        if addtolist:
+            self.Add(font)
+        return font
 
     def Save(self, filename_or_fontindex, filename=None):
         """

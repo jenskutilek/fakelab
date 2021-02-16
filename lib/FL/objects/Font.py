@@ -171,7 +171,8 @@ class Font(object):
         (string filename)
         - opens font from VFB format
         """
-        raise NotImplementedError
+        self._file_name = filename
+        # TODO: Read the font
 
     def Save(self, filename):
         """
