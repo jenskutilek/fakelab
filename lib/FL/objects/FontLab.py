@@ -6,6 +6,7 @@ class FakeLab(object):
     """
     The main class. It is used via the pre-instantiated object `fl`.
     """
+
     def __init__(self):
         self._font = None
 
