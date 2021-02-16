@@ -4,6 +4,7 @@ from FL.objects.FontLab import FakeLab
 from FL.objects.Glyph import Glyph
 from FL.objects.KerningPair import KerningPair
 from FL.objects.Node import Node
+from FL.objects.Options import Options
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 from FL.objects.TTH import TTH
@@ -99,10 +100,6 @@ class Matrix(object):
 
 
 class NameRecord(object):
-    pass
-
-
-class Options(object):
     pass
 
 
