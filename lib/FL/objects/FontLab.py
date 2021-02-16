@@ -260,7 +260,15 @@ class FakeLab(object):
           - ftMACTRUETYPE_DFONT  - Mac TrueType font (generates suitcase with
             resources in data fork)
         """
-        raise NotImplementedError
+        # We cannot generate a font at the moment, let's fake it.
+        # Check if the current font has a fake_binary.
+        binary = self.font.fake_binary_get(fontType)
+        if binary:
+            with open(filename, "wb") as f:
+                f.write(binary)
+        else:
+            raise NotImplementedError
+        # TODO: What should be the return value?
 
     def Add(self, font):
         """

@@ -29,6 +29,20 @@ class Font(object):
 
     # Additions for FakeLab
 
+    def fake_binary_get(self, fontType: int) -> bytes:
+        binary_path = self._fake_binaries[str(fontType)]
+        with open(binary_path, "rb") as f:
+            binary = f.read()
+        return binary
+    
+    def fake_binary_from_path(self, fontType: int, file_path: str) -> None:
+        """
+        Assign a binary file from a path. This will be used to fake the
+        FakeLab.GenerateFont() method.
+        """
+        # Convert key to str because JSON needs it
+        self._fake_binaries[str(fontType)] = file_path
+
     def fake_save(self, fp, sparse=True):
         if sparse:
             font_dict = {
@@ -172,7 +186,10 @@ class Font(object):
         - opens font from VFB format
         """
         self._file_name = filename
-        # TODO: Read the font
+        with codecs.open(self._file_name, "rb", "utf-8") as f:
+            _dict = json.load(f)
+        self._fake_binaries = _dict.get("_fake_binaries", {})
+        # TODO: Read the rest of the font
 
     def Save(self, filename):
         """
@@ -318,6 +335,7 @@ class Font(object):
     def set_defaults(self):
         # Additions for FakeLab
 
+        self._fake_binaries = {}
         self.fake_sparse_json = True
         self.fake_deselect_all()
 
