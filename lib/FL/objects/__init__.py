@@ -3,6 +3,7 @@ from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab
 from FL.objects.Glyph import Glyph
 from FL.objects.KerningPair import KerningPair
+from FL.objects.Link import Link
 from FL.objects.Node import Node
 from FL.objects.Options import Options
 from FL.objects.Point import Point
@@ -88,10 +89,6 @@ class Hint(object):
 
 
 class Image(object):
-    pass
-
-
-class Link(object):
     pass
 
 
