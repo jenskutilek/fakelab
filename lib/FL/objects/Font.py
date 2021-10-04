@@ -329,6 +329,55 @@ class Font(object):
           of the FontLab class)</font>
         """
         raise NotImplementedError
+    
+    # Undocumented methods
+
+    def MakeKernFeature(self, vector):
+        """
+        [WeightVector vector]
+        - generates 'kern' feature using font kerning and classes
+        """
+        raise NotImplementedError
+    
+    def MergeFonts(self, source: Font, flags=None):
+        """
+        (Font source[, flags])
+        - appends all glyphs from the source font. Check mfXXXX constants for
+        options
+        """
+        raise NotImplementedError
+
+    def SetClassFlags(self, class_index: int, left: int, right: int, width=None) -> None:
+        """
+        (int class_index, bool left, bool right)
+        - allows to set 'left' and 'right' properties of the kerning class
+
+        (int class_index, bool lsb, bool rsb, bool width)
+        - allows to set 'lsb', 'rsb' and 'width' properties of the metrics class
+        """
+        raise NotImplementedError
+    
+    def GetClassLeft(self, class_index: int) -> int:
+        """
+        (int class_index)
+        - returns the 'left' property of the class
+        """
+        raise NotImplementedError
+    
+    def GetClassRight(self):
+        """
+        (int class_index)
+        - returns the 'right' property of the class
+        """
+        raise NotImplementedError
+
+    def GetClassMetricsFlags(self, class_index: int) -> tuple:
+        """
+        (int class_index)
+        - returns the tuple containing LSB, RSB and Width flags of the metrics
+        class
+        """
+        raise NotImplementedError
 
     # Defaults
 
