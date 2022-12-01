@@ -1,7 +1,7 @@
-from .Font import Font
-from .Point import Point
 from __future__ import annotations
 
+from FL.objects.Font import Font
+from FL.objects.Point import Point
 
 
 class FakeLab(object):

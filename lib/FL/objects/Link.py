@@ -1,5 +1,3 @@
-from .Rect import Rect
-# from FL.helpers.ListParent import ListParent
 from __future__ import annotations
 
 
@@ -37,18 +35,18 @@ class Link(object):
         indexes of the nodes that are linked: node1
         """
         return self._node1
-    
+
     @node1.setter
     def node1(self, value: int) -> None:
         self._node1 = value
-    
+
     @property
     def node2(self):
         """
         indexes of the nodes that are linked: node2
         """
         return self._node2
-    
+
     @node2.setter
     def node2(self, value: int) -> None:
         self._node2 = value

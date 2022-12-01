@@ -7,6 +7,7 @@ from FL.objects.Point import Point
 from FL.objects.TTHCommand import TTHCommand
 from typing import List
 
+
 class TTH(object):
     def __init__(self, g=None, f=None):
         self.glyph = g

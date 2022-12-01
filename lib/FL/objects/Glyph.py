@@ -1,6 +1,6 @@
-from .Rect import Rect
 from __future__ import annotations
 
+from FL.objects.Rect import Rect
 # from FL.helpers.ListParent import ListParent
 
 

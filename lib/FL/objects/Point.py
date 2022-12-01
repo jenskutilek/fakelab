@@ -10,6 +10,7 @@ class Point(object):
 
     >>> p = Point()
     """
+
     def __init__(self, pt_or_x=None, y=None):
         """
         # No args
@@ -132,10 +133,7 @@ class Point(object):
         if isinstance(pt_or_x, Point):
             self += pt_or_x
         else:
-            if (
-                isinstance(pt_or_x, int) and
-                isinstance(y, int)
-            ):
+            if isinstance(pt_or_x, int) and isinstance(y, int):
                 self.x += pt_or_x
                 self.y += y
             else:
@@ -168,4 +166,5 @@ class Point(object):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

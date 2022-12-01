@@ -178,14 +178,13 @@ class Font(object):
 
     def New(self):
         """
-        - clears the font
+        clears the font
         """
         raise NotImplementedError
 
-    def Open(self, filename):
+    def Open(self, filename: str):
         """
-        (string filename)
-        - opens font from VFB format
+        opens font from VFB format
         """
         self._file_name = filename
         with codecs.open(self._file_name, "rb", "utf-8") as f:
@@ -193,10 +192,9 @@ class Font(object):
         self._fake_binaries = _dict.get("_fake_binaries", {})
         # TODO: Read the rest of the font
 
-    def Save(self, filename):
+    def Save(self, filename: str):
         """
-        (string filename)
-        - saves font in VFB format
+        saves font in VFB format
 
         Saving VFB is not supported in FakeLab, but we can write a nice JSON
         format.
@@ -205,10 +203,9 @@ class Font(object):
             self.fake_save(f, self.fake_sparse_json)
             self._file_name = filename
 
-    def OpenAFM(self, filename, mode, layer):
+    def OpenAFM(self, filename: str, mode: int, layer: int):
         """
-        (string filename, int mode, int layer)
-        - open AFM-File, mode is the integer bit field.
+        open AFM-File, mode is the integer bit field.
           The bit list is:
           ALLMETRICS       - 0x0001
           THICKERMETRICS   - 0x0002
@@ -220,7 +217,7 @@ class Font(object):
           REPLACEOTHERDATA - 0x0100
           REPLACENAMES     - 0x0200
 
-          Constants for mode <font color="red">(only in FL 4.5 Mac)</font>
+          Constants for mode (only in FL 4.5 Mac)
           mtALLMETRICS
           mtTHICKERMETRICS
           mtWIDERMETRIC
@@ -233,14 +230,13 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def SaveAFM(self, filename):
-        """(string filename)
-        - saves AFM- and INF-File
-          <font color="red">(this method is not reported by the docstring)</font>
+    def SaveAFM(self, filename: str):
+        """
+        saves AFM- and INF-File (this method is not reported by the docstring)
         """
         raise NotImplementedError
 
-    def Reencode(self, e, style=0):
+    def Reencode(self, e: Encoding, style: int = 0):
         """(<a href="Encoding.xml.html">Encoding</a> E)|(<a href="Encoding.xml.html">Encoding</a> E, integer style)
         - applies <a href="Encoding.xml.html">Encoding</a> E to Font
           <font color="red">(the parameters of this method are not

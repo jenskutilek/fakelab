@@ -13,8 +13,10 @@ class Rect(object):
     Rect(x0, y0, x1, y1) - creates a rectangle defined by the coordinates of
        the corner points
     """
-    def __init__(self, rect_or_point_or_x0=None, point_or_y0=None, x1=None,
-                 y1=None):
+
+    def __init__(
+        self, rect_or_point_or_x0=None, point_or_y0=None, x1=None, y1=None
+    ):
         """
         # No args
         >>> r = Rect()
@@ -65,9 +67,8 @@ class Rect(object):
                 self._y0 = rect_or_point_or_x0.y
                 self._x1 = rect_or_point_or_x0.x
                 self._y1 = rect_or_point_or_x0.y
-        elif (
-            isinstance(rect_or_point_or_x0, int) or
-            isinstance(rect_or_point_or_x0, float)
+        elif isinstance(rect_or_point_or_x0, int) or isinstance(
+            rect_or_point_or_x0, float
         ):
             assert point_or_y0 is not None
             assert x1 is not None
@@ -79,12 +80,7 @@ class Rect(object):
         # else: zero rect
 
     def __repr__(self):
-        return "<Rect: %g,%g,%g,%g>" % (
-            self._x0,
-            self._y0,
-            self._x1,
-            self._y1
-        )
+        return "<Rect: %g,%g,%g,%g>" % (self._x0, self._y0, self._x1, self._y1)
 
     # Attributes
 
@@ -188,4 +184,5 @@ class Rect(object):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

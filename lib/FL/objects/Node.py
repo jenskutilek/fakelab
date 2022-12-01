@@ -1,6 +1,6 @@
-from .Point import Point
 from __future__ import annotations
 
+from FL.objects.Point import Point
 
 # Node type
 nLINE = 1
@@ -21,6 +21,7 @@ class Node(object):
     Node(integer type, Point p) - creates a Node and assigns type and
     coordinates of the final point
     """
+
     def __init__(self, node_or_type=None, p=None):
         """
         # No args
@@ -57,9 +58,7 @@ class Node(object):
             self.type = node_or_type
             p = Point(int(p.x), int(p.y))
             p._parent = self
-            self._points = [
-                p
-            ]
+            self._points = [p]
         # else: Empty node
 
     def __repr__(self):
@@ -196,4 +195,5 @@ class Node(object):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
