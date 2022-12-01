@@ -1,23 +1,30 @@
+from FL.helpers.FLList import FLList
+from FL.objects import Hint, TTHPoint
+from FL.objects.Glyph import Glyph
+from FL.objects.Point import Point
+from FL.objects.TTHCommand import TTHCommand
+from typing import List
+
 class TTH(object):
     def __init__(self, g=None, f=None):
         self.glyph = g
         self.font = f
 
-        self.top_zones = None
-        self.bottom_zones = None
-        self.base_top_zones = None
-        self.base_bottom_zones = None
-        self.hstems = None
-        self.vstems = None
-        self.base_hstems = None
-        self.base_vstems = None
-        self.zero_point = None
-        self.upm = None
-        self.ppm = None
-        self.outline = None
-        self.base_outline = None
-        self.commands = None
-        self.problems = None
+        self.top_zones: List[Hint] = FLList()
+        self.bottom_zones: List[Hint] = FLList()
+        self.base_top_zones: List[Hint] = FLList()
+        self.base_bottom_zones: List[Hint] = FLList()
+        self.hstems: List[int] = FLList()
+        self.vstems: List[int] = FLList()
+        self.base_hstems: List[int] = FLList()
+        self.base_vstems: List[int] = FLList()
+        self.zero_point = Point(0, 0)
+        self.upm = 1000
+        self.ppm = None  # FL returns a random number
+        self.outline: List[TTHPoint] = FLList()
+        self.base_outline: List[TTHPoint] = FLList()
+        self.commands: List[TTHCommand] = FLList()
+        self.problems = FLList()
 
     # Attributes
 
@@ -49,7 +56,7 @@ class TTH(object):
     def ResetProgram(self):
         raise NotImplementedError
 
-    def LoadProgram(self):
+    def LoadProgram(self, glyph: Glyph | None = None):
         raise NotImplementedError
 
     def SaveProgram(self):

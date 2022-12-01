@@ -2,8 +2,10 @@ from FL.objects.Component import Component
 from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab
 from FL.objects.Glyph import Glyph
+from FL.objects.Hint import Hint
 from FL.objects.KerningPair import KerningPair
 from FL.objects.Link import Link
+from FL.objects.Matrix import Matrix
 from FL.objects.Node import Node
 from FL.objects.Options import Options
 from FL.objects.Point import Point
@@ -84,15 +86,7 @@ class Guide(object):
     pass
 
 
-class Hint(object):
-    pass
-
-
 class Image(object):
-    pass
-
-
-class Matrix(object):
     pass
 
 
