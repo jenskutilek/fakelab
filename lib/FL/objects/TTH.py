@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from FL.helpers.FLList import FLList
 from FL.objects import Hint, TTHPoint
 from FL.objects.Glyph import Glyph

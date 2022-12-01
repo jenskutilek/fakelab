@@ -1,5 +1,7 @@
 from .Font import Font
 from .Point import Point
+from __future__ import annotations
+
 
 
 class FakeLab(object):

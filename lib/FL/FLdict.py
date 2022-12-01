@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 # FLdict
 from .objects.Node import nMOVE, nLINE, nCURVE, nOFF, nSHARP, nSMOOTH, nFIXED
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 class KerningPair(object):
     def __init__(self, kerningpair_or_index=None, value=0):
         """

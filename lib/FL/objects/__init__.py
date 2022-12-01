@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from FL.objects.Component import Component
 from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab

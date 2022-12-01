@@ -1,5 +1,6 @@
 from .Rect import Rect
 # from FL.helpers.ListParent import ListParent
+from __future__ import annotations
 
 
 class Link(object):

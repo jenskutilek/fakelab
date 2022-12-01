@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from FL.objects.Link import Link
 from FL.objects.Matrix import Matrix
 
