@@ -4,6 +4,7 @@ import codecs
 import json
 
 from .TTInfo import TTInfo
+from FL.helpers.classList import ClassList
 
 
 class Font(object):
@@ -131,6 +132,16 @@ class Font(object):
         else:
             self._selection -= {glyph_index}
 
+    def fake_set_class_flags(self, flags):
+        """
+        Set the kerning class flags from a list of str ("L", "R", "LR", ...)
+        """
+        # FIXME: In the vfb, the flags are stored as tuples of two values. The second
+        # value is 0, it's not clear what it represents. Maybe the width flag for
+        # metrics classes?
+        for i, f in enumerate(flags):
+            self.SetClassFlags(i, int("L" in f), int("R" in f))
+
     # Attributes
 
     @property
@@ -145,6 +156,17 @@ class Font(object):
         Example: [('Weight', 'Wt', 'Weight')]
         """
         return self._axis
+
+    @property
+    def classes(self):
+        """
+        [string] list of glyph classes
+        """
+        return self._classes
+
+    @classes.setter
+    def classes(self, value):
+        self._classes = ClassList(value)
 
     @property
     def glyphs(self):
@@ -353,29 +375,29 @@ class Font(object):
         (int class_index, bool lsb, bool rsb, bool width)
         - allows to set 'lsb', 'rsb' and 'width' properties of the metrics class
         """
-        raise NotImplementedError
-    
-    def GetClassLeft(self, class_index: int) -> int:
+        self.classes.SetClassFlags(class_index, left, right, width)
+
+    def GetClassLeft(self, class_index: int) -> int | None:
         """
         (int class_index)
         - returns the 'left' property of the class
         """
-        raise NotImplementedError
+        return self.classes.GetClassLeft(class_index)
     
-    def GetClassRight(self):
+    def GetClassRight(self, class_index: int) -> int | None:
         """
         (int class_index)
         - returns the 'right' property of the class
         """
-        raise NotImplementedError
+        return self.classes.GetClassRight(class_index)
 
-    def GetClassMetricsFlags(self, class_index: int) -> tuple:
+    def GetClassMetricsFlags(self, class_index: int) -> tuple | None:
         """
         (int class_index)
         - returns the tuple containing LSB, RSB and Width flags of the metrics
         class
         """
-        raise NotImplementedError
+        return self.classes.GetClassMetricsFlags(class_index)
 
     # Defaults
 
