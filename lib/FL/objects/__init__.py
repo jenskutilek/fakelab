@@ -14,7 +14,9 @@ from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 from FL.objects.TTH import TTH
 from FL.objects.TTHCommand import TTHCommand
+from FL.objects.TTHPoint import TTHPoint
 from FL.objects.TTInfo import TTInfo
+from FL.objects.TTPoint import TTPoint
 
 
 __all__ = [
@@ -101,14 +103,6 @@ class Replace(object):
 
 
 class TrueTypeTable(object):
-    pass
-
-
-class TTHPoint(object):
-    pass
-
-
-class TTPoint(object):
     pass
 
 
