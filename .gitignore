@@ -4,3 +4,4 @@ lib/fakelab.egg-info
 build/
 dist/
 .coverage.*
+.coverage
