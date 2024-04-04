@@ -12,7 +12,7 @@ outside of FontLab Studio 5, and run tests.
 """
 
 # fl is pre-instantiated
-fl = FakeLab()
+fl = FakeLab()  # noqa: F405
 
 
 # Font formats
