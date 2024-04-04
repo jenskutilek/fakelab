@@ -101,6 +101,12 @@ class Font(object):
         for i, f in enumerate(flags):
             self.SetClassFlags(i, int("L" in f), int("R" in f))
 
+    def _set_file_name(self, filename: str | Path) -> None:
+        """
+        Make sure the file name (actually, the path) is stored as Path
+        """
+        self._file_name = Path(filename) if isinstance(filename, str) else filename
+
     # Attributes
 
     @property
@@ -166,12 +172,6 @@ class Font(object):
         clears the font
         """
         raise NotImplementedError
-
-    def _set_file_name(self, filename: str | Path) -> None:
-        """
-        Make sure the file name (actually, the path) is stored as Path
-        """
-        self._file_name = Path(filename) if isinstance(filename, str) else filename
 
     def Open(self, filename: str | Path) -> None:
         """
