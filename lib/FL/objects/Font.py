@@ -5,6 +5,7 @@ import json
 
 from FL.objects.TTInfo import TTInfo
 from FL.helpers.classList import ClassList
+from FL.helpers.ListParent import ListParent
 from pathlib import Path
 from typing import List, Tuple, TYPE_CHECKING
 from vfbLib.vfb.vfb import Vfb
@@ -138,10 +139,18 @@ class Font(object):
         self._classes = ClassList(value)
 
     @property
-    def glyphs(self):
+    def fontnames(self) -> ListParent[NameRecord]:
+        """
+        # list of font name records
+        """
+        return self._fontnames
+
+    @property
+    def glyphs(self) -> ListParent[Glyph]:
         """
         Return the array of glyphs.
         """
+        # Read-only.
         return self._glyphs
 
     # Operations
@@ -413,7 +422,7 @@ class Font(object):
         # up until here the default values have been verified
         self.designer_url: str = ""
         # list of font name records
-        self.fontnames: List[NameRecord] = []
+        self._fontnames: ListParent[NameRecord] = ListParent(parent=self)
         # Copyright name field
         self.copyright: str = ""
         # Notice field
@@ -500,17 +509,17 @@ class Font(object):
         # reported by the docstring)</font>
         self.modified: int = 0
         # list of glyph classes
-        self.classes: ClassList = []
+        self.classes: ClassList = ClassList([])
         # string containing the OT classes defined in the lower
         # right part of the OpenType panel <font color="red">(this description
         # is not reported by the docstring)</font>
         self.ot_classes: str = ""
         # list of OpenType features
-        self.features: List[Feature] = []
+        self.features: ListParent[Feature] = ListParent(parent=self)
         # font custom data field
         self.customdata: str = ""
         # list of custom TrueType tables
-        self.truetypetables: List[TrueTypeTable] = []
+        self.truetypetables: ListParent[TrueTypeTable] = ListParent(parent=self)
         # loaded TrueType information
         # (mostly hinting-related tables)
         self.ttinfo = TTInfo()
@@ -537,8 +546,8 @@ class Font(object):
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
         self.vguides: List[Guide] = []
 
-        self._axis = []
-        self._glyphs = []
+        self._axis: List[Tuple[str, str, str]] = []
+        self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
 
 if __name__ == "__main__":
