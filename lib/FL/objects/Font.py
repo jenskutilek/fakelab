@@ -5,7 +5,9 @@ import json
 
 from FL.objects.TTInfo import TTInfo
 from FL.helpers.classList import ClassList
-from typing import List, TYPE_CHECKING
+from pathlib import Path
+from typing import List, Tuple, TYPE_CHECKING
+from vfbLib.vfb.vfb import Vfb
 
 if TYPE_CHECKING:
     from FL.objects import Encoding, Feature, Guide, NameRecord, TrueTypeTable
@@ -26,9 +28,10 @@ class Font(object):
                 # instances is a tuple containing instance values for all MM
                 # axes defined in the font
                 raise NotImplementedError
-        elif isinstance(font_or_path, str):
+        elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
-            self._file_name = font_or_path
+            self.Open(font_or_path)
+
         # else: Empty font
 
     def __repr__(self):
@@ -138,8 +141,12 @@ class Font(object):
     # Attributes
 
     @property
-    def file_name(self):
-        return self._file_name
+    def file_name(self) -> str:
+        """
+        Full path of the file from which the font was opened/saved.
+        """
+        # The file path is stored internally as Path, but we return a str
+        return str(self._file_name)
 
     @property
     def axis(self):
@@ -197,26 +204,26 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def Open(self, filename: str):
+    def _set_file_name(self, filename: str | Path) -> None:
+        """
+        Make sure the file name (actually, the path) is stored as Path
+        """
+        self._file_name = Path(filename) if isinstance(filename, str) else filename
+
+    def Open(self, filename: str | Path) -> None:
         """
         opens font from VFB format
         """
-        self._file_name = filename
-        with codecs.open(self._file_name, "rb", "utf-8") as f:
-            _dict = json.load(f)
-        self._fake_binaries = _dict.get("_fake_binaries", {})
-        # TODO: Read the rest of the font
+        self._set_file_name(filename)
+        self._vfb = Vfb(self._file_name)
+        # TODO: Unpack the VFB JSON into the Font structure
 
-    def Save(self, filename: str):
+    def Save(self, filename: str | Path) -> None:
         """
         saves font in VFB format
-
-        Saving VFB is not supported in FakeLab, but we can write a nice JSON
-        format.
         """
-        with codecs.open(filename, "wb", "utf-8") as f:
-            self.fake_save(f, self.fake_sparse_json)
-            self._file_name = filename
+        self._set_file_name(filename)
+        self._vfb.write(self._file_name)
 
     def OpenAFM(self, filename: str, mode: int, layer: int):
         """
