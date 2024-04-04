@@ -155,13 +155,13 @@ class Font(object):
 
     # Operations
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Return the number of glyphs.
         """
         return len(self._glyphs)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> Glyph | None:
         """
         Accesses glyphs array
         """
@@ -291,7 +291,7 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def GenerateGlyph(self, glyphname):
+    def GenerateGlyph(self, glyphname: str) -> None:
         """(string glyphname)
         - generates new glyph using 'glyphname' as
           a source of information about glyph's composition
@@ -300,7 +300,7 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def has_key(self, name_unicode_uniint):
+    def has_key(self, name_unicode_uniint: str | int) -> int:
         """
         (string name) | (Uni unicode) | (integer Unicode)
         - finds glyph and return 1 (found) or 0 (not found)
@@ -308,7 +308,7 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def GenerateFont(self, fontType, filename):
+    def GenerateFont(self, fontType: int, filename: str | Path) -> None:
         """
         (fontType, filename)
         - generates Font, see <a href="FontLab.xml.html">FontLab</a> class for
@@ -328,7 +328,7 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def MergeFonts(self, source: Font, flags=None):
+    def MergeFonts(self, source: Font, flags: int | None = None) -> None:
         """
         (Font source[, flags])
         - appends all glyphs from the source font. Check mfXXXX constants for
