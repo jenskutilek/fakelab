@@ -14,9 +14,7 @@ class Rect(object):
        the corner points
     """
 
-    def __init__(
-        self, rect_or_point_or_x0=None, point_or_y0=None, x1=None, y1=None
-    ):
+    def __init__(self, rect_or_point_or_x0=None, point_or_y0=None, x1=None, y1=None):
         """
         # No args
         >>> r = Rect()

@@ -10,6 +10,7 @@ class TTPoint(object):
 
     >>> tp = TTPoint()
     """
+
     def __init__(self):
         self.x = 32767
         self.y = 32767
@@ -18,7 +19,11 @@ class TTPoint(object):
         # self._parent = None
 
     def __repr__(self):
-        return '<TTPoint flags="%i" x="%g" y="%g", Orphan>' % (self.flag, self.x, self.y)
+        return '<TTPoint flags="%i" x="%g" y="%g", Orphan>' % (
+            self.flag,
+            self.x,
+            self.y,
+        )
 
 
 if __name__ == "__main__":

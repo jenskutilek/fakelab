@@ -1,13 +1,15 @@
+from __future__ import annotations
+
+from FL.FLdict import *
+from FL.MenuCommands import *
+from FL.objects import *
+
 """
 FakeLab. A FontLab Studio 5 replacement for testing Python code.
 
 Everything is only implemented so far as to make FontLab objects importable
 outside of FontLab Studio 5, and run tests.
 """
-from .FLdict import *
-from .MenuCommands import *
-from .objects import *
-
 
 # fl is pre-instantiated
 fl = FakeLab()

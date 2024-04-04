@@ -13,6 +13,7 @@ class TTHPoint(object):
 
         >>> tp = TTHPoint()
     """
+
     def __init__(self, pt_or_x=None, mode_or_y=None):
         self.x = 0.0
         self.y = 0.0

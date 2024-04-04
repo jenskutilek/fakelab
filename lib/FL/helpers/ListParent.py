@@ -5,6 +5,7 @@ class ListParent(UserList):
     """
     Like a list, but sets child element's parent attribute when appending.
     """
+
     def __init__(self, value=[], parent=None):
         """
         >>> pl = ListParent([1, 2, 3], 4)
@@ -50,4 +51,5 @@ class ListParent(UserList):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
