@@ -25,6 +25,7 @@ class Options(object):
         Load options from a registry file
         """
         # TODO
+        print(f"Load options from {file_path}")
         raise NotImplementedError
 
     def fake_save_regfile(self, file_path):
@@ -32,7 +33,11 @@ class Options(object):
         Save options to a registry file
         """
         # TODO
-        header = """Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\Software\FontLab\FontStudio 5\Options]\n"""
+        header = (
+            "Windows Registry Editor Version 5.00\n\n"
+            "[HKEY_CURRENT_USER\\Software\\FontLab\\FontStudio 5\\Options]\n"
+        )
+        print(f"Save options {header} to {file_path}")
         raise NotImplementedError
 
     # Attributes
