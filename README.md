@@ -59,8 +59,8 @@ own scripts. I have to admit that the bulk of them still has no tests.
 
 If you encounter a `NotImplementedError` while writing tests, this is where you
 can excel at helping to improve this project ;) I'll be happy to accept your
-[pull requests](/jenskutilek/fakelab/pulls). Alternatively,
-[open an issue](/jenskutilek/fakelab/issues),
+[pull requests](https://github.com/jenskutilek/fakelab/pulls). Alternatively,
+[open an issue](https://github.com/jenskutilek/fakelab/issues),
 [buy me a coffee](https://ko-fi.com/jenskutilek), and hope that my kids leave
 me alone so I can find some time to work on your issue.
 
