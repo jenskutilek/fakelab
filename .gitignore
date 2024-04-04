@@ -1,3 +1,6 @@
 __pycache__
 lib/fakelab.egg-info
 .tox
+build/
+dist/
+.coverage.*
