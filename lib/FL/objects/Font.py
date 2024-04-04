@@ -53,43 +53,6 @@ class Font(object):
         # Convert key to str because JSON needs it
         self._fake_binaries[str(fontType)] = file_path
 
-    def fake_save(self, fp, sparse=True):
-        if sparse:
-            font_dict = {
-                k: v
-                for k, v in self.__dict__.items()
-                if k
-                not in (
-                    "_file_name",
-                    "fake_sparse_json",
-                    "_selection",
-                )
-                and v
-            }
-
-            def sub_dict(obj):
-                return {k: v for k, v in obj.__dict__.items() if k not in ("_parent",)}
-
-        else:
-            font_dict = {
-                k: v
-                for k, v in self.__dict__.items()
-                if k
-                not in (
-                    "_file_name",
-                    "fake_sparse_json",
-                    "_selection",
-                )
-                and v
-            }
-
-            def sub_dict(obj):
-                return {
-                    k: v for k, v in obj.__dict__.items() if k not in ("_parent",) and v
-                }
-
-        json.dump(obj=font_dict, fp=fp, default=lambda o: sub_dict(o), indent=4)
-
     def fake_update(self):
         """
         Is called from FontLab.UpdateFont()
