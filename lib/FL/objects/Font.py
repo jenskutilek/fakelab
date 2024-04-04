@@ -576,10 +576,10 @@ class Font(object):
 
 if __name__ == "__main__":
     import doctest
-    import Glyph
+    from FL import Glyph
 
     doctest.testmod()
     f = Font()
-    g = Glyph.Glyph()
+    g = Glyph()
     f.glyphs.append(g)
     f.Save("test.json")
