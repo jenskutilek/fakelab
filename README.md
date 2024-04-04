@@ -43,6 +43,15 @@ fl.Add(f)
 fl.Close()
 ```
 
+If your are running in a virtual environment, and need to make your FontLab
+modules importable, add a `.pth` file in your virtual environment's site-packages
+directory:
+
+```
+# fl5modules.pth
+/Users/<yourname>/Code/FLMacros/System/Modules
+```
+
 ## A word of caution
 
 FakeLab is a work in progress, and only implemented as far as I needed it in my
