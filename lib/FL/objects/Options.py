@@ -1762,15 +1762,11 @@ class Options(object):
         self.Template_Use = 0
         self.TTEDecompose = 1
         self.TTESmartFontName = 0
-        self.TTESmartMacNames = (
-            1  # Use the OpenType names as menu names on Macintosh
-        )
+        self.TTESmartMacNames = 1  # Use the OpenType names as menu names on Macintosh
         self.TTEStoreTables = 0  # Export OpenType layout tables
         self.TTEVersionOS2 = 3  # OS/2 table version 3
         self.TTEVisual = 1
-        self.TTEWriteKernTable = (
-            0  # Export old-style non-OpenType "kern" table
-        )
+        self.TTEWriteKernTable = 0  # Export old-style non-OpenType "kern" table
         self.TTFScaler = 0x6D737363
         self.TTFSmooth = 0
         self.TTHPPM = 0x00000013

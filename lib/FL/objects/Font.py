@@ -37,7 +37,7 @@ class Font(object):
         with open(binary_path, "rb") as f:
             binary = f.read()
         return binary
-    
+
     def fake_binary_from_path(self, fontType: int, file_path: str) -> None:
         """
         Assign a binary file from a path. This will be used to fake the
@@ -51,48 +51,37 @@ class Font(object):
             font_dict = {
                 k: v
                 for k, v in self.__dict__.items()
-                if k not in (
+                if k
+                not in (
                     "_file_name",
                     "fake_sparse_json",
                     "_selection",
-                ) and v
+                )
+                and v
             }
 
             def sub_dict(obj):
-                return {
-                    k: v
-                    for k, v in obj.__dict__.items()
-                    if k not in (
-                        "_parent",
-                    )
-                }
+                return {k: v for k, v in obj.__dict__.items() if k not in ("_parent",)}
 
         else:
             font_dict = {
                 k: v
                 for k, v in self.__dict__.items()
-                if k not in (
+                if k
+                not in (
                     "_file_name",
                     "fake_sparse_json",
                     "_selection",
-                ) and v
+                )
+                and v
             }
 
             def sub_dict(obj):
                 return {
-                    k: v
-                    for k, v in obj.__dict__.items()
-                    if k not in (
-                        "_parent",
-                    ) and v
+                    k: v for k, v in obj.__dict__.items() if k not in ("_parent",) and v
                 }
 
-        json.dump(
-                obj=font_dict,
-                fp=fp,
-                default=lambda o: sub_dict(o),
-                indent=4
-            )
+        json.dump(obj=font_dict, fp=fp, default=lambda o: sub_dict(o), indent=4)
 
     def fake_update(self):
         """
@@ -343,13 +332,13 @@ class Font(object):
         """
         (fontType, filename)
         - generates Font, see <a href="FontLab.xml.html">FontLab</a> class for
-          description. <font color="red">(As a method of the Font class, this 
-          method is deprecated. Since FontLab 4.52 for Mac 
-          and FontLab 4.53 for Windows, GenerateFont is a method 
+          description. <font color="red">(As a method of the Font class, this
+          method is deprecated. Since FontLab 4.52 for Mac
+          and FontLab 4.53 for Windows, GenerateFont is a method
           of the FontLab class)</font>
         """
         raise NotImplementedError
-    
+
     # Undocumented methods
 
     def MakeKernFeature(self, vector):
@@ -358,7 +347,7 @@ class Font(object):
         - generates 'kern' feature using font kerning and classes
         """
         raise NotImplementedError
-    
+
     def MergeFonts(self, source: Font, flags=None):
         """
         (Font source[, flags])
@@ -367,7 +356,9 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def SetClassFlags(self, class_index: int, left: int, right: int, width=None) -> None:
+    def SetClassFlags(
+        self, class_index: int, left: int, right: int, width=None
+    ) -> None:
         """
         (int class_index, bool left, bool right)
         - allows to set 'left' and 'right' properties of the kerning class
@@ -383,7 +374,7 @@ class Font(object):
         - returns the 'left' property of the class
         """
         return self.classes.GetClassLeft(class_index)
-    
+
     def GetClassRight(self, class_index: int) -> int | None:
         """
         (int class_index)
@@ -410,11 +401,13 @@ class Font(object):
 
         # Identification
 
-        self._file_name = None      # full path of the file from which the font was opened/saved
-        self.family_name = None     # font Family Name
-        self.style_name = None      # font Style Name
-        self.full_name = None       # font Full Name
-        self.font_name = None       # font Font Name
+        self._file_name = (
+            None  # full path of the file from which the font was opened/saved
+        )
+        self.family_name = None  # font Family Name
+        self.style_name = None  # font Style Name
+        self.full_name = None  # font Full Name
+        self.font_name = None  # font Font Name
         # Font Style as BitList:
         # italic       =  1
         # underscored  =  2
@@ -425,94 +418,128 @@ class Font(object):
         self.font_style = 64
         self.menu_name = None
 
-        self.apple_name = ""            # (string)       - FOND Name
-        self.fond_id = 128              # (int)             - FOND ID
-        self.pref_family_name = None    # (string) - OpenType-specific font Family Name
-        self.pref_style_name = None     # (string)  - OpenType-specific font Style Name
-        self.mac_compatible = None      # (string)   - OpenType-specific font Mac Name
-        self.default_character = None   # (string)- glyph name that represents the PFM default
+        self.apple_name = ""  # (string)       - FOND Name
+        self.fond_id = 128  # (int)             - FOND ID
+        self.pref_family_name = None  # (string) - OpenType-specific font Family Name
+        self.pref_style_name = None  # (string)  - OpenType-specific font Style Name
+        self.mac_compatible = None  # (string)   - OpenType-specific font Mac Name
+        self.default_character = (
+            None  # (string)- glyph name that represents the PFM default
+        )
         self.weight = None
         self.weight_code = -1
         self.width = "normal"
-        self.designer = None            # (string)
+        self.designer = None  # (string)
 
         # up until here the default values have been verified
-        self.designer_url = ""          # (string)
-        self.fontnames = []             # [<a href="NameRecord.xml.html">NameRecord</a>]    - list of font name records
-        self.copyright = ""             # (string)        - Copyright name field
-        self.notice = ""                # (string)           - Notice field
-        self.note = ""                  # (string)             - Font note
-        self.unique_id = 0              # (integer)       - Type 1 Unique ID number
-        self.tt_u_id = ""               # (string)          - TrueType Unique ID record
-        self.tt_version = ""            # (string)       - TrueType Version record
-        self.trademark = ""             # (string)
+        self.designer_url = ""  # (string)
+        self.fontnames = (
+            []
+        )  # [<a href="NameRecord.xml.html">NameRecord</a>]    - list of font name records
+        self.copyright = ""  # (string)        - Copyright name field
+        self.notice = ""  # (string)           - Notice field
+        self.note = ""  # (string)             - Font note
+        self.unique_id = 0  # (integer)       - Type 1 Unique ID number
+        self.tt_u_id = ""  # (string)          - TrueType Unique ID record
+        self.tt_version = ""  # (string)       - TrueType Version record
+        self.trademark = ""  # (string)
         self.x_u_id_num = 0
         self.x_u_id = ""
-        self.vendor = ""                # (string)           - TrueType vendor code
-        self.vendor_url = ""            # (string)
-        self.version = ""               # (string)
-        self.year = 0                   # (integer)
-        self.version_major = 0          # (integer)
-        self.version_minor = 0          # (integer)
-        self.vp_id = 0                  # (integer)
-        self.ms_charset = 0             # (integer)
-        self.ms_id = 0                  # (integer)
-        self.panose = []                # [integer]         - list of Panose values
-        self.pcl_chars_set = ""         # (string)
-        self.pcl_id = 0                 # (integer)
+        self.vendor = ""  # (string)           - TrueType vendor code
+        self.vendor_url = ""  # (string)
+        self.version = ""  # (string)
+        self.year = 0  # (integer)
+        self.version_major = 0  # (integer)
+        self.version_minor = 0  # (integer)
+        self.vp_id = 0  # (integer)
+        self.ms_charset = 0  # (integer)
+        self.ms_id = 0  # (integer)
+        self.panose = []  # [integer]         - list of Panose values
+        self.pcl_chars_set = ""  # (string)
+        self.pcl_id = 0  # (integer)
 
         #  Dimensions
         self.upm = 1000
-        self.ascender = []              # [integer]   - list of ascenders, one for each master
-        self.descender = []             # [integer]  - list of descenders, one for each master
-        self.cap_height = []            # [integer] - list of CapHeight records, one for each master
-        self.x_height = []              # [integer]   - list of xHeight values, one for each master
+        self.ascender = []  # [integer]   - list of ascenders, one for each master
+        self.descender = []  # [integer]  - list of descenders, one for each master
+        self.cap_height = (
+            []
+        )  # [integer] - list of CapHeight records, one for each master
+        self.x_height = []  # [integer]   - list of xHeight values, one for each master
         self.default_width = 0
         self.slant_angle = 0
-        self.italic_angle = 0.0         # (float) - Italic Angle
+        self.italic_angle = 0.0  # (float) - Italic Angle
         self.is_fixed_pitch = False
-        self.underline_position = 0     # (integer)
-        self.underline_thickness = 0    # (integer)
+        self.underline_position = 0  # (integer)
+        self.underline_thickness = 0  # (integer)
 
         #  Alignment
         self.blue_fuzz = 0
         self.blue_scale = 0
         self.blue_shift = 0
-        self.blue_values_num = 0        # (integer)             - number of defined blue values
-        self.blue_values = [[]]         # [integer[integer]]        - two-dimentional array of BlueValues
+        self.blue_values_num = (
+            0  # (integer)             - number of defined blue values
+        )
+        self.blue_values = [
+            []
+        ]  # [integer[integer]]        - two-dimentional array of BlueValues
         #                                         master index is top-level index
 
-        self.other_blues_num = 0        # (integer)             - number of defined OtherBlues values
-        self.other_blues = [[]]         # [integer[integer]]        - two-dimentional array of OtherBlues
+        self.other_blues_num = (
+            0  # (integer)             - number of defined OtherBlues values
+        )
+        self.other_blues = [
+            []
+        ]  # [integer[integer]]        - two-dimentional array of OtherBlues
         #                                         master index is top-level index
 
-        self.family_blues_num = 0       # (integer)            - number of FamilyBlues records
-        self.family_blues = [[]]        # [integer[integer]]       - two-dimentional array of FamilyBlues
+        self.family_blues_num = (
+            0  # (integer)            - number of FamilyBlues records
+        )
+        self.family_blues = [
+            []
+        ]  # [integer[integer]]       - two-dimentional array of FamilyBlues
         #                                         master index is top-level index
 
-        self.family_other_blues_num = 0  # (integer)      - number of FamilyOtherBlues records
-        self.family_other_blues = [[]]   # [integer[integer]] - two-dimentional array of FamilyOtherBlues
+        self.family_other_blues_num = (
+            0  # (integer)      - number of FamilyOtherBlues records
+        )
+        self.family_other_blues = [
+            []
+        ]  # [integer[integer]] - two-dimentional array of FamilyOtherBlues
         #                                         master index is top-level index
 
-        self.force_bold = 0             # [integer]                  - list of Force Bold values, one for 
+        self.force_bold = (
+            0  # [integer]                  - list of Force Bold values, one for
+        )
         #                                         each master
-        self.stem_snap_h_num = 0        # (integer)
+        self.stem_snap_h_num = 0  # (integer)
         self.stem_snap_h = [[]]
-        self.stem_snap_v_num = 0        # (integer)
+        self.stem_snap_v_num = 0  # (integer)
         self.stem_snap_v = [[]]
 
         #  Other
-        self.modified = 0  # (integer)      - 0 if unmodified, 1 if modified (to control the 
-        #                           'save changes' dialog) <font color="red">(this attribute is not 
+        self.modified = (
+            0  # (integer)      - 0 if unmodified, 1 if modified (to control the
+        )
+        #                           'save changes' dialog) <font color="red">(this attribute is not
         #                           reported by the docstring)</font>
         self.classes = []  # [string]        - list of glyph classes
-        self.ot_classes = ""  # (string)     - string containing the OT classes defined in the lower
-        #                           right part of the OpenType panel <font color="red">(this description 
+        self.ot_classes = (
+            ""  # (string)     - string containing the OT classes defined in the lower
+        )
+        #                           right part of the OpenType panel <font color="red">(this description
         #                           is not reported by the docstring)</font>
-        self.features = []  # [<a href="Feature.xml.html">Feature</a>]      - list of OpenType features
+        self.features = (
+            []
+        )  # [<a href="Feature.xml.html">Feature</a>]      - list of OpenType features
         self.customdata = ""  # (string)     - font custom data field
-        self.truetypetables = []  # [<a href="TrueTypeTable.xml.html">TrueTypeTable</a>] - list of custom TrueType tables
-        self.ttinfo = TTInfo()  # (<a href="TTInfo.xml.html">TTInfo</a>)         - loaded TrueType information 
+        self.truetypetables = (
+            []
+        )  # [<a href="TrueTypeTable.xml.html">TrueTypeTable</a>] - list of custom TrueType tables
+        self.ttinfo = (
+            TTInfo()
+        )  # (<a href="TTInfo.xml.html">TTInfo</a>)         - loaded TrueType information
         #                                    (mostly hinting-related tables)
         self.encoding = None  # (<a href="Encoding.xml.html">Encoding</a>)     - current encoding of the font
         self.codepages = []  # [integer]     - list of codepage-numbers (see OT-specs)
@@ -520,15 +547,21 @@ class Font(object):
         #                           this attribute is linked with the
         #                           ttinfo.os2_ul_code_page_range1 and
         #                           ttinfo.os2_ul_code_page_range2 values)</font>
-        self.unicoderanges = []  # [integer] - list of unicoderange-numbers (see OT-specs)
+        self.unicoderanges = (
+            []
+        )  # [integer] - list of unicoderange-numbers (see OT-specs)
         #                           <font color="red">(this attribute is not reported by the docstring)</font>
         self._glyphs = []
         self.source = None  #                 - the Created By field
         #                          <font color="red">(this description is not reported by the docstring)</font>
         self.weight_vector = []  # [float]   - list of MM-settings for generate instance
-        self.hguides = []  # [<a href="Guide.xml.html">Guide</a>]        - list of horizontal guides
+        self.hguides = (
+            []
+        )  # [<a href="Guide.xml.html">Guide</a>]        - list of horizontal guides
         #                           <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.vguides = []  # [<a href="Guide.xml.html">Guide</a>]        - list of vertical guides
+        self.vguides = (
+            []
+        )  # [<a href="Guide.xml.html">Guide</a>]        - list of vertical guides
         #                           <font color="red">(new in v4.5.4 and not reported by docstring)</font>
 
         self._axis = []
@@ -537,6 +570,7 @@ class Font(object):
 if __name__ == "__main__":
     import doctest
     import Glyph
+
     doctest.testmod()
     f = Font()
     g = Glyph.Glyph()

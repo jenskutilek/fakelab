@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from FL.objects.Rect import Rect
+
 # from FL.helpers.ListParent import ListParent
 
 
@@ -591,8 +592,7 @@ class Glyph(object):
     def College(self, outlinewidth, distance):
         raise NotImplementedError
 
-    def Gradient(self, outlinewidth, direction, stripes_number, start_y,
-                 finish_y):
+    def Gradient(self, outlinewidth, direction, stripes_number, start_y, finish_y):
         raise NotImplementedError
 
     def Distance(self, width_x, width_y, cornermode, dest=None):
