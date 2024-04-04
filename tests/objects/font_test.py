@@ -1,7 +1,7 @@
 import pytest
 import unittest
 
-from FL import fl, Font
+from FL import fl, Font, Glyph
 from pathlib import Path
 from vfbLib.vfb.vfb import Vfb
 
@@ -19,3 +19,8 @@ class FontTests(unittest.TestCase):
         fl.Add(f)
         assert len(fl) == 1
         assert f.file_name == str(vfb_path)
+
+    def test_add_glyph(self):
+        f = Font()
+        f.glyphs.append(Glyph())
+        assert len(f) == 1
