@@ -149,7 +149,7 @@ class Font(object):
         return str(self._file_name)
 
     @property
-    def axis(self):
+    def axis(self) -> List[Tuple[str, str, str]]:
         """
         Array of font axes. Not reported by docstring nor e-font.
 
@@ -198,7 +198,7 @@ class Font(object):
 
     # Methods
 
-    def New(self):
+    def New(self) -> None:
         """
         clears the font
         """
@@ -225,7 +225,7 @@ class Font(object):
         self._set_file_name(filename)
         self._vfb.write(self._file_name)
 
-    def OpenAFM(self, filename: str, mode: int, layer: int):
+    def OpenAFM(self, filename: str | Path, mode: int, layer: int) -> None:
         """
         open AFM-File, mode is the integer bit field.
           The bit list is:
@@ -252,22 +252,20 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def SaveAFM(self, filename: str):
+    def SaveAFM(self, filename: str | Path) -> None:
         """
         saves AFM- and INF-File (this method is not reported by the docstring)
         """
         raise NotImplementedError
 
-    def Reencode(self, e: Encoding, style: int = 0):
-        """(<a href="Encoding.xml.html">Encoding</a> E)|(<a href="Encoding.xml.html">Encoding</a> E, integer style)
-        - applies <a href="Encoding.xml.html">Encoding</a> E to Font
-          <font color="red">(the parameters of this method are not
-          reported by the docstring and i don't
-          know what the style parameter does)</font>
+    def Reencode(self, e: Encoding, style: int = 0) -> None:
+        """
+        applies Encoding to Font (the parameters of this method are not reported by the
+        docstring and i don't know what the style parameter does)
         """
         raise NotImplementedError
 
-    def FindGlyph(self, name_unicode_uniint):
+    def FindGlyph(self, name_unicode_uniint: str | int) -> int:
         """
         (string name) | (Uni unicode) | (integer Unicode)
         - finds glyph and return its index or -1
@@ -288,7 +286,7 @@ class Font(object):
             # What is Uni supposed to be? I don't know
             raise TypeError
 
-    def DefineAxis(self, name, type, shortname):
+    def DefineAxis(self, name: str, type: str, shortname: str) -> None:
         """
         Defines a new Multiple Master axis.
 
@@ -303,20 +301,19 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def DeleteAxis(self, axisindex, position):
+    def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
-        (axisindex, float position)
-        - removes the axis
-        """
-        raise NotImplementedError
-
-    def GenerateUnicode(self):
-        """
-        - generates Unicode indexes for all glyphs
+        removes the axis
         """
         raise NotImplementedError
 
-    def GenerateNames(self):
+    def GenerateUnicode(self) -> None:
+        """
+        generates Unicode indexes for all glyphs
+        """
+        raise NotImplementedError
+
+    def GenerateNames(self) -> None:
         """
         - generates names for all glyphs
         """
@@ -413,7 +410,7 @@ class Font(object):
         # Identification
 
         # full path of the file from which the font was opened/saved
-        self._file_name: str | None = None
+        self._file_name: Path | None = None
         # font Family Name
         self.family_name: str | None = None
         # font Style Name
