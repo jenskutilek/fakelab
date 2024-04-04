@@ -12,10 +12,10 @@ class FontTests(unittest.TestCase):
         assert isinstance(f, Font)
 
     def test_instantiation_path(self):
-        vfb_path = Path(__file__).parent.parent / "tests" / "data" / "empty.vfb"
+        vfb_path = Path(__file__).parent.parent.parent / "tests" / "data" / "empty.vfb"
 
         f = Font(vfb_path)
         assert len(fl) == 0
         fl.Add(f)
         assert len(fl) == 1
-        assert f.file_name == vfb_path
+        assert f.file_name == str(vfb_path)
