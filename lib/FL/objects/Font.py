@@ -337,7 +337,10 @@ class Font(object):
         - finds glyph and return 1 (found) or 0 (not found)
           <font color="red">(this method is not reported by the docstring)</font>
         """
-        raise NotImplementedError
+        glyph_index = self.FindGlyph(name_unicode_uniint)
+        if glyph_index == -1:
+            return 0
+        return 1
 
     def GenerateFont(self, fontType: int, filename: str | Path) -> None:
         """
