@@ -128,11 +128,11 @@ class Font(object):
         return self._axis
 
     @property
-    def classes(self):
+    def classes(self) -> List[str]:
         """
-        [string] list of glyph classes
+        List of glyph classes.
         """
-        return self._classes
+        return list(self._classes)
 
     @classes.setter
     def classes(self, value):
@@ -337,7 +337,11 @@ class Font(object):
         raise NotImplementedError
 
     def SetClassFlags(
-        self, class_index: int, left: int, right: int, width=None
+        self,
+        class_index: int,
+        left_lsb: bool,
+        right_rsb: bool,
+        width: bool | None = None,
     ) -> None:
         """
         (int class_index, bool left, bool right)
@@ -346,21 +350,21 @@ class Font(object):
         (int class_index, bool lsb, bool rsb, bool width)
         - allows to set 'lsb', 'rsb' and 'width' properties of the metrics class
         """
-        self.classes.SetClassFlags(class_index, left, right, width)
+        self._classes.SetClassFlags(class_index, left_lsb, right_rsb, width)
 
     def GetClassLeft(self, class_index: int) -> int | None:
         """
         (int class_index)
         - returns the 'left' property of the class
         """
-        return self.classes.GetClassLeft(class_index)
+        return self._classes.GetClassLeft(class_index)
 
     def GetClassRight(self, class_index: int) -> int | None:
         """
         (int class_index)
         - returns the 'right' property of the class
         """
-        return self.classes.GetClassRight(class_index)
+        return self._classes.GetClassRight(class_index)
 
     def GetClassMetricsFlags(self, class_index: int) -> tuple | None:
         """
@@ -368,7 +372,7 @@ class Font(object):
         - returns the tuple containing LSB, RSB and Width flags of the metrics
         class
         """
-        return self.classes.GetClassMetricsFlags(class_index)
+        return self._classes.GetClassMetricsFlags(class_index)
 
     # Defaults
 
@@ -509,7 +513,7 @@ class Font(object):
         # reported by the docstring)</font>
         self.modified: int = 0
         # list of glyph classes
-        self.classes: ClassList = ClassList([])
+        self.classes: List = []
         # string containing the OT classes defined in the lower
         # right part of the OpenType panel <font color="red">(this description
         # is not reported by the docstring)</font>
