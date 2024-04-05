@@ -1,9 +1,8 @@
 import pytest
 import unittest
 
-from FL import fl, Font, Glyph
+from FL import fl, Feature, Font, Glyph
 from pathlib import Path
-from vfbLib.vfb.vfb import Vfb
 
 
 class FontTests(unittest.TestCase):
@@ -22,8 +21,37 @@ class FontTests(unittest.TestCase):
 
     def test_add_glyph(self):
         f = Font()
+        assert len(f) == 0
         f.glyphs.append(Glyph())
         assert len(f) == 1
+
+    def test_find_glyph(self):
+        f = Font()
+        g = Glyph()
+        g.name = "adieresis"
+        f.glyphs.append(g)
+
+        # Glyph in font with index 0
+        i = f.FindGlyph("adieresis")
+        assert i == 0
+
+        # Glyph not in font
+        i = f.FindGlyph("a")
+        assert i == -1
+
+    def test_classes(self):
+        f = Font()
+        g = Glyph()
+        g.name = "adieresis"
+        f.glyphs.append(g)
+
+        # Glyph in font with index 0
+        i = f.FindGlyph("adieresis")
+        assert i == 0
+
+        # Glyph not in font
+        i = f.FindGlyph("a")
+        assert i == -1
 
     def test_features_readonly(self):
         f = Font()
