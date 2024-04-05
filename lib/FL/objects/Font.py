@@ -106,7 +106,7 @@ class Font(object):
         """
         Make sure the file name (actually, the path) is stored as Path
         """
-        self._file_name = Path(filename) if isinstance(filename, str) else filename
+        self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
     # Attributes
 
