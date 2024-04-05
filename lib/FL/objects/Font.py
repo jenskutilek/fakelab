@@ -306,19 +306,19 @@ class Font(object):
 
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
-        removes the axis
+        Removes the axis
         """
         raise NotImplementedError
 
     def GenerateUnicode(self) -> None:
         """
-        generates Unicode indexes for all glyphs
+        Generates Unicode indexes for all glyphs
         """
         raise NotImplementedError
 
     def GenerateNames(self) -> None:
         """
-        - generates names for all glyphs
+        Generates names for all glyphs
         """
         raise NotImplementedError
 
