@@ -348,7 +348,8 @@ class Font(object):
           and FontLab 4.53 for Windows, GenerateFont is a method
           of the FontLab class)</font>
         """
-        raise NotImplementedError
+        # In FL 5, this raises an AttributeError
+        raise AttributeError
 
     # Undocumented methods
 
