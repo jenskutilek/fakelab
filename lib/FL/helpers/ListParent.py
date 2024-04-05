@@ -1,58 +1,59 @@
+from __future__ import annotations
+
 from collections import UserList
+from copy import copy
+from typing import Any, Iterable
 
 
 class ListParent(UserList):
     """
-    Like a list, but sets child element's _parent attribute when appending.
+    Like a list, but the _parent attribute for each item.
     """
 
-    def __init__(self, value=None, parent=None):
-        """
-        >>> pl = ListParent([1, 2, 3], 4)
-        >>> print(pl)
-        [1, 2, 3]
-        >>> print(pl._parent)
-        4
-        """
-        super(UserList, self).__init__()
+    def __init__(self, iterable: Iterable = [], parent: Any | None = None) -> None:
+        super().__init__(copy(iterable))
         self._parent = parent
-        if value is None:
-            value = []
-        self.data = value
 
-    def __add__(self, value):
-        value._parent = self._parent
-        return self.data.__add__(value)
+    def __add__(self, item: Any) -> ListParent:
+        # Makes scripting unresponsive in FL5
+        # We raise an error that is not used otherwise
+        raise ReferenceError
 
-    def __iadd__(self, value):
-        value._parent = self._parent
-        self.data.__iadd__(value)
+    def __iadd__(self, item: Any) -> ListParent:
+        # Makes scripting unresponsive in FL5
+        # We raise an error that is not used otherwise
+        raise ReferenceError
 
-    def __setitem__(self, index, value):
-        value._parent = self._parent
-        self.data[index] = value
+    # def __radd__(self, item: Any) -> None:
+    #     item._parent = self._parent
+    #     self.data.__radd__(item)
 
-    def __setslice__(self, i, j, value):
-        raise NotImplementedError
+    def __setitem__(self, index, item: Any) -> None:
+        item._parent = self._parent
+        self.data[index] = item
 
-    def append(self, obj):
-        obj._parent = self._parent
-        self.data.append(obj)
+    def append(self, item) -> None:
+        item._parent = self._parent
+        self.data.append(item)
 
-    def extend(self, iterable):
-        for obj in iterable:
-            obj._parent = self._parent
-            self.data.append(obj)
+    def clear(self) -> None:
+        # Not implemented, probably a mix-up with clean()?
+        # Raise AttributeError as in FL5
+        raise AttributeError
 
-    def insert(self, index, obj):
+    def extend(self, iterable: Iterable) -> None:
+        # Not implemented
+        # Raise AttributeError as in FL5
+        raise AttributeError
+
+    def insert(self, index: int, item: Any) -> None:
+        item._parent = self._parent
+        self.data.insert(index, item)
+
+    # FontLab-specific
+
+    def clean(self):
         """
-        >>> pl = ListParent([1, 3])
+        Remove all items from the list.
         """
-        obj._parent = self._parent
-        self.data.insert(index, obj)
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
+        self.data = []

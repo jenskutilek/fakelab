@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from FL.objects.Component import Component
+from FL.objects.Feature import Feature
 from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab
 from FL.objects.Glyph import Glyph
@@ -79,10 +80,6 @@ class Encoding(object):
 
 
 class EncodingRecord(object):
-    pass
-
-
-class Feature(object):
     pass
 
 

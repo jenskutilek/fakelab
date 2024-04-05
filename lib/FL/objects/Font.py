@@ -139,11 +139,26 @@ class Font(object):
         self._classes = ClassList(value)
 
     @property
+    def features(self) -> ListParent[Feature]:
+        """
+        List of Opentype features.
+        """
+        return self._features
+
+    @features.setter
+    def features(self, value):
+        raise RuntimeError
+
+    @property
     def fontnames(self) -> ListParent[NameRecord]:
         """
-        # list of font name records
+        List of font name records.
         """
         return self._fontnames
+
+    @fontnames.setter
+    def fontnames(self, value):
+        raise RuntimeError
 
     @property
     def glyphs(self) -> ListParent[Glyph]:
@@ -152,6 +167,22 @@ class Font(object):
         """
         # Read-only.
         return self._glyphs
+
+    @glyphs.setter
+    def glyphs(self, value):
+        raise RuntimeError
+
+    @property
+    def truetypetables(self) -> ListParent[TrueTypeTable]:
+        """
+        List of custom TrueType tables.
+        """
+        # Read-only.
+        return self._truetypetables
+
+    @truetypetables.setter
+    def truetypetables(self, value):
+        raise RuntimeError
 
     # Operations
 
@@ -519,11 +550,11 @@ class Font(object):
         # is not reported by the docstring)</font>
         self.ot_classes: str = ""
         # list of OpenType features
-        self.features: ListParent[Feature] = ListParent(parent=self)
+        self._features: ListParent[Feature] = ListParent(parent=self)
         # font custom data field
         self.customdata: str = ""
         # list of custom TrueType tables
-        self.truetypetables: ListParent[TrueTypeTable] = ListParent(parent=self)
+        self._truetypetables: ListParent[TrueTypeTable] = ListParent(parent=self)
         # loaded TrueType information
         # (mostly hinting-related tables)
         self.ttinfo = TTInfo()

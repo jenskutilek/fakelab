@@ -24,3 +24,61 @@ class FontTests(unittest.TestCase):
         f = Font()
         f.glyphs.append(Glyph())
         assert len(f) == 1
+
+    def test_features_readonly(self):
+        f = Font()
+        with pytest.raises(RuntimeError):
+            f.features = []
+
+    def test_features_iadd_freeze(self):
+        f = Font()
+        with pytest.raises(ReferenceError):
+            f.features += Feature()
+
+    def test_features_setitem(self):
+        f = Font()
+        fea = Feature("aaaa")
+        f.features.append(fea)
+        assert len(f.features) == 1
+        assert fea.parent == f
+        fea = Feature("bbbb")
+        f.features[0] = fea
+        assert len(f.features) == 1
+        assert fea.parent == f
+        assert f.features[0].tag == "bbbb"
+
+    def test_features_setslice(self):
+        # FIXME
+        f = Font()
+        f.features.append(Feature("aaaa"))
+        f.features.append(Feature("bbbb"))
+        assert len(f.features) == 2
+        # Will actually raise an IndexError, only [0:1] works in FL if the feature
+        # list has two elements:
+        f.features[0:2] == [Feature("cccc"), Feature("dddd")]
+        assert f.features[0].parent == f
+        assert f.features[0].tag == "cccc"
+        assert f.features[1].parent == f
+        assert f.features[1].tag == "dddd"
+
+    def test_features_append(self):
+        f = Font()
+        fea = Feature()
+        f.features.append(fea)
+        assert len(f.features) == 1
+        assert fea.parent == f
+
+    def test_fontnames_readonly(self):
+        f = Font()
+        with pytest.raises(RuntimeError):
+            f.fontnames = []
+
+    def test_glyphs_readonly(self):
+        f = Font()
+        with pytest.raises(RuntimeError):
+            f.glyphs = []
+
+    def test_truetypetables_readonly(self):
+        f = Font()
+        with pytest.raises(RuntimeError):
+            f.truetypetables = []
