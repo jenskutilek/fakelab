@@ -322,14 +322,15 @@ class Font(object):
         """
         raise NotImplementedError
 
-    def GenerateGlyph(self, glyphname: str) -> None:
-        """(string glyphname)
-        - generates new glyph using 'glyphname' as
-          a source of information about glyph's composition
-          see 'FontLabDir/Mapping/alias.dat' for composition
-          definitions
+    def GenerateGlyph(self, glyphname: str) -> Glyph:
         """
-        raise NotImplementedError
+        Generates new glyph using 'glyphname' as a source of information about glyph's
+        composition. See 'FontLabDir/Mapping/alias.dat' for composition definitions
+        """
+        # The glyph is not added to the font automatically
+        glyph = Glyph()
+        glyph.name = glyphname
+        return glyph
 
     def has_key(self, name_unicode_uniint: str | int) -> int:
         """
