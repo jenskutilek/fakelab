@@ -2,15 +2,18 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any, Iterable, TypeVar
+
+if TYPE_CHECKING:
+    T = TypeVar("T")
 
 
-class ListParent(UserList):
+class ListParent(UserList[T]):
     """
     Like a list, but the _parent attribute for each item.
     """
 
-    def __init__(self, iterable: Iterable = [], parent: Any | None = None) -> None:
+    def __init__(self, iterable: Iterable[T] = [], parent: Any | None = None) -> None:
         super().__init__(copy(iterable))
         self._parent = parent
 
@@ -32,7 +35,7 @@ class ListParent(UserList):
         item._parent = self._parent
         self.data[index] = item
 
-    def append(self, item) -> None:
+    def append(self, item: Any) -> None:
         item._parent = self._parent
         self.data.append(item)
 

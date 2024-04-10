@@ -5,7 +5,7 @@ from copy import copy
 from typing import Any, Iterable
 
 
-class ClassList(UserList):
+class ClassList(UserList[str]):
     """
     A list of OpenType classes as strings. It keeps track of the class flags.
     """
