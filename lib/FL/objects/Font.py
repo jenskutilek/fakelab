@@ -534,7 +534,7 @@ class Font:
         # master index is top-level index
         self.family_other_blues: List[List[int]] = [[]]
         # list of Force Bold values, one for each master
-        self.force_bold: List[int] = 0
+        self.force_bold: List[int] = [0]
         self.stem_snap_h_num: int = 0
         self.stem_snap_h: List[List[int]] = [[]]
         self.stem_snap_v_num: int = 0
