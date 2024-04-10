@@ -98,7 +98,7 @@ class FontTests(unittest.TestCase):
         assert len(f.features) == 2
         # Will actually raise an IndexError, only [0:1] works in FL if the feature
         # list has two elements:
-        f.features[0:2] == [Feature("cccc"), Feature("dddd")]
+        f.features[0:2] = [Feature("cccc"), Feature("dddd")]
         assert f.features[0].parent == f
         assert f.features[0].tag == "cccc"
         assert f.features[1].parent == f
