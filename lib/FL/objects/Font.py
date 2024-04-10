@@ -134,7 +134,7 @@ class Font:
     @classes.setter
     def classes(self, value):
         # Carry over the flags when setting the value
-        self._classes = ClassList(value, self.classes._flags)
+        self._classes = ClassList(value, self._classes)
 
     @property
     def features(self) -> ListParent[Feature]:
@@ -547,7 +547,7 @@ class Font:
         # reported by the docstring)</font>
         self.modified: int = 0
         # list of glyph classes
-        self.classes: List = []
+        self._classes: ClassList = ClassList()
         # string containing the OT classes defined in the lower
         # right part of the OpenType panel <font color="red">(this description
         # is not reported by the docstring)</font>

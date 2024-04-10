@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import Any, Iterable, List
+from typing import Any, Iterable
 
 
 class ClassList(UserList):
@@ -11,18 +11,23 @@ class ClassList(UserList):
     """
 
     def __init__(
-        self, iterable: Iterable[str] | None = None, flags: List[int] | None = None
+        self,
+        iterable: Iterable[str] | None = None,
+        old_list: ClassList | None = None,
     ) -> None:
         super().__init__(iterable)
-        if flags is None:
-            self._flags = [0 for _ in iterable or []]
-        else:
-            self._flags = flags
-            # Make sure the _flags list is as long as the data list
-            len_f = len(self._flags)
-            len_i = len(self.data)
-            if len_f != len_i:
-                self._flags = self._flags[:len_i] + [0] * (len_i - len_f)
+        self._flags = [0 for _ in iterable or []]
+        if old_list is None:
+            return
+
+        # Match classes from the old list so they can keep their flags
+        for cur_index, class_string in enumerate(self.data):
+            try:
+                old_index = old_list.data.index(class_string)
+            except ValueError:
+                continue
+
+            self._flags[cur_index] = old_list._flags[old_index]
 
     def __add__(self, item: Any) -> ClassList:
         result = ClassList(self.data)
