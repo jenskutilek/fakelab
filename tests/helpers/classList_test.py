@@ -22,14 +22,15 @@ class ClassListTests(unittest.TestCase):
         assert c == ["_A: A'"]
         assert c._flags == [3072]
 
-        # When we pass the flags to __init__, they should persist
+        # When we pass the old list to __init__, the flags should persist
         c = ClassList(["_A: A'", "_B: B'"], old_list=c)
         assert c._flags == [3072, 0]
         c.SetClassFlags(1, True, False)
         assert c._flags == [3072, 1024]
 
-        # When passing a shorter list, the flags list should be truncated
-        # and the existing classes should keep their flags even though the index changes
+        # When passing a longer or shorter list, the length of the flags list should be
+        # adapted and the existing classes should keep their flags even though the index
+        # changes
         c = ClassList(["_B: B'"], old_list=c)
         assert c._flags == [1024]
 
