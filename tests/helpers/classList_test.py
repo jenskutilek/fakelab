@@ -16,6 +16,20 @@ class ClassListTests(unittest.TestCase):
         assert c == ["_A: A'"]
         assert c._flags == [0]
 
+    def test_instantiation_flags(self):
+        c = ClassList(["_A: A'"])
+        c.SetClassFlags(0, True, True)
+        assert c == ["_A: A'"]
+        assert c._flags == [3072]
+
+        # When we pass the flags to __init__, they should persist
+        c = ClassList(["_A: A'", "_O: O'"], c._flags)
+        assert c._flags == [3072, 0]
+
+        # When passing a shorter list, the flags list should be truncated
+        c = ClassList(["_A: A'"], c._flags)
+        assert c._flags == [3072]
+
     def test_add(self):
         c1 = ClassList(["_A: A'"])
         c2 = ["_O: O'"]

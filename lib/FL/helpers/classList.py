@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import Any, Iterable
+from typing import Any, Iterable, List
 
 
 class ClassList(UserList):
@@ -10,10 +10,19 @@ class ClassList(UserList):
     A list of OpenType classes as strings. It keeps track of the class flags.
     """
 
-    # List methods
-    def __init__(self, iterable: Iterable | None = None) -> None:
+    def __init__(
+        self, iterable: Iterable[str] | None = None, flags: List[int] | None = None
+    ) -> None:
         super().__init__(iterable)
-        self._flags = [0 for _ in iterable]
+        if flags is None:
+            self._flags = [0 for _ in iterable or []]
+        else:
+            self._flags = flags
+            # Make sure the _flags list is as long as the data list
+            len_f = len(self._flags)
+            len_i = len(self.data)
+            if len_f != len_i:
+                self._flags = self._flags[:len_i] + [0] * (len_i - len_f)
 
     def __add__(self, item: Any) -> ClassList:
         result = ClassList(self.data)

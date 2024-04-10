@@ -136,7 +136,8 @@ class Font:
 
     @classes.setter
     def classes(self, value):
-        self._classes = ClassList(value)
+        # Carry over the flags when setting the value
+        self._classes = ClassList(value, self.classes._flags)
 
     @property
     def features(self) -> ListParent[Feature]:

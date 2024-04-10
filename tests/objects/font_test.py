@@ -53,6 +53,21 @@ class FontTests(unittest.TestCase):
         i = f.FindGlyph("a")
         assert i == -1
 
+    def test_class_flags_persist(self):
+        # Class flags should persist in the font when the class list is replaced
+        f = Font()
+        f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'"]
+        f.SetClassFlags(2, 1, 0)  # 3rd class is left
+        assert (f.GetClassLeft(0), f.GetClassRight(0)) == (0, 0)
+        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (0, 0)
+        assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)
+        assert (f.GetClassLeft(3), f.GetClassRight(3)) == (None, None)
+
+        f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'", "_A: A' Aacute"]
+        # 3rd class should still have the left flag
+        assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)
+        assert (f.GetClassLeft(3), f.GetClassRight(3)) == (0, 0)
+
     def test_features_readonly(self):
         f = Font()
         with pytest.raises(RuntimeError):
