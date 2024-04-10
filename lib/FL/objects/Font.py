@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-import codecs
-import json
-
 from FL.objects.TTInfo import TTInfo
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
