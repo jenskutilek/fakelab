@@ -11,8 +11,8 @@ class ClassList(UserList):
     """
 
     # List methods
-    def __init__(self, iterable: Iterable = []) -> None:
-        super().__init__(copy(iterable))
+    def __init__(self, iterable: Iterable | None = None) -> None:
+        super().__init__(iterable)
         self._flags = [0 for _ in iterable]
 
     def __add__(self, item: Any) -> ClassList:
