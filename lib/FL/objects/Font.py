@@ -97,7 +97,7 @@ class Font:
         # value is 0, it's not clear what it represents. Maybe the width flag for
         # metrics classes?
         for i, f in enumerate(flags):
-            self.SetClassFlags(i, int("L" in f), int("R" in f))
+            self.SetClassFlags(i, "L" in f, "R" in f)
 
     def _set_file_name(self, filename: str | Path) -> None:
         """
