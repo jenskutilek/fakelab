@@ -3,7 +3,7 @@ from __future__ import annotations
 from .Point import Point
 
 
-class Rect(object):
+class Rect:
     """
     Rect() - generic constructor, creates a Rect with zero coordinates
     Rect(Rect r) - copy constructor

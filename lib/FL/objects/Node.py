@@ -14,7 +14,7 @@ nSMOOTH = 4096
 nFIXED = 12288
 
 
-class Node(object):
+class Node:
     """
     Node() - generic constructor, creates an empty node
     Node(Node) - copy constructor

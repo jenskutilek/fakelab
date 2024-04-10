@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class KerningPair(object):
+class KerningPair:
     def __init__(self, kerningpair_or_index=None, value=0):
         """
         Class to represent kerning pair. This class is Multiple

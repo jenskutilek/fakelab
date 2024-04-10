@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class Link(object):
+class Link:
     def __init__(self, link_or_index1=None, index2=None):
         self.set_defaults()
 

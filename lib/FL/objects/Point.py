@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class Point(object):
+class Point:
     """
     ===============================================
     Point - base class to represent point

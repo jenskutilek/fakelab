@@ -3,7 +3,7 @@ from __future__ import annotations
 from FL.objects.Point import Point
 
 
-class TTHPoint(object):
+class TTHPoint:
     """
     ===============================================
     TTHPoint - class to represent visual TrueType points

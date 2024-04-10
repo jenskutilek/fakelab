@@ -9,7 +9,7 @@ from FL.objects.TTHCommand import TTHCommand
 from typing import List
 
 
-class TTH(object):
+class TTH:
     def __init__(self, g=None, f=None):
         self.glyph = g
         self.font = f

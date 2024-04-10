@@ -5,7 +5,7 @@ from FL.objects.Rect import Rect
 # from FL.helpers.ListParent import ListParent
 
 
-class Glyph(object):
+class Glyph:
     def __init__(self, glyph_or_masterscount=1, nodes=None):
         self.set_defaults()
 

@@ -4,7 +4,7 @@ from FL.objects.Link import Link
 from FL.objects.Matrix import Matrix
 
 
-class Hint(object):
+class Hint:
     def __init__(
         self, hint_or_position: "Hint" | int | None, width: int | None = None
     ) -> None:

@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from FL.objects import Encoding, Feature, Guide, NameRecord, TrueTypeTable
 
 
-class Font(object):
+class Font:
     def __init__(self, font_or_path=None, instances=None):
         self.set_defaults()
 

@@ -59,49 +59,49 @@ __all__ = [
 # and implement them as far as you need.
 
 
-class Anchor(object):
+class Anchor:
     pass
 
 
-class AuditRecord(object):
+class AuditRecord:
     pass
 
 
-class Canvas(object):
+class Canvas:
     pass
 
 
-class Dialog(object):
+class Dialog:
     pass
 
 
-class Encoding(object):
+class Encoding:
     pass
 
 
-class EncodingRecord(object):
+class EncodingRecord:
     pass
 
 
-class Guide(object):
+class Guide:
     pass
 
 
-class Image(object):
+class Image:
     pass
 
 
-class NameRecord(object):
+class NameRecord:
     pass
 
 
-class Replace(object):
+class Replace:
     pass
 
 
-class TrueTypeTable(object):
+class TrueTypeTable:
     pass
 
 
-class TTStem(object):
+class TTStem:
     pass

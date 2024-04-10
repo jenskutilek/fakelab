@@ -4,7 +4,7 @@ from FL.objects.Font import Font
 from FL.objects.Point import Point
 
 
-class FakeLab(object):
+class FakeLab:
     """
     The main class. It is used via the pre-instantiated object `fl`.
     """

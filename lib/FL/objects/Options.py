@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-class Options(object):
+class Options:
     """
     Options() - generic constructor
     """

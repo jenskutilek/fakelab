@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 
-class Matrix(object):
+class Matrix:
     """
     ===============================================
     Matrix - class to represent planar transformations

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class TTPoint(object):
+class TTPoint:
     """
     ===============================================
     TTPoint - class to represent TrueType points

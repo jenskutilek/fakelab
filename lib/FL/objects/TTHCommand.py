@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-class TTHCommand(object):
+class TTHCommand:
     def __init__(self, code, params):
         self.code = code
         self._params = params
