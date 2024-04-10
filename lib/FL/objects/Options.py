@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 
 class Options(object):
     """
@@ -20,7 +26,7 @@ class Options(object):
 
     # Additions for FakeLab
 
-    def fake_load_regfile(self, file_path):
+    def fake_load_regfile(self, file_path: Path) -> None:
         """
         Load options from a registry file
         """
@@ -28,7 +34,7 @@ class Options(object):
         print(f"Load options from {file_path}")
         raise NotImplementedError
 
-    def fake_save_regfile(self, file_path):
+    def fake_save_regfile(self, file_path: Path) -> None:
         """
         Save options to a registry file
         """
@@ -1438,7 +1444,7 @@ class Options(object):
 
     # Methods
 
-    def Init(self):
+    def Init(self) -> None:
         """
         Reset FontLab Options to default settings
         """
@@ -1781,7 +1787,7 @@ class Options(object):
         self.UnicodeKeyboard = 0
         self.UnicodeRangePercent = 0
 
-    def Load(self):
+    def Load(self) -> None:
         """
         Read FontLab Options from registry
         """
@@ -1789,7 +1795,7 @@ class Options(object):
         # default values ...
         self.Init()
 
-    def Save(self):
+    def Save(self) -> None:
         """
         Save FontLab Options in registry
         """
