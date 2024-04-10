@@ -45,13 +45,13 @@ class ClassList(UserList):
     # Methods called by the Font
 
     def GetClassLeft(self, class_index: int) -> int | None:
-        if class_index >= len(self) or class_index < 0:
+        if class_index >= len(self.data) or class_index < 0:
             return None
 
         return int(bool(self._flags[class_index] & 1024))
 
     def GetClassRight(self, class_index: int) -> int | None:
-        if class_index >= len(self) or class_index < 0:
+        if class_index >= len(self.data) or class_index < 0:
             return None
 
         return int(bool(self._flags[class_index] & 2048))
@@ -70,7 +70,7 @@ class ClassList(UserList):
             # Applies to metrics classes
             raise NotImplementedError
 
-        if class_index >= len(self) or class_index < 0:
+        if class_index >= len(self.data) or class_index < 0:
             return
 
         value = 0
