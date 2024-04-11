@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import TYPE_CHECKING, Any, Iterable, TypeVar
+from typing import Any, Iterable, TypeVar
 
-if TYPE_CHECKING:
-    T = TypeVar("T")
+T = TypeVar("T")
 
 
 class ListParent(UserList[T]):
