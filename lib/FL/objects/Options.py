@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from lib.FL.helpers.registry import parse_registry_file
 from typing import TYPE_CHECKING
 
 
@@ -31,8 +32,14 @@ class Options:
         Load options from a registry file
         """
         # TODO
-        print(f"Load options from {file_path}")
-        raise NotImplementedError
+        print(f"Loading options from {file_path.name}...")
+        reg = parse_registry_file(file_path)
+        for k, v in reg.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+            else:
+                print(f"Unsupported option: '{k}'")
+        print("...done.")
 
     def fake_save_regfile(self, file_path: Path) -> None:
         """
