@@ -215,16 +215,20 @@ class Font:
         """
         opens font from VFB format
         """
+        from FL.vfb.reader import VfbToFontReader
+
         self._set_file_name(filename)
-        self._vfb = Vfb(self._file_name)
-        # TODO: Unpack the VFB JSON into the Font structure
+        reader = VfbToFontReader(Path(filename))
+        reader.read_into_font(self)
 
     def Save(self, filename: str | Path) -> None:
         """
         saves font in VFB format
         """
+        from FL.vfb.writer import FontToVfbWriter
+
         self._set_file_name(filename)
-        self._vfb.write(self._file_name)
+        FontToVfbWriter(self, Path(filename))
 
     def OpenAFM(self, filename: str | Path, mode: int, layer: int) -> None:
         """
