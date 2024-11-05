@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from lib.FL.helpers.registry import parse_registry_file
+from FL.helpers.registry import parse_registry_file
 from typing import TYPE_CHECKING
 
 
