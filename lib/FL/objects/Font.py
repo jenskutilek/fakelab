@@ -5,7 +5,6 @@ from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from pathlib import Path
 from typing import List, Tuple, TYPE_CHECKING
-from vfbLib.vfb.vfb import Vfb
 
 if TYPE_CHECKING:
     from FL.objects import Encoding, Feature, Guide, NameRecord, TrueTypeTable
@@ -218,8 +217,7 @@ class Font:
         from FL.vfb.reader import VfbToFontReader
 
         self._set_file_name(filename)
-        reader = VfbToFontReader(Path(filename))
-        reader.read_into_font(self)
+        VfbToFontReader(Path(filename), self)
 
     def Save(self, filename: str | Path) -> None:
         """
