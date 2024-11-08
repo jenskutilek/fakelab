@@ -157,5 +157,5 @@ class VfbToFontReader:
                     er.name = gids[i]
                     er.unicode = min(self.nametable.get_unicodes_for_name(er.name))
                 else:
-                    er.name = f"_{i:04i}"
+                    er.name = f"_{i:04d}"
                 enc.append(er)
