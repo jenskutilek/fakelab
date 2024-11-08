@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from FL.objects.Component import Component
+from FL.objects.Encoding import Encoding
+from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Feature import Feature
 from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab
@@ -72,14 +74,6 @@ class Canvas:
 
 
 class Dialog:
-    pass
-
-
-class Encoding:
-    pass
-
-
-class EncodingRecord:
     pass
 
 
