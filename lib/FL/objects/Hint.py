@@ -6,7 +6,7 @@ from FL.objects.Matrix import Matrix
 
 class Hint:
     def __init__(
-        self, hint_or_position: "Hint" | int | None, width: int | None = None
+        self, hint_or_position: Hint | int | None, width: int | None = None
     ) -> None:
         self.parent = None
         self.position = 0

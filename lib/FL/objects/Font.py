@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class Font:
-    def __init__(self, font_or_path=None, instances=None):
+    def __init__(self, font_or_path=None, instances=None) -> None:
         self.set_defaults()
 
         # Process params
@@ -32,7 +32,7 @@ class Font:
 
         # else: Empty font
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
 
     # Additions for FakeLab
