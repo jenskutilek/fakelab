@@ -150,7 +150,7 @@ class VfbToFontReader:
         if current_glyph is not None:
             self.font.glyphs.append(current_glyph)
         if gids:
-            max_gid = max(gids)
+            max_gid = min(255, max(gids))
             for i in range(max_gid + 1):
                 er = EncodingRecord()
                 if i in gids:
