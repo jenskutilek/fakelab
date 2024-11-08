@@ -9,7 +9,7 @@ T = TypeVar("T")
 
 class ListParent(UserList[T]):
     """
-    Like a list, but the _parent attribute for each item.
+    Like a list, but set the _parent attribute for each item.
     """
 
     def __init__(self, iterable: Iterable[T] = [], parent: Any | None = None) -> None:
