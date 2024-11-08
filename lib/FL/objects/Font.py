@@ -137,6 +137,13 @@ class Font:
         self._classes = ClassList(value, self._classes)
 
     @property
+    def encoding(self) -> Encoding:
+        """
+        Current encoding of the font.
+        """
+        return self._encoding
+
+    @property
     def features(self) -> ListParent[Feature]:
         """
         List of Opentype features.
@@ -564,8 +571,10 @@ class Font:
         # loaded TrueType information
         # (mostly hinting-related tables)
         self.ttinfo = TTInfo()
-        # current encoding of the font
-        self.encoding: Encoding | None = None
+        # current encoding of the font, read-only
+        self._encoding = Encoding()
+        self._encoding._parent = self
+        self._encoding.load_font_default()
         # list of codepage-numbers (see OT-specs)
         # <font color="red">(this attribute is not reported by the docstring
         # this attribute is linked with the

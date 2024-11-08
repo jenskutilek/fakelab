@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from FL.helpers.nametables import StandardNametable
 from FL.objects.Glyph import Glyph
+from FL.objects.Encoding import Encoding
+from FL.objects.EncodingRecord import EncodingRecord
 from typing import TYPE_CHECKING
 from vfbLib.vfb.vfb import Vfb
 
@@ -106,6 +109,7 @@ class VfbToFontReader:
         """
         self.vfb_path = vfb_path
         self.font = font
+        self.nametable = StandardNametable()
         self.open_vfb()
         self.read_into_font()
 
@@ -115,6 +119,10 @@ class VfbToFontReader:
 
     def read_into_font(self) -> None:
         current_glyph: Glyph | None = None
+        enc = self.font._encoding = Encoding()
+        enc._parent = self.font
+        gids = {}
+
         for e in self.vfb.entries:
             name = e.key
             data = e.decompiled
@@ -136,5 +144,18 @@ class VfbToFontReader:
                     self.font.glyphs.append(current_glyph)
                 current_glyph = Glyph()
                 current_glyph.name = data["name"]
+            elif name == "Encoding":
+                gid, glyph_name = data
+                gids[gid] = glyph_name
         if current_glyph is not None:
             self.font.glyphs.append(current_glyph)
+        if gids:
+            max_gid = max(gids)
+            for i in range(max_gid + 1):
+                er = EncodingRecord()
+                if i in gids:
+                    er.name = gids[i]
+                    er.unicode = self.nametable.get_unicode_for_name(er.name)
+                else:
+                    er.name = f"_{i:04i}"
+                enc.append(er)

@@ -17,3 +17,6 @@ class EncodingRecord:
             # Copy constructor
             self.name = encoding_record_or_none.name
             self.unicode = encoding_record_or_none.unicode
+
+    def __repr__(self) -> str:
+        return f'<EncodingRecord: "{self.name}", unicode: {self.unicode}>'

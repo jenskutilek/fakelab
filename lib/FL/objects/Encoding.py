@@ -37,21 +37,21 @@ class Encoding(UserList[EncodingRecord]):
 
     # Operations
 
-    def __delitem__(self, i):
-        """del Encoding[] - remove an element from the encoding"""
-        del self.data[i]
+    # def __delitem__(self, i):
+    #     """del Encoding[] - remove an element from the encoding"""
+    #     del self.data[i]
 
-    def __getitem__(self, i: int) -> EncodingRecord:
-        """
-        Accesses individial EncodingRecord objects
-        """
-        return self.data[i]
+    # def __getitem__(self, i: int) -> EncodingRecord:
+    #     """
+    #     [] Accesses individial EncodingRecord objects
+    #     """
+    #     return self.data[i]
 
-    def __len__(self) -> int:
-        """
-        Return the number of EncodingRecords in the Encoding.
-        """
-        return len(self.data)
+    # def __len__(self) -> int:
+    #     """
+    #     Return the number of EncodingRecords in the Encoding.
+    #     """
+    #     return len(self.data)
 
     # Internal
 
