@@ -155,7 +155,7 @@ class VfbToFontReader:
                 er = EncodingRecord()
                 if i in gids:
                     er.name = gids[i]
-                    er.unicode = self.nametable.get_unicode_for_name(er.name)
+                    er.unicode = min(self.nametable.get_unicodes_for_name(er.name))
                 else:
                     er.name = f"_{i:04i}"
                 enc.append(er)

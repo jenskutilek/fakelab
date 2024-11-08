@@ -6043,22 +6043,22 @@ class StandardNametable:
             return f"u{unicode:5X}"
         return f"uni{unicode:04X}"
 
-    def get_unicode_for_name(self, name: str) -> int:
+    def get_unicodes_for_name(self, name: str) -> list[int]:
         if name in self.name_uni_mapping:
             return self.name_uni_mapping[name]
         if name.startswith("uni") and len(name) == 7:
             try:
                 u = int(name[3:], 16)
             except ValueError:
-                return -1
-            return u
+                return [-1]
+            return [u]
         if name.startswith("u") and len(name) >= 6:
             try:
                 u = int(name[1:], 16)
             except ValueError:
-                return -1
-            return u
-        return -1
+                return [-1]
+            return [u]
+        return [-1]
 
     def _parse_file_format(self, data: str) -> None:
         lines = data.splitlines()
@@ -6067,7 +6067,7 @@ class StandardNametable:
             raise TypeError
 
         self.uni_name_mapping: dict[int, str] = {}
-        self.name_uni_mapping: dict[str, int] = {}
+        self.name_uni_mapping: dict[str, list[int]] = {}
 
         for i, line in enumerate(lines):
             if line.startswith("%"):
@@ -6089,10 +6089,6 @@ class StandardNametable:
             else:
                 self.uni_name_mapping[u] = n
             if n in self.name_uni_mapping:
-                print(
-                    f"Duplicate entry in name to unicode mapping: {n}: {u} (already "
-                    f"mapped to {self.name_uni_mapping[n]})"
-                )
-                continue
+                self.name_uni_mapping[n].append(u)
 
-            self.name_uni_mapping[n] = u
+            self.name_uni_mapping[n] = [u]
