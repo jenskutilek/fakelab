@@ -125,3 +125,8 @@ class FontTests(unittest.TestCase):
         f = Font()
         with pytest.raises(RuntimeError):
             f.truetypetables = []
+
+    def test_write_empty_from_scratch(self):
+        f = Font()
+        vfb_path = Path(__file__).parent.parent / "data" / "empty.scratch.vfb"
+        f.Save(str(vfb_path))
