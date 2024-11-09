@@ -6090,5 +6090,5 @@ class StandardNametable:
                 self.uni_name_mapping[u] = n
             if n in self.name_uni_mapping:
                 self.name_uni_mapping[n].append(u)
-
-            self.name_uni_mapping[n] = [u]
+            else:
+                self.name_uni_mapping[n] = [u]

@@ -28,33 +28,37 @@ class StandardNametableTest(unittest.TestCase):
     # Name to Unicode
 
     def test_name_A(self):
-        assert nt.get_unicode_for_name("A") == 65
+        assert nt.get_unicodes_for_name("A") == [65]
 
     def test_name_union(self):
-        assert nt.get_unicode_for_name("union") == 0x222A
+        assert nt.get_unicodes_for_name("union") == [0x222A]
 
     def test_name_dotnull(self):
-        assert nt.get_unicode_for_name(".null") == 0
+        assert nt.get_unicodes_for_name(".null") == [0]
 
     def test_name_dotNUL(self):
         # not present
-        assert nt.get_unicode_for_name(".NUL") == -1
+        assert nt.get_unicodes_for_name(".NUL") == [-1]
 
     def test_name_NUL(self):
-        assert nt.get_unicode_for_name("NUL") == 0
+        assert nt.get_unicodes_for_name("NUL") == [0]
 
     def test_name_NULL(self):
-        assert nt.get_unicode_for_name("NULL") == 0
+        assert nt.get_unicodes_for_name("NULL") == [0]
 
     def test_name_uni(self):
-        assert nt.get_unicode_for_name("uniFEFF") == 0xFEFF
+        assert nt.get_unicodes_for_name("uniFEFF") == [0xFEFF]
 
     def test_name_0x1F60E(self):
-        assert nt.get_unicode_for_name("u1F60E") == 0x1F60E
+        assert nt.get_unicodes_for_name("u1F60E") == [0x1F60E]
 
     def test_name_0x1F60EF(self):
-        assert nt.get_unicode_for_name("u1F60EF") == 0x1F60EF
+        assert nt.get_unicodes_for_name("u1F60EF") == [0x1F60EF]
 
     def test_name_0x1F60EJ(self):
         # nan
-        assert nt.get_unicode_for_name("u1F60EJ") == -1
+        assert nt.get_unicodes_for_name("u1F60EJ") == [-1]
+
+    def test_name_carriagereturn(self):
+        # multiple
+        assert nt.get_unicodes_for_name("carriagereturn") == [13, 8629]
