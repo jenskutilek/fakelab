@@ -2,37 +2,37 @@ from __future__ import annotations
 
 standard_nam = r"""%%FONTLAB NAMETABLE: Recommended (no afiiXXXXX, no double-encoding)
 % FontLab DEFAULT nametable recommended for all new fonts
-% 
+%
 % Mostly compatible on Adobe Glyph List for New Fonts (AGLFN) v1.7
 % With new-style uniXXXX instead of old-style afiiXXXXX names
 % and without double-mapping for Delta, Omega and mu
 %
-% This table should be used to develop new fonts. 
+% This table should be used to develop new fonts.
 %
-% Copyright (c) 2001-2010 by Fontlab Ltd. 
+% Copyright (c) 2001-2010 by Fontlab Ltd.
 % Version 3.11 / June 6, 2010
-% This nametable requires FontLab Studio 5.0 or higher. 
-% 
-% For the problematic characters Delta, Omega and mu, 
+% This nametable requires FontLab Studio 5.0 or higher.
+%
+% For the problematic characters Delta, Omega and mu,
 % this table provides the following mappings:
 % 0x2206 Delta
 % 0x2126 Omega
 % 0x00B5 mu
 % (so those glyphs will not be double-encoded)
-% 
-% In this table, all the afiiXXXXX names found in the AGLFN 
-% are considered legacy glyphname-to-Unicode, i.e. 
-% if "Generate Glyph Names" is used, the uniXXXX names 
-% will be generated instead. 
-% 
-% Note that both afiiXXXXX and uniXXXX names are considered equally valid. 
-% If you prefer the new-style uniXXXX names for the affected characters, use this table. 
-% If you prefer the old-style afiiXXXXX names, use the "2009 Alternative" table instead. 
-% 
-% For names not found in this table, you should use glyph naming conventions 
+%
+% In this table, all the afiiXXXXX names found in the AGLFN
+% are considered legacy glyphname-to-Unicode, i.e.
+% if "Generate Glyph Names" is used, the uniXXXX names
+% will be generated instead.
+%
+% Note that both afiiXXXXX and uniXXXX names are considered equally valid.
+% If you prefer the new-style uniXXXX names for the affected characters, use this table.
+% If you prefer the old-style afiiXXXXX names, use the "2009 Alternative" table instead.
+%
+% For names not found in this table, you should use glyph naming conventions
 % as recommended by Fontlab Ltd. (see the application's manual) and by Adobe
-% (see http://www.adobe.com/devnet/opentype/archives/glyph.html ). 
-% 
+% (see http://www.adobe.com/devnet/opentype/archives/glyph.html ).
+%
 % This table contains mappings which are not present in AGLFN:
 % 0x0000 NULL
 % 0x000D CR
@@ -45,7 +45,7 @@ standard_nam = r"""%%FONTLAB NAMETABLE: Recommended (no afiiXXXXX, no double-enc
 % 0xFB04 f_f_l
 % 0xFB05 longs_t
 % 0xFB06 s_t
-% We believe that these mappings should be included. 
+% We believe that these mappings should be included.
 %
 % Changes in version 3.11
 % 0x0000 NULL
@@ -74,10 +74,10 @@ standard_nam = r"""%%FONTLAB NAMETABLE: Recommended (no afiiXXXXX, no double-enc
 % 0x0163 !tcommaaccent
 % 0x0218 !Scommaaccent
 % 0x0219 !scommaaccent
-% % 
+% %
 % Changes in version 2.77
 % 0x05D5 !vav (added in all files)
-% 
+%
 % Changes in version 2.75 vs. 2.6
 % 0x012A Imacron (added in all files)
 % 0x012D ibreve (added in all files)
