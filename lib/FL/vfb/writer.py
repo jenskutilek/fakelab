@@ -30,22 +30,27 @@ class FontToVfbWriter:
         self.compile()
         self.vfb.write(self.vfb_path)
 
+    def add_entry(self, eid: int, decompiled) -> None:
+        e = VfbEntry(self.vfb, eid=eid)
+        e.decompiled = decompiled
+        self.vfb.entries.append(e)
+
     def compile(self) -> None:
         self.compile_header()
         self.compile_encoding()
 
     def compile_encoding(self) -> None:
         for i in range(len(self.font.encoding)):
-            e = VfbEntry(self.vfb)
-            e.id = 1500
+            e = VfbEntry(self.vfb, eid=1500)
             e.decompiled = [i, self.font.encoding[i].name]
             self.vfb.entries.append(e)
-        e = VfbEntry(self.vfb)
 
         # We don't know what this does exactly:
-        e.id = 1502
-        e.decompiled = 0x0000
-        self.vfb.entries.append(e)
+        self.add_entry(1502, 0x0000)
+        self.add_entry(518, "")
+        self.add_entry(257, "")
+        self.add_entry(1026, self.font.font_name or "")
+        self.add_entry(1503, 1)  # FIXME: master count
 
     def compile_header(self) -> None:
         header = self.vfb.header = VfbHeader()
