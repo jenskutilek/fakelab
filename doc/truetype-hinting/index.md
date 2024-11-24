@@ -19,7 +19,7 @@ Compare and contrast FLS5’s interface with Visual TrueType, which is basically
 
 ![](tth-options-stems.webp)
 
-In this tab of the TT Hinting Options window, the user can define horizontal and vertical stems. Their width will be used by FLS5 to automatically match stems to the glyphs while doing manual glyph hinting. The ppm columns define from which ppm (pixels per em) font size the stem will be 1, 2, 3, 4, 5, and 6 pixels wide. This applies to the _black and white_ and _greyscale_ rendering modes for the x and y directions, and only to the y direction in ClearType GDI rendering. In ClearType rendering, points on the x-axis will be positioned using the three red, green, and blue subpixels. Simply put, using subpixels increases the resolution in the x-direction by a factor of 3, and most instructions in this direction apply to the virtual 3x grid, or are ignored altogether. The effect is, that in ClearType GDI, the “pixel jumps” defined here have no effect.
+In this tab of the TT Hinting Options window, the user can define horizontal and vertical stems. Their width will be used by FLS5 to automatically match stems to the glyphs while doing manual glyph hinting. The ppm columns define from which ppm (pixels per em) font size the stem will be 1, 2, 3, 4, 5, and 6 pixels wide. This applies to the _black and white_ and _greyscale_ rendering modes for the x and y directions, and only to the y direction in ClearType GDI rendering. In ClearType rendering, points on the x-axis will be positioned using the three red, green, and blue subpixels. Simply put, using subpixels increases the resolution in the x-direction by a factor of 3, and most instructions in this direction apply to the virtual 3x grid, or are ignored altogether. The effect is, that in ClearType GDI, the “pixel jumps” for x-stems defined here have no effect.
 
 The display of stems can be filtered to only show x or y direction, the plus icons add stems manually, the minus icon removes them, the diamond harmonizes the pixel jumps automatically, the reset icon resets the pixel jumps to their inital calculated state. The T1 arrow imports the stems from the PostScript hinting settings of the current file, while the folder icon imports the stems from another file.
 
@@ -27,7 +27,7 @@ The display of stems can be filtered to only show x or y direction, the plus ico
 
 ![](tth-options-zones.webp)
 
-In this tab, important vertical heights are defined, to which parts of the glyph contours will be aligned, like baseline, x-height, cap height, and so on, each with another vertical position that should fit the glyphs’ overshoot amount. In the left half are the “top” zones, which are used on the top sides of the outlines, and in the right half are the “bottom” tones, which are used to align the bottom sides. In the binary font, those both kinds of zones are not handled differently, though.
+In this tab, important vertical heights are defined, to which parts of the glyph contours will be aligned, like baseline, x-height, cap height, and so on, each paired with another vertical position that should fit the glyphs’ overshoot amount. In the left half are the “top” zones, which are used on the top sides of the outlines, and in the right half are the “bottom” zones, which are used to align the bottom sides. In the binary font, those both kinds of zones are not handled differently, though.
 
 Again, those values can be added and deleted manually, or copied from the PostScript “blue zones”, or copied from another file.
 
@@ -41,7 +41,7 @@ The “General” options tab holds three important settings.
 
 “Stop zones alignment above this PPM” defines the font size below which a point hinted with a “zone anchor” will be aligned to the zone’s scaled and rounded pixel value. Above that font size, the point will be freely rounded to the nearest vertical pixel boundary of the grid.
 
-“Do not execute instructions above this PPM” defines the font size above which the TrueType hints will be completely deactivated. This makes sense becaue when you look at the “Stems” tab, you can control the stem widths only up to a certain font size, i.e. at which they reach 6 pixels width. In the example font shown above, this is the case at 55 ppm. Above that, you can’t control the pixel width, and thus the hinting should not be active to avoid distortions in the letter shapes. The value of 120 ppm shown in this example is probably too high.
+“Do not execute instructions above this PPM” defines the font size above which the TrueType hints will be completely deactivated. This makes sense because when you look at the “Stems” tab, you can control the stem widths only up to a certain font size, i.e. the size at which they reach 6 pixels width. In the example font shown above, this is the case at 55 ppm. Above that, you can’t control the pixel width, and thus the hinting should not be active to avoid distortions in the letter shapes. The value of 120 ppm shown in this example is probably too high.
 
 ### Translating to assembly/bytecode
 
@@ -51,7 +51,7 @@ The TT Hinting Options window contains the values that are used to build 3 table
 - The Pre-Program table, prep
 - The Font Program table, fpgm
 
-For these tables, there is nothing resembling source code in FLS5 or a VFB file.
+For these tables, there is nothing in FLS5 or a VFB file that resembles source code.
 
 ## Glyph-level hinting
 
@@ -73,11 +73,11 @@ Those commands maintain a distance between a hinted point and another point. Whe
 
 ### Double Link: DoubleLinkH and DoubleLinkV
 
-For a stem defined by two points in either horizontal or vertical direction, move the point that is alreay closest to a grid line to that grid line, and if the Double Link refers to a “stem”, maintain the stem’s distance by movind the other point accordingly. If no stem is referenced, the second point is moved so that its distance from the first point is greater than 0, and a multiple of 1 pixel.
+For a stem defined by two points in either horizontal or vertical direction, move the point that is alreay closest to a grid line to that grid line, and if the Double Link refers to a “stem”, maintain the stem’s distance by moving the other point accordingly. If no stem is referenced, the second point is moved so that its distance from the first point is greater than 0, and a multiple of 1 pixel.
 
 ### Interpolate: InterpolateH and InterpolateV
 
-These commands define two reference points, and moves a third point so that the relation of the distance from the point to the referece points in the original unhinted outline is kept the same in the scaled and hinted outline. The third point may be rounded to the grid, using the options described under AlignH.
+These commands define two reference points, and move a third point so that the relation of the distance from the point to the referece points in the original unhinted outline is kept the same in the scaled and hinted outline. The third point may be rounded to the grid, using the options described under AlignH.
 
 ### Middle Delta: MDeltaH and MDeltaV
 
@@ -96,6 +96,7 @@ Let’s look at some examples.
 In addition to the command symbols in the outline view, you can show the commands as text in the “TrueType Program” window:
 
 <table>
+    <tr><th>Command</th></tr>
     <tr><td>AlignV 19 [0]</td></tr>
     <tr><td>AlignTop 29 (0)</td></tr>
     <tr><td>DoubleLinkV 5 <-> 37 [0]</td></tr>
@@ -108,6 +109,7 @@ The number(s) after the command name are the index(es) of the point(s) in the ou
 Annotated:
 
 <table>
+    <tr><th>Command</th><th>Meaning</th></tr>
     <tr><td>AlignV 19 [0]</td><td>Align point 19 to the grid, 0: using the closest grid line</td></tr>
     <tr><td>AlignTop 29 (0)</td><td>Align point 29 to a zone, 0: using top zone index 0, the x-height zone</td></tr>
     <tr><td>DoubleLinkV 5 <-> 37 [0]</td><td>Double link between points 5 and 37, 0: make the distance equal to y-stem index 0</td></tr>
@@ -167,7 +169,7 @@ Not very human-readable. Let’s try to decompile it to ttx assembly:
     <tr><td>0001</td><td>1</td><td>data</td></tr>
     <tr><td>0005</td><td>5</td><td>data</td></tr>
     <tr><td>0004</td><td>4</td><td>data</td></tr>
-    <tr><td>2b</td><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5</td></tr>
+    <tr><td>2b</td><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5 from the stack</td></tr>
     <tr><td>b8</td><td>PUSHW[ ]</td><td>Read 1 word and push it to the stack</td></tr>
     <tr><td>0013</td><td>19</td><td>data</td></tr>
     <tr><td>10</td><td>SRP0[ ]</td><td>Make point 19 the reference point</td></tr>
@@ -213,7 +215,7 @@ Now, after looking long and hard at the code, we find that each of the FLS5 True
     <tr><td>1</td><td>stem index in CVT</td></tr>
     <tr><td>5</td><td>point index</td></tr>
     <tr><td>4</td><td>function index</td></tr>
-    <tr><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5</td></tr>
+    <tr><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5 from the stack</td></tr>
     <tr><td rowspan="7">SingleLinkV 19 -> 8 [0] na</td><td>PUSHW[ ]</td><td>Read 1 word and push it to the stack</td></tr>
     <tr><td>19</td><td>point index</td></tr>
     <tr><td>SRP0[ ]</td><td>Make point 19 the reference point</td></tr>
@@ -337,7 +339,11 @@ Correlated to the assembly code:
 
 The commands are organized so that all x direction instructions come first, then all the y direction instructions, so that the direction switching only has to occur once in the “main” program (it starts with x, being the default direction). The IUP (interpolate untouched points) instructions are always added at its end, regardless if there actually were any instructions in each direction.
 
-After the IUP, any final deltas follow. For those, the direction has to be switched to the x axis again.
+Note that we here see a Single Link without stem, `SingleLinkH 46 -> 15 r na`. It uses the `MDRP` instruction instead of the `MIRP` instruction.
+
+After the IUP, any final deltas follow. For those in our example glyph, the direction has to be switched to the x axis again.
+
+Why are some Singe Links 6 instructions long, and some just 3 instructions long? FLS5 keeps track of the “reference point” (a property of the TrueType engine’s Graphics State) which is set by some instructions, and used by other instructions.
 
 Let’s find another example for more different commands.
 
@@ -439,50 +445,9 @@ Let’s find another example for more different commands.
     <tr><td></td><td>IUP[1]</td><td>InterpolateUntPts</td></tr>
 </table>
 
-Note that we here see a Single Link without stem, `SingleLinkV 28 -> 44 na`. It uses the `MDRP` instruction instead of the `MIRP` instruction.
+Here we have yet another Single Link without stem, `SingleLinkV 28 -> 44 na`. It also uses the `MDRP` instruction instead of the `MIRP` instruction, like the Single Link without stem in the previous example, but its flag, especially the rounding flag, are different, `MDRP[10000]` vs. `MDRP[11100]`. See the [OpenType spec for MDRP](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#move-direct-relative-point) for an explanation of the flags.
 
 Let’s find another example and concentrate on the commands we have not seen already.
-
-![](tth-colon.webp)
-
-<table>
-    <tr><td>AlignBottom 26 (0)</td><td>Align point 26 to a zone, 0: using bottom zone index 0, the baseline zone</td></tr>
-    <tr><td>SingleLinkV 26 -> 16 r na</td><td>Single link from point 26 to 16, r: round the distance, na: no additional rounding</td></tr>
-    <tr><td>SingleLinkV 16 -> 8 r na</td><td>Single link from point 16 to 8, r: round the distance, na: no additional rounding</td></tr><tr><td>SingleLinkV 8 -> 0 r na</td><td>Single link from point 8 to 0, r: round the distance, na: no additional rounding</td></tr>
-</table>
-
-<table>
-    <tr><th>Command</th><th>Assembly</th><th>Meaning</th>
-    </tr>
-    <tr><td></td><td>SVTCA[0]</td><td>SetFPVectorToAxis</td></tr>
-    <tr><td rowspan="12">AlignBottom 26 (0)</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
-    <tr><td>0</td><td><em>zones active? (CVT index 0)</em></td></tr>
-    <tr><td>RCVT[ ]</td><td>ReadCVT</td></tr>
-    <tr><td>IF[ ]</td><td>If</td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;PUSHW[ ]</td><td>1 value pushed</td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;26</td><td><em>point index</em></td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;MDAP[1]</td><td>MoveDirectAbsPt</td></tr>
-    <tr><td>ELSE[ ]</td><td>Else</td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;PUSHW[ ]</td><td>2 values pushed</td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;26 3</td><td><em>point index, zone index in CVT</em></td></tr>
-    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;MIAP[0]</td><td>MoveIndirectAbsPt</td></tr>
-    <tr><td>EIF[ ]</td><td>EndIf</td></tr>
-    <tr><td rowspan="3">SingleLinkV 26 -> 16 r na</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
-    <tr><td>16</td><td><em>point2 index</em></td></tr>
-    <tr><td>MDRP[11100]</td><td>MoveDirectRelPt</td></tr>
-    <tr><td rowspan="3">SingleLinkV 16 -> 8 r na</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
-    <tr><td>8</td><td><em>point2 index</em></td></tr>
-    <tr><td>MDRP[11100]</td><td>MoveDirectRelPt</td></tr>
-    <tr><td rowspan="3">SingleLinkV 8 -> 0 r na</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
-    <tr><td>0</td><td><em>point2 index</em></td></tr>
-    <tr><td>MDRP[11100]</td><td>MoveDirectRelPt</td></tr>
-    <tr><td></td><td>IUP[0]</td><td>InterpolateUntPts</td></tr>
-    <tr><td></td><td>IUP[1]</td><td>InterpolateUntPts</td></tr>
-</table>
-
-Here we have some Single Links that don’t refer to a stem, but round their distance.
-
-Some more examples:
 
 ![](tth-f.webp)
 
