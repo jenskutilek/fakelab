@@ -117,7 +117,7 @@ Annotated:
     <tr><td>SingleLinkV 29 -> 34 [0] na</td><td>Single link from point 29 to 34, 0: make the distance equal to y-stem index 0, na: no additional rounding</td></tr>
 </table>
 
-When we convert the VFB to UFO using vfb2ufo, this program looks like this:
+When we convert the VFB to UFO using `vfb2ufo`, this program looks like this:
 
 ```xml
   <ttProgram>
@@ -327,21 +327,23 @@ Correlated to the assembly code:
     <tr><td></td><td>IUP[1]</td><td>InterpolateUntPts</td></tr>
     <tr><td></td><td>SVTCA[1]</td><td>SetFPVectorToAxis</td></tr>
     <tr><td rowspan="3">FDeltaH 28 <-4> 16 - 16</td><td>NPUSHW[ ]</td><td>3 values pushed</td></tr>
-        <tr><td>116 28 1</td><td><em>Exception specification, point, number of spec/point pairs</em></td></tr>
+        <tr><td>116 28 1</td><td><em>Exception specification, point index, number of spec/point pairs</em></td></tr>
         <tr><td>DELTAP1[ ]</td><td>DeltaExceptionP1</td></tr>
     <tr><td rowspan="3">FDeltaH 38 <3> 16 - 16</td><td>NPUSHW[ ]</td><td>3 values pushed</td></tr>
-        <tr><td>122 38 1</td><td><em>Exception specification, point, number of spec/point pairs</em></td></tr>
+        <tr><td>122 38 1</td><td><em>Exception specification, point index, number of spec/point pairs</em></td></tr>
         <tr><td>DELTAP1[ ]</td><td>DeltaExceptionP1</td></tr>
     <tr><td rowspan="3">FDeltaH 39 <5> 16 - 16</td><td>NPUSHW[ ]</td><td>3 values pushed</td></tr>
-        <tr><td>124 39 1</td><td><em>Exception specification, point, number of spec/point pairs</em></td></tr>
+        <tr><td>124 39 1</td><td><em>Exception specification, point index, number of spec/point pairs</em></td></tr>
         <tr><td>DELTAP1[ ]</td><td>DeltaExceptionP1</td></tr>
 </table>
 
 The commands are organized so that all x direction instructions come first, then all the y direction instructions, so that the direction switching only has to occur once in the “main” program (it starts with x, being the default direction). The IUP (interpolate untouched points) instructions are always added at its end, regardless if there actually were any instructions in each direction.
 
-Note that we here see a Single Link without stem, `SingleLinkH 46 -> 15 r na`. It uses the `MDRP` instruction instead of the `MIRP` instruction.
+Note that we here see a Single Link without stem, `SingleLinkH 46 -> 15 r na`. It rounds its distance, indicated by the r. It uses the `MDRP` instruction instead of the `MIRP` instruction.
 
 After the IUP, any final deltas follow. For those in our example glyph, the direction has to be switched to the x axis again.
+
+The _exception specfication_ value of delta instructions combines the relative ppm and the magnitude of the shift and must be built according to the [OpenType spec for deltas](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#managing-exceptions).
 
 Why are some Singe Links 6 instructions long, and some just 3 instructions long? FLS5 keeps track of the “reference point” (a property of the TrueType engine’s Graphics State) which is set by some instructions, and used by other instructions.
 
@@ -494,7 +496,7 @@ Let’s find another example and concentrate on the commands we have not seen al
     <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;MIAP[0]</td><td>MoveIndirectAbsPt</td></tr>
     <tr><td>EIF[ ]</td><td>EndIf</td></tr>
     <tr><td rowspan="3">MDeltaV 3 <-8> 16 - 16</td><td>NPUSHW[ ]</td><td>3 values pushed</td></tr>
-    <tr><td>112 3 1</td><em>Exception specification, point, number of spec/point pairs</em></tr>
+    <tr><td>112 3 1</td><td><em>Exception specification, point index, number of spec/point pairs</em></td></tr>
     <tr><td>DELTAP1[ ]</td><td>DeltaExceptionP1</td></tr>
     <tr><td rowspan="6">SingleLinkV 8 -> 21 [0] na</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
     <tr><td>8</td><td><em>point1 index</em></td></tr>
@@ -521,7 +523,44 @@ Let’s find another example and concentrate on the commands we have not seen al
     <tr><td></td><td>IUP[1]</td><td>InterpolateUntPts</td></tr>
 </table>
 
-What we haven’t seen so far are Double Links without a stem, Single stems with non-default alignment, and Align commands with rounding other than rounding to the closest grid line. We can check our example font...
+What we haven’t seen so far are Double Links without a stem, Single Links with non-default rounding, and Align commands with rounding other than to the closest grid line. We can check our example font...
+
+### Align commands with non-default rounding
+
+The 1 at the end of the command `AlignV 18 [1]` means that the point should be rounded down (or left, depending on the current direction).
+
+The rounding state is set to “down to grid”, the point of the Align command is rounded by an `MDAP[1]` instruction, then the rounding state is reset to “round to grid”.
+
+<table>
+    <tr><td rowspan="5">AlignV 18 [1]</td><td>RDTG[ ]</td><td>RoundDownToGrid</td></tr>
+    <tr><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
+    <tr><td>18</td><td><em>point2 index</em></td></tr>
+    <tr><td>MDAP[1]</td><td>MoveDirectAbsPt</td></tr>
+    <tr><td>RTG[ ]</td><td>RoundToGrid</td></tr>
+</table>
+
+The additional rounding is called _align_ in UFOs converted with `vfb2ufo`:
+
+```xml
+<ttProgram>
+    <ttc code="alignv" point="av01" align="left"/>
+    <ttc code="singlev" point1="av01" point2="sv01" round="true"/>
+</ttProgram>
+```
+
+We can deduce the possible rounding states by fucking around and finding out:
+
+<table>
+    <tr><th>FLS5 UI</th><th>vfb2ufo</th><th>Instruction</th></tr>
+    <tr><td>na</td><td>—</td><td>—</td></tr>
+    <tr><td>0</td><td>align="round"</td><td>RTG (default)</td></tr>
+    <tr><td>1</td><td>align="left"</td><td>RDTG</td></tr>
+    <tr><td>2</td><td>align="right"</td><td>RUTG</td></tr>
+    <tr><td>3</td><td>align="center"</td><td>RTHG</td></tr>
+    <tr><td>4</td><td>align="double"</td><td>RTDG</td></tr>
+</table>
+
+### Single Link with additional rounding
 
 <table>
     <tr><td rowspan="6">SingleLinkV 9 -> 6 1</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
@@ -537,18 +576,7 @@ What we haven’t seen so far are Double Links without a stem, Single stems with
     <tr><td>RTG[ ]</td><td>RoundToGrid</td></tr>
 </table>
 
-The 1 at the end of the command “SingleLinkV 9 -> 6 1” means that the point should be rounded down (or left, depending on the current direction).
+The 1 at the end of the command `SingleLinkV 9 -> 6 1` means that the point should be rounded down (or left, depending on the current direction).
 
-The alignment handling code ist just appended to after the Single Link instructions. The rounding state is set to “down to grid”, the target point of the Single Link is rounded by a MDAP instruction, then the rounding state is reset to “round to grid”.
+The alignment handling code ist just appended to after the Single Link instructions. The rounding state is set to “down to grid”, the target point of the Single Link is rounded by an `MDAP[1]` instruction, then the rounding state is reset to “round to grid”.
 
-We can deduce the possible rounding states by fucking around and finding out:
-
-<table>
-    <tr><th>FLS5 UI</th><th>VFB2UFO</th><th>Instruction</th></tr>
-    <tr><td>na</td><td>—</td><td>—</td></tr>
-    <tr><td>0</td><td>align="round"</td><td>RTG (default)</td></tr>
-    <tr><td>1</td><td>align="left"</td><td>RDTG</td></tr>
-    <tr><td>2</td><td>align="right"</td><td>RUTG</td></tr>
-    <tr><td>3</td><td>align="center"</td><td>RTHG</td></tr>
-    <tr><td>4</td><td>align="double"</td><td>RTDG</td></tr>
-</table>
