@@ -4,11 +4,11 @@ Based on research done in March 2016
 
 ## In praise of FontLab Studio 5’s TrueType hinting interface
 
-I’ve long maintained the opinione that FontLab Studio 5 has an excellent interface for hinting TrueType fonts. TrueType, as you may know, implements its own assembly language that can influence the rasterization and thus the screen display quality of fonts.
+I’ve long maintained the opinion that FontLab Studio 5 has an excellent interface for hinting TrueType fonts. TrueType, as you may know, implements its own assembly language that can influence the rasterization and thus the screen display quality of fonts.
 
 FLS5 (and probably its predecessors, I wasn’t around then) comes with a pre-defined set of TrueType functions, and an interface that makes TrueType hinting look very much like PostScript hinting, but with added control. This is not a simple task to accomplish.
 
-As font wide settings, FLS5 gives the user control over _Stems, Zones,_ and _General,_ which don’t exist under these names in the TrueType engine. FLS5 invented them on top of the TT language to make hinting more accessible.
+As font wide settings, FLS5 gives the user control over _Stems, Zones,_ and _General,_ which don’t exist under these names in the TrueType engine. FLS5 invented them on top of the TrueType language to make hinting more accessible.
 
 Compare and contrast FLS5’s interface with Visual TrueType, which is basically a code editor with a graphical preview.
 
