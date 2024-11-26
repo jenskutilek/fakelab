@@ -188,7 +188,7 @@ Not very human-readable. Let’s try to decompile it to [TrueType assembly](http
     <tr><td>31</td><td>IUP[1]</td><td>Interpolate untouched points in x direction</td></tr>
 </table>
 
-    Did you notice that all data has been stored in the instruction stream as 2-byte words? There’s also a PUSHB[] instruction that reads bytes, and all data in this example could have been stored in bytes. If applied throughout the font, such optimization could reduce the file size a bit.
+> Did you notice that all data has been stored in the instruction stream as 2-byte words? There’s also a PUSHB[] instruction that reads bytes, and all data in this example could have been stored in bytes. If applied throughout the font, such optimization could reduce the file size a bit.
 
 Now, after looking long and hard at the code, we find that each of the FLS5 TrueType commands corresponds to a series of assembly instructions. Let’s try to match them all!
 
@@ -238,7 +238,7 @@ Now, after looking long and hard at the code, we find that each of the FLS5 True
 
 It’s just a little confusing that the indexes in the high-level commands are refering to the index of stems and zones in the FLS5 interface, while the indexes in the actual instructions refer to the compiled Control Value Table.
 
-    The zone alignment code (AlignBottom, AlignTop) is very verbose, and could be moved into a function. That would save file size in the glyph programs.
+> The zone alignment code (AlignBottom, AlignTop) is very verbose, and could be moved into a function. That would save file size in the glyph programs.
 
 The e only contains vertical hinting, which is usually enough, but let’s look at an example with both horizontal and vertical hinting. FLS5 only displays one direction at a time, though.
 

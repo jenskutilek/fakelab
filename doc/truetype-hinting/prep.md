@@ -123,6 +123,6 @@ The “Stop zones alignment above” CVT value is calculated by dividing the uni
     <tr><td>INSTCTRL[ ]</td><td>SetInstrExecControl</td><td>15</td></tr>
 </table>
 
-    There remains a value on the stack, the index of the next “free” CVT index after the zones.
+> There remains a value on the stack, the index of the next “free” CVT index after the zones.
 
-    The zone heights are stored in the CVT table, and are rounded by the functions, but are not used by the font’s programs at all.
+> The zone heights are stored in the CVT table, and are rounded by the functions, but are not used by the font’s programs at all.
