@@ -30,4 +30,4 @@ Arguments on stack: _cvt_zone_
 <tr><td>ENDF[ ]</td><td>EndFunctionDefinition</td></tr>
 </table>
 
-Returns on stack: The CVT index of the last zone + 2 (next CVT zone index)
+Returns on stack: The CVT index of the zone + 2 (next CVT zone index)

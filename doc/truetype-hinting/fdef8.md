@@ -121,6 +121,8 @@ Arguments on stack: _cvt_stem, ppm6, ppm5, ppm4, ppm3, ppm2, ppm1_
 <tr><td>    ELSE[ ]</td><td>Else</td>                      <td>cvt_stem 320|256|192|128|64|0 ppem</td></tr>
 <tr><td>        POP[ ]</td><td>PopTopStack</td>            <td>cvt_stem 320|256|192|128|64|0</td></tr>
 <tr><td>    EIF[ ]</td><td>EndIf</td>                      <td>cvt_stem 384|320|256|192|128|64|0|stem</td></tr></tr>
-<tr><td>    WCVTP[ ]</td><td>WriteCVTInPixels</td></tr>
+<tr><td>    WCVTP[ ]</td><td>WriteCVTInPixels</td>         <td>—</td></tr>
 <tr><td>ENDF[ ]</td><td>EndFunctionDefinition</td></tr>
 </table>
+
+The values 384, 320, 256, 192, 128, 64, 0 correspond to 64ths of a pixel: 6, 5, 4, 3, 2, 1, 0 full pixels.
