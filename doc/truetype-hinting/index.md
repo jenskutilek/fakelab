@@ -19,9 +19,9 @@ Compare and contrast FLS5’s interface with Visual TrueType, which is basically
 
 ![](tth-options-stems.webp)
 
-In this tab of the TT Hinting Options window, the user can define horizontal and vertical stems. Their width will be used by FLS5 to automatically match stems to the glyphs while doing manual glyph hinting. The ppm columns define from which ppm (pixels per em) font size the stem will be 1, 2, 3, 4, 5, and 6 pixels wide. This applies to the _black and white_ and _greyscale_ rendering modes for the x and y directions, and only to the y direction in ClearType GDI rendering. In ClearType rendering, points on the x-axis will be positioned using the three red, green, and blue subpixels. Simply put, using subpixels increases the resolution in the x-direction by a factor of 3, and most instructions in this direction apply to the virtual 3x grid, or are ignored altogether. The effect is, that in ClearType GDI, the “pixel jumps” for x-stems defined here have no effect.
+In this tab of the TT Hinting Options window, the user can define horizontal and vertical stems. Their width will be used by FLS5 to automatically match stems to the glyphs while doing manual glyph hinting. The ppm columns define from which ppm (pixels per em) font size the stem will be 1, 2, 3, 4, 5, and 6 pixels wide. This applies to the _black and white_ and _greyscale_ rendering modes for the x and y directions, and only to the y direction in ClearType GDI rendering. In ClearType rendering, points on the x-axis will be positioned using the three red, green, and blue subpixels. Simply put, using subpixels increases the resolution in the x-direction by a factor of 3, and most instructions in this direction apply to the virtual 3x grid, or are ignored altogether. The visible result is, that in ClearType GDI, the “pixel jumps” for x-stems defined here have no effect.
 
-The display of stems can be filtered to only show x or y direction, the plus icons add stems manually, the minus icon removes them, the diamond harmonizes the pixel jumps automatically, the reset icon resets the pixel jumps to their inital calculated state. The T1 arrow imports the stems from the PostScript hinting settings of the current file, while the folder icon imports the stems from another file.
+The display of stems can be filtered to only show x or y direction; the plus icons add stems manually, the minus icon removes them, the diamond harmonizes the pixel jumps automatically, the reset icon resets the pixel jumps to their inital calculated state. The T1 arrow imports the stems from the PostScript hinting settings of the current file, while the folder icon imports the stems from another file.
 
 ### Zones
 
@@ -55,13 +55,13 @@ For these tables, there is nothing in FLS5 or a VFB file that resembles source c
 
 ## Glyph-level hinting
 
-TrueType “hinting” is also called “instructions”, but as FLS5 uses a higher-level representation of the actual instructions, and only creates the instruction byte code when the font is compiled, calling it “hinting” inside FLS5 is probably fine.
+TrueType “hints” are also called _instructions,_ but as FLS5 uses a higher-level representation of the actual instructions, and only creates the instruction byte code when the font is compiled, calling the process _hinting_ inside FLS5 is probably fine.
 
-FLS5 only uses a limited set of hints or “commands”, as they are called in the FL5 Python API:
+FLS5 only uses a limited set of hints or “commands”, as they are called in the [FLS5 Python API](http://www.e-font.de/flpydoc/):
 
 ### Align to Grid: AlignH and AlignV
 
-Those commands round a point’s position to the grid in either horizontal or vertical direction. They have rounding options which allow to round the position of the point to the closest grid line, up or down to the grid (for AlignV), left or right to the grid (for AlignH), to the closest pixel center, or to the double grid.
+Those commands round a point’s position to the grid in either horizontal or vertical direction. They have rounding options which allow to round the position of the point to the closest grid line, up or down to the grid (for AlignV), left or right to the grid (for AlignH), to the closest pixel center, or to the grid at double resolution.
 
 ### Align to Zone: AlignBottom and AlignTop
 
@@ -69,7 +69,7 @@ Those align a point vertically to a “zone” (bottom or top zone). Above the �
 
 ### Single Link: SingleLinkH and SingleLinkV
 
-Those commands maintain a distance between a hinted point and another point. When adding Single Links in the GUI, an Align command is added to the first point if it is not the target point of another command already. A Single Link may refer to a “stem” or not, may enlarge the distance to full pixels, and the target point may itself be rounded to the grid using the options described under AlignH.
+Those commands maintain a distance between a hinted point and another point. When adding Single Links in the GUI, an Align command is added to the first point if it is not the target point of another command already. A Single Link may refer to a “stem” or not, may enlarge the distance to full pixels, and the target point may itself be rounded to the grid using the options described under _Align to Grid._
 
 ### Double Link: DoubleLinkH and DoubleLinkV
 
@@ -77,7 +77,7 @@ For a stem defined by two points in either horizontal or vertical direction, mov
 
 ### Interpolate: InterpolateH and InterpolateV
 
-These commands define two reference points, and move a third point so that the relation of the distance from the point to the referece points in the original unhinted outline is kept the same in the scaled and hinted outline. The third point may be rounded to the grid, using the options described under AlignH.
+These commands define two reference points, and move a third point so that the relation of the distance from the point to the referece points in the original unhinted outline is kept the same in the scaled and hinted outline. The third point may be rounded to the grid, using the options described under _Align to Grid._
 
 ### Middle Delta: MDeltaH and MDeltaV
 
@@ -87,13 +87,13 @@ These commands move a point by a specified amount (in eigths of a pixel, between
 
 These commands also move a point by a specified amount (in eigths of a pixel, between -1 and 1 pixel) in a defined range of ppms. In contrast to MDeltaH and MDeltaV, these “Final Delta” operations are peformed after all other commands have been applied.
 
-## Examples
+## Example Glyphs
 
 Let’s look at some examples.
 
 ![](tth-e.webp)
 
-In addition to the command symbols in the outline view, you can show the commands as text in the “TrueType Program” window:
+In addition to the command symbols in the outline view, you can view the commands as text in the “TrueType Program” window:
 
 <table>
     <tr><th>Command</th></tr>
@@ -129,11 +129,11 @@ When we convert the VFB to UFO using `vfb2ufo`, this program looks like this:
   </ttProgram>
 ```
 
-As you can see, the point, stem, and zone indexes have been replaced by symbolic names. The point names are stored in the referenced point’s `name` attribute in the UFO representation.
+As we can see, the point, stem, and zone indexes have been replaced by symbolic names. The point names are stored in the referenced point’s `name` attribute in the UFO representation.
 
 ### Translating to assembly/bytecode
 
-When we look at the bytecode of the compiled binary font in a hex editor, we find this:
+When we look at the instruction bytecode for this glyph in a hex editor, we find this:
 
 ```
 00 b8 00 13 2f b8 00 00 45 58 b8 00 1d 2f 1b b9
@@ -142,7 +142,7 @@ b8 00 13 10 b9 00 08 00 01 f4 b8 00 1d 10 b9 00
 22 00 01 f4 30 31
 ```
 
-Not very human-readable. Let’s try to decompile it to ttx assembly:
+Not very human-readable. Let’s try to decompile it to [TrueType assembly](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions):
 
 <table>
     <tr><th>Hex</th><th>Assembly</th><th>Meaning</th>
@@ -169,7 +169,7 @@ Not very human-readable. Let’s try to decompile it to ttx assembly:
     <tr><td>0001</td><td>1</td><td>data</td></tr>
     <tr><td>0005</td><td>5</td><td>data</td></tr>
     <tr><td>0004</td><td>4</td><td>data</td></tr>
-    <tr><td>2b</td><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5 from the stack</td></tr>
+    <tr><td>2b</td><td>CALL[ ]</td><td><a href="fdef4.md">CallFunction 4</a>, which will consume the values 37, 1, 5 from the stack</td></tr>
     <tr><td>b8</td><td>PUSHW[ ]</td><td>Read 1 word and push it to the stack</td></tr>
     <tr><td>0013</td><td>19</td><td>data</td></tr>
     <tr><td>10</td><td>SRP0[ ]</td><td>Make point 19 the reference point</td></tr>
@@ -187,6 +187,8 @@ Not very human-readable. Let’s try to decompile it to ttx assembly:
     <tr><td>30</td><td>IUP[0]</td><td>Interpolate untouched points in y direction</td></tr>
     <tr><td>31</td><td>IUP[1]</td><td>Interpolate untouched points in x direction</td></tr>
 </table>
+
+    Did you notice that all data has been stored in the instruction stream as 2-byte words? There’s also a PUSHB[] instruction that reads bytes, and all data in this example could have been stored in bytes. If applied throughout the font, such optimization could reduce the file size a bit.
 
 Now, after looking long and hard at the code, we find that each of the FLS5 TrueType commands corresponds to a series of assembly instructions. Let’s try to match them all!
 
@@ -215,7 +217,7 @@ Now, after looking long and hard at the code, we find that each of the FLS5 True
     <tr><td>1</td><td>stem index in CVT</td></tr>
     <tr><td>5</td><td>point index</td></tr>
     <tr><td>4</td><td>function index</td></tr>
-    <tr><td>CALL[ ]</td><td>Call function 4, which will consume the values 37, 1, 5 from the stack</td></tr>
+    <tr><td>CALL[ ]</td><td><a href="fdef4.md">CallFunction 4</a>, which will consume the values 37, 1, 5 from the stack</td></tr>
     <tr><td rowspan="7">SingleLinkV 19 -> 8 [0] na</td><td>PUSHW[ ]</td><td>Read 1 word and push it to the stack</td></tr>
     <tr><td>19</td><td>point index</td></tr>
     <tr><td>SRP0[ ]</td><td>Make point 19 the reference point</td></tr>
@@ -236,11 +238,14 @@ Now, after looking long and hard at the code, we find that each of the FLS5 True
 
 It’s just a little confusing that the indexes in the high-level commands are refering to the index of stems and zones in the FLS5 interface, while the indexes in the actual instructions refer to the compiled Control Value Table.
 
+    The zone alignment code (AlignBottom, AlignTop) is very verbose, and could be moved into a function. That would save file size in the glyph programs.
+
 The e only contains vertical hinting, which is usually enough, but let’s look at an example with both horizontal and vertical hinting. FLS5 only displays one direction at a time, though.
 
 ![](tth-o.webp)
 
 <table>
+    <tr><th>Command</th><th>Meaning</th></tr>
     <tr><td>AlignH 46 [0]</td><td>Align point 46 to the grid, 0: using the closest grid line</td></tr>
     <tr><td>SingleLinkH 46 -> 15 r na</td><td>Single link from point 46 to 15, r: round the distance, na: no additional rounding</td></tr>
     <tr><td>SingleLinkH 15 -> 41 r na</td><td>Single link from point 15 to 41, r: round the distance, na: no additional rounding</td></tr>
@@ -256,12 +261,12 @@ The e only contains vertical hinting, which is usually enough, but let’s look 
     <tr><td>FDeltaH 39 <5> 16 - 16</td><td>Move point 39 by 5/8 pixels, 16: starting at 16 ppm, 16: ending at 16 ppm</td></tr>
 </table>
 
-Here you can see that the LSB (left sidebearing) and RSB (right sidebearing) points can be targeted by commands as well. Their indexes, in this example 46 and 47, are counted after the point indexes of the outline.
+Here we can see that the LSB (left sidebearing) and RSB (right sidebearing) points can be targeted by commands as well. Their indexes, in this example 46 and 47, are counted after the point indexes of the outline.
 
 Correlated to the assembly code:
 
 <table>
-    <tr><th>Command</th><th>Assembly</th><th>Meaning</th></tr>
+    <tr><th>Command</th><th>Assembly</th><th></th></tr>
     <tr><td rowspan="3">AlignH 46 [0]</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
         <tr><td>46</td><td><em>point index</em></td></tr>
         <tr><td>MDAP[1]</td><td>MoveDirectAbsPt</td></tr>
@@ -337,21 +342,24 @@ Correlated to the assembly code:
         <tr><td>DELTAP1[ ]</td><td>DeltaExceptionP1</td></tr>
 </table>
 
-The commands are organized so that all x direction instructions come first, then all the y direction instructions, so that the direction switching only has to occur once in the “main” program (it starts with x, being the default direction). The IUP (interpolate untouched points) instructions are always added at its end, regardless if there actually were any instructions in each direction.
+The commands are organized so that all x direction instructions come first, then all the y direction instructions, so that the direction switching only has to occur once in the “main” program (it starts with x, being the default direction). The `IUP` (interpolate untouched points) instructions are always added at its end, regardless if there actually were any instructions in each direction.
 
-Note that we here see a Single Link without stem, `SingleLinkH 46 -> 15 r na`. It rounds its distance, indicated by the r. It uses the `MDRP` instruction instead of the `MIRP` instruction.
+Note that we here see a Single Link without stem, `SingleLinkH 46 -> 15 r na`. It rounds its distance, indicated by the `r`. It uses the `MDRP` instruction instead of the `MIRP` instruction.
 
-After the IUP, any final deltas follow. For those in our example glyph, the direction has to be switched to the x axis again.
+After the `IUP`, any final deltas follow. For those in our example glyph, the direction has to be switched to the x axis again.
 
-The _exception specfication_ value of delta instructions combines the relative ppm and the magnitude of the shift and must be built according to the [OpenType spec for deltas](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#managing-exceptions).
+The _exception specfication_ value of delta instructions combines the relative ppm and the magnitude of the shift and must be built according to the [OpenType spec for deltas](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#managing-exceptions). The delta_base value is set in [function 0](fdef0.md).
 
-Why are some Singe Links 6 instructions long, and some just 3 instructions long? FLS5 keeps track of the “reference point” (a property of the TrueType engine’s Graphics State) which is set by some instructions, and used by other instructions.
+Why are some Singe Links 6 instructions long, and some just 3 instructions long? Single Links use the “reference point 0” (a property of the TrueType engine’s [Graphics State](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_graphics_state)) which is set by some instructions, and used by other instructions. FLS5 keeps track of the current reference point and only sets it explicitly when necessary.
+
+Actually there are three reference points (rp0, rp1, rp2). They are set and used by different instructions, sometimes depending on flags passed to the instruction.
 
 Let’s find another example for more different commands.
 
 ![](tth-k.webp)
 
 <table>
+    <tr><th>Command</th><th>Meaning</th>
     <tr><td>AlignTop 20 (0)</td><td>Align point 20 to a zone, 0: using top zone index 0, the x-height zone</td></tr>
     <tr><td>AlignTop 3 (2)</td><td>Align point 3 to a zone, 2: using top zone index 2, the ascender zone</td></tr>
     <tr><td>AlignBottom 61 (0)</td><td>Align point 61 to a zone, 0: using bottom zone index 0, the baseline zone</td></tr>
@@ -364,7 +372,7 @@ Let’s find another example for more different commands.
 </table>
 
 <table>
-    <tr><th>Command</th><th>Assembly</th><th>Meaning</th>
+    <tr><th>Command</th><th>Assembly</th><th></th>
     </tr>
     <tr><td></td><td>SVTCA[0]</td><td>SetFPVectorToAxis</td></tr>
     <tr><td rowspan="12">AlignTop 20 (0)</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
@@ -454,6 +462,7 @@ Let’s find another example and concentrate on the commands we have not seen al
 ![](tth-f.webp)
 
 <table>
+    <tr><th>Command</th><th>Meaning</th>
     <tr><td>AlignV 3 [0]</td><td>Align point 3 to the grid, 0: using the closest grid line</td></tr>
     <tr><td>AlignTop 8 (1)</td><td>Align point 8 to a zone, 1: using top zone index 1, the cap height zone</td></tr>
     <tr><td>AlignBottom 41 (0)</td><td>Align point 41 to a zone, 0: using bottom zone index 0, the baseline zone</td></tr>
@@ -465,7 +474,7 @@ Let’s find another example and concentrate on the commands we have not seen al
 </table>
 
 <table>
-    <tr><th>Command</th><th>Assembly</th><th>Meaning</th>
+    <tr><th>Command</th><th>Assembly</th><th></th>
     </tr>
     <tr><td></td><td>SVTCA[0]</td><td>SetFPVectorToAxis</td></tr>
     <tr><td rowspan="3">AlignV 3 [0]</td><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
@@ -580,3 +589,29 @@ The 1 at the end of the command `SingleLinkV 9 -> 6 1` means that the point shou
 
 The alignment handling code ist just appended to after the Single Link instructions. The rounding state is set to “down to grid”, the target point of the Single Link is rounded by an `MDAP[1]` instruction, then the rounding state is reset to “round to grid”.
 
+### Double Link without a stem
+
+Remember the code for a Double Link with stem?
+
+<table>
+    <tr><th>Command</th><th>Assembly</th><th>Meaning</th></tr>
+    <tr><td rowspan="6">DoubleLinkV 5 <-> 37 [0]</td><td>PUSHW[ ]</td><td>4 values pushed</td></tr>
+    <tr><td>37</td><td>point index</td></tr>
+    <tr><td>1</td><td>stem index in CVT</td></tr>
+    <tr><td>5</td><td>point index</td></tr>
+    <tr><td>4</td><td>function index</td></tr>
+    <tr><td>CALL[ ]</td><td><a href="fdef4.md">CallFunction</a></td></tr>
+</table>
+
+It pushes the required values to the stack and calls [function 4](fdef4.md).
+
+Double Links without a stem are implemented in [function 3](fdef3.md), and are used in a similar way, but of course without the CVT index:
+
+<table>
+    <tr><th>Command</th><th>Assembly</th><th>Meaning</th></tr>
+    <tr><td rowspan="6">DoubleLinkV 31 <-> 30</td><td>PUSHW[ ]</td><td>3 values pushed</td></tr>
+    <tr><td>30</td><td>point index</td></tr>
+    <tr><td>31</td><td>point index</td></tr>
+    <tr><td>3</td><td>function index</td></tr>
+    <tr><td>CALL[ ]</td><td><a href="fdef3.md">CallFunction</a></td></tr>
+</table>
