@@ -41,7 +41,7 @@ The “General” options tab holds three important settings.
 
 “Stop zones alignment above this PPM” defines the font size below which a point hinted with a “zone anchor” will be aligned to the zone’s scaled and rounded pixel value. Above that font size, the point will be freely rounded to the nearest vertical pixel boundary of the grid.
 
-“Do not execute instructions above this PPM” defines the font size above which the TrueType hints will be completely deactivated. This makes sense because when you look at the “Stems” tab, you can control the stem widths only up to a certain font size, i.e. the size at which they reach 6 pixels width. In the example font shown above, this is the case at 55 ppm. Above that, you can’t control the pixel width, and thus the hinting should not be active to avoid distortions in the letter shapes. The value of 120 ppm shown in this example is probably too high.
+“Do not execute instructions above this PPM” defines the font size above which the TrueType hints will be completely deactivated. This makes sense because when you look at the “Stems” tab, you can control the stem widths only up to a certain font size, i.e. the size at which they reach 6 pixels width. In the example font shown above, this is the case at 55 ppm. Above that, you can’t control the pixel width anyway, so if you don’t want the stems being rounded to full pixels there, you can use the setting to disable hinting altogether. The value of 120 ppm shown in this example is probably too high.
 
 ### Translating to assembly/bytecode
 
