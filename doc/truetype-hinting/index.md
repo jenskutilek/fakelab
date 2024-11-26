@@ -47,9 +47,9 @@ The “General” options tab holds three important settings.
 
 The TT Hinting Options window contains the values that are used to build 3 tables in the font:
 
-- The Control Value Table, cvt
-- The Pre-Program table, prep
-- The Font Program table, fpgm
+- [The Control Value Table](prep.md#the-control-value-table), cvt
+- [The Pre-Program table](prep.md#the-pre-program), prep
+- [The Font Program table](fpgm.md), fpgm
 
 For these tables, there is nothing in FLS5 or a VFB file that resembles source code.
 
