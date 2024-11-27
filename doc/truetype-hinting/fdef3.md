@@ -74,6 +74,6 @@ Arguments on stack: _point1, point2_
 <tr><td>            NEG[ ]</td><td>Negate</td>             <td>|</td>                                     <td>|</td>                                     <td>ptmin -64</td>                             <td>|</td>                                     <td>|</td>                                    <td>|</td>                                    <td>ptmax -64</td>                            <td>|</td></tr>
 <tr><td>        EIF[ ]</td><td>EndIf</td>                  <td>|</td>                                     <td>|</td>                                     <td>ptmin -64</td>                             <td>ptmin round(-abs(dist(ptmax,ptmin)))</td>  <td>|</td>                                    <td>|</td>                                    <td>ptmax -64</td>                            <td>ptmax round(abs(dist(ptmax,ptmin)))</td></tr>
 <tr><td>    EIF[ ]</td><td>EndIf</td>                      <td>ptmin 64</td>                              <td>ptmin round(-abs(dist(ptmax,ptmin)))</td>  <td>ptmin -64</td>                             <td>ptmin round(-abs(dist(ptmax,ptmin)))</td>  <td>ptmax 64</td>                             <td>ptmax round(abs(dist(ptmax,ptmin)))</td>  <td>ptmax -64</td>                            <td>ptmax round(abs(dist(ptmax,ptmin)))</td></tr>
-<tr><td>    MSIRP[0]</td><td>MoveStackIndirRelPt</td>      <td>—</td></tr>
+<tr><td>    MSIRP[0]</td><td>MoveStackIndirRelPt</td>      <td colspan="8">—</td></tr>
 <tr><td>ENDF[ ]</td><td>EndFunctionDefinition</td></tr>
 </table>
