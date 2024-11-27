@@ -7,7 +7,7 @@ Sorts the two points that make up the Double Link by their coordinate, measures 
 Arguments on stack: _point1, cvt_stem, point2_
 
 <table>
-<tr><th>Assembly</th><th></th><th>Stack</th></tr>
+<tr><th>Assembly</th><th></th>                             <th>Stack</th></tr>
 <tr><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
 <tr><td>4</td><td><em>function index</em></td></tr>
 <tr><td>FDEF[ ]</td><td>FunctionDefinition</td></tr>
@@ -44,5 +44,4 @@ Arguments on stack: _point1, cvt_stem, point2_
 <tr><td>    MDAP[1]</td><td>MoveDirectAbsPt</td>           <td>ptmin cvt_stem</td>          <td>ptmax cvt_stem</td></tr>
 <tr><td>    MIRP[11101]</td><td>MoveIndirectRelPt</td>     <td colspan="2">—</td></tr>
 <tr><td>ENDF[ ]</td><td>EndFunctionDefinition</td></tr>
-<tr><td>PUSHW[ ]</td><td>1 value pushed</td></tr>
 </table>
