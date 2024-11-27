@@ -1,6 +1,6 @@
 # Function 0
 
-Deactivates grid-fitting if the curren pixels per em are less than the _lowestRecPPEM_ value set in FLS5’s font info under _TrueType-specific settings > Font flags: [head] table._
+Deactivates grid-fitting if the current pixels per em are less than the _lowestRecPPEM_ value set in FLS5’s font info under _TrueType-specific settings > Font flags: [head] table._ It also sets the [dropout_control](https://learn.microsoft.com/en-us/typography/opentype/spec/tt_instructions#scan-conversion-control) to “Always do dropout control” using the `SCANCTRL` instruction, and sets the control_value_cut_in value, delta_base, and delta_shift in the Graphics State.
 
 <table>
 <tr><th>Assembly</th><th></th><th>Stack</th></tr>
@@ -30,6 +30,8 @@ Deactivates grid-fitting if the curren pixels per em are less than the _lowestRe
 <tr><td>ENDF[ ]</td><td>EndFunctionDefinition</td></tr>
 </table>
 
-The value for _lowest grid-fitted ppm_ should be synchronized with the ppm in the `gasp` table at which grid-fitting is activated, and with the lowestRecPPEM value in the `head` table. It will also be used as the delta_base value in the Graphics State.
+The value for _lowest grid-fitted ppm_ should be synchronized with the ppm in the `gasp` table at which grid-fitting is activated, and with the lowestRecPPEM value in the `head` table. It will also be used as the delta_base value further down in the function.
 
 The value for _stem snap precision_ is taken from FLS5’s General TrueType options, but converted to 64ths of pixels. So the default value of 17/16 pixels is given here as 17 ⋅ 4 = 68.
+
+> 17/16 is also the default value, and could be omitted.

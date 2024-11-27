@@ -2,6 +2,8 @@
 
 Round a stem.
 
+The stem is read from the CVT, rounded, and written back to the CVT. The function returns the CVT index of the next stem, so it can be called in a loop to round a number of stems.
+
 Arguments on stack: _cvt_stem_
 
 <table>

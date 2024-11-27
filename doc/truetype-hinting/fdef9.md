@@ -2,7 +2,7 @@
 
 This function is not used by FLS5.
 
-Make two CVT values equal up to a specified ppm
+Make two CVT values equal up to a specified ppm.
 
 Arguments on stack: _cvt_child, cvt_parent, max_ppm_
 

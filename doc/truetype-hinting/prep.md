@@ -10,6 +10,8 @@ In this part, we take a look at the compiled tables from the font and correlate 
 
 ## The Control Value Table
 
+This is the control value table that FLS5 builds for the font shown in the screenshots:
+
 <table>
     <tr><th>Index</th><th>Value</th><th>Meaning</th></tr>
     <tr><td>0</td><td>21</td><td>General: “Stop zones alignment above” value</td></tr>
