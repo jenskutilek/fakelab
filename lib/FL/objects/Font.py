@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class Font:
-    def __init__(self, font_or_path=None, instances=None) -> None:
+    def __init__(self, font_or_path: Font | str | None = None, instances=None) -> None:
         self.set_defaults()
 
         # Process params
@@ -100,10 +100,14 @@ class Font:
         for i, f in enumerate(flags):
             self.SetClassFlags(i, "L" in f, "R" in f)
 
-    def _set_file_name(self, filename: str | Path) -> None:
+    def _set_file_name(self, filename: str | Path | None) -> None:
         """
         Make sure the file name (actually, the path) is stored as Path
         """
+        if filename is None:
+            self._file_name = None
+            return
+
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
     # Attributes
@@ -424,14 +428,14 @@ class Font:
     def set_defaults(self) -> None:
         # Additions for FakeLab
 
-        self._fake_binaries = {}
+        self._fake_binaries: dict[str, str] = {}
         self.fake_sparse_json = True
         self.fake_deselect_all()
 
         # Identification
 
         # full path of the file from which the font was opened/saved
-        self._file_name: Path | None = None
+        self._file_name = None
         # font Family Name
         self.family_name: str | None = None
         # font Style Name
@@ -558,7 +562,7 @@ class Font:
         # reported by the docstring)</font>
         self.modified: int = 0
         # list of glyph classes
-        self._classes: ClassList = ClassList()
+        self._classes = ClassList()
         # string containing the OT classes defined in the lower
         # right part of the OpenType panel <font color="red">(this description
         # is not reported by the docstring)</font>
