@@ -2,12 +2,14 @@ from __future__ import annotations
 
 # from fontTools.misc.textTools import deHexStr, hexStr
 from typing import TYPE_CHECKING
+
 from vfbLib.vfb.entry import VfbEntry
 from vfbLib.vfb.header import VfbHeader
 from vfbLib.vfb.vfb import Vfb
 
 if TYPE_CHECKING:
     from pathlib import Path
+
     from FL.objects.Font import Font
 
 

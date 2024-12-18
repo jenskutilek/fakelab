@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from collections import UserList
-from FL.objects.EncodingRecord import EncodingRecord
 from typing import TYPE_CHECKING
+
+from FL.objects.EncodingRecord import EncodingRecord
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font

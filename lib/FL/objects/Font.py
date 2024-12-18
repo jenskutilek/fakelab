@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from FL.objects.Encoding import Encoding
-from FL.objects.TTInfo import TTInfo
+from pathlib import Path
+from typing import TYPE_CHECKING, List, Tuple
+
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
-from pathlib import Path
-from typing import List, Tuple, TYPE_CHECKING
+from FL.objects.Encoding import Encoding
+from FL.objects.TTInfo import TTInfo
 
 if TYPE_CHECKING:
     from FL.objects import Feature, Guide, NameRecord, TrueTypeTable

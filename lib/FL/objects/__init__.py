@@ -21,7 +21,6 @@ from FL.objects.TTHPoint import TTHPoint
 from FL.objects.TTInfo import TTInfo
 from FL.objects.TTPoint import TTPoint
 
-
 __all__ = [
     "Anchor",
     "AuditRecord",

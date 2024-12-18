@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from FL.helpers.registry import parse_registry_file
 from typing import TYPE_CHECKING
 
+from FL.helpers.registry import parse_registry_file
 
 if TYPE_CHECKING:
     from pathlib import Path

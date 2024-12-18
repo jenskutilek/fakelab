@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from FL.helpers.nametables import StandardNametable
-from FL.objects.Glyph import Glyph
 from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
-from typing import TYPE_CHECKING
+from FL.objects.Glyph import Glyph
 from vfbLib.vfb.vfb import Vfb
 
 if TYPE_CHECKING:
     from pathlib import Path
+
     from FL.objects.Font import Font
 
 font_mapping = {

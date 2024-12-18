@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import argparse
-
 from code import InteractiveConsole
-from FL import fl
 
+from FL import fl
 
 __startup_code__ = """
 from FL import fl

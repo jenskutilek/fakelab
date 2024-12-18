@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+from typing import List
+
 from FL.helpers.FLList import FLList
 from FL.objects import TTHPoint
 from FL.objects.Glyph import Glyph
 from FL.objects.Hint import Hint
 from FL.objects.Point import Point
 from FL.objects.TTHCommand import TTHCommand
-from typing import List
 
 
 class TTH:

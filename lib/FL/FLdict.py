@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-
 # FLdict
-from FL.objects.Node import nMOVE, nLINE, nCURVE, nOFF, nSHARP, nSMOOTH, nFIXED
+from FL.objects.Node import nCURVE, nFIXED, nLINE, nMOVE, nOFF, nSHARP, nSMOOTH
 
 ## Canvas
 
