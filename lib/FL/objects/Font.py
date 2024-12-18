@@ -607,6 +607,7 @@ class Font:
 
 if __name__ == "__main__":
     import doctest
+
     from FL import Glyph
 
     doctest.testmod()
