@@ -1,7 +1,14 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from FL.objects.Font import Font
 from FL.objects.Point import Point
+
+if TYPE_CHECKING:
+    from FL.objects import Canvas
+    from FL.objects.Glyph import Glyph
+    from FL.objects.Rect import Rect
 
 
 class FakeLab:
@@ -243,7 +250,7 @@ class FakeLab:
                 filename = filename_or_fontindex
                 self.font.Save(filename)
 
-    def GenerateFont(self, fontType, filename):
+    def GenerateFont(self, fontType: int, filename: str) -> None:
         """
         (fontType, filename)
 
@@ -294,7 +301,7 @@ class FakeLab:
             fontindex = self.ifont
         self.fonts[fontindex].fake_update()
 
-    def SetFontWindow(self, fontindex, position, state):
+    def SetFontWindow(self, fontindex: int, position: Rect, state):
         """
         (fontindex, Rect position, state)
 
@@ -303,7 +310,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def UpdateGlyph(self, glyphindex=None):
+    def UpdateGlyph(self, glyphindex: int | None = None) -> None:
         """
         () | (glyphindex)
 
@@ -311,7 +318,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def EditGlyph(self, glyphindex=None):
+    def EditGlyph(self, glyphindex: int | None = None) -> None:
         """
         () | (glyphindex)
 
@@ -320,7 +327,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def CallCommand(self, commandcode):
+    def CallCommand(self, commandcode: int) -> None:
         """
         (commandcode)
 
@@ -329,12 +336,15 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def Selected(self, glyphindex=None):
+    def Selected(self, glyphindex: int | None = None) -> int:
         """
         () | (glyphindex)
 
         Return 1 if current glyph or 'glyphindex' glyph is selected.
         """
+        if self.font is None:
+            return 0
+
         if glyphindex is None:
             raise NotImplementedError
             # return 1 if fl.glyph.selected
@@ -344,7 +354,7 @@ class FakeLab:
 
         return 0
 
-    def Select(self, glyphid, value=None):
+    def Select(self, glyphid, value=None) -> None:
         """
         (glyphid) | (glyphid, value)
 
@@ -352,16 +362,24 @@ class FakeLab:
           'glyphid' may be string (glyph name),
           Uni (Unicode index) or integer (glyph index)
         """
+        if self.font is None:
+            raise RuntimeError(
+                "No font is available to perform operation: FontLab.Select()"
+            )
         if isinstance(glyphid, str):
             glyphid = self.font.FindGlyph(glyphid)
         if value is None:
             value = True
         self.font.fake_select(glyphid, value)
 
-    def Unselect(self):
+    def Unselect(self) -> None:
         """
         Deselect all glyphs in the current font (fast operation).
         """
+        if self.font is None:
+            raise RuntimeError(
+                "No font is available to perform operation: FontLab.Unselect()"
+            )
         self.font.fake_deselect_all()
 
     def Message(self, message, question=None, okstring=None, cancelstring=None):
@@ -372,7 +390,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def ScreenToGlyph(self, position):
+    def ScreenToGlyph(self, position: Point) -> Point:
         """
         (:py:class:`FL.Point` position)
         - converts screen coordinates to glyph
@@ -380,7 +398,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def GlyphToScreen(self, position):
+    def GlyphToScreen(self, position: Point) -> Point:
         """
         (:py:class:`FL.Point` position)
         - converts glyph coordinates to screen
@@ -388,14 +406,14 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def UpdateRect(self, r):
+    def UpdateRect(self, r: Rect) -> None:
         """
         (:py:class:`FL.Rect` r)
         - updates rectangle in the current Glyph Window
         """
         raise NotImplementedError
 
-    def HitContour(self, p):
+    def HitContour(self, p: Point) -> tuple[int, int, float]:
         """
         (:py:class:`FL.Point` p)
         - contour hit detection in the current Glyph Window -
@@ -403,13 +421,13 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def GetCanvas(self):
+    def GetCanvas(self) -> Canvas:
         """
         Return a :py:class:`Canvas` for the current Glyph Window.
         """
-        raise NotImplementedError
+        raise RuntimeError("Current window is not Glyph window: FontLab.GetCanvas()")
 
-    def GetConvert(self, c):
+    def GetConvert(self, c: Canvas):
         """
         (:py:class:`Canvas` c)
 
@@ -418,7 +436,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def BeginProgress(self, title, counts):
+    def BeginProgress(self, title: str, counts: int) -> None:
         """
         (string title, counts)
 
@@ -426,7 +444,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def TickProgress(self, tick):
+    def TickProgress(self, tick: int) -> bool:
         """
         (tick)
 
@@ -436,21 +454,23 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def EndProgress(self):
+    def EndProgress(self) -> None:
         """
         Close the Progress dialog box.
         """
         raise NotImplementedError
 
-    def Random(self, lovalue, hivalue=None):
+    def Random(self, lovalue: float, hivalue: float | None = None) -> int:
         """
         (hivalue) | (lovalue, hivalue)
 
         - returns random value (fast operation)
         """
+        # lovalue and hivalue are truncated to int before finding the random number
+        # int(lovalue) <= n < int(hivalue)
         raise NotImplementedError
 
-    def TransformGlyph(self, glyph, code, text):
+    def TransformGlyph(self, glyph: Glyph, code, text):
         """
         (:py:class:`Glyph` glyph, code, text)
 
@@ -460,7 +480,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def ForSelected(self, function_name):
+    def ForSelected(self, function_name: str):
         """
         (string function_name)
         - calls 'function_name' for each selected glyph in the current
