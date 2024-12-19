@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 from code import InteractiveConsole
 
-from FL import fl
+from FL import environment
 
 __startup_code__ = """
 from FL import fl
@@ -11,8 +11,8 @@ from FL import fl
 
 
 class FontLab5Console(InteractiveConsole):
-    def __init__(self, startup_code: str = "", locals={}) -> None:
-        namespace = locals
+    def __init__(self, startup_code: str = "", locals=None) -> None:
+        namespace = locals or {}
         # code = compile(__startup_code__, "", "exec", 0)
         # exec(code, namespace)
         super().__init__(locals=namespace)
@@ -37,7 +37,7 @@ def main():
     parser.add_argument(
         "vfb",
         type=str,
-        nargs="+",
+        nargs="*",
         help=(
             "Path(s) to VFB file(s) to operate on. "
             "The last file will be the current font"
@@ -52,7 +52,7 @@ def main():
             pass
         else:
             # Run the interactive console.
-            console = FontLab5Console(locals={"fl": fl})
+            console = FontLab5Console(locals=environment)
             console.interact(
                 banner="Welcome to the FakeLab REPL.",
                 exitmsg="Happy fonting, my friend!",
