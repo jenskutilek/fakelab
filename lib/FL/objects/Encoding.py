@@ -54,6 +54,46 @@ class Encoding(UserList[EncodingRecord]):
     #     """
     #     return len(self.data)
 
+    # Methods
+
+    def append(self, encoding_record: EncodingRecord) -> None:
+        self.data.append(encoding_record)
+
+    def insert(self, index: int, encoding_record: EncodingRecord) -> None:
+        self.data.insert(index, encoding_record)
+
+    def FillUnencoded(self) -> None:
+        raise NotImplementedError
+
+    def FillUnicodes(self) -> None:
+        raise NotImplementedError
+
+    def FindName(self, name: str) -> int:
+        """Find a glyph name in the encoding and return its index or -1.
+
+        Args:
+            name (str): The glyph name
+        """
+        raise NotImplementedError
+
+    def Load(self, filename: str) -> None:
+        """opens encoding from .ENC format.
+
+        Args:
+            filename (str): _description_
+        """
+        raise NotImplementedError
+
+    def Save(self, filename: str, EncodingTitle: str, Id: int) -> None:
+        """saves encoding in .ENC format.
+
+        Args:
+            filename (str): _description_
+            EncodingTitle (str): _description_
+            Id (int): _description_
+        """
+        raise NotImplementedError
+
     # Internal
 
     def load_font_default(self):
