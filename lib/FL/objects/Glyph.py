@@ -660,6 +660,17 @@ class Glyph:
         """
         raise AttributeError
 
+    # Additional methods reported by dir(fl.glyph)
+
+    def EditMask(self):
+        raise NotImplementedError
+
+    def ExchangeMask(self):
+        raise NotImplementedError
+
+    def clear(self):
+        raise NotImplementedError
+
     # Defaults
 
     def set_defaults(self):

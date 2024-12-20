@@ -496,3 +496,23 @@ class FakeLab:
         (this method is not reported by the docstring)
         """
         raise NotImplementedError
+
+    # Additional methods reported by dir(fl)
+
+    def GetFileName(self):
+        raise NotImplementedError
+
+    def GetPathName(self):
+        raise NotImplementedError
+
+    def LoadNamFile(self):
+        raise NotImplementedError
+
+    def Lock(self):
+        raise NotImplementedError
+
+    def OpenFont(self):
+        raise NotImplementedError
+
+    def _setcurrentfon(self):
+        raise NotImplementedError

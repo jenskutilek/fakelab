@@ -351,6 +351,11 @@ class Font(FakeFont):
         """
         return self._classes.GetClassMetricsFlags(class_index)
 
+    # Additional methods reported by dir(fl.font)
+
+    def GenerateInstance(self):
+        raise NotImplementedError
+
     # Defaults
 
     def _set_defaults(self) -> None:
