@@ -10,7 +10,9 @@ from FL.objects.Encoding import Encoding
 from FL.objects.TTInfo import TTInfo
 
 if TYPE_CHECKING:
-    from FL.objects import Feature, Guide, NameRecord, TrueTypeTable
+    from FL.objects import Guide, NameRecord, TrueTypeTable
+    from FL.objects.Feature import Feature
+    from FL.objects.Glyph import Glyph
 
 
 class Font(FakeFont):
@@ -531,14 +533,7 @@ class Font(FakeFont):
         self._axis: List[Tuple[str, str, str]] = []
         self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
-
-if __name__ == "__main__":
-    import doctest
-
-    from FL import Glyph
-
-    doctest.testmod()
-    f = Font()
-    g = Glyph()
-    f.glyphs.append(g)
-    f.Save("test.json")
+        # Font data that is not accessible via FL5 Python API
+        self._masters_count: int = 1
+        self._license: str = ""
+        self._license_url: str = ""

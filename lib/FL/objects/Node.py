@@ -13,6 +13,9 @@ nSHARP = 0
 nSMOOTH = 4096
 nFIXED = 12288
 
+vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
+vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 3: nSMOOTH}  # ?
+
 
 class Node:
     """
@@ -22,7 +25,9 @@ class Node:
     coordinates of the final point
     """
 
-    def __init__(self, node_or_type=None, p=None):
+    def __init__(
+        self, node_or_type: Node | int | None = None, p: Point | None = None
+    ) -> None:
         """
         # No args
         >>> n = Node()
@@ -65,6 +70,12 @@ class Node:
         return "<Node: type=0x%x, x=%g, y=%g>" % (self.type, self.x, self.y)
 
     # Additions for FakeLab
+
+    def fake_deserialize(self, data) -> None:
+        x, y = data["points"][0]
+        n = Node(vfb2json_node_types[data["type"]])
+        n.alignment = vfb2json_node_conns[data["flags"]]
+        # if n.type in ()
 
     def fake_update(self, glyph=None):
         """

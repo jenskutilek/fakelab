@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+from FL.helpers.ListParent import ListParent
+from FL.objects.Node import Node, nFIXED, nSHARP, nSMOOTH
+from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 
-# from FL.helpers.ListParent import ListParent
+vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
+vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 3: nSMOOTH}  # ?
 
 
 class Glyph:
@@ -20,8 +24,7 @@ class Glyph:
             if nodes is not None:
                 # Assign nodes
                 for node in nodes:
-                    node._parent = self
-                    self._nodes.append(node)
+                    self.nodes.append(node)
         # else: Empty Glyph
 
     def __repr__(self):
@@ -39,6 +42,59 @@ class Glyph:
             self._index = -1
         for n in self.nodes:
             n.fake_update(self)
+
+    def fake_deserialize(self, name: str, data) -> None:
+        """Add data from a VFB entry
+
+        Args:
+            name (str): The name of the entry
+            data (_type_): The entry data
+        """
+        if name == "Glyph":
+            self.name = data["name"]
+            self._layers_number = data["num_masters"]
+            for node_data in data["nodes"]:
+                node = Node()
+                node.fake_deserialize(node_data)
+                self.nodes.append(node)
+        elif name == "Links":
+            pass
+        elif name == "image":
+            pass
+        elif name == "Glyph Bitmaps":
+            pass
+        elif name == "2023":
+            pass
+        elif name == "Glyph Sketch":
+            pass
+        elif name == "2010":
+            pass
+        elif name == "mask":
+            pass
+        elif name == "2011":
+            pass
+        elif name == "2028":
+            pass
+        elif name == "Glyph Origin":
+            pass
+        elif name == "unicodes":
+            self.unicodes.extend(data)
+        elif name == "Glyph Unicode Non-BMP":
+            self.unicodes.extend(data)
+        elif name == "mark":
+            self.mark = data
+        elif name == "glyph.customdata":
+            self.customdata = data
+        elif name == "glyph.note":
+            self.note = data
+        elif name == "Glyph GDEF Data":
+            pass
+        elif name == "Glyph Anchors Supplemental":
+            pass
+        elif name == "Glyph Anchors MM":
+            pass
+        elif name == "Glyph Guide Properties":
+            pass
 
     # Attributes
 
@@ -132,6 +188,15 @@ class Glyph:
         number of masters
         """
         return self._layers_number
+
+    @property
+    def mask(self) -> Glyph | None:
+        """Return the mask of the glyph or None.
+
+        Returns:
+            Glyph | None: The mask glyph if present, otherwise None.
+        """
+        return self._mask
 
     @property
     def nodes_number(self):
@@ -675,7 +740,7 @@ class Glyph:
 
     def set_defaults(self):
         self._parent = None
-        self._nodes = []
+        self._nodes = ListParent([], self)
 
         # custom data defined for this glyph
         self.customdata = ""
@@ -693,7 +758,7 @@ class Glyph:
         self._vguides = []
         self._components = []
         self._replace_table = []
-        self._kerning = []  # ListParent()
+        self._kerning = ListParent([], self)
         self._layers_number = 1
 
         # (integer)         - flags set for this glyph

@@ -13,87 +13,90 @@ if TYPE_CHECKING:
 
     from FL.objects.Font import Font
 
-font_mapping = {
-    # "257"
-    # "513"
-    # "518"
-    # "527"
-    "sgn": "pref_family_name",  # 1024
-    "ffn": "full_name",  # 1025
-    "psn": "font_name",  # 1026
-    "tfn": "family_name",  # 1027
-    "weight_name": "style_name",  # 1028
-    "Italic Angle": "italic_angle",  # 1029
-    "underlinePosition": "underline_position",  # 1030
-    "underlineThickness": "underline_thickness",  # 1031
-    "Monospaced": "is_fixed_pitch",  # 1034
-    "copyright": "copyright",  # 1037
-    # "description": "openTypeNameDescription",  # 1038
-    # "manufacturer": "openTypeNameManufacturer",  # 1039
-    # "Type 1 Unique ID": "postscriptUniqueID",  # 1044
-    "version full": "version",  # 1046
-    "Slant Angle": "slant_angle",  # 1047
-    "weight": "weight",  # 1048,
-    "MS Character Set": "ms_charset",  # 1054
-    "Menu Name": "menu_name",  # 1056
-    "PCL ID": "pcl_id",  # 1057
-    "VP ID": "vp_id",  # 1058
-    # "1059"
-    "MS ID": "ms_id",  # 1060
-    "trademark": "trademark",  # 1061
-    "designer": "designer",  # 1062
-    "designerURL": "designer_url",  # 1063
-    # "manufacturerURL": "openTypeNameManufacturerURL",  # 1064
-    # "width_name": "widthName",  # 1065
-    "Default Glyph": "default_character",  # 1066
-    # "1068"
-    # "License": "openTypeNameLicense",
-    # "License URL": "openTypeNameLicenseURL",
-    "FOND Family ID": "fond_id",  # 1090
-    "FOND Name": "apple_name",  # 1092
-    # 1093
-    "panose": "panose",  # 1118
-    "vendorID": "vendor",  # 1121
-    # "Style Name": "",  # 1127
-    "version": "version",  # 1128 or tt_version?
-    "UniqueID": "tt_u_id",  # 1129
-    "versionMajor": "version_major",  # 1130
-    "versionMinor": "version_minor",  # 1131
-    "year": "year",  # 1132
-    "Type 1 XUIDs": "x_u_id",  # 1133
-    "Type 1 XUIDs Count": "x_u_id_num",  # 1134
-    "upm": "upm",  # 1135
-    # "PCLT Table" 1136
-    "tsn": "pref_style_name",  # 1137
-    "OT Mac Name": "apple_name",  # 1139
-    # "1140"
-    # "hhea_ascender": "openTypeHheaAscender",
-    # "hhea_descender": "openTypeHheaDescender",
-    # "hhea_line_gap": "openTypeHheaLineGap",
-    "fontNote": "note",  # 2025
+font_mapping_direct = {
+    "font_name",
+    "weight_vector",
+    "unique_id",
+    "version",
+    "notice",
+    "full_name",
+    "family_name",
+    "pref_family_name",
+    "menu_name",
+    "apple_name",
+    "weight",
+    "width",
+    "copyright",
+    "trademark",
+    "designer",
+    "designer_url",
+    "vendor_url",
+    "source",
+    "is_fixed_pitch",
+    "weight_code",
+    "italic_angle",
+    "slant_angle",
+    "underline_position",
+    "underline_thickness",
+    "ms_charset",
+    "panose",
+    "tt_version",
+    "tt_u_id",
+    "style_name",
+    "pref_style_name",
+    "mac_compatible",
+    "vendor",
+    "x_u_id",
+    "x_u_id_num",
+    "year",
+    "version_major",
+    "version_minor",
+    "upm",
+    "fond_id",
+    "blue_values_num",
+    "other_blues_num",
+    "family_blues_num",
+    "family_other_blues_num",
+    "stem_snap_h_num",
+    "stem_snap_v_num",
+    "font_style",
+    "pcl_id",
+    "vp_id",
+    "ms_id",
+    # "unicoderanges",  # must be converted to a list of bits
+    "note",
+    "customdata",
+    "default_character",
 }
 
-# mapping_int = {
-#     # "units_per_em": "unitsPerEm",  # duplicate
-#     # "weight_class": "openTypeOS2WeightClass",  # duplicate
-#     "width_class": "openTypeOS2WidthClass",
-#     "lowest_rec_ppem": "openTypeHeadLowestRecPPEM",
-#     "subscript_x_size": "openTypeOS2SubscriptXSize",
-#     "subscript_y_size": "openTypeOS2SubscriptYSize",
-#     "subscript_x_offset": "openTypeOS2SubscriptXOffset",
-#     "subscript_y_offset": "openTypeOS2SubscriptYOffset",
-#     "superscript_x_size": "openTypeOS2SuperscriptXSize",
-#     "superscript_y_size": "openTypeOS2SuperscriptYSize",
-#     "superscript_x_offset": "openTypeOS2SuperscriptXOffset",
-#     "superscript_y_offset": "openTypeOS2SuperscriptYOffset",
-#     "strikeout_size": "openTypeOS2StrikeoutSize",
-#     "strikeout_position": "openTypeOS2StrikeoutPosition",
-#     "OpenTypeOS2TypoAscender": "openTypeOS2TypoAscender",
-#     "OpenTypeOS2TypoDescender": "openTypeOS2TypoDescender",
-#     "OpenTypeOS2TypoLineGap": "openTypeOS2TypoLineGap",
-#     "OpenTypeOS2WinAscent": "openTypeOS2WinAscent",
-#     "OpenTypeOS2WinDescent": "openTypeOS2WinDescent",
-# }
+glyph_mapping = {
+    "Links",
+    "image",
+    "Glyph Bitmaps",
+    "2023",
+    "Glyph Sketch",
+    "2010",
+    "mask",
+    "2011",
+    "2028",
+    "Glyph Origin",
+    "unicodes",
+    "Glyph Unicode Non-BMP",
+    "mark",
+    "glyph.customdata",
+    "glyph.note",
+    "Glyph GDEF Data",
+    "Glyph Anchors Supplemental",
+    "Glyph Anchors MM",
+    "Glyph Guide Properties",
+}
+
+ttinfo_mapping_direct = {
+    "gasp",
+    "hhea_line_gap",
+    "hhea_ascender",
+    "hhea_descender",
+}
 
 
 class VfbToFontReader:
@@ -120,9 +123,7 @@ class VfbToFontReader:
         self.vfb.decompile()
 
     def read_into_font(self) -> None:
-        current_glyph: Glyph | None = None
-        enc = self.font._encoding = Encoding()
-        enc._parent = self.font
+        glyph: Glyph | None = None
         gids = {}
 
         for e in self.vfb.entries:
@@ -130,28 +131,155 @@ class VfbToFontReader:
             data = e.decompiled
             if name == "header":
                 pass
-            elif name in font_mapping:
-                attr = font_mapping[name]
-                if hasattr(self.font, attr):
-                    setattr(self.font, attr, data)
+            elif name in font_mapping_direct:
+                if hasattr(self.font, name):
+                    setattr(self.font, name, data)
                 else:
-                    print(f"Unknown font attribute: {attr}")
+                    print(f"Unknown font attribute: {name}")
                     raise AttributeError
-            elif name == "PCLT Table":  # 1136
-                pass
-            elif name == "Name Records":  # 1138
-                pass
-            elif name == "Glyph":  # 2001
-                if current_glyph is not None:
-                    self.font.glyphs.append(current_glyph)
-                current_glyph = Glyph()
-                current_glyph.name = data["name"]
             elif name == "Encoding":
                 gid, glyph_name = data
                 gids[gid] = glyph_name
-        if current_glyph is not None:
-            self.font.glyphs.append(current_glyph)
+            elif name == "Encoding Default":
+                # Where is this used?
+                pass
+            elif name == "1502":
+                pass
+            elif name == "518":
+                pass
+            elif name == "257":
+                pass
+            elif name == "Master Count":
+                self.font._masters_count = data
+            elif name == "License":
+                self.font._license = data
+            elif name == "License URL":
+                self.font._license_url = data
+            elif name == "1140":
+                pass
+            elif name == "1093":
+                pass
+            elif name == "1068":
+                pass
+            elif name == "1059":
+                pass
+            elif name == "Binary cvt Table":
+                pass
+            elif name == "Binary prep Table":
+                pass
+            elif name == "Binary fpgm Table":
+                pass
+            elif name in ttinfo_mapping_direct:
+                setattr(self.font.ttinfo, name, data)
+            elif name == "ttinfo":
+                pass
+            elif name == "1271":
+                pass
+            elif name == "TrueType Stem PPEMs":
+                pass
+            elif name == "TrueType Stem PPEMs 1":
+                pass
+            elif name == "TrueType Stems":
+                pass
+            elif name == "TrueType Zones":
+                pass
+            elif name == "unicoderanges":
+                # Must be converted to list
+                pass
+            elif name == "Pixel Snap":
+                pass
+            elif name == "Zone Stop PPEM":
+                pass
+            elif name == "Code Stop PPEM":
+                pass
+            elif name == "1604":
+                pass
+            elif name == "2032":
+                pass
+            elif name == "TrueType Zone Deltas":
+                pass
+            elif name == "Name Records":
+                pass
+            elif name == "Custom CMAPs":
+                pass
+            elif name == "PCLT Table":
+                pass
+            elif name == "Export PCLT Table":
+                pass
+            elif name == "2030":
+                pass
+            elif name == "TrueTypeTable":
+                pass
+            elif name == "OpenType Metrics Class Flags":
+                pass
+            elif name == "OpenType Kerning Class Flags":
+                pass
+            elif name == "features":
+                self.font.features = "\n".join(data)
+            elif name == "OpenType Class":
+                pass
+            elif name == "513":
+                pass
+            elif name == "271":
+                pass
+            elif name == "Axis Count":
+                pass
+            elif name == "Axis Name":
+                pass
+            elif name == "Anisotropic Interpolation Mappings":
+                pass
+            elif name == "Axis Mappings Count":
+                pass
+            elif name == "Axis Mappings":
+                pass
+            elif name == "Master Name":
+                pass
+            elif name == "Master Location":
+                pass
+            elif name == "Primary Instance Locations":
+                pass
+            elif name == "Primary Instances":
+                pass
+            elif name == "PostScript Info":
+                pass
+            elif name == "527":
+                pass
+            elif name == "Global Guides":
+                pass
+            elif name == "Global Guide Properties":
+                pass
+
+            elif name == "Glyph":
+                # Append the current glyph
+                if glyph is not None:
+                    self.font.glyphs.append(glyph)
+                # Make a new glyph
+                glyph = Glyph()
+                # Add the data
+                glyph.fake_deserialize(name, data)
+            elif name in glyph_mapping:
+                assert glyph is not None, "Glyph must exist before adding data"
+                glyph.fake_deserialize(name, data)
+
+            elif name == "OpenType Export Options":
+                pass
+            elif name == "Export Options":
+                pass
+            elif name == "Mapping Mode":
+                pass
+            elif name == "1410":
+                pass
+
+            else:
+                print(f"Unhandled VFB entry: {name}")
+
+        if glyph is not None:
+            self.font.glyphs.append(glyph)
+
         if gids:
+            enc = self.font._encoding = Encoding()
+            enc._parent = self.font
+
             max_gid = min(255, max(gids))
             for i in range(max_gid + 1):
                 er = EncodingRecord()
