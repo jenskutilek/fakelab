@@ -1,12 +1,7 @@
 from __future__ import annotations
 
 from FL.helpers.ListParent import ListParent
-from FL.objects.Node import Node, nFIXED, nSHARP, nSMOOTH
-from FL.objects.Point import Point
 from FL.objects.Rect import Rect
-
-vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
-vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 3: nSMOOTH}  # ?
 
 
 class Glyph:
