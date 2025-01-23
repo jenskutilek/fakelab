@@ -186,11 +186,11 @@ class VfbToFontReader:
             elif name == "unicoderanges":
                 # Must be converted to list
                 pass
-            elif name == "Pixel Snap":
+            elif name == "stemsnaplimit":
                 pass
-            elif name == "Zone Stop PPEM":
+            elif name == "zoneppm":
                 pass
-            elif name == "Code Stop PPEM":
+            elif name == "codeppm":
                 pass
             elif name == "1604":
                 pass
