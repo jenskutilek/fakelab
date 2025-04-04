@@ -7,6 +7,7 @@ from FL.objects.Feature import Feature
 from FL.objects.Font import Font
 from FL.objects.FontLab import FakeLab
 from FL.objects.Glyph import Glyph
+from FL.objects.Guide import Guide
 from FL.objects.Hint import Hint
 from FL.objects.KerningPair import KerningPair
 from FL.objects.Link import Link
@@ -73,10 +74,6 @@ class Canvas:
 
 
 class Dialog:
-    pass
-
-
-class Guide:
     pass
 
 
