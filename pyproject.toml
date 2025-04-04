@@ -67,7 +67,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 version_scheme = "no-guess-dev"
-write_to = "src/fakelab/_version.py"
+write_to = "src/FL/_version.py"
 
 
 [tool.towncrier]
@@ -86,7 +86,7 @@ cache_dir = "build/tests/pytest_cache"
 
 [tool.pylint.main]
 py-version = "3.11"
-ignore-paths = ["src/fakelab/_version.py"]
+ignore-paths = ["src/FL/_version.py"]
 # extension-pkg-allow-list = ["pycurl"]
 
 [tool.pylint.format]
@@ -132,7 +132,7 @@ target-version = ["py311"]
 
 
 [tool.isort]
-known_first_party = ["fakelab"]
+known_first_party = ["FL"]
 profile = "black"
 
 
