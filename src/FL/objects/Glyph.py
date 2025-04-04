@@ -1,11 +1,33 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, Any
+
 from FL.helpers.ListParent import ListParent
 from FL.objects.Rect import Rect
 
+if TYPE_CHECKING:
+    from FL import (
+        Anchor,
+        AuditRecord,
+        Component,
+        Font,
+        Guide,
+        Hint,
+        Image,
+        KerningPair,
+        Link,
+        Matrix,
+        Node,
+        Point,
+        Replace,
+        TTPoint,
+    )
+
 
 class Glyph:
-    def __init__(self, glyph_or_masterscount=1, nodes=None):
+    def __init__(
+        self, glyph_or_masterscount: Glyph | int = 1, nodes: list[Node] | None = None
+    ) -> None:
         self.set_defaults()
 
         # Process params
@@ -22,12 +44,12 @@ class Glyph:
                     self.nodes.append(node)
         # else: Empty Glyph
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Glyph: '%s', %i nodes, orphan>" % (self.name, len(self))
 
     # Additions for FakeLab
 
-    def fake_update(self, font=None, index=-1):
+    def fake_update(self, font: Font | None = None, index: int = -1) -> None:
         """
         Is called from FontLab.UpdateFont()
         """
@@ -38,7 +60,7 @@ class Glyph:
         for n in self.nodes:
             n.fake_update(self)
 
-    def fake_deserialize(self, name: str, data) -> None:
+    def fake_deserialize(self, name: str, data: Any) -> None:
         """Add data from a VFB entry
 
         Args:
@@ -94,91 +116,91 @@ class Glyph:
     # Attributes
 
     @property
-    def parent(self):
+    def parent(self) -> Font | None:
         """
         Glyph's parent object, Font
         """
         return self._parent
 
     @property
-    def nodes(self):
+    def nodes(self) -> ListParent[Node]:
         """
         list of Nodes
         """
         return self._nodes
 
     @property
-    def anchors(self):
+    def anchors(self) -> list[Anchor]:
         """
         list of anchors
         """
         return self._anchors
 
     @property
-    def hhints(self):
+    def hhints(self) -> ListParent[Hint]:
         """
         list of horizontal hints
         """
         return self._hhints
 
     @property
-    def vhints(self):
+    def vhints(self) -> ListParent[Hint]:
         """
         list of vertical hints
         """
         return self._vhints
 
     @property
-    def hlinks(self):
+    def hlinks(self) -> ListParent[Link]:
         """
         list of horizontal links
         """
         return self._hlinks
 
     @property
-    def vlinks(self):
+    def vlinks(self) -> ListParent[Link]:
         """
         list of vertical links
         """
         return self._vlinks
 
     @property
-    def hguides(self):
+    def hguides(self) -> ListParent[Guide]:
         """
         list of horizontal guides
         """
         return self._hguides
 
     @property
-    def vguides(self):
+    def vguides(self) -> ListParent[Guide]:
         """
         list of vertical guides
         """
         return self._vguides
 
     @property
-    def components(self):
+    def components(self) -> ListParent[Component]:
         """
         list of components
         """
         return self._components
 
     @property
-    def replace_table(self):
+    def replace_table(self) -> list[Replace]:
         """
         hint replacing program, list of Replace objects
         """
         return self._replace_table
 
     @property
-    def kerning(self):
+    def kerning(self) -> ListParent[KerningPair]:
         """
         list of kerning pairs
         """
         return self._kerning
 
     @property
-    def layers_number(self):
+    def layers_number(self) -> int:
         """
         number of masters
         """
@@ -194,24 +216,24 @@ class Glyph:
         return self._mask
 
     @property
-    def nodes_number(self):
+    def nodes_number(self) -> int:
         return len(self._nodes)
 
     @property
-    def index(self):
+    def index(self) -> int:
         if self.parent is None:
             return -1
         return self._index
 
     # Operations
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Return the number of nodes.
         """
         return len(self._nodes)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Node:
         """
         Accesses nodes array
         """
@@ -228,39 +250,41 @@ class Glyph:
 
     # Methods
 
-    def Assign(self, g):
+    def Assign(self, g: Glyph) -> None:
         """
         (Glyph)
         - copies all information from the assigned glyph
         """
         raise NotImplementedError
 
-    def Transform(self, m):
+    def Transform(self, m: Matrix) -> None:
         """
         Applies Matrix transformation to the Glyph (see Matrix().__doc__)
         """
         raise NotImplementedError
 
-    def SetLayersNumber(self, mastersnumber):
+    def SetLayersNumber(self, mastersnumber: int) -> None:
         """
         Change the number of masters, is applicable only to glyphs that have no
         parent
         """
         raise NotImplementedError
 
-    def Clear(self):
+    def Clear(self) -> None:
         """
         Remove all nodes
         """
         raise NotImplementedError
 
-    def Add(self, obj):
+    def Add(self, obj) -> None:
         """
         - refer to '+' operator
         """
         raise NotImplementedError
 
-    def Insert(self, node_or_glyph_or_nodelist, nodeindex=0):
+    def Insert(
+        self, node_or_glyph_or_nodelist: Node | Glyph | list[Node], nodeindex: int = 0
+    ) -> None:
         """
         (Node | Glyph | [Node]) | (Node | Glyph | [Node], nodeindex)
 
@@ -269,7 +293,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Present(self, style):
+    def Present(self, style) -> bool:
         """
         (style)
 
@@ -278,7 +302,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Delete(self, index0, index1=None):
+    def Delete(self, index0: int, index1: int | None = None) -> None:
         """
         (index) | (index0, index1)
 
@@ -286,7 +310,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def ExpandLayer(self, masterindex):
+    def ExpandLayer(self, masterindex: int) -> None:
         """
         (masterindex)
 
@@ -294,7 +318,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Shift(self, point, masterindex=0):
+    def Shift(self, point: Point, masterindex: int = 0) -> None:
         """
         (Point) | (Point, masterindex)
 
@@ -302,7 +326,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Scale(self, scale, center, masterindex=0):
+    def Scale(self, scale: Point, center: Point, masterindex: int = 0) -> None:
         """
         (Point(float) scale) | (Point(float) scale, Point center) |
         (Point(float) scale, Point center, masterindex)
@@ -311,7 +335,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Layer(self, masterindex):
+    def Layer(self, masterindex: int) -> list[Point]:
         """
         (masterindex)
 
@@ -319,7 +343,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Section(self, masterindex, pointindex, nodetype):
+    def Section(self, masterindex: int, pointindex: int, nodetype: int) -> list[Point]:
         """
         (masterindex, pointindex, nodetype)
 
@@ -327,19 +351,19 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def MoveNode(self, options):
+    def MoveNode(self, options) -> None:
         """
         Moves the node copying Edit tool behavior (see User manual for details).
         """
         raise NotImplementedError
 
-    def DeleteNode(self, nodeindex):
+    def DeleteNode(self, nodeindex) -> None:
         """
         Remove the Node.
         """
         raise NotImplementedError
 
-    def InsertNode(self, nodeindex, time=0.0, masterindex=0):
+    def InsertNode(self, nodeindex, time=0.0, masterindex=0) -> None:
         """
         (nodeindex) | (nodeindex, float time) |
         (nodeindex, float time, masterindex)
@@ -350,43 +374,43 @@ class Glyph:
 
     # SELECTION-METHODS
 
-    def Selection(self):
+    def Selection(self) -> list[Node]:
         """
         Return a list of selected Nodes.
         """
         raise NotImplementedError
 
-    def SelectAll(self):
+    def SelectAll(self) -> None:
         """
         Select all Nodes.
         """
         raise NotImplementedError
 
-    def UnselectAll(self):
+    def UnselectAll(self) -> None:
         """
         Deselect all Nodes.
         """
         raise NotImplementedError
 
-    def InvertSelection(self):
+    def InvertSelection(self) -> None:
         """
         Select unselected Nodes and deselects selected Nodes.
         """
         raise NotImplementedError
 
-    def isAnySelected(self):
+    def isAnySelected(self) -> bool:
         """
         Return True if at least one Node is selected.
         """
         raise NotImplementedError
 
-    def SelectedCount(self):
+    def SelectedCount(self) -> int:
         """
         Return the number of selected Nodes.
         """
         raise NotImplementedError
 
-    def SelectRect(self, r, masterindex=0):
+    def SelectRect(self, r, masterindex=0) -> None:
         """
         (Rect r) | (Rect r, masterindex)
 
@@ -394,7 +418,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def UnselectRect(self, r, masterindex=0):
+    def UnselectRect(self, r, masterindex=0) -> None:
         """
         (Rect r) | (Rect r, masterindex)
 
@@ -402,7 +426,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def DeleteSelected(self):
+    def DeleteSelected(self) -> None:
         """
         Delete all selected Nodes.
         """
@@ -410,7 +434,7 @@ class Glyph:
 
     # METRICS-METHODS
 
-    def GetBoundingRect(self, masterindex=0):
+    def GetBoundingRect(self, masterindex: int = 0) -> Rect:
         """
         () | (masterindex)
 
@@ -427,7 +451,7 @@ class Glyph:
                 rect += n.point
         return rect
 
-    def GetMetrics(self, masterindex=0):
+    def GetMetrics(self, masterindex: int = 0) -> Point:
         """
         () | (masterindex)
 
@@ -435,7 +459,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def SetMetrics(self, p, masterindex=0):
+    def SetMetrics(self, p: Point, masterindex: int = 0) -> None:
         """
         (Point p) | (Point p, masterindex)
 
@@ -443,7 +467,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def GetVSB(self, masterindex=0):
+    def GetVSB(self, masterindex: int = 0) -> int:  # TODO: Is it int?
         """
         () | (masterindex)
 
@@ -451,7 +475,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def SetVSB(self, value, masterindex=0):
+    def SetVSB(self, value: int, masterindex: int = 0) -> int:  # TODO: Is it int?
         """
         (value) | (value, masterindex)
 
@@ -461,7 +485,7 @@ class Glyph:
 
     # OVERLAP-METHODS
 
-    def RemoveOverlap(self, masterindex=0):
+    def RemoveOverlap(self, masterindex: int = 0) -> None:
         """
         () | (masterindex)
 
@@ -469,7 +493,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Badd(self, glyph_nodelist, masterindex=0):
+    def Badd(self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0) -> None:
         """
         (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
 
@@ -477,7 +501,9 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Bsubtract(self, glyph_nodelist, masterindex=0):
+    def Bsubtract(
+        self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
+    ) -> None:
         """
         (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
 
@@ -485,7 +511,9 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Bintersect(self, glyph_nodelist, masterindex=0):
+    def Bintersect(
+        self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
+    ) -> None:
         """
         (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
         - performs bollean Insersect operation with the glyph or list of nodes
@@ -494,13 +522,13 @@ class Glyph:
 
     # CONTOUR-METHODS
 
-    def GetContoursNumber(self):
+    def GetContoursNumber(self) -> int:
         """
         Return the number of contours in the glyph.
         """
         raise NotImplementedError
 
-    def GetContourBegin(self, contourindex):
+    def GetContourBegin(self, contourindex: int) -> int:
         """
         (contourindex)
 
@@ -508,7 +536,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def GetContourLength(self, contourindex):
+    def GetContourLength(self, contourindex: int) -> int:
         """
         (contourindex)
 
@@ -516,7 +544,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def SelectContour(self, contourindex):
+    def SelectContour(self, contourindex: int) -> None:
         """
         (contourindex)
 
@@ -524,7 +552,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def DeleteContour(self, contourindex):
+    def DeleteContour(self, contourindex: int) -> None:
         """
         (contourindex)
 
@@ -532,7 +560,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def ReverseContour(self, contourindex):
+    def ReverseContour(self, contourindex: int) -> None:
         """
         (contourindex)
 
@@ -540,7 +568,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def ReorderContour(self, contourindex, newindex):
+    def ReorderContour(self, contourindex: int, newindex: int) -> None:
         """
         (contourindex, newindex)
 
@@ -548,7 +576,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def isContourClockwise(self, contourindex):
+    def isContourClockwise(self, contourindex: int) -> bool:
         """
         (contourindex)
 
@@ -556,7 +584,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def SetStartNode(self, nodeindex):
+    def SetStartNode(self, nodeindex: int) -> None:
         """
         (nodeindex)
 
@@ -564,7 +592,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def FindContour(self, nodeindex):
+    def FindContour(self, nodeindex: int) -> int:
         """
         (nodeindex)
 
@@ -574,7 +602,7 @@ class Glyph:
 
     # HINTS-METHODS
 
-    def RemoveHints(self, mode):
+    def RemoveHints(self, mode: int) -> None:
         """
         (integer mode)
 
@@ -582,7 +610,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Autohint(self, masterindex=0):
+    def Autohint(self, masterindex: int = 0) -> None:
         """
         () | (masterindex)
 
@@ -592,7 +620,7 @@ class Glyph:
 
     # ANCHOR-METHODS
 
-    def FindAnchor(self, name):
+    def FindAnchor(self, name: str) -> Anchor:  # XXX: does it return an anchor?
         """
         (string name)
 
@@ -602,13 +630,13 @@ class Glyph:
 
     # TRANSFORMATION-METHODS
 
-    def Decompose(self):
+    def Decompose(self) -> None:
         """
         Paste all components to the glyph outline.
         """
         raise NotImplementedError
 
-    def MakeExtremeNodes(self, masterindex):
+    def MakeExtremeNodes(self, masterindex: int) -> None:
         """
         () | (masterindex)
 
@@ -616,7 +644,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Audit(self):
+    def Audit(self) -> list[AuditRecord]:
         """
         () | (masterindex)
         Perform test of the glyph and returns list of AuditRecord objects.
@@ -662,25 +690,25 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Interpolate(self, nodes):
+    def Interpolate(self, nodes) -> list[tuple[int, Point]]:
         """
         ([(nodeindex, Point newposition)])
         """
         raise NotImplementedError
 
-    def Warp(self, points, force):
+    def Warp(self, points: list[Point], force: float) -> None:
         """
         ([Point], float force)
         """
         raise NotImplementedError
 
-    def Rasterize(self):
+    def Rasterize(self) -> Image:
         """
         (Image)
         """
         raise NotImplementedError
 
-    def Blend(self, source, layer1, layer2, amount):
+    def Blend(self, source: Glyph, layer1: int, layer2: int, amount: Point) -> Glyph:
         """
         (Glyph source, integer layer1, integer layer2, Point amount)
 
@@ -688,13 +716,13 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def JoinAll(self):
+    def JoinAll(self) -> None:
         """
         Tries to join all open contours.
         """
         raise NotImplementedError
 
-    def SaveEPS(self, filename, layer=0):
+    def SaveEPS(self, filename: str, layer: int = 0) -> None:
         """
         (string filename) | (string filename, layer)
 
@@ -702,7 +730,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def LoadEPS(self, filename):
+    def LoadEPS(self, filename: str) -> None:
         """
         (string filename)
 
@@ -712,7 +740,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def R(self, points, force=0.0):
+    def R(self, points: list[Point], force: float = 0.0) -> None:
         """
         ([Point], float force)
 
@@ -722,74 +750,75 @@ class Glyph:
 
     # Additional methods reported by dir(fl.glyph)
 
-    def EditMask(self):
+    def EditMask(self) -> None:
         raise NotImplementedError
 
-    def ExchangeMask(self):
+    def ExchangeMask(self) -> None:
         raise NotImplementedError
 
-    def clear(self):
+    def clear(self) -> None:
         raise NotImplementedError
 
     # Defaults
 
-    def set_defaults(self):
+    def set_defaults(self) -> None:
         self._parent = None
-        self._nodes = ListParent([], self)
+        self._nodes: ListParent[Node] = ListParent([], self)
 
         # custom data defined for this glyph
-        self.customdata = ""
+        self.customdata: str | None = None
 
         # note defined for this glyph
-        self.note = ""
+        self.note: str | None = None
 
-        self.mark = 0
-        self._anchors = []
-        self._hhints = []
-        self._vhints = []
-        self._hlinks = []
-        self._vlinks = []
-        self._hguides = []
-        self._vguides = []
-        self._components = []
-        self._replace_table = []
-        self._kerning = ListParent([], self)
+        self.mark: int = 0
+        self._anchors: list[Anchor] = []
+        self._hhints: ListParent[Hint] = ListParent([], self)
+        self._vhints: ListParent[Hint] = ListParent([], self)
+        self._hlinks: ListParent[Link] = ListParent([], self)
+        self._vlinks: ListParent[Link] = ListParent([], self)
+        self._hguides: ListParent[Guide] = ListParent([], self)
+        self._vguides: ListParent[Guide] = ListParent([], self)
+        self._components: ListParent[Component] = ListParent([], self)
+        self._replace_table: list[Replace] = []
+        self._kerning: ListParent[KerningPair] = ListParent([], self)
         self._layers_number = 1
+        self._mask: Glyph | None = None
 
         # (integer)         - flags set for this glyph
-        self.flags = 0
+        self.flags: int = 0
 
         # (integer)         - advance width for the first master
-        self.width = 0
+        self.width: int = 0
 
         # (integer)        - advance height for the first master
-        self.height = 0
+        self.height: int = 0
 
         # (integer)       - first Unicode index in integer form
-        self.unicode = None
+        self.unicode: int | None = None
 
         # [integer]      - list of Unicode indexes
-        self.unicodes = []
+        self.unicodes: list[int] = []
 
         # (string)           - glyph name
-        self.name = ""
+        self.name: str = ""
 
         # [Image]           - background image (new in FL 4.53 Win)
-        self.image = None
+        self.image: Image = Image()
 
         # glyph index, -1 if orphan glyph (not reported by docstring)
-        self._index = -1
+        self._index: int = -1
 
         # TrueType data
 
-        self.advance_width = None  # (integer)
-        self.advance_height = None  # (integer)
-        self.left_side_bearing = None  # (integer)
-        self.top_side_bearing = None  # (integer)
-        self.y_pels = None  # (integer)
-        self.bounding_box = None  # (Rect)
-        self.number_of_contours = None  # (integer)
-        self.end_points = None  # [integer]
-        self.points = None  # [TTPoint]
-        self.instructions = None  # [Byte]
-        self.hdmx = None  # [Byte]
+        self.advance_width: int = 0  # (integer)
+        self.advance_height: int = 0  # (integer)
+        self.left_side_bearing: int = 0  # (integer)
+        self.top_side_bearing: int = 0  # (integer)
+        self.y_pels: int = 1  # (integer)
+        self.bounding_box: Rect = Rect(32767, 32767, -32767, -32767)  # (Rect)
+        self.number_of_contours: int = 0  # (integer)
+        self.end_points: list[int] = []  # [integer]
+        self.points: list[TTPoint] = []  # [TTPoint]
+        self.instructions: list[int] = []  # [Byte]
+        self.hdmx: list[int] = []  # [Byte]

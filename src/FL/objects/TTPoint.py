@@ -11,14 +11,14 @@ class TTPoint:
     >>> tp = TTPoint()
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.x = 32767
         self.y = 32767
         self.flag = 255
         # Can I has a parent?
         # self._parent = None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<TTPoint flags="%i" x="%g" y="%g", Orphan>' % (
             self.flag,
             self.x,

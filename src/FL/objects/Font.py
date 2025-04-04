@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 from FL.fake.Font import FakeFont
 from FL.helpers.classList import ClassList
@@ -16,7 +16,11 @@ if TYPE_CHECKING:
 
 
 class Font(FakeFont):
-    def __init__(self, font_or_path: Font | str | None = None, instances=None) -> None:
+    def __init__(
+        self,
+        font_or_path: Font | str | None = None,
+        instances: tuple[float, float, float, float] | None = None,
+    ) -> None:
         super().__init__()
         self._set_defaults()
 
@@ -51,7 +55,7 @@ class Font(FakeFont):
         return str(self._file_name)
 
     @property
-    def axis(self) -> List[Tuple[str, str, str]]:
+    def axis(self) -> list[tuple[str, str, str]]:
         """
         Array of font axes. Not reported by docstring nor e-font.
 
@@ -60,16 +64,16 @@ class Font(FakeFont):
         return self._axis
 
     @property
-    def classes(self) -> List[str]:
+    def classes(self) -> list[str]:
         """
         List of glyph classes.
         """
         return list(self._classes)
 
     @classes.setter
-    def classes(self, value):
+    def classes(self, value: list[str]) -> None:
         # Carry over the flags when setting the value
-        self._classes = ClassList(value, self._classes)
+        self._classes: ClassList = ClassList(value, self._classes)
 
     @property
     def encoding(self) -> Encoding:
@@ -86,7 +90,7 @@ class Font(FakeFont):
         return self._features
 
     @features.setter
-    def features(self, value):
+    def features(self, value) -> None:
         raise RuntimeError
 
     @property
@@ -97,7 +101,7 @@ class Font(FakeFont):
         return self._fontnames
 
     @fontnames.setter
-    def fontnames(self, value):
+    def fontnames(self, value) -> None:
         raise RuntimeError
 
     @property
@@ -109,7 +113,7 @@ class Font(FakeFont):
         return self._glyphs
 
     @glyphs.setter
-    def glyphs(self, value):
+    def glyphs(self, value) -> None:
         raise RuntimeError
 
     @property
@@ -121,7 +125,7 @@ class Font(FakeFont):
         return self._truetypetables
 
     @truetypetables.setter
-    def truetypetables(self, value):
+    def truetypetables(self, value) -> None:
         raise RuntimeError
 
     # Operations
@@ -132,7 +136,7 @@ class Font(FakeFont):
         """
         return len(self._glyphs)
 
-    def __getitem__(self, index) -> Glyph | None:
+    def __getitem__(self, index: int | str) -> Glyph | None:
         """
         Accesses glyphs array
         """
@@ -300,7 +304,7 @@ class Font(FakeFont):
 
     # Undocumented methods
 
-    def MakeKernFeature(self, vector):
+    def MakeKernFeature(self, vector: list[float]) -> None:
         """
         [WeightVector vector]
         - generates 'kern' feature using font kerning and classes
@@ -355,7 +359,7 @@ class Font(FakeFont):
 
     # Additional methods reported by dir(fl.font)
 
-    def GenerateInstance(self):
+    def GenerateInstance(self) -> None:
         raise NotImplementedError
 
     # Defaults
@@ -431,20 +435,20 @@ class Font(FakeFont):
         self.ms_charset: int = 0
         self.ms_id: int = 0
         # list of Panose values
-        self.panose: List[int] = []
+        self.panose: list[int] = []
         self.pcl_chars_set: str = ""
         self.pcl_id: int = 0
 
         #  Dimensions
         self.upm: int = 1000
         # list of ascenders, one for each master
-        self.ascender: List[int] = []
+        self.ascender: list[int] = []
         # list of descenders, one for each master
-        self.descender: List[int] = []
+        self.descender: list[int] = []
         # list of CapHeight records, one for each master
-        self.cap_height: List[int] = []
+        self.cap_height: list[int] = []
         # list of xHeight values, one for each master
-        self.x_height: List[int] = []
+        self.x_height: list[int] = []
         self.default_width: int = 0
         self.slant_angle: int = 0
         # Italic Angle
@@ -461,28 +465,28 @@ class Font(FakeFont):
         self.blue_values_num: int = 0
         # two-dimentional array of BlueValues
         # master index is top-level index
-        self.blue_values: List[List[int]] = [[]]
+        self.blue_values: list[list[int]] = [[]]
         # number of defined OtherBlues values
         self.other_blues_num: int = 0
         # two-dimentional array of OtherBlues
         # master index is top-level index
-        self.other_blues: List[List[int]] = [[]]
+        self.other_blues: list[list[int]] = [[]]
         # number of FamilyBlues records
         self.family_blues_num = 0
         # two-dimentional array of FamilyBlues
         # master index is top-level index
-        self.family_blues: List[List[int]] = [[]]
+        self.family_blues: list[list[int]] = [[]]
         # number of FamilyOtherBlues records
         self.family_other_blues_num: int = 0
         # two-dimentional array of FamilyOtherBlues
         # master index is top-level index
-        self.family_other_blues: List[List[int]] = [[]]
+        self.family_other_blues: list[list[int]] = [[]]
         # list of Force Bold values, one for each master
-        self.force_bold: List[int] = [0]
+        self.force_bold: list[int] = [0]
         self.stem_snap_h_num: int = 0
-        self.stem_snap_h: List[List[int]] = [[]]
+        self.stem_snap_h: list[list[int]] = [[]]
         self.stem_snap_v_num: int = 0
-        self.stem_snap_v: List[List[int]] = [[]]
+        self.stem_snap_v: list[list[int]] = [[]]
 
         #  Other
 
@@ -514,23 +518,23 @@ class Font(FakeFont):
         # this attribute is linked with the
         # ttinfo.os2_ul_code_page_range1 and
         # ttinfo.os2_ul_code_page_range2 values)</font>
-        self.codepages: List[int] = []
+        self.codepages: list[int] = []
         # list of unicoderange-numbers (see OT-specs)
         # <font color="red">(this attribute is not reported by the docstring)</font>
-        self.unicoderanges: List[int] = []
+        self.unicoderanges: list[int] = []
         # the Created By field
         # <font color="red">(this description is not reported by the docstring)</font>
         self.source = None
         # list of MM-settings for generate instance
-        self.weight_vector: List[float] = []
+        self.weight_vector: list[float] = []
         # list of horizontal guides
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.hguides: List[Guide] = []
+        self.hguides: list[Guide] = []
         # list of vertical guides
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.vguides: List[Guide] = []
+        self.vguides: list[Guide] = []
 
-        self._axis: List[Tuple[str, str, str]] = []
+        self._axis: list[tuple[str, str, str]] = []
         self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
         # Font data that is not accessible via FL5 Python API

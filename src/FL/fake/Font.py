@@ -17,7 +17,7 @@ class FakeFont:
     # Additional properties for FakeLab
 
     @property
-    def fake_kerning(self):
+    def fake_kerning(self) -> FakeKerning:
         """
         Returns the `FL.fake.FakeKerning` object, which can be used to manipulate the
         font's kerning data.
@@ -40,20 +40,20 @@ class FakeFont:
         # Convert key to str because JSON needs it
         self._fake_binaries[str(fontType)] = file_path
 
-    def fake_update(self):
+    def fake_update(self) -> None:
         """
         Is called from FontLab.UpdateFont()
         """
         for index, glyph in enumerate(self.glyphs):
             glyph.fake_update(self, index)
 
-    def fake_deselect_all(self):
+    def fake_deselect_all(self) -> None:
         """
         Deselect all glyphs. Is called from FontLab.Unselect().
         """
-        self._selection = set()
+        self._selection: set[int] = set()
 
-    def fake_select(self, glyph_index, value=None):
+    def fake_select(self, glyph_index: int, value: bool | None = None) -> None:
         """
         Change selection status for glyph_index.
         >>> f = Font()
@@ -78,7 +78,7 @@ class FakeFont:
         else:
             self._selection -= {glyph_index}
 
-    def fake_set_class_flags(self, flags):
+    def fake_set_class_flags(self, flags: list[str]) -> None:
         """
         Set the kerning class flags from a list of str ("L", "R", "LR", ...)
         """
