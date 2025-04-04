@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import argparse
 from code import InteractiveConsole
+from typing import Any
 
-from FL import environment
+from FL import environment, fl
 
 __startup_code__ = """
 from FL import fl
@@ -11,14 +12,16 @@ from FL import fl
 
 
 class FontLab5Console(InteractiveConsole):
-    def __init__(self, startup_code: str = "", locals=None) -> None:
+    def __init__(
+        self, startup_code: str = "", locals: dict[str, Any] | None = None
+    ) -> None:
         namespace = locals or {}
         # code = compile(__startup_code__, "", "exec", 0)
         # exec(code, namespace)
         super().__init__(locals=namespace)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="FontLab 5 external scripting")
     parser.add_argument(
         "-o",
@@ -49,7 +52,7 @@ def main():
             fl.Open(vfb_path, addtolist=True)
         if args.script:
             # If we have scripts, run them and exit.
-            pass
+            raise NotImplementedError
         else:
             # Run the interactive console.
             console = FontLab5Console(locals=environment)
