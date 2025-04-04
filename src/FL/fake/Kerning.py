@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from FL.fake.KerningClass import KerningClass
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -18,13 +20,18 @@ class FakeKerning:
         # self.num_masters: int = 0
         # self.upm: int | None = None
         self.reset_classes()
-        self.kerning: dict[tuple[str, str], list[int]] = {}
-        self.flat_kerning: list[tuple[str, str, int]] = []
+        self.reset_pairs()
 
     def __len__(self) -> int:
+        """
+        Return the number of key pairs.
+
+        Returns:
+            int: The number of kerning pairs. Key and exception pairs only.
+        """
         return len(self.kerning)
 
-    def expand(self) -> None:
+    def _expand(self) -> None:
         """
         Expand class-based kerning to flat kerning.
         """
@@ -32,18 +39,17 @@ class FakeKerning:
             raise ValueError
 
         self.flat_kerning = []
-        glyphs = self._font.glyphs
         cc = []  # Class-class pairs
         gc = []  # Glyph-class pairs
         cg = []  # Class-glyph pairs
         gg = []  # Glyph-glyph pairs
-        for i, g in enumerate(glyphs):
+        for g in self._font.glyphs:
             for kerning_pair in g.kerning:
                 value = kerning_pair.value
                 if value == 0:
                     continue
                 L = g.name
-                R = glyphs[kerning_pair.key].name
+                R = self._font.glyphs[kerning_pair.key].name
                 l_class = self.classes_left.get(L, None)
                 r_class = self.classes_right.get(R, None)
                 if l_class:
@@ -73,6 +79,14 @@ class FakeKerning:
         self.flat_kerning = sorted([(g[0], g[1], v) for g, v in pairs.items()])
         logger.info("Expanded kerning: %i pairs." % len(self.flat_kerning))
 
+    def expand(self) -> None:
+        if self._font is None:
+            logger.error("You need to supply a font before you can expand the kerning")
+            return
+
+        self.import_classes_from_font(self._font)
+        self._expand()
+
     def export_afm(self, file_path: Path, expand: bool = True) -> None:
         """
         Export kerning data to an AFM file at `file_path`.
@@ -87,61 +101,123 @@ class FakeKerning:
             self.expand()
         raise NotImplementedError
 
-    def import_afm(self, file_path: Path) -> None:
+    def export_flc(self, file_path: Path) -> None:
+        raise NotImplementedError
+
+    def import_afm(self, file_path: Path, master_index: int = 0) -> None:
         """
         Import kerning data from an AFM file at `file_path`.
 
         Args:
             file_path (Path): The path to the AFM file.
+            master_index (int, optional): _description_. Defaults to 0.
         """
         raise NotImplementedError
 
-    def import_classes(self, file_path: Path) -> None:
+    def import_classes_from_font(self, font: Font) -> None:
         """
-        Import the kerning classes from an FLC file.
+        Import the kerning classes from a font.
+
+        Args:
+            font (Font): The font to import from.
+        """
+        self.reset_classes()
+        for i, flclass in enumerate(font.classes):
+            if not flclass.strip().startswith("_"):
+                # Not a kerning class
+                continue
+
+            kc = KerningClass(fromFLClass=flclass)
+
+            if len(kc) == 0:
+                print(f"Skipping empty class: {kc}")
+                continue
+
+            if kc.keyglyph is None:
+                print(f"Skipping class without keyglyph: {kc.name}")
+                continue
+
+            # Override the sides deduced from the class name
+            sides = ""
+            if font.GetClassLeft(i):
+                sides += "L"
+            if font.GetClassRight(i):
+                sides += "R"
+            kc.sides = sides
+
+            if "L" in kc.sides:
+                self.classes_left[kc.keyglyph] = kc
+
+            if "R" in kc.sides:
+                self.classes_right[kc.keyglyph] = kc
+
+    def import_flc(self, file_path: Path) -> None:
+        """
+        Import the kerning classes from a FLC file.
 
         Args:
             file_path (Path): The path to the FLC file.
         """
-        self.classes = []
-        self.class_sides = {}
+        self.reset_classes()
         with open(file_path, "r") as flc:
             class_name = None
             class_glyphs = None
             class_sides = None
-            for line in flc:
+            for i, line in enumerate(flc):
                 line = line.strip()
                 if line.startswith("%%CLASS "):
                     class_name = line.split()[-1]
                 if line.startswith("%%GLYPHS "):
-                    class_glyphs = line.split()[1:]
+                    _, class_glyphs = line.split(maxsplit=1)
                 if line.startswith("%%KERNING"):
                     class_sides = line.split()[1]
                 if line.startswith("%%END"):
-                    if class_name is not None:
-                        if class_sides is None:
-                            # Classes without side don't kern in FL
-                            # Or they may be non-kerning classes; skip them
-                            if class_name.startswith("_"):
-                                logger.warning(
-                                    f"Class without side flags: {class_name}"
-                                )
+                    if class_name is None:
+                        logger.error(f"Skipping class without name in line {i}")
+                        class_name = None
+                        class_glyphs = None
+                        class_sides = None
+                        continue
+
+                    if class_sides is None:
+                        # Classes without side don't kern in FL
+                        # Or they may be non-kerning classes; skip them
+                        if class_name.startswith("_"):
+                            logger.warning(
+                                f"Skipping class without side flags: {class_name}"
+                            )
+                        class_glyphs = None
+                        class_name = None
+                        class_sides = None
+                        continue
+
+                    kc = KerningClass.fromFontLabClass(f"{class_name}: {class_glyphs}")
+                    kc.sides = class_sides
+                    if kc.keyglyph is None:
+                        # Take the first glyph as keyglyph, if any
+                        if kc.glyphs:
+                            kc.keyglyph = kc.glyphs[0]
+                            logger.warning(
+                                f"Class without keyglyph: {class_name}, assuming first "
+                                f"glyph is key ({kc.keyglyph})"
+                            )
+                        else:
+                            logger.warning(f"Skipping empty class: {class_name}")
                             class_glyphs = None
                             class_name = None
                             class_sides = None
                             continue
-                        else:
-                            self.class_sides[class_name] = class_sides
-                        if class_glyphs:
-                            self.classes.append(
-                                f"{class_name}: {' '.join(class_glyphs)}"
-                            )
-                        else:
-                            # Empty class
-                            self.classes.append(f"{class_name}:")
-                        class_glyphs = None
-                        class_name = None
-                        class_sides = None
+
+                    if "L" in class_sides:
+                        self.classes_left[kc.keyglyph] = kc
+
+                    if "R" in class_sides:
+                        self.classes_right[kc.keyglyph] = kc
+
+                    # Clean up for the next class
+                    class_glyphs = None
+                    class_name = None
+                    class_sides = None
 
     def reset_classes(self) -> None:
         """
@@ -150,3 +226,7 @@ class FakeKerning:
         self.classes: dict[str, dict[str, KerningClass]] = {"L": {}, "R": {}}
         self.classes_left: dict[str, KerningClass] = self.classes["L"]
         self.classes_right: dict[str, KerningClass] = self.classes["R"]
+
+    def reset_pairs(self) -> None:
+        self.kerning: dict[tuple[str, str], list[int]] = {}
+        self.flat_kerning: list[tuple[str, str, int]] = []
