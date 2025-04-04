@@ -79,7 +79,7 @@ issue_format = "[#{issue}](https://github.com/jenskutilek/fakelab/pull/{issue})"
 
 
 [tool.pytest.ini_options]
-addopts = "--mypy --pylint --black --isort --cov --cov-report=term --cov-report=html --cov-report=xml"
+# addopts = "--mypy --pylint --black --isort --cov --cov-report=term --cov-report=html --cov-report=xml"
 testpaths = ["tests", "src"]    # "src" required for pylint and mypy (whereas cov considers imported files)
 cache_dir = "build/tests/pytest_cache"
 
