@@ -1,7 +1,11 @@
 __pycache__
-lib/fakelab.egg-info
+*.egg-info/
 .tox
 build/
 dist/
 .coverage.*
 .coverage
+.mypy_cache
+.vscode
+venv/
+src/FL/_version.py
