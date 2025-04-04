@@ -2,14 +2,27 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from FL.fake.Kerning import FakeKerning
+
 
 class FakeFont:
     def __init__(self) -> None:
         # Additions for FakeLab
 
         self._fake_binaries: dict[str, str] = {}
+        self._fake_kerning = FakeKerning(self)
         self.fake_sparse_json = True
         self.fake_deselect_all()
+
+    # Additional properties for FakeLab
+
+    @property
+    def fake_kerning(self):
+        """
+        Returns the `FL.fake.FakeKerning` object, which can be used to manipulate the
+        font's kerning data.
+        """
+        return self._fake_kerning
 
     # Additions for FakeLab
 
