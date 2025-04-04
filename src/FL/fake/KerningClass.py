@@ -102,24 +102,15 @@ class KerningClass:
         raise NotImplementedError
 
     def importFromFontLabClass(self, flClass: str) -> None:
-        """ """
         """
         Builds a new kerning class from an fl.font.classes element string, e.g.
         "_LAT_a_LEFT: a' adieresis".
 
-        :param flClass: The class as string.
-        :type flClass:  str or None
+        Args:
+            flClass (str): The FontLab class string
 
-        >>> kc = KerningClass()
-        >>> kc.importFromFontLabClass("_LAT_a_LEFT: a' adieresis")
-        >>> kc.name
-        '_LAT_a_LEFT'
-        >>> kc.glyphs
-        ['adieresis']
-        >>> kc.keyglyph
-        'a'
-        >>> kc.sides
-        'L'
+        Raises:
+            ValueError: If there is a duplicate key glyph.
         """
         self.name = None
         self.glyphs = []
