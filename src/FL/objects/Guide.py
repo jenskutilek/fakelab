@@ -7,6 +7,9 @@ if TYPE_CHECKING:
 
 
 class Guide:
+
+    # Constructor
+
     def __init__(
         self, guide_or_position: Guide | int | None = None, angle: float = 0.0
     ) -> None:

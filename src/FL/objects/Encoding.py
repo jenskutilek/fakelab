@@ -10,6 +10,9 @@ if TYPE_CHECKING:
 
 
 class Encoding(UserList[EncodingRecord]):
+
+    # Constructor
+
     def __init__(self, encoding_or_none: Encoding | None = None) -> None:
         self._parent: Font | None = None
         self.data: list[EncodingRecord] = []
@@ -57,9 +60,18 @@ class Encoding(UserList[EncodingRecord]):
     # Methods
 
     def append(self, encoding_record: EncodingRecord) -> None:
+        """
+        Args:
+            encoding_record (EncodingRecord): _description_
+        """
         self.data.append(encoding_record)
 
     def insert(self, index: int, encoding_record: EncodingRecord) -> None:
+        """
+        Args:
+            index (int): _description_
+            encoding_record (EncodingRecord): _description_
+        """
         self.data.insert(index, encoding_record)
 
     def FillUnencoded(self) -> None:
@@ -69,7 +81,8 @@ class Encoding(UserList[EncodingRecord]):
         raise NotImplementedError
 
     def FindName(self, name: str) -> int:
-        """Find a glyph name in the encoding and return its index or -1.
+        """
+        Find a glyph name in the encoding and return its index or -1.
 
         Args:
             name (str): The glyph name
@@ -77,7 +90,8 @@ class Encoding(UserList[EncodingRecord]):
         raise NotImplementedError
 
     def Load(self, filename: str) -> None:
-        """opens encoding from .ENC format.
+        """
+        Opens encoding from .ENC format.
 
         Args:
             filename (str): _description_
@@ -85,7 +99,8 @@ class Encoding(UserList[EncodingRecord]):
         raise NotImplementedError
 
     def Save(self, filename: str, EncodingTitle: str, Id: int) -> None:
-        """saves encoding in .ENC format.
+        """
+        Saves encoding in .ENC format.
 
         Args:
             filename (str): _description_

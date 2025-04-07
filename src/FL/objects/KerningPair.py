@@ -3,6 +3,9 @@ from __future__ import annotations
 
 class KerningPair:
     def __init__(self, kerningpair_or_index=None, value=0):
+
+    # Constructor
+
         """
         Class to represent kerning pair. This class is Multiple
         Master-compatible.

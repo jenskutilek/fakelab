@@ -3,6 +3,9 @@ from __future__ import annotations
 
 class Link:
     def __init__(self, link_or_index1=None, index2=None):
+
+    # Constructor
+
         self.set_defaults()
 
         # Process params

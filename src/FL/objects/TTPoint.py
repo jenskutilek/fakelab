@@ -13,6 +13,8 @@ class TTPoint:
 
     __slots__ = ["x", "y", "flag"]
 
+    # Constructor
+
     def __init__(self) -> None:
         self.x = 32767
         self.y = 32767

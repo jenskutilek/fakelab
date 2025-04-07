@@ -11,6 +11,8 @@ if TYPE_CHECKING:
 class Point:
     __slots__ = ["_parent", "_x", "_y"]
 
+    # Constructor
+
     def __init__(
         self, p_or_x: Point | float | None = None, y: float | None = None
     ) -> None:

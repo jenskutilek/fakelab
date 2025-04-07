@@ -13,6 +13,8 @@ class Matrix:
 
     __slots__ = ["_a", "_b", "_c", "_d", "_e", "_f"]
 
+    # Constructor
+
     def __init__(
         self,
         a: Matrix | list[float] | float | None = None,

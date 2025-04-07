@@ -3,6 +3,9 @@ from __future__ import annotations
 
 class TTHCommand:
     def __init__(self, code, params):
+
+    # Constructor
+
         self.code = code
         self._params = params
 

@@ -5,6 +5,9 @@ from FL.objects.Point import Point
 
 class Component:
     def __init__(self, component_or_index=None, delta=None, scale=None):
+
+    # Constructor
+
         # Init with max num masters and -1 reference glyph
         self._deltas = [(0, 0)] * 16
         self._scales = [(1.0, 1.0)] * 16

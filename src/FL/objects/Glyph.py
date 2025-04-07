@@ -25,6 +25,9 @@ if TYPE_CHECKING:
 
 
 class Glyph:
+
+    # Constructor
+
     def __init__(
         self, glyph_or_masterscount: Glyph | int = 1, nodes: list[Node] | None = None
     ) -> None:

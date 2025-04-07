@@ -25,6 +25,8 @@ class Node:
     coordinates of the final point
     """
 
+    # Constructor
+
     def __init__(
         self, node_or_type: Node | int | None = None, p: Point | None = None
     ) -> None:

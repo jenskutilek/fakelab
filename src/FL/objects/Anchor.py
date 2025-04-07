@@ -15,6 +15,8 @@ class Anchor:
 
     __slots__ = ["_parent", "_name", "_x", "_y", "_p", "_mark"]
 
+    # Constructor
+
     def __init__(
         self, anchor_or_name: Anchor | str | None = None, x: int = 0, y: int = 0
     ) -> None:
@@ -134,6 +136,10 @@ class Anchor:
     @mark.setter
     def mark(self, value: int) -> None:
         self._mark = value
+
+    # Operations
+
+    # Anchor has no operations
 
     # Methods
 

@@ -7,6 +7,9 @@ if TYPE_CHECKING:
 
 
 class Feature:  # Or TagObject?
+
+    # Constructor
+
     def __init__(
         self, feature_or_tag: Feature | str | None = None, value: str | None = None
     ) -> None:

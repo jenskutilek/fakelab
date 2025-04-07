@@ -10,19 +10,17 @@ if TYPE_CHECKING:
 
 class AuditRecord:
     """
-    ===============================================
     AuditRecord - class to represent Font Audit error record
-    ===============================================
-
-    Note that objects of this class cannot be created explicitly, they are only
-    generated as a result of Glyph().Audit() operation
     """
 
     __slots__ = ["_parent", "_x", "_y", "_id", "_description", "_index"]
 
+    # Constructor
+
     def __init__(self, parent: Glyph) -> None:
         """
-        Don't call this yourself
+        Note that objects of this class cannot be created explicitly, they are only
+        generated as a result of Glyph().Audit() operation
 
         Args:
             parent (Glyph): The parent of the AuditRecord, a `Glyph`

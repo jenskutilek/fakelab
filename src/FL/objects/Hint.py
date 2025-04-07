@@ -5,6 +5,9 @@ from FL.objects.Matrix import Matrix
 
 
 class Hint:
+
+    # Constructor
+
     def __init__(
         self, hint_or_position: Hint | int | None, width: int | None = None
     ) -> None:
@@ -17,6 +20,7 @@ class Hint:
             self.width = hint_or_position.width
 
         else:
+            # FIXME
             self.position = hint_or_position
             self.width = width
 

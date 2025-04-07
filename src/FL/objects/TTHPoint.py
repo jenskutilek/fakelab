@@ -15,6 +15,8 @@ class TTHPoint:
     """
 
     def __init__(self, pt_or_x=None, mode_or_y=None):
+    # Constructor
+
         self.x = 0.0
         self.y = 0.0
         self.mode = 1

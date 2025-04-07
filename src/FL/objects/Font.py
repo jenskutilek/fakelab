@@ -16,6 +16,9 @@ if TYPE_CHECKING:
 
 
 class Font(FakeFont):
+
+    # Constructor
+
     def __init__(
         self,
         font_or_path: Font | str | None = None,

@@ -19,6 +19,9 @@ class Rect:
                                corner points
     """
 
+
+    # Constructor
+
     def __init__(
         self,
         r_or_p0_or_x0: Rect | Point | float | None = None,

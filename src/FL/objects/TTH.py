@@ -12,6 +12,9 @@ from FL.objects.TTHCommand import TTHCommand
 
 class TTH:
     def __init__(self, g=None, f=None):
+
+    # Constructor
+
         self.glyph = g
         self.font = f
 

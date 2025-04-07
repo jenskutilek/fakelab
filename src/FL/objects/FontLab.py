@@ -17,6 +17,8 @@ class FakeLab:
     """
 
     def __init__(self):
+    # Constructor
+
         self._font = None
 
         # (integer)  - index of currently active font
