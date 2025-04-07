@@ -7,8 +7,6 @@ class TTPoint:
     TTPoint - class to represent TrueType points
     ===============================================
     All coordinates in TTPoint class are set in 10.6 fixed-point format
-
-    >>> tp = TTPoint()
     """
 
     __slots__ = ["x", "y", "flag"]
@@ -28,9 +26,3 @@ class TTPoint:
             self.x,
             self.y,
         )
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

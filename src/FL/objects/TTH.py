@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import TYPE_CHECKING
 
 from FL.helpers.FLList import FLList
 from FL.objects import TTHPoint
@@ -9,42 +9,45 @@ from FL.objects.Hint import Hint
 from FL.objects.Point import Point
 from FL.objects.TTHCommand import TTHCommand
 
+if TYPE_CHECKING:
+    from FL.objects.Font import Font
+
 
 class TTH:
-    def __init__(self, g=None, f=None):
 
     # Constructor
 
+    def __init__(self, g: Glyph | None = None, f: Font | None = None) -> None:
         self.glyph = g
         self.font = f
 
-        self.top_zones: List[Hint] = FLList()
-        self.bottom_zones: List[Hint] = FLList()
-        self.base_top_zones: List[Hint] = FLList()
-        self.base_bottom_zones: List[Hint] = FLList()
-        self.hstems: List[int] = FLList()
-        self.vstems: List[int] = FLList()
-        self.base_hstems: List[int] = FLList()
-        self.base_vstems: List[int] = FLList()
+        self.top_zones: list[Hint] = FLList()
+        self.bottom_zones: list[Hint] = FLList()
+        self.base_top_zones: list[Hint] = FLList()
+        self.base_bottom_zones: list[Hint] = FLList()
+        self.hstems: list[int] = FLList()
+        self.vstems: list[int] = FLList()
+        self.base_hstems: list[int] = FLList()
+        self.base_vstems: list[int] = FLList()
         self.zero_point = Point(0, 0)
         self.upm = 1000
         self.ppm = None  # FL returns a random number
-        self.outline: List[TTHPoint] = FLList()
-        self.base_outline: List[TTHPoint] = FLList()
-        self.commands: List[TTHCommand] = FLList()
+        self.outline: list[TTHPoint] = FLList()
+        self.base_outline: list[TTHPoint] = FLList()
+        self.commands: list[TTHCommand] = FLList()
         self.problems = FLList()
 
     # Attributes
 
     # Operations
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         returns number of commands
         """
         return len(self.commands)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> TTHCommand:
         """
         accesses TTCommand list
         """

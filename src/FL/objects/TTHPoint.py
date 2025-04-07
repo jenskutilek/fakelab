@@ -14,9 +14,11 @@ class TTHPoint:
         >>> tp = TTHPoint()
     """
 
-    def __init__(self, pt_or_x=None, mode_or_y=None):
     # Constructor
 
+    def __init__(
+        self, pt_or_x: Point | int | None = None, mode_or_y: int | None = None
+    ) -> None:
         self.x = 0.0
         self.y = 0.0
         self.mode = 1
@@ -43,11 +45,5 @@ class TTHPoint:
             else:
                 raise TypeError
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<TTHPoint x="%g" y="%g", mode="%i">' % (self.x, self.y, self.mode)
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

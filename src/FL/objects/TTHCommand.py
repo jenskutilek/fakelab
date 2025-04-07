@@ -2,23 +2,27 @@ from __future__ import annotations
 
 
 class TTHCommand:
-    def __init__(self, code, params):
 
     # Constructor
 
+    def __init__(self, code: int, params: list[int]) -> None:
         self.code = code
         self._params = params
 
     # Attributes
 
     @property
-    def code(self):
+    def code(self) -> int:
         return self._code
 
     @code.setter
-    def code(self, value):
+    def code(self, value: int) -> None:
         self._code = value
 
     @property
-    def params(self):
+    def params(self) -> list[int]:
         return self._params
+
+    # Operations: none
+
+    # Methods: none
