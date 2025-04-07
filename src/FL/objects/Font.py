@@ -8,11 +8,14 @@ from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.TTInfo import TTInfo
+from FL.objects.WeightVector import WeightVector
 
 if TYPE_CHECKING:
-    from FL.objects import Guide, NameRecord, TrueTypeTable
     from FL.objects.Feature import Feature
     from FL.objects.Glyph import Glyph
+    from FL.objects.Guide import Guide
+    from FL.objects.NameRecord import NameRecord
+    from FL.objects.TrueTypeTable import TrueTypeTable
 
 
 class Font(FakeFont):
@@ -307,10 +310,12 @@ class Font(FakeFont):
 
     # Undocumented methods
 
-    def MakeKernFeature(self, vector: list[float]) -> None:
+    def MakeKernFeature(self, vector: WeightVector) -> None:
         """
-        [WeightVector vector]
-        - generates 'kern' feature using font kerning and classes
+        Generates 'kern' feature using font kerning and classes
+
+        Args:
+            vector (WeightVector): _description_
         """
         raise NotImplementedError
 
@@ -529,7 +534,8 @@ class Font(FakeFont):
         # <font color="red">(this description is not reported by the docstring)</font>
         self.source = None
         # list of MM-settings for generate instance
-        self.weight_vector: list[float] = []
+        self.weight_vector = WeightVector()
+        self.weight_vector._parent = self
         # list of horizontal guides
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
         self.hguides: list[Guide] = []
