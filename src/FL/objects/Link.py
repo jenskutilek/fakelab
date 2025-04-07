@@ -1,11 +1,23 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from FL.objects.Glyph import Glyph
+
 
 class Link:
-    def __init__(self, link_or_index1=None, index2=None):
+    """
+    Link - class to represent link
+    """
+
+    __slots__ = ["_node1", "_node2", "_parent"]
 
     # Constructor
 
+    def __init__(
+        self, link_or_index1: Link | int | None = None, index2: int | None = None
+    ) -> None:
         self.set_defaults()
 
         # Process params
@@ -20,20 +32,21 @@ class Link:
             if index2 is not None:
                 self._node2 = index2
 
-    def __repr__(self):
-        return "<Link: '%s', %i nodes, orphan>" % (self.name, len(self))
+    def __repr__(self) -> str:
+        p = self._parent or "orphan"
+        return f"<Link: node1={self.node1}, node2={self.node2}, {p}>"
 
     # Attributes
 
     @property
-    def parent(self):
+    def parent(self) -> Glyph | None:
         """
         Link's parent object, Glyph
         """
         return self._parent
 
     @property
-    def node1(self):
+    def node1(self) -> int:
         """
         indexes of the nodes that are linked: node1
         """
@@ -44,7 +57,7 @@ class Link:
         self._node1 = value
 
     @property
-    def node2(self):
+    def node2(self) -> int:
         """
         indexes of the nodes that are linked: node2
         """
@@ -56,11 +69,10 @@ class Link:
 
     # Methods
 
-    def ToHint(self):
+    def ToHint(self) -> None:
         """
-        (None)
-        - transforms link to Hint (and returns it as a result **wrong**)
-        using parent as a source of node coordinates. Parent must exist
+        Transforms link to Hint (and returns it as a result **wrong**) using parent as
+        a source of node coordinates. Parent must exist
         """
         # This does *not* return the hint, but seems to append it to the
         # glyph's hhints or vhints property
