@@ -80,7 +80,7 @@ class Link:
 
     # Defaults
 
-    def set_defaults(self):
+    def set_defaults(self) -> None:
         self._parent = None
-        self._node1 = None
-        self._node2 = None
+        self._node1 = -1
+        self._node2 = -1
