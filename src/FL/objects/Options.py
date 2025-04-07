@@ -13,9 +13,9 @@ class Options:
     Options() - generic constructor
     """
 
-    def __init__(self):
     # Constructor
 
+    def __init__(self) -> None:
         """
         # No args
         >>> op = Options()
@@ -24,7 +24,7 @@ class Options:
         """
         self.Init()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Options>"
 
     # Additions for FakeLab
@@ -1357,39 +1357,39 @@ class Options:
         return self._CacheTTUse
 
     @CacheTTUse.setter
-    def CacheTTUse(self, value) -> None:
+    def CacheTTUse(self, value: int) -> None:
         self._CacheTTUse = value
 
     @property
-    def ContourSnapAllPoints(self):
+    def ContourSnapAllPoints(self) -> int:
         return self._ContourSnapAllPoints
 
     @ContourSnapAllPoints.setter
-    def ContourSnapAllPoints(self, value) -> None:
+    def ContourSnapAllPoints(self, value: int) -> None:
         self._ContourSnapAllPoints = value
 
     @property
-    def EditDeleteAlt(self):
+    def EditDeleteAlt(self) -> int:
         return self._EditDeleteAlt
 
     @EditDeleteAlt.setter
-    def EditDeleteAlt(self, value) -> None:
+    def EditDeleteAlt(self, value: int) -> None:
         self._EditDeleteAlt = value
 
     @property
-    def EditDoubleClickBitmap(self):
+    def EditDoubleClickBitmap(self) -> int:
         return self._EditDoubleClickBitmap
 
     @EditDoubleClickBitmap.setter
-    def EditDoubleClickBitmap(self, value) -> None:
+    def EditDoubleClickBitmap(self, value: int) -> None:
         self._EditDoubleClickBitmap = value
 
     @property
-    def EditEditSelection(self):
+    def EditEditSelection(self) -> int:
         return self._EditEditSelection
 
     @EditEditSelection.setter
-    def EditEditSelection(self, value) -> None:
+    def EditEditSelection(self, value: int) -> None:
         self._EditEditSelection = value
 
     @property
@@ -1401,11 +1401,11 @@ class Options:
         self._EditNoToolbars = value
 
     @property
-    def EditShowSelection(self):
+    def EditShowSelection(self) -> int:
         return self._EditShowSelection
 
     @EditShowSelection.setter
-    def EditShowSelection(self, value) -> None:
+    def EditShowSelection(self, value: int) -> None:
         self._EditShowSelection = value
 
     @property
@@ -1417,38 +1417,38 @@ class Options:
         self._NamesFileName = value
 
     @property
-    def OTReadMort(self):
+    def OTReadMort(self) -> int:
         return self._OTReadMort
 
     @OTReadMort.setter
-    def OTReadMort(self, value) -> None:
+    def OTReadMort(self, value: int) -> None:
         self._OTReadMort = value
 
     @property
-    def OTWriteMort(self):
+    def OTWriteMort(self) -> int:
         """
         Export "mort" table if possible?
         """
         return self._OTWriteMort
 
     @OTWriteMort.setter
-    def OTWriteMort(self, value) -> None:
+    def OTWriteMort(self, value: int) -> None:
         self._OTWriteMort = value
 
     @property
-    def ShowMeterPanel(self):
+    def ShowMeterPanel(self) -> int:
         return self._ShowMeterPanel
 
     @ShowMeterPanel.setter
-    def ShowMeterPanel(self, value) -> None:
+    def ShowMeterPanel(self, value: int) -> None:
         self._ShowMeterPanel = value
 
     @property
-    def UnicodeStrings(self):
+    def UnicodeStrings(self) -> int:
         return self._UnicodeStrings
 
     @UnicodeStrings.setter
-    def UnicodeStrings(self, value) -> None:
+    def UnicodeStrings(self, value: int) -> None:
         self._UnicodeStrings = value
 
     # Methods
@@ -1809,9 +1809,3 @@ class Options:
         Save FontLab Options in registry
         """
         pass
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
