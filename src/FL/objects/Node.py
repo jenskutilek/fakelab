@@ -1,6 +1,12 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from FL.objects.Point import Point
+
+if TYPE_CHECKING:
+    from FL.objects.Glyph import Glyph
+    from FL.objects.Matrix import Matrix
 
 # Node type
 nLINE = 1
@@ -51,7 +57,7 @@ class Node:
         1.0
         """
         # Remove float when setting coords
-        self.set_defaults()
+        self._set_defaults()
 
         # Process params
 
@@ -68,7 +74,7 @@ class Node:
             self._points = [p]
         # else: Empty node
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Node: type=0x%x, x=%g, y=%g>" % (self.type, self.x, self.y)
 
     # Additions for FakeLab
@@ -79,7 +85,7 @@ class Node:
         n.alignment = vfb2json_node_conns[data["flags"]]
         # if n.type in ()
 
-    def fake_update(self, glyph=None):
+    def fake_update(self, glyph: Glyph | None = None) -> None:
         """
         Is called from FontLab.UpdateFont()
         """
@@ -90,108 +96,106 @@ class Node:
     # Attributes
 
     @property
-    def parent(self):
+    def parent(self) -> Glyph | None:
         """
         Nodes's parent object, Glyph
         """
         return self._parent
 
     @property
-    def count(self):
+    def count(self) -> int:
         return len(self._points)
 
     @property
-    def point(self):
+    def point(self) -> Point:
         """
         position of the final point of the first master
         """
         return self._points[-1]
 
     @property
-    def points(self):
+    def points(self) -> list[Point]:
         """
         positions of all points of the first master
         """
         return self._points
 
     @property
-    def x(self):
+    def x(self) -> int:
         return self.point.x
 
     @property
-    def y(self):
+    def y(self) -> int:
         return self.point.y
 
     # Operations
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         Return the number of points.
         """
         return len(self._points)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Point:
         """
         Accesses points array of the first master
         """
         return self._points[index]
 
-    def __mul__(self, matrix):
+    def __mul__(self, matrix: Matrix) -> Node:
         raise NotImplementedError
 
     # Methods
 
-    def Assign(self, n):
+    def Assign(
+        self, node_or_type: Node | int | None = None, p: Point | None = None
+    ) -> None:
         """
-        (Node)
-
-        assigns new values to a Node, refer to constructor for a description of
+        Assigns new values to a Node, refer to constructor for a description of
         possible options
         """
         raise NotImplementedError
 
-    def SetAllLayers(self, pointindex, p):
+    def SetAllLayers(self, pointindex: int, p: Point) -> None:
         """
-        assigns position of the point p to all masters of the point number
+        Assigns position of the point p to all masters of the point number
         'pointindex'
         """
         raise NotImplementedError
 
-    def Layer(self, masterindex):
+    def Layer(self, masterindex: int) -> list[Point]:
         """
-        returns list of points for the master 'masterindex'
-        """
-        raise NotImplementedError
-
-    def Section(self, pointindex):
-        """
-        returns list of points for all layers and point number 'pointindex'
+        Returns list of points for the master 'masterindex'
         """
         raise NotImplementedError
 
-    def Shift(self, p, masterindex=0):
+    def Section(self, pointindex: int) -> list[Point]:
+        """
+        Returns list of points for all layers and point number 'pointindex'
+        """
+        raise NotImplementedError
+
+    def Shift(self, p: Point, masterindex: int = 0) -> None:
         """
         shifts position of all points for the master 'masterindex'
         """
         raise NotImplementedError
 
-    def ExpandLayer(self, masterindex):
+    def ExpandLayer(self, masterindex: int) -> None:
         """
         copies positions of all points in the master 'masterindex' to other masters
         """
         raise NotImplementedError
 
-    def Transform(self, m):
+    def Transform(self, m: Matrix) -> None:
         """
-        (Matrix m)
-
-        applies Matrix transformation to the Node
+        Applies Matrix transformation to the Node
         """
         raise NotImplementedError
 
     # Defaults
 
-    def set_defaults(self):
+    def _set_defaults(self) -> None:
         self._parent = None
 
         # type of the node, values are: nMOVE, nLINE, nCURVE or nOFF
@@ -204,9 +208,3 @@ class Node:
         # True if node is selected
         self.selected = 0
         self._points = [Point()]
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
