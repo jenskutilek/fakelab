@@ -1,17 +1,31 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from FL.objects.Point import Point
+
+if TYPE_CHECKING:
+    from FL.objects.Font import Font
+    from FL.objects.Glyph import Glyph
 
 
 class Component:
-    def __init__(self, component_or_index=None, delta=None, scale=None):
+
+    __slots__ = ["_deltas", "_scales", "_index", "_parent"]
 
     # Constructor
 
+    def __init__(
+        self,
+        component_or_index: Component | int | None = None,
+        delta: Point | None = None,
+        scale: Point | None = None,
+    ) -> None:
         # Init with max num masters and -1 reference glyph
-        self._deltas = [(0, 0)] * 16
-        self._scales = [(1.0, 1.0)] * 16
+        self._deltas = [Point(0, 0)] * 16
+        self._scales = [Point(1.0, 1.0)] * 16
         self._index = -1
+        self._parent: Glyph | None = None
 
         if isinstance(component_or_index, Component):
             # Copy constructor
@@ -28,75 +42,108 @@ class Component:
     # Attributes
 
     @property
-    def parent(self):
+    def parent(self) -> Glyph | None:
         """
         parent object, Glyph
         """
-        raise NotImplementedError
-        # return self._parent
+        return self._parent
 
     @property
-    def index(self):
+    def index(self) -> int:
         """
         referencing glyph index
         """
         return self._index
 
     @index.setter
-    def index(self, value):
+    def index(self, value: int) -> None:
         self._index = value
 
     @property
-    def delta(self):
-        """
-        shift value
-        """
+    def delta(self) -> Point:
+        # TODO: What is the point's parent?
         return self._deltas[0]
 
     @delta.setter
-    def delta(self, value):
-        assert isinstance(value, Point)
-        self._deltas = [value] * len(self._deltas)
+    def delta(self, value: Point) -> None:
+        """
+        Shift value
+
+        When setting the shift through this method, the value is used for all masters.
+
+        Args:
+            value (Point): _description_
+        """
+        self._deltas = [Point(int(value.x), int(value.y))] * len(self._deltas)
 
     @property
-    def scale(self):
+    def scale(self) -> Point:
         """
         scale factor
         """
+        # TODO: What is the point's parent?
         return self._scales[0]
 
     @scale.setter
-    def scale(self, value):
-        assert isinstance(value, Point)
-        self._scales = [value] * len(self._scales)
+    def scale(self, value: Point) -> None:
+        # TODO: What is the point's parent?
+        self._scales = [Point(value.x, value.y)] * len(self._scales)
 
     @property
-    def deltas(self):
+    def deltas(self) -> list[Point]:
         """
         list of shift values for each master
         """
+        # TODO: parent of the points must be the deltas list
         return self._deltas
 
+    @deltas.setter
+    def deltas(self, value: list[Point]) -> None:
+        # Setting the list, or only one item of the list doesn't work in FL.
+        # You need to get one of the points and modify it directly
+        raise RuntimeError(
+            'Attempt to write read only attribute "deltas" of class Component'
+        )
+
     @property
-    def scales(self):
+    def scales(self) -> list[Point]:
         """
         list of scale values for each master
         """
+        # TODO: parent of the points must be the scales list
         return self._scales
+
+    @scales.setter
+    def scales(self, value: list[Point]) -> None:
+        # Setting the list, or only one item of the list doesn't work in FL.
+        # You need to get one of the points and modify it directly
+        raise RuntimeError(
+            'Attempt to write read only attribute "scales" of class Component'
+        )
 
     # Methods
 
-    def Get(self, f=None):
+    def Get(self, f: Font | None = None) -> Glyph:
         """
-        creates a glyph from component
-        applying delta and scale transformations.
+        Creates a glyph from component applying delta and scale transformations.
+
         Font parameter is not needed when component has a parent
+        FIXME: Apparently, the font parameter is always needed
+
+        Args:
+            f (Font | None, optional): _description_. Defaults to None.
         """
+        if f is None:
+            raise RuntimeError(
+                "In order to get glyph using component created from orphan glyph "
+                "specify source font"
+            )
         raise NotImplementedError
 
-    def Paste(self, f=None):
+    def Paste(self) -> None:
         """
-        appends component to a parent glyph as a set of outlines.
+        Appends component to a parent glyph as a set of outlines.
+
         Component must have a parent
         """
         raise NotImplementedError
