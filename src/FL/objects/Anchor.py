@@ -150,4 +150,7 @@ class Anchor:
         Args:
             m (Matrix): The transformation matrix
         """
-        raise NotImplementedError
+        p = self.p
+        m.fake_transform_point(p)
+        self.x = int(p.x)  # TODO: Is truncation to int correct?
+        self.y = int(p.y)  # TODO: Is truncation to int correct?
