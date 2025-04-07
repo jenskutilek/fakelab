@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from FL.objects.Glyph import Glyph
+
 
 class KerningPair:
-    def __init__(self, kerningpair_or_index=None, value=0):
 
     # Constructor
 
+    def __init__(
+        self, kerningpair_or_index: KerningPair | int | None = None, value: int = 0
+    ) -> None:
         """
         Class to represent kerning pair. This class is Multiple
         Master-compatible.
@@ -35,47 +42,41 @@ class KerningPair:
             raise TypeError
 
     @property
-    def parent(self):
+    def parent(self) -> Glyph | None:
         """
         KerningPair's parent object, Glyph.
         """
         return self._parent
 
     @property
-    def key(self):
+    def key(self) -> int:
         """
         index of right glyph of the pair
         """
         return self._key
 
     @key.setter
-    def key(self, value):
+    def key(self, value: int) -> None:
         self._key = value
 
     @property
-    def value(self):
+    def value(self) -> int:
         """
         value of the pair
         """
         return self._values[0]
 
     @value.setter
-    def value(self, value):
+    def value(self, value: int) -> None:
         self._values = [value] * len(self._values)
 
     @property
-    def values(self):
+    def values(self) -> list[int]:
         """
         list of values for each master
         """
         return self._values
 
     @values.setter
-    def values(self, value):
+    def values(self, value: list[int]) -> None:
         self._values = value
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
