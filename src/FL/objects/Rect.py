@@ -19,6 +19,7 @@ class Rect:
                                corner points
     """
 
+    __slots__ = ["_x0", "_y0", "_x1", "_y1"]
 
     # Constructor
 
