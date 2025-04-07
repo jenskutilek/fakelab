@@ -1,0 +1,19 @@
+%%FONTLAB CLASSES
+
+%%CLASS C_A_P_I_T_A_L_S__CrossScript_
+%%GLYPHS  A
+%%END
+
+%%CLASS _A_1st_ok
+%%GLYPHS  A' Agrave Aacute Acircumflex Adieresis Aring 
+%%KERNING L 0
+%%END
+
+%%CLASS _Z_
+%%GLYPHS  Z' Zcaron Zacute Zdotaccent Zeta uni1E92 uni1E94
+%%KERNING LR 0
+%%END
+
+%%CLASS case_pre
+%%GLYPHS  ordfeminine ordfeminine.alt ordmasculine ordmasculine.alt guilsinglleft guilsinglright guillemotleft guillemotright hyphen endash emdash uni2015 periodcentered exclamdown questiondown parenleft parenright bracketleft bracketright braceleft braceright at section
+%%END
