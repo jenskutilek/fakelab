@@ -6,6 +6,8 @@ from FL.helpers.ListParent import ListParent
 from FL.objects.Rect import Rect
 
 if TYPE_CHECKING:
+    from typing import Iterable
+
     from FL import (
         Anchor,
         AuditRecord,
@@ -242,13 +244,13 @@ class Glyph:
         """
         return self._nodes[index]
 
-    def __slice__(self, a, b):
+    def __slice__(self, a: int, b: int) -> list[Node]:
         raise NotImplementedError
 
-    def __plus__(self, glyph_node_nodelist):
+    def __add__(self, glyph_node_nodelist: Glyph | Node | Iterable[Node]) -> Glyph:
         raise NotImplementedError
 
-    def __mul__(self, matrix):
+    def __mul__(self, matrix: Matrix) -> Glyph:
         raise NotImplementedError
 
     # Methods
@@ -279,7 +281,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Add(self, obj) -> None:
+    def Add(self, obj: Glyph | Node | Iterable[Node]) -> None:
         """
         - refer to '+' operator
         """
@@ -360,13 +362,15 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def DeleteNode(self, nodeindex) -> None:
+    def DeleteNode(self, nodeindex: int) -> None:
         """
         Remove the Node.
         """
         raise NotImplementedError
 
-    def InsertNode(self, nodeindex, time=0.0, masterindex=0) -> None:
+    def InsertNode(
+        self, nodeindex: int, time: float = 0.0, masterindex: int = 0
+    ) -> None:
         """
         (nodeindex) | (nodeindex, float time) |
         (nodeindex, float time, masterindex)
@@ -413,7 +417,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def SelectRect(self, r, masterindex=0) -> None:
+    def SelectRect(self, r: Rect, masterindex: int = 0) -> None:
         """
         (Rect r) | (Rect r, masterindex)
 
@@ -421,7 +425,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def UnselectRect(self, r, masterindex=0) -> None:
+    def UnselectRect(self, r: Rect, masterindex: int = 0) -> None:
         """
         (Rect r) | (Rect r, masterindex)
 
@@ -446,12 +450,10 @@ class Glyph:
         if masterindex != 0:
             raise NotImplementedError
 
-        rect = None
+        rect = Rect() if self._nodes else Rect(32767, 32767, -32767, -32767)
         for n in self._nodes:
-            if rect is None:
-                rect = Rect(n.point)
-            else:
-                rect += n.point
+            rect += n.point
+
         return rect
 
     def GetMetrics(self, masterindex: int = 0) -> Point:
@@ -654,7 +656,7 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Iterate(self):
+    def Iterate(self) -> None:
         """
         (Iterator)
 
@@ -671,22 +673,24 @@ class Glyph:
         """
         raise NotImplementedError
 
-    def Rotate3D(self):
+    def Rotate3D(self) -> None:
         raise NotImplementedError
 
-    def Extrude3D(self, outlinewidth, shift_x, shift_y):
+    def Extrude3D(self, outlinewidth, shift_x, shift_y) -> None:
         raise NotImplementedError
 
-    def Shadow(self, outlinewidth, shift_x, shift_y):
+    def Shadow(self, outlinewidth, shift_x, shift_y) -> None:
         raise NotImplementedError
 
-    def College(self, outlinewidth, distance):
+    def College(self, outlinewidth, distance) -> None:
         raise NotImplementedError
 
-    def Gradient(self, outlinewidth, direction, stripes_number, start_y, finish_y):
+    def Gradient(
+        self, outlinewidth, direction, stripes_number, start_y, finish_y
+    ) -> None:
         raise NotImplementedError
 
-    def Distance(self, width_x, width_y, cornermode, dest=None):
+    def Distance(self, width_x, width_y, cornermode, dest=None) -> None:
         """
         (width_x, width_y, cornermode) |
         (width_x, width_y, cornermode, Glyph dest)
