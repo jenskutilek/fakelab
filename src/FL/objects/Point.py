@@ -1,68 +1,39 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
+from FL.objects.Matrix import Matrix
+
+if TYPE_CHECKING:
+    from typing import Any
+
 
 class Point:
-    """
-    ===============================================
-    Point - base class to represent point
-    ===============================================
-    Integer or float values are accepted as coordinates
+    __slots__ = ["_parent", "_x", "_y"]
 
-    >>> p = Point()
-    """
-
-    def __init__(self, pt_or_x=None, y=None):
+    def __init__(
+        self, p_or_x: Point | float | None = None, y: float | None = None
+    ) -> None:
         """
-        # No args
-        >>> p = Point()
-        >>> print(p.x, p.y)
-        0.0 0.0
+        Point - base class to represent point
 
-        # Initialize with coords
-        >>> p = Point(-200, 0)
-        >>> print(p.x, p.y)
-        -200.0 0.0
-
-        # Copy constructor
-        >>> p2 = Point(p)
-        >>> print(p2.x, p2.y)
-        -200.0 0.0
-        >>> p == p2
-        True
-        >>> p.x += 1
-        >>> print(p.x, p.y)
-        -199.0 0.0
-        >>> p == p2
-        False
-
-        # Addition
-        >>> p2.Add(p)
-        >>> print(p2.x, p2.y)
-        -399.0 0.0
+        Args:
+            p_or_x (Point | float | None, optional): The `Point` to copy coordinates
+                from, or the x coordinate. Defaults to None.
+            y (float | None, optional): The y coordinate. Defaults to None.
         """
         self._parent = None
-        self.x = 0.0
-        self.y = 0.0
+        self.x = 0
+        self.y = 0
+        if p_or_x is not None:
+            self.Assign(p_or_x, y)
 
-        if isinstance(pt_or_x, Point):
-            # copy
-            self._parent = pt_or_x.parent
-            self.x = pt_or_x.x
-            self.y = pt_or_x.y
-        else:
-            # coordinates
-            self._parent = None
-            if pt_or_x is not None:
-                self.x = float(pt_or_x)
-            if y is not None:
-                self.y = float(y)
-
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<Point x="%g" y="%g">' % (self.x, self.y)
 
     # Additions for FakeLab
 
-    def fake_update(self, parent=None):
+    def fake_update(self, parent: Any | None = None) -> None:
         """
         Is called from FontLab.UpdateFont()
         """
@@ -71,15 +42,46 @@ class Point:
     # Attributes
 
     @property
-    def parent(self):
+    def parent(self) -> Any:
         """
         Point's parent object
         """
+        # TODO: What can be a point's parent?
         return self._parent
+
+    @property
+    def x(self) -> float:
+        """
+        Horizontal position of the point
+
+        Returns:
+            float: The x coordinate
+        """
+        return self._x
+
+    @x.setter
+    def x(self, value: float) -> None:
+        self._x = float(value)
+
+    @property
+    def y(self) -> float:
+        """
+        Vertical position of the point
+
+        Returns:
+            float: The y coordinate
+        """
+        return self._y
+
+    @y.setter
+    def y(self, value: float) -> None:
+        self._y = float(value)
 
     # Operations
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Point):
+            return False
         return self.x == other.x and self.y == other.y
 
     # coerce?
@@ -89,82 +91,93 @@ class Point:
         """
         raise NotImplementedError
 
-    def __add__(self, other):
+    def __add__(self, other: Point) -> Point:
         """
         Point must be second operand, both coordinates are added
         """
-        assert isinstance(other, Point)
+        return Point(self.x + other.x, self.y + other.y)
 
-        self.x += other.x
-        self.y += other.y
+    def __sub__(self, other: Point) -> Point:
+        """
+        Point must be second operand, both coordinates are subtracted
+        """
+        return Point(self.x - other.x, self.y - other.y)
 
-    def __sub__(self, other):
+    def __mul__(self, other: Point | float | Matrix) -> Point | float:
         """
-        Point must be second operand, both coordinates are added
+        Second operand may be `Point`, `float` or `Matrix`. If second operand is
+        `Point`, then result of scalar product is returned
         """
-        raise NotImplementedError
+        if isinstance(other, Point):
+            # Scalar product
+            return self.x * other.x + self.y * other.y
 
-    def __mul__(self, other):
-        """
-        second operand may be Point, float or Matrix. If second operand is Point,
-        then result of scalar product is returned
-        """
-        raise NotImplementedError
+        elif isinstance(other, Matrix):
+            # Transform the point with the matrix
+            p = Point(self)
+            p.Transform(other)
+            return p
+
+        return Point(self.x * other, self.y * other)
 
     # Methods
 
-    def Assign(self, pt_or_x, y=None):
+    def Assign(self, p_or_x: Point | float, y: float | None = None) -> None:
         """
-        assigns new values to a Point
+        Assigns new values to a Point
         """
-        if y is None:
-            self.x = pt_or_x.x
-            self.y = pt_or_x.y
+        if isinstance(p_or_x, Point):
+            # copy
+            if y is not None:
+                raise RuntimeError
+
+            self._parent = p_or_x.parent
+            self.x = p_or_x.x
+            self.y = p_or_x.y
         else:
             # coordinates
             self._parent = None
-            self.x = pt_or_x
-            self.y = y
+            if p_or_x is not None:
+                self.x = p_or_x
+            if y is None:
+                raise RuntimeError
 
-    def Shift(self, pt_or_x, y=None):
-        """
-        shifts Point on a position defined by p or x and y values
-        """
-        if isinstance(pt_or_x, Point):
-            self += pt_or_x
-        else:
-            if isinstance(pt_or_x, int) and isinstance(y, int):
-                self.x += pt_or_x
-                self.y += y
             else:
-                raise TypeError
+                self.y = float(y)
 
-    def Add(self, point):
+    def Shift(self, p_or_x: Point | float, y: float | None = None) -> None:
         """
-        same as Shift(Point p)
+        Shifts Point on a position defined by p or x and y values
         """
-        self.Shift(point)
+        if isinstance(p_or_x, Point):
+            p = p_or_x
+        else:
+            p = Point(p_or_x, y)
+        self.x += p.x
+        self.y += p.y
 
-    def Sub(self, point):
+    def Add(self, p: Point) -> None:
         """
-        subtracts p coordinates from the current Point
+        Same as Shift(Point p)
         """
-        raise NotImplementedError
+        self.Shift(p)
 
-    def Mul(self, s):
+    def Sub(self, p: Point) -> None:
         """
-        mutiplies Point's position to s value
+        Subtracts p coordinates from the current Point
         """
-        raise NotImplementedError
+        self.x -= p.x
+        self.y -= p.y
 
-    def Transform(self, m):
+    def Mul(self, s: float) -> None:
         """
-        applies Matrix transformation to the Point
+        Multiplies Point's position to s value
         """
-        raise NotImplementedError
+        self.x *= s
+        self.y *= s
 
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()
+    def Transform(self, m: Matrix) -> None:
+        """
+        Applies Matrix transformation to the Point
+        """
+        m.fake_transform_point(self)
