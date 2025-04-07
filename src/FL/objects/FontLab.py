@@ -16,15 +16,15 @@ class FakeLab:
     The main class. It is used via the pre-instantiated object `fl`.
     """
 
-    def __init__(self):
     # Constructor
 
+    def __init__(self) -> None:
         self._font = None
 
         # (integer)  - index of currently active font
         self._ifont = -1
 
-        self.fonts = []
+        self.fonts: list[Font] = []
 
         # (integer) - index of currently selected font in the fonts list panel
         self.ifontslist = 0
