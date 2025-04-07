@@ -99,7 +99,7 @@ class Glyph:
         elif name == "Glyph Unicode Non-BMP":
             self.unicodes.extend(data)
         elif name == "mark":
-            self.mark = data
+            self.mark: int = data
         elif name == "glyph.customdata":
             self.customdata = data
         elif name == "glyph.note":
@@ -771,7 +771,7 @@ class Glyph:
         # note defined for this glyph
         self.note: str | None = None
 
-        self.mark: int = 0
+        self.mark = 0
         self._anchors: list[Anchor] = []
         self._hhints: ListParent[Hint] = ListParent([], self)
         self._vhints: ListParent[Hint] = ListParent([], self)
