@@ -2,4 +2,8 @@ from __future__ import annotations
 
 
 class Image:
-    pass
+
+    # Constructor
+
+    def __init__(self) -> None:
+        pass
