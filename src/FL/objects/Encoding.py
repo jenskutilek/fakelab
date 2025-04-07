@@ -111,7 +111,7 @@ class Encoding(UserList[EncodingRecord]):
 
     # Internal
 
-    def load_font_default(self):
+    def load_font_default(self) -> None:
         # How is the unicode derived? It is not stored in Encoding in the VFB.
         for name, uni in (
             ("_0000", -1),
