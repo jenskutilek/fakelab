@@ -254,14 +254,15 @@ class TTH:
     def SetPPM(self, ppm: int) -> None:
         self.ppm = ppm
 
-    def ResetProgram(self) -> None:
+    def ResetProgram(self, direction: int | None = None) -> None:
         raise NotImplementedError
 
     def LoadProgram(self, g: Glyph | None = None) -> None:
+        # Initialize TTH object with Glyph first or specify it explicitly
         if g is None:
             raise ValueError(
                 "TTH.LoadProgram without glyph argument will send FontLab into an "
-                "infinite loop."
+                "infinite loop (if the TTH was not initialized with a Glyph)."
             )
         raise NotImplementedError
 
@@ -269,14 +270,14 @@ class TTH:
         if g is None:
             raise ValueError(
                 "TTH.LoadProgram without glyph argument will send FontLab into an "
-                "infinite loop."
+                "infinite loop (if the TTH was not initialized with a Glyph)."
             )
         raise NotImplementedError
 
     def SortProgram(self) -> None:
         raise NotImplementedError
 
-    def RunProgram(self) -> None:
+    def RunProgram(self, i: int | None = None, j: int | None = None) -> None:
         raise NotImplementedError
 
     def RunCommand(self, tthcommand: TTHCommand) -> None:
@@ -290,7 +291,7 @@ class TTH:
         if g is None:
             raise ValueError(
                 "TTH.LoadProgram without glyph argument will send FontLab into an "
-                "infinite loop."
+                "infinite loop (if the TTH was not initialized with a Glyph)."
             )
         raise NotImplementedError
 
