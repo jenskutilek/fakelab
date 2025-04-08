@@ -43,6 +43,12 @@ class TTGasp:
 
     @property
     def ppm(self) -> int:
+        """
+        Upper limit of range, in PPEM
+
+        Returns:
+            int: The maximum ppm for the gasp record
+        """
         return self._ppm
 
     @ppm.setter
@@ -51,6 +57,22 @@ class TTGasp:
 
     @property
     def behavior(self) -> int:
+        """
+        Flags describing desired rasterizer behavior.
+
+        Returns:
+            int: The flags.
+
+        0x0001 - Use gridfittig
+        0x0002 - Use grayscale rendering
+
+        Those additional flags are defined in version 1 of the gasp table specification,
+        but they can not be accessed from the FontLab 5 UI:
+
+        0x0004 - Use gridfitting with ClearType symmetric smoothing
+        0x0008 - Use smoothing along multiple axes with ClearType®
+        """
+        # TODO: What happens if we set the unsupported flags via Python?
         return self._behavior
 
     @behavior.setter
