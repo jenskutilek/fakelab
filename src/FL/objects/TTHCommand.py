@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from FL.helpers.tth import TT_COMMANDS, TT_COMMAND_CONSTANTS
+from FL.helpers.tth import TT_COMMANDS
 
 
 class TTHCommand:
