@@ -7,9 +7,11 @@ if TYPE_CHECKING:
 
 
 class WeightVector:
-    # This class is completely undocumented.
-    # Apparently:
-    # A list of 16 floats that represent the interpolation factors for all masters.
+    """This class is completely undocumented.
+
+    Apparently: A list of 16 floats that represent the interpolation factors for all
+    possible masters.
+    """
 
     __slots__ = ["_parent", "_weights"]
 
