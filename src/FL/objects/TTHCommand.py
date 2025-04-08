@@ -12,7 +12,7 @@ class TTHCommand:
 
     # Constructor
 
-    def __init__(self, code: int, *args: int) -> None:
+    def __init__(self, code: int | None = None, *args: int) -> None:
         """
         Creates command, assigns command code and one or more parameters
 
@@ -23,26 +23,36 @@ class TTHCommand:
         See FL.helpers.tth.TT_COMMANDS for valid command codes and their matching
         parameters.
         """
+        if code is None or len(args) >= 5:
+            # More than 4 params will cause a RuntimeError, even though it should be
+            # at > 5 according to the message
+            raise RuntimeError(
+                "Incorrect # of args to: "
+                "TTHCommand(Int Code[,<up to 5 Int parameters>])"
+            )
+
         if 1 <= code <= 23:
-            self.code = code
+            self._code = code
             self._params = list(args)
+            # Invalid codes will make FontLab 5 enter an infinite loop
+            # Here, we just throw an exception
+            if code not in TT_COMMANDS:
+                raise ValueError(
+                    "Codes 9, 10, 11, 12, 15, 16, 17, 18, 19 "
+                    "will send FontLab into an infinite loop."
+                )
         else:
             raise RuntimeError(
                 "Incorrect instruction code. "
                 "Value must be within the range from 1 to 23"
-            )
-        if len(args) > 5:
-            raise RuntimeError(
-                "Incorrect # of args to: "
-                "TTHCommand(Int Code[,<up to 5 Int parameters>])"
             )
         if len(args) == 0:
             # If there are too few args, the params are initialized with garbage ...
             self._params = [1632632832]
 
     def __repr__(self) -> str:
-        cmd = TT_COMMANDS.get(self.code, {}).get("name", "UNKNOWN").upper()
-        return f"<TTHCommand: {cmd}{self.params}>"
+        cmd = TT_COMMANDS.get(self.code, {}).get("name", "NOTHING").upper()
+        return f"<TTHCommand: {cmd}{tuple(self.params)}>"
 
     # Attributes
 
@@ -52,7 +62,7 @@ class TTHCommand:
 
     @code.setter
     def code(self, value: int) -> None:
-        self._code = value
+        raise RuntimeError("class TTHCommand has no attribute code")
 
     @property
     def params(self) -> list[int]:
@@ -67,40 +77,3 @@ class TTHCommand:
     # Operations: none
 
     # Methods: none
-
-
-"""
-FINALDELTAV 23
-FINALDELTAH 22
-MIDDLEDELTAV 21
-MIDDLEDELTAH 20 
-RINGINTERPOLATEV (19)
-RINGINTERPOLATEH (18)
-RINGLINKV (17)
-RINGLINKH (16)
-POINTTORINGXY (15)
-INTERPOLATEV 14
-INTERPOLATEH 13
-RINGTOGRIDV (12)
-RINGTOGRIDH (11)
-POINTTORINGV (10)
-POINTTORINGH (9)
-ALIGNV 8
-ALIGNH 7
-DOUBLELINKV 6
-DOUBLELINKH 5
-SINGLELINKV 4
-SINGLELINKH 3
-ALIGNBOTTOM 2
-ALIGNTOP 1
-NOTHING
-Incorrect instruction code. Value must be within the range from 1 to 23
-
-Incorrect # of args to: TTHCommand(Int Code[,<up to 5 Int parameters>])
-
-TTHCommand
-
-)>
-
-class TTHCommand has no attribute %s
-"""

@@ -7,6 +7,7 @@ class TTCommandDict(TypedDict):
 
 
 TT_COMMANDS: dict[int, TTCommandDict] = {
+    # 0x00: {"name": "Nothing"},
     0x01: {"name": "AlignTop", "params": ["pt", "zone"]},
     0x02: {"name": "AlignBottom", "params": ["pt", "zone"]},
     0x03: {
@@ -27,6 +28,10 @@ TT_COMMANDS: dict[int, TTCommandDict] = {
     },
     0x07: {"name": "AlignH", "params": ["pt", "align"]},
     0x08: {"name": "AlignV", "params": ["pt", "align"]},
+    # 0x09: {"name": "PointToRingH"},
+    # 0x0A: {"name": "PointToRingV"},
+    # 0x0B: {"name": "RingToGridH"},
+    # 0x0C: {"name": "RingToGridV"},
     0x0D: {
         "name": "InterpolateH",
         "params": ["pti", "pt1", "pt2", "align"],
@@ -35,6 +40,11 @@ TT_COMMANDS: dict[int, TTCommandDict] = {
         "name": "InterpolateV",
         "params": ["pti", "pt1", "pt2", "align"],
     },
+    # 0x0F: {"name": "PointToRingXY"},
+    # 0x10: {"name": "RingLinkH"},
+    # 0x11: {"name": "RingLinkV"},
+    # 0x12: {"name": "RingInterpolateH"},
+    # 0x13: {"name": "RingInterpolateV"},
     0x14: {
         "name": "MDeltaH",
         "params": ["pt", "shift", "ppm1", "ppm2"],
