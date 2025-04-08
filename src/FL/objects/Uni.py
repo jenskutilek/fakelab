@@ -57,7 +57,7 @@ class Uni:
         Compares two Unicode indexes in Uni or integer form
 
         Args:
-            other (Uni | int): The object or integer to compare to.
+            other (Uni): The object to compare to.
 
         Returns:
             bool: Whether both objects represent the same Unicode index.
@@ -65,9 +65,17 @@ class Uni:
         if isinstance(other, Uni):
             return self.value == other.value
 
-        if isinstance(other, int):
-            return self.value == other
-
         return False
 
     # Methods: none
+
+    """
+    Uni type is expected in arg 1: Uni(Uni)
+    Uni(Int value)
+    Uni
+    Uni type is expected in to compare
+
+    class Uni has no attribute %s or it is read-only
+
+    Incorrect type of arg assigned to value of Uni
+    """
