@@ -9,6 +9,7 @@ from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.TTInfo import TTInfo
+from FL.objects.Uni import Uni
 from FL.objects.WeightVector import WeightVector
 
 if TYPE_CHECKING:
@@ -20,6 +21,95 @@ if TYPE_CHECKING:
 
 
 class Font(FakeFont, Copyable):
+
+    __slots__ = [
+        "_axis",
+        "_classes",
+        "_file_name",
+        "_fontnames",
+        "_xuid_num",
+        "_xuid",
+        "apple_name",
+        "copyright",
+        "default_character",
+        "designer_url",
+        "designer",
+        "family_name",
+        "fond_id",
+        "font_name",
+        "font_style",
+        "full_name",
+        "mac_compatible",
+        "menu_name",
+        "note",
+        "notice",
+        "pref_family_name",
+        "pref_style_name",
+        "style_name",
+        "trademark",
+        "tt_u_id",
+        "tt_version",
+        "unique_id",
+        "weight_code",
+        "weight",
+        "width",
+        "vendor",
+        "vendor_url",
+        "version",
+        "year",
+        "version_major",
+        "version_minor",
+        "vp_id",
+        "ms_charset",
+        "ms_id",
+        "panose",
+        "pcl_chars_set",
+        "pcl_id",
+        "upm",
+        "ascender",
+        "descender",
+        "cap_height",
+        "x_height",
+        "default_width",
+        "slant_angle",
+        "italic_angle",
+        "is_fixed_pitch",
+        "underline_position",
+        "underline_thickness",
+        "blue_fuzz",
+        "blue_scale",
+        "blue_shift",
+        "blue_values_num",
+        "blue_values",
+        "other_blues_num",
+        "other_blues",
+        "family_blues_num",
+        "family_blues",
+        "family_other_blues_num",
+        "family_other_blues",
+        "force_bold",
+        "stem_snap_h_num",
+        "stem_snap_h",
+        "stem_snap_v_num",
+        "stem_snap_v",
+        "modified",
+        "ot_classes",
+        "_features",
+        "customdata",
+        "_truetypetables",
+        "ttinfo",
+        "_encoding",
+        "codepages",
+        "unicoderanges",
+        "source",
+        "weight_vector",
+        "hguides",
+        "vguides",
+        "_glyphs",
+        "_masters_count",
+        "_license",
+        "_license_url",
+    ]
 
     # Constructor
 
@@ -73,6 +163,8 @@ class Font(FakeFont, Copyable):
     def classes(self) -> list[str]:
         """
         List of glyph classes.
+
+        Returns a copy of the list. To change entries, you must reassign the whole list.
         """
         return list(self._classes)
 
@@ -96,7 +188,7 @@ class Font(FakeFont, Copyable):
         return self._features
 
     @features.setter
-    def features(self, value) -> None:
+    def features(self, value: list[Feature]) -> None:
         raise RuntimeError
 
     @property
@@ -107,7 +199,7 @@ class Font(FakeFont, Copyable):
         return self._fontnames
 
     @fontnames.setter
-    def fontnames(self, value) -> None:
+    def fontnames(self, value: list[NameRecord]) -> None:
         raise RuntimeError
 
     @property
@@ -119,7 +211,7 @@ class Font(FakeFont, Copyable):
         return self._glyphs
 
     @glyphs.setter
-    def glyphs(self, value) -> None:
+    def glyphs(self, value: list[Glyph]) -> None:
         raise RuntimeError
 
     @property
@@ -131,20 +223,59 @@ class Font(FakeFont, Copyable):
         return self._truetypetables
 
     @truetypetables.setter
-    def truetypetables(self, value) -> None:
+    def truetypetables(self, value: list[TrueTypeTable]) -> None:
         raise RuntimeError
+
+    @property
+    def xuid(self) -> list[int]:
+        """
+        A list of Type 1 XUID numbers.
+
+        The list may contain from 0 to 20 entries. To change the length of the list, set
+        `Font.xuid_num`.
+
+
+        Returns:
+            list[int]: The list of Type 1 XUID numbers.
+        """
+        return self._xuid
+
+    @property
+    def xuid_num(self) -> int:
+        """_summary_
+
+        Returns:
+            int: _description_
+        """
+        return self._xuid_num
+
+    @xuid_num.setter
+    def xuid_num(self, value: int) -> None:
+        if not 0 <= value <= 20:
+            raise RuntimeError('New "xuid_num" is out of range 0..2')
+        self._xuid_num = value
+        # TODO: Adjust the length of self._xuid
 
     # Operations
 
     def __len__(self) -> int:
         """
         Return the number of glyphs.
+
+        Returns:
+            int: The number of glyphs.
         """
         return len(self._glyphs)
 
     def __getitem__(self, index: int | str) -> Glyph | None:
         """
-        Accesses glyphs array
+        Access the glyphs array.
+
+        Args:
+            index (int | str): The glyph index to get.
+
+        Returns:
+            Glyph | None: Return the glyph, or None if the index was out of bounds.
         """
         if isinstance(index, str):
             # We got a glyph name
@@ -159,29 +290,35 @@ class Font(FakeFont, Copyable):
 
     def New(self) -> None:
         """
-        clears the font
+        Clear the font.
         """
         raise NotImplementedError
 
-    def Open(self, filename: str | Path) -> None:
+    def Open(self, filename: str) -> None:
         """
-        opens font from VFB format
+        Open a font from a VFB file.
+
+        Args:
+            filename (str): The path and file name of the VFB file.
         """
         from FL.vfb.reader import VfbToFontReader
 
         self._set_file_name(filename)
         VfbToFontReader(Path(filename), self)
 
-    def Save(self, filename: str | Path) -> None:
+    def Save(self, filename: str) -> None:
         """
-        saves font in VFB format
+        Save the font in VFB format.
+
+        Args:
+            filename (str): The path and file name of the VFB file.
         """
         from FL.vfb.writer import FontToVfbWriter
 
         self._set_file_name(filename)
         FontToVfbWriter(self, Path(filename))
 
-    def OpenAFM(self, filename: str | Path, mode: int, layer: int) -> None:
+    def OpenAFM(self, filename: str, mode: int, layer: int) -> None:
         """
         open AFM-File, mode is the integer bit field.
           The bit list is:
@@ -208,38 +345,55 @@ class Font(FakeFont, Copyable):
         """
         raise NotImplementedError
 
-    def SaveAFM(self, filename: str | Path) -> None:
+    def SaveAFM(self, filename: str) -> None:
         """
-        saves AFM- and INF-File (this method is not reported by the docstring)
+        Save an AFM and an INF file.
+
+        Args:
+            filename (str): _description_
+
+        Raises:
+            NotImplementedError: _description_
         """
         raise NotImplementedError
 
     def Reencode(self, e: Encoding, style: int = 0) -> None:
         """
-        applies Encoding to Font (the parameters of this method are not reported by the
-        docstring and i don't know what the style parameter does)
+        Apply an encoding to the font.
+
+        The parameters of this method are not reported by the docstring and I don't know
+        what the style parameter does.
+
+        Args:
+            e (Encoding): The encoding.
+            style (int, optional): _description_. Defaults to 0.
         """
         raise NotImplementedError
 
-    def FindGlyph(self, name_unicode_uniint: str | int) -> int:
+    def FindGlyph(self, name_uni_int: str | Uni | int) -> int:
         """
         (string name) | (Uni unicode) | (integer Unicode)
         - finds glyph and return its index or -1
         """
-        if isinstance(name_unicode_uniint, str):
+        if isinstance(name_uni_int, str):
             # name
             for i, g in enumerate(self._glyphs):
-                if g.name == name_unicode_uniint:
+                if g.name == name_uni_int:
                     return i
             return -1
-        elif isinstance(name_unicode_uniint, int):
+        elif isinstance(name_uni_int, Uni):
+            # uni object
+            for i, g in enumerate(self._glyphs):
+                if name_uni_int.value in g.unicodes:
+                    return i
+            return -1
+        elif isinstance(name_uni_int, int):
             # int (unicode value)
             for i, g in enumerate(self._glyphs):
-                if name_unicode_uniint in g.unicodes:
+                if name_uni_int in g.unicodes:
                     return i
             return -1
         else:
-            # What is Uni supposed to be? I don't know
             raise TypeError
 
     def DefineAxis(self, name: str, type: str, shortname: str) -> None:
@@ -275,37 +429,57 @@ class Font(FakeFont, Copyable):
         """
         raise NotImplementedError
 
-    def GenerateGlyph(self, glyphname: str) -> Glyph:
+    def GenerateGlyph(self, name: str) -> Glyph:
         """
-        Generates new glyph using 'glyphname' as a source of information about glyph's
-        composition. See 'FontLabDir/Mapping/alias.dat' for composition definitions
+        Generates new glyph using 'name' as a source of information about glyph's
+        composition. See 'FontLabDir/Mapping/alias.dat' for composition definitions.
+
+        Args:
+            name (str): _description_
+
+        Returns:
+            Glyph: _description_
+
+        The glyph is not added to the font automatically.
         """
-        # The glyph is not added to the font automatically
         glyph = Glyph()
-        glyph.name = glyphname
+        glyph.name = name
         return glyph
 
-    def has_key(self, name_unicode_uniint: str | int) -> int:
+    def has_key(self, name_uni_int: str | Uni | int) -> int:
         """
-        (string name) | (Uni unicode) | (integer Unicode)
-        - finds glyph and return 1 (found) or 0 (not found)
-          <font color="red">(this method is not reported by the docstring)</font>
+        Find a glyph by name, unicode or integer unicode and return 1 (found) or 0 (not
+        found).
+
+        Args:
+            name_uni_int (str | Uni | int): _description_
+
+        Returns:
+            int: 1 if the glyph name or unicode value are present in the font,
+                0 otherwise.
         """
-        glyph_index = self.FindGlyph(name_unicode_uniint)
+        glyph_index = self.FindGlyph(name_uni_int)
         if glyph_index == -1:
             return 0
         return 1
 
     def GenerateFont(self, fontType: int, filename: str | Path) -> None:
         """
-        (fontType, filename)
-        - generates Font, see <a href="FontLab.xml.html">FontLab</a> class for
-          description. <font color="red">(As a method of the Font class, this
-          method is deprecated. Since FontLab 4.52 for Mac
-          and FontLab 4.53 for Windows, GenerateFont is a method
-          of the FontLab class)</font>
+        Generate a font. Deprecated. See the `FL.objects.FontLab` class for a
+        description.
+
+        As a method of the `Font` class, this method is deprecated. Since FontLab 4.52
+        for Mac and FontLab 4.53 for Windows, `GenerateFont` is a method of the
+        `FontLab` class.
+
+        Args:
+            fontType (int): _description_
+            filename (str | Path): _description_
+
+        Raises:
+            AttributeError: In FontLab 5, the deprecated methods raises an
+                AttributeError.
         """
-        # In FL 5, this raises an AttributeError
         raise AttributeError
 
     # Undocumented methods
@@ -315,15 +489,19 @@ class Font(FakeFont, Copyable):
         Generates 'kern' feature using font kerning and classes
 
         Args:
-            vector (WeightVector): _description_
+            vector (WeightVector): The `WeightVector` used to interpolate the kerning
+                values.
         """
         raise NotImplementedError
 
     def MergeFonts(self, source: Font, flags: int | None = None) -> None:
         """
-        (Font source[, flags])
-        - appends all glyphs from the source font. Check mfXXXX constants for
-        options
+        Append all glyphs from the source font to the current fonts.
+        Check mfXXXX constants for options.
+
+        Args:
+            source (Font): The source font to be merged.
+            flags (int | None, optional): _description_. Defaults to None.
         """
         raise NotImplementedError
 
@@ -345,15 +523,25 @@ class Font(FakeFont, Copyable):
 
     def GetClassLeft(self, class_index: int) -> int | None:
         """
-        (int class_index)
-        - returns the 'left' property of the class
+        Return the 'left' property of the class.
+
+        Args:
+            class_index (int): _description_
+
+        Returns:
+            int | None: _description_
         """
         return self._classes.GetClassLeft(class_index)
 
     def GetClassRight(self, class_index: int) -> int | None:
         """
-        (int class_index)
-        - returns the 'right' property of the class
+        Return the 'right' property of the class.
+
+        Args:
+            class_index (int): _description_
+
+        Returns:
+            int | None: _description_
         """
         return self._classes.GetClassRight(class_index)
 
@@ -412,30 +600,31 @@ class Font(FakeFont, Copyable):
         self.weight_code = -1
         self.width = "normal"
         self.designer: str | None = None
-
-        # up until here the default values have been verified
-        self.designer_url: str = ""
+        self.designer_url: str | None = None
         # list of font name records
         self._fontnames: ListParent[NameRecord] = ListParent(parent=self)
         # Copyright name field
-        self.copyright: str = ""
+        self.copyright: str | None = None
         # Notice field
-        self.notice: str = ""
+        self.notice: str | None = None
         # Font note
-        self.note: str = ""
+        self.note: str | None = None
         # Type 1 Unique ID number
-        self.unique_id: int = 0
+        self.unique_id: int = -1
         # TrueType Unique ID record
-        self.tt_u_id: str = ""
+        self.tt_u_id: str | None = None
         # TrueType Version record
-        self.tt_version: str = ""
-        self.trademark: str = ""
-        self.x_u_id_num: int = 0
-        self.x_u_id: str = ""
+        self.tt_version: str | None = None
+        self.trademark: str | None = None
+        self.xuid_num = 0
+        self._xuid: list[int] = []
         # TrueType vendor code
         self.vendor: str = ""
-        self.vendor_url: str = ""
-        self.version: str = ""
+        self.vendor_url: str | None = None
+        self.version: str | None = None
+
+        # up until here the default values have been verified
+
         self.year: int = 0
         self.version_major: int = 0
         self.version_minor: int = 0
