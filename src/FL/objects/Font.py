@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from FL.fake.Font import FakeFont
 from FL.helpers.classList import ClassList
@@ -108,6 +108,17 @@ class Font(FakeFont):
         "_masters_count",
         "_license",
         "_license_url",
+        # Non-API:
+        "_export_pclt_table",
+        "_pclt_table",
+        "_axis_count",
+        "_anisotropic_interpolation_mappings",
+        "_axis_mappings_count",
+        "_axis_mappings",
+        "_master_names",
+        "_master_locations",
+        "_master_ps_infos",
+        "_mapping_mode",
     ]
 
     # Constructor
@@ -738,3 +749,89 @@ class Font(FakeFont):
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
+        self._export_pclt_table: int = 0
+        self._pclt_table: dict[str, Any] = {}
+        self._axis_count: int = 0
+        self._anisotropic_interpolation_mappings = []
+        self._axis_mappings_count: list[int] = [0, 0, 0, 0]
+        self._axis_mappings: list[list[float]] = [
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+            [0.0, 0.0],
+        ]
+        self._master_names = ["Untitled"]
+        self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
+        self._master_ps_infos = [
+            {
+                "font_matrix": [0.001, 0.0, 0.0, 0.001, 0.0, 0.0],
+                "force_bold": 0,
+                "blue_values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "other_blues": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "family_blues": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "family_other_blues": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "blue_scale": 0.039625,
+                "blue_shift": 7,
+                "blue_fuzz": 1,
+                "std_hw": 100,
+                "std_vw": 50,
+                "stem_snap_h": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "stem_snap_v": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "bounding_box": {
+                    "xMin": 32767,
+                    "yMin": 32767,
+                    "xMax": -32767,
+                    "yMax": -32767,
+                },
+                "adv_width_min": 0,
+                "adv_width_max": 0,
+                "adv_width_avg": 500,
+                "ascender": 750,
+                "descender": -250,
+                "x_height": 500,
+                "cap_height": 700,
+            }
+        ]
+
+        self._mapping_mode = {
+            "mapping_mode": "names_or_index",
+            "2": 152,
+            "3": 316,
+            "mapping_id": 1,
+        }
