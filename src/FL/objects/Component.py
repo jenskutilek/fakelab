@@ -11,6 +11,14 @@ if TYPE_CHECKING:
 
 
 class Component(Copyable):
+    """
+    Component - class to represent glyph component
+
+    Components are defined by the glyph index which they reference,
+    Shift of components origin point and scale factor of a component
+    Scale is measured in relation to 1.0, so 100% scale is 1.0 and 60% - 0.6
+    This class is Multiple Master - compatible
+    """
 
     __slots__ = ["_deltas", "_scales", "_index", "_parent"]
 
@@ -22,6 +30,24 @@ class Component(Copyable):
         delta: Point | None = None,
         scale: Point | None = None,
     ) -> None:
+        """
+        Component()          - generic constructor, creates an empty Component
+        Component(Component) - copy constructor
+        Component(index)     - creates component referencing
+                               glyph index with zero shift and 100% scale
+        Component(index, Point(integer) delta)
+                             - creates component referencing
+                               glyph index with delta shift and 100% scale
+        Component(index, Point(integer) delta, Point(float) scale)
+                             - creates component referencing
+                               glyph index with delta shift
+                               and scale factor defined by scale
+
+        Args:
+            component_or_index (Component | int | None, optional): _description_. Defaults to None.
+            delta (Point | None, optional): _description_. Defaults to None.
+            scale (Point | None, optional): _description_. Defaults to None.
+        """
         # Init with max num masters and -1 reference glyph
         self._deltas = [Point(0, 0)] * 16
         self._scales = [Point(1.0, 1.0)] * 16
@@ -86,6 +112,14 @@ class Component(Copyable):
 
     @scale.setter
     def scale(self, value: Point) -> None:
+        """
+        scale factor
+
+        Args:
+            value (Point): _description_
+
+        When setting the scale through this method, the value is used for all masters.
+        """
         # TODO: What is the point's parent?
         self._scales = [Point(value.x, value.y)] * len(self._scales)
 
@@ -93,6 +127,9 @@ class Component(Copyable):
     def deltas(self) -> list[Point]:
         """
         list of shift values for each master
+
+        Setting the list, or only one item of the list doesn't work in FL.
+        You need to get one of the points and modify it directly
         """
         # TODO: parent of the points must be the deltas list
         return self._deltas
@@ -109,17 +146,20 @@ class Component(Copyable):
     def scales(self) -> list[Point]:
         """
         list of scale values for each master
+
+        Setting the list, or only one item of the list doesn't work in FL.
+        You need to get one of the points and modify it directly
         """
         # TODO: parent of the points must be the scales list
         return self._scales
 
     @scales.setter
     def scales(self, value: list[Point]) -> None:
-        # Setting the list, or only one item of the list doesn't work in FL.
-        # You need to get one of the points and modify it directly
         raise RuntimeError(
             'Attempt to write read only attribute "scales" of class Component'
         )
+
+    # Operations: none
 
     # Methods
 

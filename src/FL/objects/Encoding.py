@@ -11,12 +11,22 @@ if TYPE_CHECKING:
 
 
 class Encoding(UserList[EncodingRecord], Copyable):
+    """
+    Encoding - class to represent Encoding
+    """
 
     __slots__ = ["_parent", "data"]
 
     # Constructor
 
     def __init__(self, encoding_or_none: Encoding | None = None) -> None:
+        """
+        Encoding()         - generic constructor, creates Encoding
+        Encoding(Encoding) - copy constructor
+
+        Args:
+            encoding_or_none (Encoding | None, optional): _description_. Defaults to None.
+        """
         self._parent: Font | None = None
         self.data: list[EncodingRecord] = []
         if isinstance(encoding_or_none, Encoding):
@@ -43,26 +53,30 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     # Operations
 
-    # def __delitem__(self, i):
-    #     """del Encoding[] - remove an element from the encoding"""
-    #     del self.data[i]
+    def __delitem__(self, i: int) -> None:
+        """
+        del Encoding[] - remove an element from the encoding
+        """
+        del self.data[i]
 
-    # def __getitem__(self, i: int) -> EncodingRecord:
-    #     """
-    #     [] Accesses individial EncodingRecord objects
-    #     """
-    #     return self.data[i]
+    def __getitem__(self, i: int) -> EncodingRecord:
+        """
+        Accesses individial EncodingRecord objects
+        """
+        return self.data[i]
 
-    # def __len__(self) -> int:
-    #     """
-    #     Return the number of EncodingRecords in the Encoding.
-    #     """
-    #     return len(self.data)
+    def __len__(self) -> int:
+        """
+        Return the number of EncodingRecords in the Encoding.
+        """
+        return len(self.data)
 
     # Methods
 
     def append(self, encoding_record: EncodingRecord) -> None:
         """
+        Append an EncodingRecord to the end of the encoding.
+
         Args:
             encoding_record (EncodingRecord): _description_
         """
@@ -70,6 +84,8 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     def insert(self, index: int, encoding_record: EncodingRecord) -> None:
         """
+        Insert an EncodingRecord at index.
+
         Args:
             index (int): _description_
             encoding_record (EncodingRecord): _description_
