@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from FL.fake.Base import Copyable
-
-if TYPE_CHECKING:
-    from FL.objects.Matrix import Matrix
+from FL.objects.Matrix import Matrix
 
 
 class Point(Copyable):
