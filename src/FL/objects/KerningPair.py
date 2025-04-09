@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
-class KerningPair:
+class KerningPair(Copyable):
 
     # Constructor
 
@@ -32,9 +34,7 @@ class KerningPair:
             self.key = 0
             self.value = 0
         elif isinstance(kerningpair_or_index, KerningPair):
-            other = kerningpair_or_index
-            self.key = other.key
-            self.values = other.values.copy()
+            self._copy_constructor(kerningpair_or_index)
         elif isinstance(kerningpair_or_index, int):
             self.key = kerningpair_or_index
             self.value = value

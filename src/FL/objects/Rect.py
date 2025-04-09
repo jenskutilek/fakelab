@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
-class Rect:
+class Rect(Copyable):
     """
     Rect()                   - generic constructor, creates a Rect with zero coordinates
     Rect(Rect r)             - copy constructor
@@ -145,10 +146,7 @@ class Rect:
         """
         if isinstance(r_or_p0_or_x0, Rect):
             # Copy constructor
-            self._x0 = r_or_p0_or_x0._x0
-            self._y0 = r_or_p0_or_x0._y0
-            self._x1 = r_or_p0_or_x0._x1
-            self._y1 = r_or_p0_or_x0._y1
+            self._copy_constructor(r_or_p0_or_x0)
         elif isinstance(r_or_p0_or_x0, Point):
             if isinstance(p1_or_x0, Point):
                 self._x0 = r_or_p0_or_x0.x

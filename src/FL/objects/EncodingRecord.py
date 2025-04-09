@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 
-class EncodingRecord:
+
+class EncodingRecord(Copyable):
 
     __slots__ = ["_name", "_unicode"]
 
     # Constructor
 
-    def __init__(self, encoding_record_or_none: EncodingRecord | None = None) -> None:
+    def __init__(self, encoding_record: EncodingRecord | None = None) -> None:
         """
         EncodingRecord - class to represent EncodingRecord
 
@@ -17,14 +19,12 @@ class EncodingRecord:
             copy constructor
 
         Args:
-            encoding_record_or_none (EncodingRecord | None, optional): _description_. Defaults to None.
+            encoding_record (EncodingRecord | None, optional): _description_. Defaults to None.
         """
         self.name = "(null)"
         self.unicode = 0
-        if isinstance(encoding_record_or_none, EncodingRecord):
-            # Copy constructor
-            self.name = encoding_record_or_none.name
-            self.unicode = encoding_record_or_none.unicode
+        if isinstance(encoding_record, EncodingRecord):
+            self._copy_constructor(encoding_record)
 
     def __repr__(self) -> str:
         return f'<EncodingRecord: "{self.name}", unicode: {self.unicode}>'

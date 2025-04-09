@@ -3,13 +3,16 @@ from __future__ import annotations
 from collections import UserList
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.EncodingRecord import EncodingRecord
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
-class Encoding(UserList[EncodingRecord]):
+class Encoding(UserList[EncodingRecord], Copyable):
+
+    __slots__ = ["_parent", "data"]
 
     # Constructor
 
@@ -17,8 +20,7 @@ class Encoding(UserList[EncodingRecord]):
         self._parent: Font | None = None
         self.data: list[EncodingRecord] = []
         if isinstance(encoding_or_none, Encoding):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(encoding_or_none)
         # ??? We can't inspect a just initialized encoding in FL, it just crashes.
         # else:
         #     self._set_default()

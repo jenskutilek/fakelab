@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+
+from FL.fake.Base import Copyable
 from FL.objects.Hint import Hint
 from FL.objects.Node import Node
 
@@ -13,7 +15,7 @@ TYPE_VERTICAL_HINT = 2
 TYPE_NODE = 255
 
 
-class Replace:
+class Replace(Copyable):
     """
     Replace - class to represent item of hint replacment program
 
@@ -61,11 +63,7 @@ class Replace:
         arg1 = replace_or_hint_or_node_or_type
         if arg1 is not None:
             if isinstance(arg1, Replace):
-                # copy constructor
-                # FIXME: Does the copy constructor copy parents?
-                self._parent = arg1.parent
-                self._type = arg1.type
-                self._index = arg1.index
+                self._copy_constructor(arg1)
             elif isinstance(arg1, Hint):
                 # FIXME: How to determine if a hint is horizontal or vertical?
                 self._type = TYPE_HORIZONTAL_HINT  # or TYPE_VERTICAL_HINT

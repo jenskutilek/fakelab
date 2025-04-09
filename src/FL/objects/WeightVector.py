@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
-class WeightVector:
+class WeightVector(Copyable):
     """This class is completely undocumented.
 
     Apparently: A list of 16 floats that represent the interpolation factors for all
@@ -38,9 +40,7 @@ class WeightVector:
             0.0,
         ]
         if weight_vector is not None:
-            # Copy constructor
-            for i in range(16):
-                self._weights[i] = weight_vector[i]
+            self._copy_constructor(weight_vector)
 
     # Attributes
 

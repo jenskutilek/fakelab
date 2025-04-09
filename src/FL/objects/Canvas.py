@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
     from FL.objects.Image import Image
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
     from FL.objects.WeightVector import WeightVector
 
 
-class Canvas:
+class Canvas(Copyable):
     """
     Canvas - class to represent screen paint area and operations
 
@@ -54,6 +56,9 @@ class Canvas:
         self._pen_style = 0
         self._scale = Point()
         self._text_color = 0
+
+        if isinstance(canvas, Canvas):
+            self._copy_constructor(canvas)
 
     # Attributes
 

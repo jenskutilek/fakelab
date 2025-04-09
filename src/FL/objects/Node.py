@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -23,13 +24,15 @@ vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
 vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 3: nSMOOTH}  # ?
 
 
-class Node:
+class Node(Copyable):
     """
     Node() - generic constructor, creates an empty node
     Node(Node) - copy constructor
     Node(integer type, Point p) - creates a Node and assigns type and
     coordinates of the final point
     """
+
+    __slots__ = ["_parent", "_points", "point", "type", "alignment", "selected"]
 
     # Constructor
 
@@ -62,9 +65,8 @@ class Node:
         # Process params
 
         if isinstance(node_or_type, Node):
-            if p is None:
-                # Copy constructor
-                raise NotImplementedError
+            assert p is None
+            self._copy_constructor(node_or_type)
         elif isinstance(node_or_type, int):
             assert isinstance(p, Point)
 

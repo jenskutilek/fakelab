@@ -2,13 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.TTGasp import TTGasp
     from FL.objects.TTStem import TTStem
     from FL.objects.TTVdmx import TTVdmx
 
 
-class TTInfo:
+class TTInfo(Copyable):
     """
     TTInfo - class to represent TrueType Information
 
@@ -66,7 +68,7 @@ class TTInfo:
 
     # Constructor
 
-    def __init__(self, ttinfo: TTInfo | None) -> None:
+    def __init__(self, ttinfo: TTInfo | None = None) -> None:
         """
         Never create TTInfo object explicitly - they must be obtained from the FontLab's
         `Font` classes.
@@ -75,8 +77,10 @@ class TTInfo:
             ttinfo (TTInfo | None): Copy attributes from `TTInfo` or create an empty
                 `TTInfo`
         """
-        self.os2_y_strikeout_position = 0
-        self.os2_y_strikeout_size = 0
+        if ttinfo is None:
+            self._set_defaults()
+        else:
+            self._copy_constructor(ttinfo)
 
     @property
     def hstem_data(self) -> list[TTStem]:

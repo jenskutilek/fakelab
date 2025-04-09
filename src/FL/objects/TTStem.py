@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 
-class TTStem:
+
+class TTStem(Copyable):
     """
     TTStem - class to represent TrueType-Stem
 
@@ -24,14 +26,7 @@ class TTStem:
         self._ppm6 = 0
         if ttstem_or_width is not None:
             if isinstance(ttstem_or_width, TTStem):
-                # copy constructor
-                self.name = ttstem_or_width.name
-                self.width = ttstem_or_width.width
-                self.ppm2 = ttstem_or_width.ppm2
-                self.ppm3 = ttstem_or_width.ppm3
-                self.ppm4 = ttstem_or_width.ppm4
-                self.ppm5 = ttstem_or_width.ppm5
-                self.ppm6 = ttstem_or_width.ppm6
+                self._copy_constructor(ttstem_or_width)
             else:
                 # fill in ppm steps based on width and upm
                 if upm is None:

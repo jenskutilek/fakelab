@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
-class TrueTypeTable:
+class TrueTypeTable(Copyable):
     """
     TrueTypeTable - class to represent custom OpenType table
     """
@@ -44,9 +46,7 @@ class TrueTypeTable:
         self.value = ""  # FIXME: str vs. bytes?
         if truetypetable_or_tag is not None:
             if isinstance(truetypetable_or_tag, TrueTypeTable):
-                # copy constructor
-                self.tag = truetypetable_or_tag.tag
-                self.value = truetypetable_or_tag.value
+                self._copy_constructor(truetypetable_or_tag)
             else:
                 self.tag = truetypetable_or_tag
                 if value is not None:

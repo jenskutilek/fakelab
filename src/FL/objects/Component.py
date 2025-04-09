@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
-class Component:
+class Component(Copyable):
 
     __slots__ = ["_deltas", "_scales", "_index", "_parent"]
 
@@ -28,8 +29,7 @@ class Component:
         self._parent: Glyph | None = None
 
         if isinstance(component_or_index, Component):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(component_or_index)
 
         elif isinstance(component_or_index, int):
             self._index = component_or_index

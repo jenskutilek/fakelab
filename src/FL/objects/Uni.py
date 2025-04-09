@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 
-class Uni:
+
+class Uni(Copyable):
     """
     Uni - class to represent Unicode index
 
@@ -29,8 +31,7 @@ class Uni:
                 "Incorrect # of args to: \n Uni()\n Uni(float x,float y)\n Uni(Uni P)"
             )
         if isinstance(uni_or_int_or_hex, Uni):
-            # copy constructor
-            self.value = uni_or_int_or_hex.value
+            self._copy_constructor(uni_or_int_or_hex)
         elif isinstance(uni_or_int_or_hex, str):
             self.value = int(uni_or_int_or_hex, base=16)
         elif isinstance(uni_or_int_or_hex, int):

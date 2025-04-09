@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from FL.fake.Base import Copyable
 from FL.helpers.ListParent import ListParent
 from FL.objects.Rect import Rect
 
@@ -24,7 +25,7 @@ if TYPE_CHECKING:
     from FL.objects.TTPoint import TTPoint
 
 
-class Glyph:
+class Glyph(Copyable):
 
     # Constructor
 
@@ -36,8 +37,7 @@ class Glyph:
         # Process params
 
         if isinstance(glyph_or_masterscount, Glyph):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(glyph_or_masterscount)
 
         elif isinstance(glyph_or_masterscount, int):
             self._layers_number = glyph_or_masterscount

@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
     from FL.objects.Matrix import Matrix
 
 
-class Guide:
+class Guide(Copyable):
 
     # Constructor
 
@@ -37,8 +39,7 @@ class Guide:
         # Process params
 
         if isinstance(guide_or_position, Guide):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(guide_or_position)
 
         elif isinstance(guide_or_position, int):
             self.position = guide_or_position

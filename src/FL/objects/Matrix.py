@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Point import Point
 
 
-class Matrix:
+class Matrix(Copyable):
     """
     Matrix - class to represent planar transformations
     """
@@ -48,7 +50,10 @@ class Matrix:
         self._e: float = 0
         self._f: float = 0
         if a is not None:
-            self.Assign(a, b, c, d, e, f)
+            if isinstance(a, Matrix):
+                self._copy_constructor(a)
+            else:
+                self.Assign(a, b, c, d, e, f)
 
     def __repr__(self) -> str:
         return (

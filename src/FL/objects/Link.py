@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
-class Link:
+class Link(Copyable):
     """
     Link - class to represent link
     """
@@ -23,8 +25,7 @@ class Link:
         # Process params
 
         if isinstance(link_or_index1, Link):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(link_or_index1)
 
         elif isinstance(link_or_index1, int):
             self._node1 = link_or_index1

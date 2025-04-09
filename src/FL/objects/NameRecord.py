@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
+
 if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
-class NameRecord:
+class NameRecord(Copyable):
     """
     NameRecord - class to represent OpenType name table record
 
@@ -25,7 +27,7 @@ class NameRecord:
 
     def __init__(
         self,
-        name_record_or_s__or_tup_or_nid: (
+        name_record_or_s_or_tup_or_nid: (
             NameRecord | str | tuple[int, int, int, int, str] | int | None
         ) = None,
         pid: int | None = None,
@@ -34,6 +36,27 @@ class NameRecord:
         s: str | None = None,
     ) -> None:
         self._parent = None
+        arg1 = name_record_or_s_or_tup_or_nid
+        if isinstance(arg1, NameRecord):
+            self._copy_constructor(arg1)
+        elif isinstance(arg1, str):
+            self.nid = 0
+            self.pid = 3
+            self.eid = 1
+            self.lid = 1033
+            self.name = arg1
+        elif isinstance(arg1, tuple):
+            self.nid, self.pid, self.eid, self.lid, self.name = arg1
+        elif isinstance(arg1, int):
+            self.nid = arg1
+            assert pid is not None
+            self.pid = pid
+            assert eid is not None
+            self.eid = eid
+            assert lid is not None
+            self.lid = lid
+            assert s is not None
+            self.name = s
 
     # Attributes
 

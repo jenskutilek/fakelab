@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
 
-class TTHPoint:
+class TTHPoint(Copyable):
     """
     TTHPoint - class to represent visual TrueType points
 
@@ -26,13 +27,7 @@ class TTHPoint:
         self._state = 0
 
         if isinstance(tthpoint_or_p_or_x, TTHPoint):
-            # copy
-            self.x = tthpoint_or_p_or_x.x
-            self.y = tthpoint_or_p_or_x.y
-            self._mode = tthpoint_or_p_or_x.mode
-            self._state = tthpoint_or_p_or_x.state
-            if mode_or_y is not None:
-                self._mode = mode_or_y
+            self._copy_constructor(tthpoint_or_p_or_x)
         elif isinstance(tthpoint_or_p_or_x, Point):
             # Set from Point
             self.x = tthpoint_or_p_or_x.x

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
-class Anchor:
+class Anchor(Copyable):
     """
     Anchor - class to represent Anchor point
     """
@@ -35,8 +36,7 @@ class Anchor:
         # Process params
 
         if isinstance(anchor_or_name, Anchor):
-            # Copy constructor
-            raise NotImplementedError
+            self._copy_constructor(anchor_or_name)
 
         elif isinstance(anchor_or_name, str):
             self.name = anchor_or_name

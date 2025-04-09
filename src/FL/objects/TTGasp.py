@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 
-class TTGasp:
+
+class TTGasp(Copyable):
     """
     This class is completely undocumented
     """
@@ -26,9 +28,7 @@ class TTGasp:
         self.behavior = behavior
         if ttgasp_or_ppm is not None:
             if isinstance(ttgasp_or_ppm, TTGasp):
-                # copy constructor
-                self.ppm = ttgasp_or_ppm.ppm
-                self.behavior = ttgasp_or_ppm.behavior
+                self._copy_constructor(ttgasp_or_ppm)
             else:
                 if not isinstance(behavior, int):
                     raise RuntimeError("Gasp is expected in arg 1: TTGasp(TTGasp)")

@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.fake.Font import FakeFont
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
@@ -18,7 +19,7 @@ if TYPE_CHECKING:
     from FL.objects.TrueTypeTable import TrueTypeTable
 
 
-class Font(FakeFont):
+class Font(FakeFont, Copyable):
 
     # Constructor
 
@@ -34,8 +35,7 @@ class Font(FakeFont):
 
         if isinstance(font_or_path, Font):
             if instances is None:
-                # Copy constructor
-                raise NotImplementedError
+                self._copy_constructor(font_or_path)
             else:
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM

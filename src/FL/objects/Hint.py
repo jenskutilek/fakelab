@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from FL.fake.Base import Copyable
 from FL.objects.Link import Link
 
 if TYPE_CHECKING:
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
-class Hint:
+class Hint(Copyable):
     """
     Hint - class to represent hint
 
@@ -53,12 +54,7 @@ class Hint:
 
         if arg1 is not None:
             if isinstance(arg1, Hint):
-                # copy constructor
-                # FIXME: Does it copy the parent?
-                if arg1.parent is not None:
-                    self._parent = arg1.parent
-                self.position = arg1.position
-                self.width = arg1.width
+                self._copy_constructor(arg1)
             elif isinstance(arg1, int):
                 self.position = arg1
                 if width is not None:

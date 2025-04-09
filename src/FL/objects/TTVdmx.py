@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from FL.fake.Base import Copyable
 
-class TTVdmx:
+
+class TTVdmx(Copyable):
     """
     A vdmx table record.
 
@@ -14,6 +16,8 @@ class TTVdmx:
         self._y_pel_height = 0
         self._y_min = 0
         self._y_max = 0
+        if isinstance(ttvdmx, TTVdmx):
+            self._copy_constructor(ttvdmx)
 
     def __repr__(self) -> str:
         return (

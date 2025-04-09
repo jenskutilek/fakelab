@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
+from FL.fake.Base import Copyable
 
 if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
-class Point:
+class Point(Copyable):
     __slots__ = ["_parent", "_x", "_y"]
 
     # Constructor
@@ -132,9 +133,7 @@ class Point:
             if y is not None:
                 raise RuntimeError
 
-            self._parent = p_or_x.parent
-            self.x = p_or_x.x
-            self.y = p_or_x.y
+            self._copy_constructor(p_or_x)
         else:
             # coordinates
             self._parent = None
