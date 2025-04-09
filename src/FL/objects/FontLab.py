@@ -6,37 +6,61 @@ from FL.objects.Font import Font
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
-    from FL.objects import Canvas
+    from FL.objects.Canvas import Canvas
     from FL.objects.Glyph import Glyph
     from FL.objects.Rect import Rect
+    from FL.objects.Uni import Uni
 
 
 class FakeLab:
     """
+    FontLab - class to represent FontLab program interface
+
     The main class. It is used via the pre-instantiated object `fl`.
+
+    There is no explicit constructor for this class, use pre-initialized object 'fl'
+
+    Always use "from FL import all" at the beginning of your macro.
     """
+
+    __slots__ = [
+        "_font",
+        "_ifont",
+        "_fonts",
+        "ifontslist",
+        "_glyph",
+        "iglyph",
+        "_tobject",
+        "_iobject",
+        "delta",
+        "scale",
+        "_tablet_active",
+        "_tablet_pressure",
+        "preview",
+        "_layer",
+    ]
 
     # Constructor
 
     def __init__(self) -> None:
-        self._font = None
+        self._font: Font | None = None
 
         # (integer)  - index of currently active font
         self._ifont = -1
 
-        self.fonts: list[Font] = []
+        self._fonts: list[Font] = []
 
         # (integer) - index of currently selected font in the fonts list panel
         self.ifontslist = 0
 
-        self._glyph = None
+        self._glyph: Glyph | None = None
 
         # (integer)  - index of currently active glyph
         self.iglyph = -1
 
         # (integer)  - read-only - type of the currently selected object in the
         # Glyph Window
-        self._tobject = None
+        self._tobject: int = -1
 
         # (integer)  - read-only - index of currently selected object in the
         # Glyph Window
@@ -44,11 +68,11 @@ class FakeLab:
 
         # (<a href="Point.xml.html">Point</a>)  - delta value of current
         # coordinate translation in the active Glyph Window
-        self.delta = None
+        self.delta: Point | None = None
 
         # (<a href="Point.xml.html">Point</a>(float))      - scale value of
         # current coordinate translation in the active Glyph Window
-        self.scale = None
+        self.scale: Point | None = None
 
         # (boolean)   - True if tablet is present and active
         self._tablet_active = False
@@ -60,135 +84,139 @@ class FakeLab:
         # (not reported by docstring)</font>
         self.preview = ""
 
-        self._layer = None
+        self._layer: int | None = None
 
     # Operations
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
         returns number of opened fonts
         """
-        return len(self.fonts)
+        return len(self._fonts)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Font:
         """
         returns Font by index
         """
-        return self.fonts[index]
+        return self._fonts[index]
 
     # Attributes
 
     @property
-    def font(self):
+    def font(self) -> Font | None:
         """
         Return the currently active font or None.
         """
         return self._font
 
     @property
-    def ifont(self):
+    def ifont(self) -> int:
         """
-        index of currently active font
+        Return the index of the currently active font, or -1 if there is no font
         """
         return self._ifont
 
     @ifont.setter
-    def ifont(self, value):
+    def ifont(self, value: int) -> None:
         self._ifont = value
         if self._ifont == -1:
             self._font = None
         else:
-            self._font = self.fonts[self._ifont]
+            self._font = self._fonts[self._ifont]
 
     @property
-    def glyph(self):
+    def glyph(self) -> Glyph | None:
         """
         Return the currently active glyph in Font, Glyph or Metrics windows.
         """
         return self._glyph
 
     @property
-    def tobject(self):
+    def tobject(self) -> int:
         """
-        Return the type of the currently selected object in the Glyph Window
-        as int.
+        Return the type of the currently selected object in the Glyph Window as int.
         """
+        # TODO: Actual return values
+
+        # If there is no glyph window, raise:
         raise SystemError
 
     @property
-    def iobject(self):
+    def iobject(self) -> int:
         """
         Return the index of currently selected object in the Glyph Window.
         """
+        # TODO: Actual return values
+
+        # If there is no glyph window, raise:
         raise SystemError
 
     @property
-    def mainwindow(self):
+    def mainwindow(self) -> int:
         """
-        reference to FontLab's main window
+        Return a reference to FontLab's main window
         """
         return 0
 
     @property
-    def path(self):
+    def path(self) -> str:
         """
         full path to directory where running application is located
         """
         return "/Library/Application Support/FontLab/Studio 5"
 
     @property
-    def filename(self):
+    def filename(self) -> str:
         """
         application filename
         """
         return "FontLab Studio 5 5730.app"
 
     @property
-    def version(self):
+    def version(self) -> str:
         """
         application version
         """
         return "5.1.6/Mac(Build 7030)"
 
     @property
-    def productnumber(self):
+    def productnumber(self) -> int:
         """
         product number
         """
         return 0
 
     @property
-    def serialnumber(self):
+    def serialnumber(self) -> str:
         """
         serial number as appears in the About window
         """
         return ""
 
     @property
-    def username(self):
+    def username(self) -> str:
         """
         user name as appears in the About window
         """
         return "FontLab User"
 
     @property
-    def count(self):
+    def count(self) -> int:
         """
         number of opened fonts (fast operation)
         """
         return self.__len__()
 
     @property
-    def count_selected(self):
+    def count_selected(self) -> int:
         """
-        number of the selected glyphs
-        in the Font Window (fast operation)
+        number of the selected glyphs in the Font Window (fast operation)
         """
         # FIXME
         return 0
 
     @property
-    def window(self):
+    def window(self) -> int:
         """
         reference to the currently active Glyph, Font or Metrics window
         """
@@ -198,43 +226,46 @@ class FakeLab:
     # Properties not reported in the docs
 
     @property
-    def layer(self):
+    def layer(self) -> int | None:
         """
-        Return the index of the currently active layer (master) in Glyph or
-        Metrics windows.
+        Return the index of the currently active layer (master) in Glyph or Metrics
+        windows.
         """
         return self._layer
 
     # Methods
 
-    def Close(self, fontindex=None):
+    def Close(self, fontindex: int | None = None) -> None:
         """
         () | (fontindex)      - closes the current or 'fontindex' font
         """
         if fontindex is None:
-            del self.fonts[self._ifont]
+            del self._fonts[self._ifont]
         else:
-            del self.fonts[fontindex]
+            del self._fonts[fontindex]
         if self.count == 0:
             self.ifont = -1
         else:
             self.ifont = self.count - 1
 
-    def Open(self, filename: str, addtolist: bool = True) -> Font:
+    def Open(self, filename: str, addtolist: bool = True) -> None:
         """
-        (string filename) | (string filename, boolean addtolist)
+        Open the font from file using current opening options. If `addtolist` is True,
+        the font is added to FontLab's font list. The font is shown in a window.
 
-        Open the font from file using current opening options.
+        Args:
+            filename (str): _description_
+            addtolist (bool, optional): _description_. Defaults to True.
 
-        If 'addtolist' is True, font is added to FontLab's font list
+        `addtolist` seems to be ignored; the font window is always opened.
         """
         font = Font()
         font.Open(filename)
-        if addtolist:
-            self.Add(font)
-        return font
+        self.Add(font)
 
-    def Save(self, filename_or_fontindex, filename=None):
+    def Save(
+        self, filename_or_fontindex: str | int, filename: str | None = None
+    ) -> None:
         """
         (string filename) | (int fontindex, string filename)
 
@@ -245,6 +276,8 @@ class FakeLab:
             # Save the font fontindex
             fontindex = filename_or_fontindex
             if 0 <= fontindex < self.count:
+                if filename is None:
+                    raise RuntimeError
                 self._fonts[fontindex].Save(filename)
         else:
             # Save the current font
@@ -252,96 +285,108 @@ class FakeLab:
                 filename = filename_or_fontindex
                 self.font.Save(filename)
 
-    def GenerateFont(self, fontType: int, filename: str) -> None:
+    def GenerateFont(
+        self,
+        fontindex_or_fonttype: int,
+        fonttype_or_filename: int | str,
+        filename: str | None = None,
+    ) -> int:
         """
-        (fontType, filename)
+        Generate a Font.
 
-        - generates Font, available font types:
+        Args:
+            fontindex_or_fonttype (int): The index of the font to be generated, or the
+                font type, see below.
+            fonttype (int): The font type, see below.
+            filename (str): The path for the font to be generated.
 
-          - ftFONTLAB            - FontLab VFB font
-          - ftTYPE1              - PC Type 1 font (binary/PFB)
-          - ftTYPE1_MM           - PC MultipleMaster font (PFB)
-          - ftTYPE1ASCII         - PC Type 1 font (ASCII/PFA)
-          - ftTYPE1ASCII_MM      - PC MultipleMaster font (ASCII/PFA)
-          - ftTRUETYPE           - PC TrueType/TT OpenType font (TTF)
-          - ftOPENTYPE           - PS OpenType (CFF-based) font (OTF)
-          - ftMACTYPE1           - Mac Type 1 font (generates suitcase
-            and LWFN file, optionally AFM)
-          - ftMACTRUETYPE        - Mac TrueType font (generates suitcase)
-          - ftMACTRUETYPE_DFONT  - Mac TrueType font (generates suitcase with
-            resources in data fork)
+        Returns:
+            int: 0 on success, -1 if the font was not generated.
+
+        Available font types:
+
+        - ftFONTLAB            - FontLab VFB font
+        - ftTYPE1              - PC Type 1 font (binary/PFB)
+        - ftTYPE1_MM           - PC MultipleMaster font (PFB)
+        - ftTYPE1ASCII         - PC Type 1 font (ASCII/PFA)
+        - ftTYPE1ASCII_MM      - PC MultipleMaster font (ASCII/PFA)
+        - ftTRUETYPE           - PC TrueType/TT OpenType font (TTF)
+        - ftOPENTYPE           - PS OpenType (CFF-based) font (OTF)
+        - ftMACTYPE1           - Mac Type 1 font (generates suitcase and LWFN file,
+                                 optionally AFM)
+        - ftMACTRUETYPE        - Mac TrueType font (generates suitcase)
+        - ftMACTRUETYPE_DFONT  - Mac TrueType font (generates suitcase with resources in
+                                 data fork)
         """
+        # TODO: Actually generate a font.
+
         # We cannot generate a font at the moment, let's fake it.
         # Check if the current font has a fake_binary.
         binary = self.font.fake_binary_get(fontType)
         if binary:
             with open(filename, "wb") as f:
                 f.write(binary)
+            return 0
         else:
             raise NotImplementedError
-        # TODO: What should be the return value?
+        return -1
 
-    def Add(self, font):
+    def Add(self, font: Font) -> None:
         """
-        Add 'font' to list of opened fonts and opens the Font Window for it.
+        Add 'font' to list of opened fonts and open the Font Window for it.
         """
-        self.fonts.append(font)
-        self.ifont = len(self.fonts) - 1
+        self._fonts.append(font)
+        self.ifont = len(self._fonts) - 1
         # As long as no glyph window is open,
         # delta and scale will be points at (0, 0)
         self.delta = Point()
         self.scale = Point()
         self._layer = 0
 
-    def UpdateFont(self, fontindex=None):
+    def UpdateFont(self, fontindex: int | None = None) -> None:
         """
-        () | (fontindex)
-
-        - updates current font or 'fontindex' (slow operation)
+        Updates current font or 'fontindex' (slow operation)
         """
         if fontindex is None:
             fontindex = self.ifont
-        self.fonts[fontindex].fake_update()
+        self._fonts[fontindex].fake_update()
 
-    def SetFontWindow(self, fontindex: int, position: Rect, state):
+    def SetFontWindow(
+        self, fontindex: int, position: Rect, state: int | None = None
+    ) -> None:
         """
-        (fontindex, Rect position, state)
+        Set the window size and style for the Font Window where font 'fontindex' is
+        shown.
 
-        - sets window size and style for Font Window
-          here font 'fontindex' is presented
+        Args:
+            fontindex (int): The font index.
+            position (Rect): The position and size of the window.
+            state (int | None, optional): The window state.
+                0 = normal, 1 = minimized, 2 = maximized. Defaults to None.
         """
         raise NotImplementedError
 
     def UpdateGlyph(self, glyphindex: int | None = None) -> None:
         """
-        () | (glyphindex)
-
-        - updates current or 'glyphindex' glyph of the current font
+        Update the current glyph or 'glyphindex' glyph of the current font
         """
         raise NotImplementedError
 
     def EditGlyph(self, glyphindex: int | None = None) -> None:
         """
-        () | (glyphindex)
-
-        - opens the Glyph window for the 'glyphindex' glyph
-          in the current font
+        Open the Glyph window for the 'glyphindex' glyph in the current font
         """
         raise NotImplementedError
 
     def CallCommand(self, commandcode: int) -> None:
         """
-        (commandcode)
-
-        - simulates the menu or toolbar command.
-          Check WS_* constants for list of available commands
+        Simulate a menu or toolbar command. Check WS_* constants for list of available
+        commands.
         """
         raise NotImplementedError
 
     def Selected(self, glyphindex: int | None = None) -> int:
         """
-        () | (glyphindex)
-
         Return 1 if current glyph or 'glyphindex' glyph is selected.
         """
         if self.font is None:
@@ -356,13 +401,18 @@ class FakeLab:
 
         return 0
 
-    def Select(self, glyphid, value=None) -> None:
+    def Select(self, glyphid: str | Uni | int, value: bool | None = None) -> None:
         """
-        (glyphid) | (glyphid, value)
+        Change a glyph's selection state. 'glyphid' may be string (glyph name), Uni
+        (Unicode index) or integer (glyph index)
 
-        - changes glyph's selection state.
-          'glyphid' may be string (glyph name),
-          Uni (Unicode index) or integer (glyph index)
+        Args:
+            glyphid (str | Uni | int): The glyph identifier.
+            value (bool | None, optional): The selection state. Defaults to None. None
+                is interpreted as True.
+
+        Raises:
+            RuntimeError: If no font is opened.
         """
         if self.font is None:
             raise RuntimeError(
@@ -384,43 +434,67 @@ class FakeLab:
             )
         self.font.fake_deselect_all()
 
-    def Message(self, message, question=None, okstring=None, cancelstring=None):
+    def Message(
+        self,
+        message: str,
+        question: str | None = None,
+        okstring: str | None = None,
+        cancelstring: str | None = None,
+    ) -> int:
         """
-        (string message, string question, string OKstring, string Cancelstring)
-        - shows the alert message dialog box,
-          all parameters but first can be omitted
+        Show an alert message dialog box. All parameters but the first can be omitted.
+
+        Args:
+            message (str): The message.
+            question (str | None, optional): The question text. Defaults to None.
+            okstring (str | None, optional): The label of the OK button. Defaults to
+                None.
+            cancelstring (str | None, optional): The label of the Cancel button.
+                Defaults to None.
+
+        Returns:
+            int: 1 if the OK button was clicked, 2 if the Cancel button was clicked or
+                the window has been closed.
         """
         raise NotImplementedError
 
     def ScreenToGlyph(self, position: Point) -> Point:
         """
-        (:py:class:`FL.Point` position)
-        - converts screen coordinates to glyph
-          coordinates in the current Glyph Window
+        Converts the screen coordinates of the point to glyph coordinates in the current
+        Glyph Window.
         """
         raise NotImplementedError
 
     def GlyphToScreen(self, position: Point) -> Point:
         """
-        (:py:class:`FL.Point` position)
-        - converts glyph coordinates to screen
-          coordinates in the current Glyph Window
+        Converts the glyph coordinates of the point to screen coordinates in the current
+        Glyph Window.
         """
         raise NotImplementedError
 
     def UpdateRect(self, r: Rect) -> None:
         """
-        (:py:class:`FL.Rect` r)
-        - updates rectangle in the current Glyph Window
+        Updates the rectangle r in the current Glyph Window.
         """
         raise NotImplementedError
 
-    def HitContour(self, p: Point) -> tuple[int, int, float]:
+    def HitContour(self, p: Point) -> tuple[int, int, float] | None:
         """
-        (:py:class:`FL.Point` p)
-        - contour hit detection in the current Glyph Window -
-          returns tuple of (nodeindex, nodesubindex, hit_time)
+        Contour hit detection in the current Glyph Window.
+
+        Args:
+            p (Point): The point to use for hit detection.
+
+        Returns:
+            tuple[int, int, float] | None : (nodeindex, nodesubindex, hit_time), or None
+                if the point doesn't hit any contour.
+
+        Raises:
+            RuntimeError: If the current window is not a Glyph Window.
+            RuntimeError: If no window is open.
         """
+        # RuntimeError: No window is opened: FontLab.HitContour(Point)
+        # RuntimeError: Current window is not Glyph window: FontLab.HitContour(Point)
         raise NotImplementedError
 
     def GetCanvas(self) -> Canvas:
@@ -429,30 +503,22 @@ class FakeLab:
         """
         raise RuntimeError("Current window is not Glyph window: FontLab.GetCanvas()")
 
-    def GetConvert(self, c: Canvas):
+    def GetConvert(self, c: Canvas) -> None:
         """
-        (:py:class:`Canvas` c)
-
-        - copies conversion parameters from the current Glyph Window to the
-        :py:class:`Canvas` c.
+        Copy conversion parameters from the current Glyph Window to the `Canvas`.
         """
         raise NotImplementedError
 
     def BeginProgress(self, title: str, counts: int) -> None:
         """
-        (string title, counts)
-
-        - opens the Progress dialog box with. 'counts' - number of 'ticks'
+        Open a Progress dialog box with 'counts' number of 'ticks'.
         """
         raise NotImplementedError
 
     def TickProgress(self, tick: int) -> bool:
         """
-        (tick)
-
-        - updates the Progress bar,
-          returns False if Cancel button was pressed.
-          This is relatively 'expensive' operation
+        Update the Progress bar, return False if the Cancel button was pressed.
+        This is a relatively 'expensive' operation.
         """
         raise NotImplementedError
 
@@ -474,34 +540,40 @@ class FakeLab:
 
     def TransformGlyph(self, glyph: Glyph, code, text):
         """
-        (:py:class:`Glyph` glyph, code, text)
+        Transforms the glyph using one of the Transform actions.
 
-        - transforms the glyph using one of the Transform actions.
-          Save one of Transform Range programs for reference to
-          format of the command string
+        Save one of Transform Range programs for reference to format of the command
+        string.
         """
         raise NotImplementedError
 
-    def ForSelected(self, function_name: str):
+    def ForSelected(self, function_name: str) -> None:
         """
-        (string function_name)
-        - calls 'function_name' for each selected glyph in the current
-          font. Function has following format:
-          function(:py:class:`Font` font, :py:class:`Glyph` glyph, glyphindex)
+        Call 'function_name' for each selected glyph in the current font. The function
+        has the following format:
+
+        function(font: Font, glyph: Glyph, glyphindex: int)
         """
         raise NotImplementedError
 
-    def SetUndo(self):
+    def SetUndo(self) -> None:
         """
-        Save current state to undo buffer.
-
-        (this method is not reported by the docstring)
+        Save the current state to the undo buffer.
         """
         raise NotImplementedError
 
     # Additional methods reported by dir(fl)
 
-    def GetFileName(self):
+    def GetFileName(self, open_save: int) -> str:
+        """
+        Open a file picker dialog.
+
+        Args:
+            open_save (int): 0 for a Save dialog, 1 for an Open dialog.
+
+        Returns:
+            str: The path of the selected file.
+        """
         raise NotImplementedError
 
     def GetPathName(self):
@@ -513,8 +585,23 @@ class FakeLab:
     def Lock(self):
         raise NotImplementedError
 
-    def OpenFont(self):
-        raise NotImplementedError
+    def OpenFont(self, filename: str) -> Font | None:
+        """
+        Open a VFB file, or import a font from path `filename`. If successful, the
+        `Font` is returned. The font is not added as a visible Window.
+
+        Args:
+            filename (str): The path to the VFB or font.
+
+        Returns:
+            Font | None: The font, or None if it could not be opened.
+        """
+        font = Font()
+        try:
+            font.Open(filename)
+        except:
+            return None
+        return font
 
     def _setcurrentfon(self):
         raise NotImplementedError
