@@ -608,7 +608,7 @@ class Font(FakeFont):
         self.default_character: str | None = None
         self.weight = None
         self.weight_code = -1
-        self.width = "normal"
+        self.width = "Normal"
         self.designer: str | None = None
         self.designer_url: str | None = None
         # list of font name records
@@ -627,22 +627,23 @@ class Font(FakeFont):
         self.tt_version: str | None = None
         self.trademark: str | None = None
         self.xuid_num = 0
-        self._xuid: list[int] = []
+        self._xuid: list[int] = [0] * 20
         # TrueType vendor code
         self.vendor: str = ""
         self.vendor_url: str | None = None
         self.version: str | None = None
 
+        self.year: int = 0
+        self.version_major: int = 1
+        self.version_minor: int = 0
+
         # up until here the default values have been verified
 
-        self.year: int = 0
-        self.version_major: int = 0
-        self.version_minor: int = 0
         self.vp_id: int = 0
         self.ms_charset: int = 0
         self.ms_id: int = 0
         # list of Panose values
-        self.panose: list[int] = []
+        self.panose: list[int] = [0] * 10
         self.pcl_chars_set: str = ""
         self.pcl_id: int = 0
 

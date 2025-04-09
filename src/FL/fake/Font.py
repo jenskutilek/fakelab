@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
+
+if TYPE_CHECKING:
+    from FL.objects.Uni import Uni
 
 
 class FakeFont(Copyable):
@@ -63,7 +67,7 @@ class FakeFont(Copyable):
         """
         self._selection: set[int] = set()
 
-    def fake_select(self, glyph_index: int, value: bool | None = None) -> None:
+    def fake_select(self, gid: str | Uni | int, value: bool | None = None) -> None:
         """
         Change selection status for glyph_index.
         >>> f = Font()
@@ -83,10 +87,15 @@ class FakeFont(Copyable):
         >>> print(f._selection)
         {3}
         """
-        if value:
-            self._selection |= {glyph_index}
-        else:
-            self._selection -= {glyph_index}
+        if isinstance(gid, int):
+            glyph_index = gid
+        elif isinstance(gid, Uni) or isinstance(gid, str):
+            glyph_index = self.FindGlyph(gid)
+        if glyph_index > -1:
+            if value:
+                self._selection |= {glyph_index}
+            else:
+                self._selection -= {glyph_index}
 
     def fake_set_class_flags(self, flags: list[str]) -> None:
         """
