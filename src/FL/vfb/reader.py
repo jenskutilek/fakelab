@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from vfbLib.vfb.vfb import Vfb
+
 from FL.helpers.nametables import StandardNametable
 from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
-from vfbLib.vfb.vfb import Vfb
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -46,8 +47,8 @@ font_mapping_direct = {
     "pref_style_name",
     "mac_compatible",
     "vendor",
-    "x_u_id",
-    "x_u_id_num",
+    # "xuid",  # has no setter
+    "xuid_num",
     "year",
     "version_major",
     "version_minor",
@@ -135,8 +136,10 @@ class VfbToFontReader:
                 if hasattr(self.font, name):
                     setattr(self.font, name, data)
                 else:
-                    print(f"Unknown font attribute: {name}")
-                    raise AttributeError
+                    raise AttributeError(f"Unknown font attribute: {name}")
+            elif name == "xuid":
+                # Has no setter in Python API
+                self.font._xuid = data
             elif name == "Encoding":
                 gid, glyph_name = data
                 gids[gid] = glyph_name
