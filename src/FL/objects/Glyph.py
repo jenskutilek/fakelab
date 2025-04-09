@@ -116,6 +116,43 @@ class Glyph(Copyable):
         elif name == "Glyph Guide Properties":
             pass
 
+    def fake_serialize(self) -> dict[str, Any]:
+        """
+        Serialize the glyph to a dict which resembles the low-level VFB structure
+
+        Returns:
+            dict[str, Any]: _description_
+        """
+        # TODO: Which entries are required? Leave out the other ones.
+        s = {
+            "Glyph": {
+                # Minimum wage, yeah!
+                "name": self.name,
+                "num_masters": self.layers_number,
+                "nodes": [],  # TODO
+                "metrics": [
+                    (int(p.x), int(p.y))
+                    for p in [self.GetMetrics(i) for i in range(self.layers_number)]
+                ],
+            },
+            # "Links"
+            # "image"
+            # "Glyph Bitmaps"
+            # "2023"
+            # "Glyph Sketch"
+            # "2010"
+            # "mask"
+            # "2011"
+            # "2028"
+            # "Glyph Origin"
+            # "unicodes"
+            # "Glyph Unicode Non-BMP"
+            # "mark"
+            "glyph.customdata": self.customdata,
+            "glyph.note": self.note,
+        }
+        return s
+
     # Attributes
 
     @property

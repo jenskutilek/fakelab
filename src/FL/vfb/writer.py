@@ -252,27 +252,32 @@ class FontToVfbWriter:
 
     def compile_glyphs(self) -> None:
         for glyph in self.font.glyphs:
-            pass
-            # "Glyph"
-            # "Links"
-            # "image"
-            # "Glyph Bitmaps"
-            # "2023"
-            # "Glyph Sketch"
-            # "2010"
-            # "mask"
-            # "2011"
-            # "2028"
-            # "Glyph Origin"
-            # "unicodes"
-            # "Glyph Unicode Non-BMP"
-            # "mark"
-            # "glyph.customdata"
-            # "glyph.note"
-            # "Glyph GDEF Data"
-            # "Glyph Anchors Supplemental"
-            # "Glyph Anchors MM"
-            # "Glyph Guide Properties"
+            glyph_dict = glyph.fake_serialize()
+            # TODO: Which keys are required?
+            for key in (
+                "Glyph",
+                "Links",
+                "image",
+                "Glyph Bitmaps",
+                "2023",
+                "Glyph Sketch",
+                "2010",
+                "mask",
+                "2011",
+                "2028",
+                "Glyph Origin",
+                "unicodes",
+                "Glyph Unicode Non-BMP",
+                "mark",
+                "glyph.customdata",
+                "glyph.note",
+                "Glyph GDEF Data",
+                "Glyph Anchors Supplemental",
+                "Glyph Anchors MM",
+                "Glyph Guide Properties",
+            ):
+                if key in glyph_dict:
+                    self.add_entry(key, glyph_dict[key])
 
     def compile_options(self) -> None:
         # TODO:
