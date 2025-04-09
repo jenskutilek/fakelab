@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
 from FL.helpers.ListParent import ListParent
+from FL.objects.Image import Image
 from FL.objects.Rect import Rect
 
 if TYPE_CHECKING:
@@ -15,7 +16,6 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
     from FL.objects.Hint import Hint
-    from FL.objects.Image import Image
     from FL.objects.KerningPair import KerningPair
     from FL.objects.Link import Link
     from FL.objects.Matrix import Matrix
