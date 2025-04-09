@@ -153,7 +153,7 @@ class TTInfo(Copyable):
         self._cvt = value
 
     @property
-    def gasp(self) -> list[TTGasp]:
+    def gasp(self) -> list[TTGasp]:  # FL gives type as "VSArray"
         """
         Grid-fitting/Scan-conversion: list of smoothing control records 'VSITTGaspArray'
 
@@ -243,11 +243,13 @@ class TTInfo(Copyable):
         self._max_stack_elements = value
 
     @property
-    def head_creation(self) -> int:
+    def head_creation(self) -> list[int]:
+        # [-467938523, 0]
+        # Some kind of large int split into two?
         return self._head_creation
 
     @head_creation.setter
-    def head_creation(self, value: int) -> None:
+    def head_creation(self, value: list[int]) -> None:
         self._head_creation = value
 
     @property
@@ -489,3 +491,52 @@ class TTInfo(Copyable):
     @os2_us_win_descent.setter
     def os2_us_win_descent(self, value: int) -> None:
         self._os2_us_win_descent = value
+
+    # Internal
+
+    def _set_defaults(self) -> None:
+        # Defaults for an empty TTInfo
+        self.hstem_data = []
+        self.vstem_data = []
+        self.prep = []
+        self.fpgm = []
+        self.cvt = []
+        self.gasp = []
+        self.vdmx = []
+        self.max_zones = 0
+        self.max_twilight_points = 0
+        self.max_storage = 0
+        self.max_function_defs = 0
+        self.max_instruction_defs = 0
+        self.max_stack_elements = 0
+        self.head_creation = [-467938523, 0]
+        self.head_flags = 131072
+        self.head_font_direction_hint = 2
+        self.head_lowest_rec_ppem = 9
+        self.head_mac_style = 0
+        self.head_units_per_em = 2048
+        self.hhea_ascender = 1536
+        self.hhea_descender = -512
+        self.hhea_line_gap = 18
+        self.os2_us_weight_class = 400
+        self.os2_us_width_class = 5
+        self.os2_fs_type = 4
+        self.os2_y_subscript_x_size = 1433
+        self.os2_y_subscript_y_size = 1331
+        self.os2_y_subscript_x_offset = 0
+        self.os2_y_subscript_y_offset = 286
+        self.os2_y_superscript_x_size = 1433
+        self.os2_y_superscript_y_size = 1331
+        self.os2_y_superscript_x_offset = 0
+        self.os2_y_superscript_y_offset = 976
+        self.os2_y_strikeout_size = 102
+        self.os2_y_strikeout_position = 512
+        self.os2_s_family_class = 0
+        self.os2_ul_code_page_range1 = 0
+        self.os2_ul_code_page_range2 = 0
+        self.os2_s_typo_ascender = 1536
+        self.os2_s_typo_descender = -512
+        self.os2_s_typo_line_gap = 0
+        self.os2_fs_selection = 0
+        self.os2_us_win_ascent = 0
+        self.os2_us_win_descent = 0
