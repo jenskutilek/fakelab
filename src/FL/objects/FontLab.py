@@ -594,12 +594,12 @@ class FakeLab:
             filename (str): The path to the VFB or font.
 
         Returns:
-            Font | None: The font, or None if it could not be opened.
+            Font | None: The font, or None if the file could not be opened.
         """
         font = Font()
         try:
             font.Open(filename)
-        except:
+        except:  # noqa: E722
             return None
         return font
 

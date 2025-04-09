@@ -304,17 +304,28 @@ class Font(FakeFont):
         """
         raise NotImplementedError
 
-    def Open(self, filename: str) -> None:
+    def Open(self, filename: str) -> int:
         """
         Open a font from a VFB file.
 
         Args:
             filename (str): The path and file name of the VFB file.
+
+        Returns:
+            int: 1 on success, 0 if the file could not be opened.
+
+        If you need to import a font (not in VFB format), use `FL.Open()` or
+        `FL.OpenFont()`.
         """
         from FL.vfb.reader import VfbToFontReader
 
+        self._set_file_name(None)  # TODO: What if the font already is loaded from disk?
+        try:
+            VfbToFontReader(Path(filename), self)
+        except:  # noqa: E722
+            return 0
         self._set_file_name(filename)
-        VfbToFontReader(Path(filename), self)
+        return 1
 
     def Save(self, filename: str) -> None:
         """
