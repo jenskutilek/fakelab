@@ -74,12 +74,13 @@ class FontToVfbWriter:
 
     def compile_encoding(self) -> None:
         for i in range(len(self.font.encoding)):
-            self.add_entry(1500, [i, self.font.encoding[i].name])
+            self.add_entry("Encoding", [i, self.font.encoding[i].name])
 
         # We don't know what this does exactly:
         self.add_entry(1502, 1)  # Sometimes 0, sometimes 1?
-        self.add_entry(518, "")
-        self.add_entry(257, "")
+
+        self.add_entry(518, None)
+        self.add_entry(257, None)
 
     def compile_font_info(self) -> None:
         num_masters = self.font._masters_count
@@ -127,7 +128,7 @@ class FontToVfbWriter:
             ),
             self.font,
         )
-        self.add_entry(1140, 0)
+        self.add_entry(1140, None)
         self.add_direct_entries(
             (
                 "vendor",
@@ -141,8 +142,8 @@ class FontToVfbWriter:
             ),
             self.font,
         )
-        self.add_entry(1093, 0)
-        self.add_entry(1068, 0)
+        self.add_entry(1093, "0000")
+        self.add_entry(1068, {"values": []})
         self.add_direct_entries(
             (
                 "blue_values_num",
@@ -174,7 +175,7 @@ class FontToVfbWriter:
         # TODO:
         # "note"
 
-        self.add_entry(2030, 0)
+        self.add_entry(2030, "00000000")
 
         # TODO:
         # "customdata"
@@ -184,7 +185,8 @@ class FontToVfbWriter:
         for ttt in self.font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
 
-        self.add_entry("features", self.font.features)
+        if self.font.features:
+            self.add_entry("features", self.font.features)
 
         self.add_entry(513, None)
         self.add_entry(271, None)
