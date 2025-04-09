@@ -87,7 +87,7 @@ class AuditRecord:
     @property
     def index(self) -> int:
         """
-        Node index in the glyph to which error is attched
+        Node index in the glyph to which error is attached
 
         Returns:
             int: The node index
