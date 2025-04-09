@@ -9,3 +9,4 @@ dist/
 .vscode
 venv/
 src/FL/_version.py
+exe/
