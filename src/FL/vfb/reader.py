@@ -107,7 +107,8 @@ class VfbToFontReader:
     """
 
     def __init__(self, vfb_path: Path, font: Font) -> None:
-        """Load the VFB file from `vfb_path` and instantiate its data into `font`.
+        """
+        Load the VFB file from `vfb_path` and instantiate its data into `font`.
 
         Args:
             vfb_path (Path): The file path from which to load the VFB data
