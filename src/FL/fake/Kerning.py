@@ -8,7 +8,7 @@ from FL.fake.KerningClass import KerningClass
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from FL import Font
+    from FL.objects.Font import Font
 
 
 logger = logging.getLogger(__name__)

@@ -8,22 +8,20 @@ from FL.objects.Rect import Rect
 if TYPE_CHECKING:
     from typing import Iterable
 
-    from FL import (
-        Anchor,
-        AuditRecord,
-        Component,
-        Font,
-        Guide,
-        Hint,
-        Image,
-        KerningPair,
-        Link,
-        Matrix,
-        Node,
-        Point,
-        Replace,
-        TTPoint,
-    )
+    from FL.objects.Anchor import Anchor
+    from FL.objects.AuditRecord import AuditRecord
+    from FL.objects.Component import Component
+    from FL.objects.Font import Font
+    from FL.objects.Guide import Guide
+    from FL.objects.Hint import Hint
+    from FL.objects.Image import Image
+    from FL.objects.KerningPair import KerningPair
+    from FL.objects.Link import Link
+    from FL.objects.Matrix import Matrix
+    from FL.objects.Node import Node
+    from FL.objects.Point import Point
+    from FL.objects.Replace import Replace
+    from FL.objects.TTPoint import TTPoint
 
 
 class Glyph:

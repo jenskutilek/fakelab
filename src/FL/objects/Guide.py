@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from FL import Glyph, Matrix
+    from FL.objects.Glyph import Glyph
+    from FL.objects.Matrix import Matrix
 
 
 class Guide:

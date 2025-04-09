@@ -24,12 +24,17 @@ from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 from FL.objects.Replace import Replace
 from FL.objects.TrueTypeTable import TrueTypeTable
+from FL.objects.TTGasp import TTGasp
 from FL.objects.TTH import TTH
 from FL.objects.TTHCommand import TTHCommand
 from FL.objects.TTHPoint import TTHPoint
+from FL.objects.TTHProblem import TTHProblem
 from FL.objects.TTInfo import TTInfo
 from FL.objects.TTPoint import TTPoint
 from FL.objects.TTStem import TTStem
+from FL.objects.TTVdmx import TTVdmx
+from FL.objects.Uni import Uni
+from FL.objects.WeightVector import WeightVector
 
 __all__ = [
     "Anchor",
@@ -39,9 +44,9 @@ __all__ = [
     "Dialog",
     "Encoding",
     "EncodingRecord",
+    "FakeLab",
     "Feature",
     "Font",
-    "FakeLab",
     "Glyph",
     "Guide",
     "Hint",
@@ -56,10 +61,15 @@ __all__ = [
     "Rect",
     "Replace",
     "TrueTypeTable",
+    "TTGasp",
     "TTH",
     "TTHCommand",
     "TTHPoint",
+    "TTHProblem",
     "TTInfo",
     "TTPoint",
     "TTStem",
+    "TTVdmx",
+    "Uni",
+    "WeightVector",
 ]

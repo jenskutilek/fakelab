@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from FL.objects.Matrix import Matrix
 
 if TYPE_CHECKING:
-    from typing import Any
+    from FL.objects.Matrix import Matrix
 
 
 class Point:
