@@ -3,9 +3,7 @@ from __future__ import annotations
 
 class TTPoint:
     """
-    ===============================================
     TTPoint - class to represent TrueType points
-    ===============================================
 
     All coordinates in TTPoint class are set in 10.6 fixed-point format
     """
