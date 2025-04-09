@@ -1,8 +1,9 @@
-import pytest
 import unittest
-
-from FL import fl, Feature, Font, Glyph
 from pathlib import Path
+
+import pytest
+
+from FL import Feature, Font, Glyph, fl
 
 
 class FontTests(unittest.TestCase):
@@ -13,7 +14,7 @@ class FontTests(unittest.TestCase):
     def test_instantiation_path(self):
         vfb_path = Path(__file__).parent.parent.parent / "tests" / "data" / "empty.vfb"
 
-        f = Font(vfb_path)
+        f = Font(str(vfb_path))
         assert len(fl) == 0
         fl.Add(f)
         assert len(fl) == 1
