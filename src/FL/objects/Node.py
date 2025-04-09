@@ -32,7 +32,7 @@ class Node(Copyable):
     coordinates of the final point
     """
 
-    __slots__ = ["_parent", "_points", "point", "type", "alignment", "selected"]
+    __slots__ = ["_parent", "_points", "type", "alignment", "selected"]
 
     # Constructor
 
@@ -91,7 +91,7 @@ class Node(Copyable):
         """
         Is called from FontLab.UpdateFont()
         """
-        self._parent = glyph
+        self._parent: Glyph | None = glyph
         for p in self.points:
             p.fake_update(self)
 
