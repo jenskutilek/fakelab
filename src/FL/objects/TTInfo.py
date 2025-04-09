@@ -64,6 +64,10 @@ class TTInfo(Copyable):
         "_os2_fs_selection",
         "_os2_us_win_ascent",
         "_os2_us_win_descent",
+        # Non-API additions:
+        "_stemsnaplimit",
+        "_zoneppm",
+        "_codeppm",
     ]
 
     # Constructor
@@ -540,3 +544,8 @@ class TTInfo(Copyable):
         self.os2_fs_selection = 0
         self.os2_us_win_ascent = 0
         self.os2_us_win_descent = 0
+
+        # Not in API:
+        self._stemsnaplimit: int = 68  # 68/64 pixel
+        self._zoneppm: int = 48  # Zones active until ppm
+        self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
