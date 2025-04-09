@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
 
 
-class FakeFont:
+class FakeFont(Copyable):
 
     __slots__ = [
         "_fake_binaries",
