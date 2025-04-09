@@ -17,20 +17,39 @@ class AuditRecord:
 
     # Constructor
 
-    def __init__(self, parent: Glyph) -> None:
+    def __init__(self, parent: Glyph, _called_from_FL: bool = False) -> None:
         """
+        There is no explicit constructor for object of this type
+
         Note that objects of this class cannot be created explicitly, they are only
         generated as a result of Glyph().Audit() operation
 
         Args:
             parent (Glyph): The parent of the AuditRecord, a `Glyph`
         """
-        self._parent = parent
+        self._parent: Glyph = parent
         self._x = 0
         self._y = 0
         self._id = ""
         self._description = ""
         self._index = -1
+        if not _called_from_FL:
+            raise RuntimeError(
+                "There is no explicit constructor for object of this type"
+            )
+
+    # Additions for FakeLab
+
+    @staticmethod
+    def fake_create(parent: Glyph) -> AuditRecord:
+        a = AuditRecord.__new__(AuditRecord)
+        a._parent = parent
+        a._x = 0
+        a._y = 0
+        a._id = ""
+        a._description = ""
+        a._index = -1
+        return a
 
     # Attributes
 
