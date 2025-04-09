@@ -6,6 +6,15 @@ from FL.fake.Kerning import FakeKerning
 
 
 class FakeFont:
+
+    __slots__ = [
+        "_fake_binaries",
+        "_fake_kerning",
+        "_file_name",
+        "_selection",
+        "fake_sparse_json",
+    ]
+
     def __init__(self) -> None:
         # Additions for FakeLab
 
