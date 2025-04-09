@@ -124,11 +124,11 @@ class Node(Copyable):
 
     @property
     def x(self) -> int:
-        return self.point.x
+        return int(self.point.x)
 
     @property
     def y(self) -> int:
-        return self.point.y
+        return int(self.point.y)
 
     # Operations
 
