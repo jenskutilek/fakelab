@@ -30,7 +30,7 @@ class ListParent(UserList[T]):
     #     item._parent = self._parent
     #     self.data.__radd__(item)
 
-    def __setitem__(self, index, item: Any) -> None:
+    def __setitem__(self, index: int, item: Any) -> None:
         item._parent = self._parent
         self.data[index] = item
 
@@ -54,7 +54,7 @@ class ListParent(UserList[T]):
 
     # FontLab-specific
 
-    def clean(self):
+    def clean(self) -> None:
         """
         Remove all items from the list.
         """
