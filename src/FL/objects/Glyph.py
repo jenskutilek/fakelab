@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 from FL.fake.Base import Copyable
 from FL.helpers.ListParent import ListParent
 from FL.objects.Image import Image
+from FL.objects.KerningPair import KerningPair
 from FL.objects.Node import Node
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect
@@ -18,7 +19,6 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
     from FL.objects.Hint import Hint
-    from FL.objects.KerningPair import KerningPair
     from FL.objects.Link import Link
     from FL.objects.Matrix import Matrix
     from FL.objects.Replace import Replace
@@ -78,6 +78,11 @@ class Glyph(Copyable):
                 node.fake_deserialize(self._layers_number, node_data)
                 self.nodes.append(node)
             self._metrics = [Point(x, y) for x, y in data["metrics"]]
+            for index, values in data.get("kerning", {}).items():
+                pair = KerningPair(int(index))
+                pair._values = values
+                self.kerning.append(pair)
+
         elif name == "Links":
             pass
         elif name == "image":
@@ -125,7 +130,7 @@ class Glyph(Copyable):
             dict[str, Any]: _description_
         """
         # TODO: Which entries are required? Leave out the other ones.
-        s = {
+        s: dict[str, Any] = {
             "Glyph": {
                 # Minimum wage, yeah!
                 "name": self.name,
@@ -154,6 +159,10 @@ class Glyph(Copyable):
             "glyph.customdata": self.customdata,
             "glyph.note": self.note,
         }
+        if self.kerning:
+            s["Glyph"]["kerning"] = {
+                str(pair.key): pair.values for pair in self.kerning
+            }
         return s
 
     # Attributes
