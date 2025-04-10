@@ -139,7 +139,7 @@ class Glyph(Copyable):
                     node.fake_serialize(self.layers_number) for node in self.nodes
                 ],
                 "metrics": [
-                    (int(p.x), int(p.y))
+                    [int(p.x), int(p.y)]
                     for p in [self.GetMetrics(i) for i in range(self.layers_number)]
                 ],
             },
