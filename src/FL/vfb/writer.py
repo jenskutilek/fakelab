@@ -230,7 +230,6 @@ class FontToVfbWriter:
             ("vdmx", "hhea_line_gap", "hhea_ascender", "hhea_descender"),
             self.font.ttinfo,
         )
-        self.add_entry("vdmx", self.font.ttinfo.vdmx)
         self.add_entry(
             "TrueType Stem PPEMs",
             {
