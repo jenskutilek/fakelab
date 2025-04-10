@@ -1,8 +1,12 @@
-import pytest
-import unittest
+from __future__ import annotations
 
-from FL import FakeLab, fl, Font
+import unittest
 from pathlib import Path
+
+import pytest
+
+from FL import FakeLab, Font, fl
+from FL.constants import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 
 # fl is pre-instantiated, take care not to modify the global state
 
@@ -293,3 +297,18 @@ class FLTests(unittest.TestCase):
             ("thorn", 254),
             ("ydieresis", 255),
         ]
+
+    def test_generate_otf(self):
+        fk = FakeLab()
+        fk.Open(str(get_vfb_path("mini.vfb")))
+        fk.GenerateFont(0, ftOPENTYPE, str(get_vfb_path("mini.gen.otf")))
+
+    def test_generate_ttf(self):
+        fk = FakeLab()
+        fk.Open(str(get_vfb_path("mini.vfb")))
+        fk.GenerateFont(0, ftTRUETYPE, str(get_vfb_path("mini.gen.ttf")))
+
+    def test_generate_vfb(self):
+        fk = FakeLab()
+        fk.Open(str(get_vfb_path("mini.vfb")))
+        fk.GenerateFont(ftFONTLAB, str(get_vfb_path("mini.gen.vfb")))
