@@ -57,7 +57,7 @@ def main() -> None:
             # Run the interactive console.
             console = FontLab5Console(locals=environment)
             console.interact(
-                banner="Welcome to the FakeLab REPL.",
+                banner="Welcome to the Headless FakeLab REPL.",
                 exitmsg="Happy fonting, my friend!",
             )
     else:
