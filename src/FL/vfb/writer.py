@@ -159,10 +159,10 @@ class FontToVfbWriter:
                 "font_style",
                 # "pcl_id",  # TODO
                 "ms_id",
+                "pcl_chars_set",
             ),
             self.font,
         )
-        self.add_entry(1059, "203955")
 
         # TODO
         # "Binary cvt Table"

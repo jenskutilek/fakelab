@@ -64,6 +64,7 @@ font_mapping_direct = {
     "pcl_id",
     "vp_id",
     "ms_id",
+    "pcl_chars_set",
     # "unicoderanges",  # must be converted to a list of bits
     "note",
     "customdata",
@@ -164,8 +165,6 @@ class VfbToFontReader:
             elif name == "1093":
                 pass
             elif name == "1068":
-                pass
-            elif name == "1059":
                 pass
             elif name == "Binary cvt Table":
                 pass
