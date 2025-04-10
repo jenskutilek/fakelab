@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
 from FL.objects.Point import Point
@@ -81,11 +81,20 @@ class Node(Copyable):
 
     # Additions for FakeLab
 
-    def fake_deserialize(self, data) -> None:
-        x, y = data["points"][0]
-        n = Node(vfb2json_node_types[data["type"]])
-        n.alignment = vfb2json_node_conns[data["flags"]]
-        # if n.type in ()
+    def fake_deserialize(self, num_masters: int, data: dict[str, Any]) -> None:
+        self.type = vfb2json_node_types[data["type"]]
+        self.alignment = vfb2json_node_conns[data["flags"]]
+        points = data.get("points", [])
+        for master_index in range(num_masters):
+            master_points = points[master_index]
+            if self.type in (nMOVE, nLINE, nOFF):
+                assert len(master_points) == 1
+            elif self.type == nCURVE:
+                assert len(master_points) == 3
+            else:
+                raise ValueError(f"Unknown Node type: {self.type}")
+            for x, y in master_points:
+                self.points.append(Point(x, y))
 
     def fake_update(self, glyph: Glyph | None = None) -> None:
         """
