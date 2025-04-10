@@ -86,6 +86,20 @@ class Node(Copyable):
             for x, y in master_points:
                 self.points.append(Point(x, y))
 
+    def fake_serialize(self, num_masters: int) -> dict[str, Any]:
+        d = {
+            "type": self.type,
+            "flags": self.alignment,
+            "points": [],
+        }
+        points = d["points"]
+        for i in range(num_masters):
+            points.append([])
+            master_points = points[i]
+            for p in self.points:
+                master_points.append([int(p.x), int(p.y)])
+        return d
+
     def fake_update(self, glyph: Glyph | None = None) -> None:
         """
         Is called from FontLab.UpdateFont()
