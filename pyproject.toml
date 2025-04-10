@@ -20,11 +20,28 @@ classifiers = [
 
 requires-python = ">=3.11"
 dependencies = [
-    "pyyaml >= 6.0.1",
-    "vfbLib > 0.9.2",  # Could be made optional for a lean test framework
+    # "pyyaml >= 6.0.1",
+    # "vfbLib > 0.9.2",  # Could be made optional for a lean test framework
 ]
 
 [project.optional-dependencies]
+all = [
+    "fakelab[generate]",
+    "fakelab[vfb]",
+]
+
+generate = [
+    # Generate actual fonts with ufo2ft
+    "ufo2ft >= 3.4.2",
+    "fakelab[vfb]",
+]
+
+vfb = [
+    # Optional for a lean test framework
+    # Load and save VFB files
+    "vfbLib > 0.9.2",
+]
+
 test = [
     "mypy",                 # type hinting verifier
     "pytest",               # pytest testing framework
