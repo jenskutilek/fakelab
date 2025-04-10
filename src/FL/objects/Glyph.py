@@ -274,10 +274,66 @@ class Glyph(Copyable):
         return len(self._nodes)
 
     @property
+    def width(self) -> int:
+        """
+        advance width for the first master
+
+        Returns:
+            int: _description_
+        """
+        return int(self.GetMetrics().x)
+
+    @width.setter
+    def width(self, value: int) -> None:
+        self._width = value
+
+    @property
+    def height(self) -> int:
+        """
+        advance height for the first master
+
+        Returns:
+            int: _description_
+        """
+        return int(self.GetMetrics().y)
+
+    @height.setter
+    def height(self, value: int) -> None:
+        self._height = value
+
+    @property
+    def unicode(self) -> int | None:
+        """
+        Return the first Unicode index in integer form.
+
+        Returns:
+            int | None: The Unicode codepoint.
+        """
+        if self.unicodes:
+            return self.unicodes[0]
+        else:
+            return None
+
+    @unicode.setter
+    def unicode(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError
+        if value == -1:
+            return
+        if not self.unicodes:
+            self.unicodes.append(value)
+        else:
+            self.unicodes[0] = value
+
+    @property
     def index(self) -> int:
         if self.parent is None:
             return -1
         return self._index
+
+    @property
+    def bounding_box(self) -> Rect:
+        return self.GetBoundingRect(0)
 
     # Operations
 
@@ -499,9 +555,12 @@ class Glyph(Copyable):
         if masterindex != 0:
             raise NotImplementedError
 
-        rect = Rect() if self._nodes else Rect(32767, 32767, -32767, -32767)
+        rect = Rect(0, 0, 0, 0) if self._nodes else Rect(32767, 32767, -32767, -32767)
+        print(rect)
         for n in self._nodes:
-            rect += n.point
+            for p in n.points:
+                print("   ", p)
+                rect += p
 
         return rect
 
@@ -844,15 +903,6 @@ class Glyph(Copyable):
         # (integer)         - flags set for this glyph
         self.flags: int = 0
 
-        # (integer)         - advance width for the first master
-        self.width: int = 0
-
-        # (integer)        - advance height for the first master
-        self.height: int = 0
-
-        # (integer)       - first Unicode index in integer form
-        self.unicode: int | None = None
-
         # [integer]      - list of Unicode indexes
         self.unicodes: list[int] = []
 
@@ -872,7 +922,6 @@ class Glyph(Copyable):
         self.left_side_bearing: int = 0  # (integer)
         self.top_side_bearing: int = 0  # (integer)
         self.y_pels: int = 1  # (integer)
-        self.bounding_box: Rect = Rect(32767, 32767, -32767, -32767)  # (Rect)
         self.number_of_contours: int = 0  # (integer)
         self.end_points: list[int] = []  # [integer]
         self.points: list[TTPoint] = []  # [TTPoint]

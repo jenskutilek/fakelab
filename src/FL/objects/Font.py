@@ -326,6 +326,7 @@ class Font(FakeFont):
             reader = VfbToFontReader(Path(filename), self)
             self.fake_vfb_object = reader.vfb
         except:  # noqa: E722
+            raise
             return 0
         self._set_file_name(filename)
         return 1
@@ -374,12 +375,83 @@ class Font(FakeFont):
         Save an AFM and an INF file.
 
         Args:
-            filename (str): _description_
-
-        Raises:
-            NotImplementedError: _description_
+            filename (str): The path and filename to save the files to.
         """
-        raise NotImplementedError
+        afm = self.fake_get_afm()
+        afm_path = Path(filename).with_suffix(".afm")
+        with open(afm_path, "w") as f:
+            f.write(afm)
+        inf = self.fake_get_inf()
+        inf_path = Path(filename).with_suffix(".inf")
+        with open(inf_path, "w") as f:
+            f.write(inf)
+
+    def fake_get_afm(self, expand_kerning: bool = False) -> str:
+        afm = ["StartFontMetrics 2.0"]
+        afm.extend(
+            [
+                f"Comment Copyright {self.notice}",
+                f"Comment Panose {' '.join([str(p) for p in self.panose])}",
+                f"FullName {self.full_name}",
+                f"FontName {self.font_name}",
+                f"FamilyName {self.family_name}",
+                f"Weight {self.weight}",
+                f"Notice {self.copyright}",
+                f"Version {self.version_major}.{self.version_minor:03d}",
+                f"IsFixedPitch {('false', 'true')[self.is_fixed_pitch]}",
+                f"ItalicAngle {self.italic_angle:0.2f}",
+                "FontBBox 0 -350 531 850",  # FIXME
+                f"Ascender {self.ascender[0]}",
+                f"Descender {self.descender[0]}",
+                f"XHeight {self.x_height[0]}",
+                f"CapHeight {self.cap_height[0]}",
+                f"UnderlinePosition {self.underline_position}",
+                f"UnderlineThickness {self.underline_thickness}",
+                "EncodingScheme FontSpecific",
+                f"StartCharMetrics {len(self.glyphs)}",
+            ]
+        )
+        for g in self.glyphs:
+            r = g.bounding_box
+            bbox = f"{int(r.ll.x)} {int(r.ll.y)} {int(r.ur.x)} {int(r.ur.y)}"
+            if bbox == "32767 32767 -32767 -32767":
+                bbox = "0 0 0 0"
+            afm.append(f"C {g.unicode or -1} ; WX {g.width} ; N {g.name} ; B {bbox} ;")
+        afm.append("EndCharMetrics")
+
+        kerning = self.fake_get_afm_kerning(expand_kerning)
+        if kerning:
+            afm.append("StartKernData")
+            afm.append(f"StartKernPairs {len(kerning)}")
+            prev_L = ""
+            for L, R, value in kerning:
+                if prev_L != "" and prev_L != L:
+                    afm.append("")
+                afm.append(f"KPX {L} {R} {value}")
+                prev_L = L
+
+            afm.append("")
+            afm.append("EndKernPairs")
+            afm.append("EndKernData")
+        afm.append("EndFontMetrics\n")
+
+        return "\n".join(afm)
+
+    def fake_get_afm_kerning(
+        self, expand_kerning: bool = False
+    ) -> list[tuple[str, str, int]]:
+        kerning = []
+        for g in self.glyphs:
+            L = g.name
+            for pair in g.kerning:
+                R = self.glyphs[pair.key].name
+                value = pair.value
+                kerning.append((L, R, value))
+        return kerning
+
+    def fake_get_inf(self) -> str:
+        inf = ""
+        return inf
 
     def Reencode(self, e: Encoding, style: int = 0) -> None:
         """
@@ -651,38 +723,38 @@ class Font(FakeFont):
         self.version_major: int = 1
         self.version_minor: int = 0
 
-        # up until here the default values have been verified
-
-        self.vp_id: int = 0
+        self.vp_id: int = -1
         self.ms_charset: int = 0
         self.ms_id: int = 0
         # list of Panose values
         self.panose: list[int] = [0] * 10
-        self.pcl_chars_set: str = ""
-        self.pcl_id: int = 0
+        self.pcl_chars_set: str = " 9U"
+        self.pcl_id: int = -1
 
         #  Dimensions
         self.upm: int = 1000
         # list of ascenders, one for each master
-        self.ascender: list[int] = []
+        self.ascender: list[int] = [750] * 16
         # list of descenders, one for each master
-        self.descender: list[int] = []
+        self.descender: list[int] = [-250] * 16
         # list of CapHeight records, one for each master
-        self.cap_height: list[int] = []
+        self.cap_height: list[int] = [700] * 16
         # list of xHeight values, one for each master
-        self.x_height: list[int] = []
-        self.default_width: int = 0
-        self.slant_angle: int = 0
-        # Italic Angle
+        self.x_height: list[int] = [500] * 16
+        self.default_width: list[int] = [500] * 16
+        self.slant_angle: float = 0.0
         self.italic_angle: float = 0.0
-        self.is_fixed_pitch: bool = False
-        self.underline_position: int = 0
-        self.underline_thickness: int = 0
+        self.is_fixed_pitch: int = 0
+        self.underline_position: int = -100
+        self.underline_thickness: int = 50
 
         #  Alignment
-        self.blue_fuzz: int = 0
-        self.blue_scale: int = 0
-        self.blue_shift: int = 0
+        self.blue_fuzz: list[int] = [1] * 16
+        self.blue_scale: list[float] = [0.039625] * 16
+        self.blue_shift: list[int] = [7] * 16
+
+        # up until here the default values have been verified
+
         # number of defined blue values
         self.blue_values_num: int = 0
         # two-dimentional array of BlueValues
