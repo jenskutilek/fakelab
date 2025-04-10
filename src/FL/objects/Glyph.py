@@ -156,13 +156,15 @@ class Glyph(Copyable):
             # "unicodes"
             # "Glyph Unicode Non-BMP"
             # "mark"
-            "glyph.customdata": self.customdata,
-            "glyph.note": self.note,
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
                 str(pair.key): pair.values for pair in self.kerning
             }
+        if self.customdata:
+            s["glyph.customdata"] = self.customdata
+        if self.note:
+            s["glyph.note"] = self.note
         return s
 
     # Attributes
