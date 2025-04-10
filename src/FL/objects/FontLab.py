@@ -596,7 +596,7 @@ class FakeLab:
         # int(lovalue) <= n < int(hivalue)
         raise NotImplementedError
 
-    def TransformGlyph(self, glyph: Glyph, code, text):
+    def TransformGlyph(self, glyph: Glyph, code: int, text: str) -> None:
         """
         Transforms the glyph using one of the Transform actions.
 
@@ -622,25 +622,45 @@ class FakeLab:
 
     # Additional methods reported by dir(fl)
 
-    def GetFileName(self, open_save: int) -> str:
+    def GetFileName(
+        self,
+        open_save: int,
+        suffix: str | None = None,
+        filename: str | None = None,
+        filetype: str | None = None,
+    ) -> str:
         """
         Open a file picker dialog.
 
         Args:
             open_save (int): 0 for a Save dialog, 1 for an Open dialog.
+            suffix (str | None, optional): The suggested file suffix. Ignored in Open
+                dialogs. Defaults to None.
+            filename (str | None, optional): The suggested file name. Defaults to None.
+            filetype (str | None, optional): The suggested file type. Defaults to None.
 
         Returns:
             str: The path of the selected file.
         """
         raise NotImplementedError
 
-    def GetPathName(self):
+    def GetPathName(self, title: str, message: str) -> str:
+        """
+        Show a folder picker.
+
+        Args:
+            title (str): The title of the dialog.
+            message (str): The message of the dialog
+
+        Returns:
+            str: The path of the selected folder.
+        """
         raise NotImplementedError
 
-    def LoadNamFile(self):
+    def LoadNamFile(self, namfilename: str) -> None:
         raise NotImplementedError
 
-    def Lock(self):
+    def Lock(self, lock: bool) -> None:
         raise NotImplementedError
 
     def OpenFont(self, filename: str) -> Font | None:
@@ -661,5 +681,6 @@ class FakeLab:
             return None
         return font
 
-    def _setcurrentfon(self):
+    def _setcurrentfon(self) -> None:
+        # What is this for?
         raise NotImplementedError
