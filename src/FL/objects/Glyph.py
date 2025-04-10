@@ -129,7 +129,9 @@ class Glyph(Copyable):
                 # Minimum wage, yeah!
                 "name": self.name,
                 "num_masters": self.layers_number,
-                "nodes": [],  # TODO
+                "nodes": [
+                    node.fake_serialize(self.layers_number) for node in self.nodes
+                ],
                 "metrics": [
                     (int(p.x), int(p.y))
                     for p in [self.GetMetrics(i) for i in range(self.layers_number)]
