@@ -374,8 +374,10 @@ class FakeLab:
                 font.save(filename)
                 return 0
             elif fonttype == ftFONTLAB:
-                # What's the difference to just saving the VFB?
-                font.fake_vfb_object.write(filename)
+                # What's the difference to just saving the VFB? Probably interpolating
+                # the default instance?
+                # TODO: Verify and interpolate
+                font.Save(filename)
                 return 0
 
         else:
