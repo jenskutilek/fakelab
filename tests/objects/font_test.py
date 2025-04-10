@@ -141,3 +141,13 @@ class FontTests(unittest.TestCase):
         with open(base_path.with_suffix(".afm")) as afm:
             expected = afm.read()
         assert actual == expected
+
+    def test_SaveAFM_expanded(self):
+        base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
+        f = Font(str(base_path))
+        f.fake_save_afm_expanded(str(base_path.with_suffix(".expanded.gen.afm")))
+        with open(base_path.with_suffix(".expanded.gen.afm")) as afm:
+            actual = afm.read()
+        with open(base_path.with_suffix(".expanded.afm")) as afm:
+            expected = afm.read()
+        assert actual == expected

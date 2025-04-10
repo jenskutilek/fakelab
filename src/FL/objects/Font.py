@@ -386,6 +386,12 @@ class Font(FakeFont):
         with open(inf_path, "w") as f:
             f.write(inf)
 
+    def fake_save_afm_expanded(self, filename: str) -> None:
+        afm = self.fake_get_afm(expand_kerning=True)
+        afm_path = Path(filename).with_suffix(".afm")
+        with open(afm_path, "w") as f:
+            f.write(afm)
+
     def fake_get_afm(self, expand_kerning: bool = False) -> str:
         afm = ["StartFontMetrics 2.0"]
         afm.extend(
@@ -440,6 +446,10 @@ class Font(FakeFont):
     def fake_get_afm_kerning(
         self, expand_kerning: bool = False
     ) -> list[tuple[str, str, int]]:
+        if expand_kerning:
+            self.fake_kerning.expand()
+            return self.fake_kerning.flat_kerning
+
         kerning = []
         for g in self.glyphs:
             L = g.name
