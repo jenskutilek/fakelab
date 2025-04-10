@@ -3,12 +3,18 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
+from FL.helpers.FLList import adjust_list
 
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
 class KerningPair(Copyable):
+    """
+    Class to represent kerning pair. This class is Multiple Master-compatible.
+    """
+
+    __slots__ = ["_parent", "_key", "_value", "_values"]
 
     # Constructor
 
@@ -16,20 +22,20 @@ class KerningPair(Copyable):
         self, kerningpair_or_index: KerningPair | int | None = None, value: int = 0
     ) -> None:
         """
-        Class to represent kerning pair. This class is Multiple
-        Master-compatible.
+        KerningPair()             - generic constructor, creates an empty KerningPair
+        KerningPair(KerningPair)  - copy constructor
+        KerningPair(index)        - creates a KerningPair to glyph referenced by index
+                                    but zero value
+        KerningPair(index, value) - creates a KerningPair to glyph referenced by index
+                                    but and assigns value
 
-        >>> k = KerningPair()
-        >>> print(k.key)
-        0
-        >>> print(k.value)
-        0
-        >>> print(k.values)
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        Args:
+            kerningpair_or_index (KerningPair | int | None, optional): _description_. Defaults to None.
+            value (int, optional): _description_. Defaults to 0.
         """
         self._parent = None
         self._key = 0
-        self._values = [0] * 16
+        self._values = [0] * 16  # An orphan pair has values for all 16 possible masters
         if kerningpair_or_index is None:
             self.key = 0
             self.value = 0
@@ -40,6 +46,22 @@ class KerningPair(Copyable):
             self.value = value
         else:
             raise TypeError
+
+    @property
+    def fake_parent(self) -> None:
+        raise AttributeError
+
+    @fake_parent.setter
+    def fake_parent(self, value: Glyph | None) -> None:
+        self._parent = value
+        if self._parent is None:
+            # Pad values list to 16 masters
+            adjust_list(self._values, 16, 0)  # TODO: Check if the default is 0
+        else:
+            # Adjust list length to new layers number
+            adjust_list(self._values, self._parent.layers_number)
+
+    # Attributes
 
     @property
     def parent(self) -> Glyph | None:
@@ -79,4 +101,6 @@ class KerningPair(Copyable):
 
     @values.setter
     def values(self, value: list[int]) -> None:
-        self._values = value
+        raise RuntimeError(
+            'Attempt to write read only attribute "values" of class KerningPair'
+        )
