@@ -39,8 +39,12 @@ class FontToVfbWriter:
 
     def add_entry(self, eid: int | str, decompiled: Any) -> None:
         if isinstance(eid, str):
-            eid = entry_ids.get(eid, eid)
-        e = VfbEntry(self.vfb, eid=eid)
+            eid_int = entry_ids.get(eid)
+            if eid_int is None:
+                raise ValueError
+            e = VfbEntry(self.vfb, eid=eid_int)
+        else:
+            e = VfbEntry(self.vfb, eid=eid)
         e.decompiled = decompiled
         self.vfb.entries.append(e)
 
