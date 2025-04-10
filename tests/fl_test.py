@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 import pytest
+from vfbLib.json import save_vfb_json
 
 from FL import FakeLab, Font, fl
 from FL.constants import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
@@ -13,6 +14,11 @@ from FL.constants import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 
 def get_vfb_path(filename):
     return Path(__file__).parent / "data" / filename
+
+
+def save_vfb_json_file(filename):
+    vfb_path = get_vfb_path(filename)
+    save_vfb_json(vfb_path)
 
 
 class FLTests(unittest.TestCase):
@@ -312,3 +318,4 @@ class FLTests(unittest.TestCase):
         fk = FakeLab()
         fk.Open(str(get_vfb_path("mini.vfb")))
         fk.GenerateFont(ftFONTLAB, str(get_vfb_path("mini.gen.vfb")))
+        save_vfb_json_file("mini.gen.vfb")
