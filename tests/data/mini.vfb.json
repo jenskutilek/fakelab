@@ -2351,7 +2351,36 @@
     },
     {
       "key": "2030",
-      "decompiled": "00000000"
+      "decompiled": "01000000"
+    },
+    {
+      "key": "OpenType Kerning Class Flags",
+      "decompiled": {
+        "_LAT_a_LEFT": [
+          1024,
+          0
+        ],
+        "_LAT_c_RIGHT": [
+          2048,
+          0
+        ],
+        "_LAT_b": [
+          3072,
+          0
+        ]
+      }
+    },
+    {
+      "key": "OpenType Class",
+      "decompiled": "_LAT_a_LEFT: a' c"
+    },
+    {
+      "key": "OpenType Class",
+      "decompiled": "_LAT_c_RIGHT: c' a"
+    },
+    {
+      "key": "OpenType Class",
+      "decompiled": "_LAT_b: b'"
     },
     {
       "key": "513",
@@ -2690,7 +2719,12 @@
             0,
             0
           ]
-        ]
+        ],
+        "kerning": {
+          "4": [
+            -80
+          ]
+        }
       }
     },
     {
@@ -2821,7 +2855,12 @@
             556,
             0
           ]
-        ]
+        ],
+        "kerning": {
+          "4": [
+            -100
+          ]
+        }
       }
     },
     {
@@ -2845,6 +2884,467 @@
       "key": "unicodes",
       "decompiled": [
         97
+      ]
+    },
+    {
+      "key": "Glyph",
+      "decompiled": {
+        "name": "b",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  97,
+                  -66
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  489,
+                  -66
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  489,
+                  630
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  97,
+                  630
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            600,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "key": "2023",
+      "decompiled": [
+        0
+      ]
+    },
+    {
+      "key": "2010",
+      "decompiled": "040000c0"
+    },
+    {
+      "key": "Glyph Origin",
+      "decompiled": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "key": "unicodes",
+      "decompiled": [
+        98
+      ]
+    },
+    {
+      "key": "Glyph",
+      "decompiled": {
+        "name": "c",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  69,
+                  415
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  69,
+                  367
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  105,
+                  283
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  168,
+                  220
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  252,
+                  184
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  300,
+                  184
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  348,
+                  184
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  432,
+                  220
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  495,
+                  283
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  531,
+                  367
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  531,
+                  415
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  531,
+                  463
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  495,
+                  547
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  432,
+                  610
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  348,
+                  646
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  300,
+                  646
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  252,
+                  646
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  168,
+                  610
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  105,
+                  547
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "qcurve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  69,
+                  463
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            600,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "key": "2023",
+      "decompiled": [
+        0
+      ]
+    },
+    {
+      "key": "2010",
+      "decompiled": "040000c0"
+    },
+    {
+      "key": "Glyph Origin",
+      "decompiled": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "key": "unicodes",
+      "decompiled": [
+        99
+      ]
+    },
+    {
+      "key": "Glyph",
+      "decompiled": {
+        "name": "period",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  66,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  234,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  234,
+                  170
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  66,
+                  170
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            300,
+            0
+          ]
+        ],
+        "kerning": {
+          "3": [
+            -120
+          ],
+          "4": [
+            10
+          ],
+          "1": [
+            -90
+          ]
+        }
+      }
+    },
+    {
+      "key": "2023",
+      "decompiled": [
+        0
+      ]
+    },
+    {
+      "key": "2010",
+      "decompiled": "040000c0"
+    },
+    {
+      "key": "Glyph Origin",
+      "decompiled": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "key": "unicodes",
+      "decompiled": [
+        46
       ]
     },
     {
