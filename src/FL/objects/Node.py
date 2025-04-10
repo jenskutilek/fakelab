@@ -21,7 +21,10 @@ nSMOOTH = 4096
 nFIXED = 12288
 
 vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
+json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcurve"}
+
 vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 3: nSMOOTH}  # ?
+json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 3, nFIXED: 1}
 
 
 class Node(Copyable):
@@ -74,6 +77,7 @@ class Node(Copyable):
     def fake_deserialize(self, num_masters: int, data: dict[str, Any]) -> None:
         self.type = vfb2json_node_types[data["type"]]
         self.alignment = vfb2json_node_conns[data["flags"]]
+        self.points.clear()
         points = data.get("points", [])
         for master_index in range(num_masters):
             master_points = points[master_index]
@@ -85,11 +89,17 @@ class Node(Copyable):
                 raise ValueError(f"Unknown Node type: {self.type}")
             for x, y in master_points:
                 self.points.append(Point(x, y))
+        if self.type in (nMOVE, nLINE, nOFF):
+            assert len(self.points) == 1
+        elif self.type == nCURVE:
+            assert len(self.points) == 3
+        else:
+            raise ValueError(f"Unknown Node type: {self.type}")
 
     def fake_serialize(self, num_masters: int) -> dict[str, Any]:
         d = {
-            "type": self.type,
-            "flags": self.alignment,
+            "type": json2vfb_node_types[self.type],
+            "flags": json2vfb_node_conns[self.alignment],
             "points": [],
         }
         points = d["points"]
