@@ -1,6 +1,18 @@
 from __future__ import annotations
 
 from FL import fl_cmd
+from FL.constants import (
+    ftFONTLAB,
+    ftMACTRUETYPE,
+    ftMACTRUETYPE_DFONT,
+    ftMACTYPE1,
+    ftOPENTYPE,
+    ftTRUETYPE,
+    ftTYPE1,
+    ftTYPE1_MM,
+    ftTYPE1ASCII,
+    ftTYPE1ASCII_MM,
+)
 from FL.FLdict import *  # noqa: F403
 from FL.objects import (
     TTH,
