@@ -40,24 +40,14 @@ class Node(Copyable):
         self, node_or_type: Node | int | None = None, p: Point | None = None
     ) -> None:
         """
-        # No args
-        >>> n = Node()
-        >>> print(n)
-        <Node: type=0x1, x=0, y=0>
-        >>> print(n.x)
-        0.0
-        >>> print(n.y)
-        0.0
+        Node()                      - generic constructor, creates an empty node
+        Node(Node)                  - copy constructor
+        Node(integer type, Point p) - creates a Node and assigns type and coordinates of
+                                      the final point
 
-        # Node with float point
-        >>> p = Point(1.8, 1.2)
-        >>> n = Node(nLINE, p)
-        >>> print(n)
-        <Node: type=0x1, x=1, y=1>
-
-        # The original point's float is truncated
-        >>> print(n.point.x)
-        1.0
+        Args:
+            node_or_type (Node | int | None, optional): _description_. Defaults to None.
+            p (Point | None, optional): _description_. Defaults to None.
         """
         # Remove float when setting coords
         self._set_defaults()
