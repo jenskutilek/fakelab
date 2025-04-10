@@ -119,6 +119,8 @@ class Font(FakeFont):
         "_master_locations",
         "_master_ps_infos",
         "_mapping_mode",
+        # Internal:
+        "fake_vfb_object",
     ]
 
     # Constructor
