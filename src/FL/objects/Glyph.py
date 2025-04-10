@@ -6,6 +6,7 @@ from FL.fake.Base import Copyable
 from FL.helpers.ListParent import ListParent
 from FL.objects.Image import Image
 from FL.objects.Node import Node
+from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 
 if TYPE_CHECKING:
@@ -20,7 +21,6 @@ if TYPE_CHECKING:
     from FL.objects.KerningPair import KerningPair
     from FL.objects.Link import Link
     from FL.objects.Matrix import Matrix
-    from FL.objects.Point import Point
     from FL.objects.Replace import Replace
     from FL.objects.TTPoint import TTPoint
 
@@ -77,6 +77,7 @@ class Glyph(Copyable):
                 node = Node()
                 node.fake_deserialize(self._layers_number, node_data)
                 self.nodes.append(node)
+            self._metrics = [Point(x, y) for x, y in data["metrics"]]
         elif name == "Links":
             pass
         elif name == "image":
