@@ -556,10 +556,8 @@ class Glyph(Copyable):
             raise NotImplementedError
 
         rect = Rect(0, 0, 0, 0) if self._nodes else Rect(32767, 32767, -32767, -32767)
-        print(rect)
         for n in self._nodes:
             for p in n.points:
-                print("   ", p)
                 rect += p
 
         return rect
