@@ -2119,8 +2119,8 @@
       "decompiled": 0
     },
     {
-      "key": "1059",
-      "decompiled": "203955"
+      "key": "pcl_chars_set",
+      "decompiled": "9U"
     },
     {
       "key": "ttinfo",
@@ -2695,8 +2695,8 @@
           "xMax": 468,
           "yMax": 613
         },
-        "adv_width_min": 0,
-        "adv_width_max": 0,
+        "adv_width_min": 342,
+        "adv_width_max": 600,
         "adv_width_avg": 500,
         "ascender": 750,
         "descender": -250,
@@ -2724,6 +2724,22 @@
           "4": [
             -80
           ]
+        },
+        "imported": {
+          "width": 0,
+          "lsb": 0,
+          "unknown1": 0,
+          "unknown2": 0,
+          "unknown3": 1,
+          "bbox": [
+            32767,
+            32767,
+            -32767,
+            -32767
+          ],
+          "endpoints": [],
+          "instructions": [],
+          "hdmx": []
         }
       }
     },
@@ -2747,8 +2763,8 @@
     {
       "key": "unicodes",
       "decompiled": [
-        32,
-        160
+        160,
+        32
       ]
     },
     {
@@ -3224,7 +3240,12 @@
             600,
             0
           ]
-        ]
+        ],
+        "kerning": {
+          "4": [
+            -100
+          ]
+        }
       }
     },
     {
@@ -3312,14 +3333,14 @@
           ]
         ],
         "kerning": {
+          "1": [
+            -90
+          ],
           "3": [
             -120
           ],
           "4": [
             10
-          ],
-          "1": [
-            -90
           ]
         }
       }

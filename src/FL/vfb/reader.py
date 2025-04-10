@@ -126,6 +126,9 @@ class VfbToFontReader:
         self.vfb.decompile()
 
     def read_into_font(self) -> None:
+        classes: list[str] = []
+        kerning_class_flags: dict[str, tuple[int, int]] = {}
+        metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         glyph: Glyph | None = None
         gids = {}
 
@@ -214,13 +217,13 @@ class VfbToFontReader:
             elif name == "TrueTypeTable":
                 pass
             elif name == "OpenType Metrics Class Flags":
-                pass
+                metrics_class_flags = data
             elif name == "OpenType Kerning Class Flags":
-                pass
+                kerning_class_flags = data
             elif name == "features":
                 self.font.features = "\n".join(data)
             elif name == "OpenType Class":
-                pass
+                classes.append(data)
             elif name == "513":
                 pass
             elif name == "271":
@@ -292,3 +295,9 @@ class VfbToFontReader:
                 else:
                     er.name = f"_{i:04d}"
                 enc.append(er)
+
+        if classes:
+            # The setter can't append, assign the whole list
+            self.font.classes = classes
+
+        # TODO: Set class flags from metrics_class_flags and kerning_class_flags
