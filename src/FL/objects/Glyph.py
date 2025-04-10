@@ -500,7 +500,7 @@ class Glyph(Copyable):
 
         Return the glyph advance width and advance height in a form of Point.
         """
-        raise NotImplementedError
+        return self._metrics[masterindex]
 
     def SetMetrics(self, p: Point, masterindex: int = 0) -> None:
         """
