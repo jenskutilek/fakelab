@@ -241,7 +241,7 @@ class FontToVfbWriter:
         self.add_entry("TrueType Stems", {"ttStemsV": [], "ttStemsH": []})
         self.add_entry("TrueType Stem PPEMs 1", {"ttStemsV": [], "ttStemsH": []})
         self.add_entry("TrueType Zones", {"ttZonesT": [], "ttZonesB": []})
-        self.add_entry("unicoderanges", self.font)  # Not TTInfo
+        self.add_entry("unicoderanges", self.font.unicoderanges)  # Not TTInfo
         self.add_entry("stemsnaplimit", self.font.ttinfo._stemsnaplimit)
         self.add_entry("zoneppm", self.font.ttinfo._zoneppm)
         self.add_entry("codeppm", self.font.ttinfo._codeppm)
