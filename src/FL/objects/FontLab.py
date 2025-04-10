@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
+from FL import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 from FL.objects.Font import Font
 from FL.objects.Point import Point
 
@@ -285,12 +286,7 @@ class FakeLab:
                 filename = filename_or_fontindex
                 self.font.Save(filename)
 
-    def GenerateFont(
-        self,
-        fontindex_or_fonttype: int,
-        fonttype_or_filename: int | str,
-        filename: str | None = None,
-    ) -> int:
+    def GenerateFont(self, *args: Any) -> int:
         """
         Generate a Font.
 
@@ -318,17 +314,79 @@ class FakeLab:
         - ftMACTRUETYPE_DFONT  - Mac TrueType font (generates suitcase with resources in
                                  data fork)
         """
-        # TODO: Actually generate a font.
+        try:
+            from ufo2ft import compileOTF, compileTTF
+            from vfbLib.ufo.builder import VfbToUfoBuilder
 
-        # We cannot generate a font at the moment, let's fake it.
-        # Check if the current font has a fake_binary.
-        binary = self.font.fake_binary_get(fontType)
-        if binary:
-            with open(filename, "wb") as f:
-                f.write(binary)
-            return 0
+            can_generate = True
+        except ImportError:
+            can_generate = False
+
+        if len(args) == 3:
+            fontindex, fonttype, filename = args
+        elif len(args) == 2:
+            fonttype, filename = args
+            fontindex = self.ifont
         else:
-            raise NotImplementedError
+            raise RuntimeError(
+                "Incorrect # of args to:\nFontLab.GenerateFont([Int fontindex,] Int "
+                "format, String filename)"
+            )
+
+        # An invalid font index was requested, or there is no open font
+        if fontindex == -1:
+            raise RuntimeError
+
+        font = self._fonts[fontindex]
+
+        if can_generate:
+            # At the moment, we jump through some hoops. The font must have been opened
+            # from a VFB file, and we need to build an UFO in memory to generate.
+            builder = VfbToUfoBuilder(
+                font.fake_vfb_object, add_kerning_groups=True, move_groups=True
+            )
+            # TODO: What if it is MM? Probably intepolate the default instance.
+            ufo = builder.get_ufo_masters()[0]
+            if fonttype == ftOPENTYPE:
+                font = compileOTF(
+                    ufo,
+                    cffVersion=1,
+                    inplace=True,
+                    # layerName=,
+                    optimizeCFF=2,
+                    skipExportGlyphs=False,
+                )
+                font.save(filename)
+                return 0
+            elif fonttype == ftTRUETYPE:
+                # TODO: For TTF, compile UFO hinting
+                font = compileTTF(
+                    ufo,
+                    removeOverlaps=False,
+                    flattenComponents=False,  # FL only has one level of components
+                    # convertCubics=,
+                    # cubicConversionError=,
+                    # layerName=,
+                    skipExportGlyphs=False,
+                    dropImpliedOnCurves=False,
+                    allQuadratic=True,
+                )
+                font.save(filename)
+                return 0
+            elif fonttype == ftFONTLAB:
+                # What's the difference to just saving the VFB?
+                font.fake_vfb_object.write(filename)
+                return 0
+
+        else:
+            # We cannot generate a font at the moment, let's fake it.
+            # Check if the current font has a fake_binary.
+            binary = font.fake_binary_get(fonttype)
+            if binary:
+                with open(filename, "wb") as f:
+                    f.write(binary)
+                return 0
+
         return -1
 
     def Add(self, font: Font) -> None:
