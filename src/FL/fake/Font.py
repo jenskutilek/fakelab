@@ -18,6 +18,7 @@ class FakeFont(Copyable):
         "_file_name",
         "_selection",
         "fake_sparse_json",
+        "fake_vfb_object",
     ]
 
     def __init__(self) -> None:
