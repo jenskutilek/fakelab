@@ -7,11 +7,11 @@ from FL import Feature, Font, Glyph, fl
 
 
 class FontTests(unittest.TestCase):
-    def test_instantiation(self):
+    def test_instantiation(self) -> None:
         f = Font()
         assert isinstance(f, Font)
 
-    def test_instantiation_path(self):
+    def test_instantiation_path(self) -> None:
         vfb_path = Path(__file__).parent.parent.parent / "tests" / "data" / "empty.vfb"
 
         f = Font(str(vfb_path))
@@ -20,13 +20,13 @@ class FontTests(unittest.TestCase):
         assert len(fl) == 1
         assert f.file_name == str(vfb_path)
 
-    def test_add_glyph(self):
+    def test_add_glyph(self) -> None:
         f = Font()
         assert len(f) == 0
         f.glyphs.append(Glyph())
         assert len(f) == 1
 
-    def test_find_glyph(self):
+    def test_find_glyph(self) -> None:
         f = Font()
         g = Glyph()
         g.name = "adieresis"
@@ -40,17 +40,17 @@ class FontTests(unittest.TestCase):
         i = f.FindGlyph("a")
         assert i == -1
 
-    def test_features_readonly(self):
+    def test_features_readonly(self) -> None:
         f = Font()
         with pytest.raises(RuntimeError):
             f.features = []
 
-    def test_features_iadd_freeze(self):
+    def test_features_iadd_freeze(self) -> None:
         f = Font()
         with pytest.raises(ReferenceError):
             f.features += Feature()
 
-    def test_features_setitem(self):
+    def test_features_setitem(self) -> None:
         f = Font()
         fea = Feature("aaaa")
         f.features.append(fea)
@@ -62,7 +62,7 @@ class FontTests(unittest.TestCase):
         assert fea.parent == f
         assert f.features[0].tag == "bbbb"
 
-    def test_features_setslice(self):
+    def test_features_setslice(self) -> None:
         # FIXME
         f = Font()
         f.features.append(Feature("aaaa"))
@@ -76,34 +76,34 @@ class FontTests(unittest.TestCase):
         # assert f.features[1].parent == f
         # assert f.features[1].tag == "dddd"
 
-    def test_features_append(self):
+    def test_features_append(self) -> None:
         f = Font()
         fea = Feature()
         f.features.append(fea)
         assert len(f.features) == 1
         assert fea.parent == f
 
-    def test_fontnames_readonly(self):
+    def test_fontnames_readonly(self) -> None:
         f = Font()
         with pytest.raises(RuntimeError):
             f.fontnames = []
 
-    def test_glyphs_readonly(self):
+    def test_glyphs_readonly(self) -> None:
         f = Font()
         with pytest.raises(RuntimeError):
             f.glyphs = []
 
-    def test_truetypetables_readonly(self):
+    def test_truetypetables_readonly(self) -> None:
         f = Font()
         with pytest.raises(RuntimeError):
             f.truetypetables = []
 
-    def test_write_empty_from_scratch(self):
+    def test_write_empty_from_scratch(self) -> None:
         f = Font()
         vfb_path = Path(__file__).parent.parent / "data" / "empty.scratch.vfb"
         f.Save(str(vfb_path))
 
-    def test_SaveAFM(self):
+    def test_SaveAFM(self) -> None:
         base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
         f = Font(str(base_path))
         f.SaveAFM(str(base_path.with_suffix(".gen.afm")))
@@ -113,7 +113,7 @@ class FontTests(unittest.TestCase):
             expected = afm.read()
         assert actual == expected
 
-    def test_SaveAFM_expanded(self):
+    def test_SaveAFM_expanded(self) -> None:
         base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
         f = Font(str(base_path))
         assert f.classes == ["_LAT_a_LEFT: a' c", "_LAT_c_RIGHT: c' a", "_LAT_b: b'"]
@@ -133,7 +133,7 @@ class FontTests(unittest.TestCase):
             expected = afm.read()
         assert actual == expected
 
-    def test_classes(self):
+    def test_classes(self) -> None:
         f = Font()
         g = Glyph()
         g.name = "adieresis"
@@ -147,7 +147,7 @@ class FontTests(unittest.TestCase):
         i = f.FindGlyph("a")
         assert i == -1
 
-    def test_classes_deserialize(self):
+    def test_classes_deserialize(self) -> None:
         base_path = Path(__file__).parent.parent / "data" / "classes_duplicate.vfb"
         f = Font(str(base_path))
         assert f.classes == [
@@ -220,7 +220,7 @@ class FontTests(unittest.TestCase):
         assert f.GetClassRight(8) is None
         assert f.GetClassMetricsFlags(8) is None
 
-    def test_class_flags_persist(self):
+    def test_class_flags_persist(self) -> None:
         # Class flags should persist in the font when the class list is replaced
         f = Font()
         f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'"]
