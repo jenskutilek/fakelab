@@ -133,6 +133,12 @@ class FontTests(unittest.TestCase):
             expected = afm.read()
         assert actual == expected
 
+    def test_bounding_box(self) -> None:
+        base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
+        f = Font(str(base_path))
+        bbox = f.fake_bounding_rect
+        assert (bbox.ll.x, bbox.ll.y, bbox.ur.x, bbox.ur.y) == (66, -66, 531, 646)
+
     def test_classes(self) -> None:
         f = Font()
         g = Glyph()
