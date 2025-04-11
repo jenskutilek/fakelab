@@ -17,9 +17,9 @@ nOFF = 65
 
 # Alignment
 nSHARP = 0
-nSMOOTH = 4096
+nSMOOTH = 4096  # tangent
 nCLOSEPATH = 8192  # ? Undocumented: Closepath follows after node
-nFIXED = 12288
+nFIXED = 12288  # curve to curve smooth
 
 vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
 json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcurve"}
