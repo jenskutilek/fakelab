@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 from vfbLib.vfb.vfb import Vfb
@@ -13,6 +14,10 @@ if TYPE_CHECKING:
     from pathlib import Path
 
     from FL.objects.Font import Font
+
+
+logger = logging.getLogger(__name__)
+
 
 font_mapping_direct = {
     "font_name",
@@ -258,6 +263,7 @@ class VfbToFontReader:
                 if glyph is not None:
                     self.font.glyphs.append(glyph)
                 # Make a new glyph
+                logger.info(f"Adding Glyph: '{data.get('name')}'")
                 glyph = Glyph()
                 # Add the data
                 glyph.fake_deserialize(name, data)

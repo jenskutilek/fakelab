@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from code import InteractiveConsole
 from typing import Any
 
 from FL import environment, fl
+
+logger = logging.getLogger(__name__)
+
 
 __startup_code__ = """
 from FL import fl
@@ -38,6 +42,13 @@ def main() -> None:
         help="Path(s) to Python scripts to run on the VFB file(s)",
     )
     parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        default=False,
+        help="Verbose output",
+    )
+    parser.add_argument(
         "vfb",
         type=str,
         nargs="*",
@@ -48,7 +59,10 @@ def main() -> None:
     )
     args = parser.parse_args()
     if args:
+        if args.verbose:
+            logging.basicConfig(level=logging.INFO)
         for vfb_path in args.vfb:
+            logger.info(vfb_path)
             fl.Open(vfb_path, addtolist=True)
         if args.script:
             # If we have scripts, run them and exit.
