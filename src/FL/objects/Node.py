@@ -18,7 +18,7 @@ nOFF = 65
 # Alignment
 nSHARP = 0
 nSMOOTH = 4096
-nCLOSEPATH = 8192  # ? Undocumented
+nCLOSEPATH = 8192  # ? Undocumented: Closepath follows after node
 nFIXED = 12288
 
 vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
