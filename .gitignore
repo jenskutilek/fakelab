@@ -10,3 +10,4 @@ dist/
 venv/
 src/FL/_version.py
 exe/
+doc/build
