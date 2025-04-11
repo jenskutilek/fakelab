@@ -24,8 +24,8 @@ nFIXED = 12288  # curve to curve smooth
 vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
 json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcurve"}
 
-vfb2json_node_conns = {0: nSHARP, 1: nFIXED, 2: nCLOSEPATH, 3: nSMOOTH}
-json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 3, nCLOSEPATH: 2, nFIXED: 1}
+vfb2json_node_conns = {0: nSHARP, 1: nSMOOTH, 2: nCLOSEPATH, 3: nFIXED}
+json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
 
 
 class Node(Copyable):
