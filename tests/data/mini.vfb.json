@@ -2695,7 +2695,7 @@
           "xMax": 468,
           "yMax": 613
         },
-        "adv_width_min": 342,
+        "adv_width_min": 411,
         "adv_width_max": 600,
         "adv_width_avg": 500,
         "ascender": 750,
@@ -2763,8 +2763,8 @@
     {
       "key": "unicodes",
       "decompiled": [
-        160,
-        32
+        32,
+        160
       ]
     },
     {
@@ -3240,12 +3240,7 @@
             600,
             0
           ]
-        ],
-        "kerning": {
-          "4": [
-            -100
-          ]
-        }
+        ]
       }
     },
     {
@@ -3374,7 +3369,7 @@
         "mapping_mode": "names_or_index",
         "2": 152,
         "3": 275,
-        "mapping_id": 1
+        "mapping_id": -1
       }
     }
   ]
