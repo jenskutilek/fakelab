@@ -224,7 +224,7 @@ class VfbToFontReader:
             elif name == "OpenType Kerning Class Flags":
                 self.font._classes.fake_kerning_flags = data
             elif name == "features":
-                self.font.features = "\n".join(data)
+                self.font.fake_set_features(data)
             elif name == "OpenType Class":
                 classes.append(data)
             elif name == "513":

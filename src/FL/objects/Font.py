@@ -472,6 +472,10 @@ class Font(FakeFont):
         inf = ""
         return inf
 
+    def fake_set_features(self, features: str) -> None:
+        self._features.clean()
+        print("Features are ignored")
+
     def Reencode(self, e: Encoding, style: int = 0) -> None:
         """
         Apply an encoding to the font.
