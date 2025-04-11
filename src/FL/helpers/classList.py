@@ -17,7 +17,7 @@ class ClassList(UserList[str]):
         self._flags = [0 for _ in iterable or []]
         self._kerning_flags: dict[str, list[int]] = {}
         self._metrics_flags: dict[str, list[int]] = {}
-        self._names: list[str] = []
+        self._names: tuple[str, ...] = tuple()
         self._update_flags()
 
     # Internal
@@ -30,12 +30,14 @@ class ClassList(UserList[str]):
 
     def _update_names(self) -> None:
         # Mapping from name to class index?
-        self._names = [
-            name
-            for name in [
-                self._get_class_name(class_string) for class_string in self.data
+        self._names = tuple(
+            [
+                name
+                for name in [
+                    self._get_class_name(class_string) for class_string in self.data
+                ]
             ]
-        ]
+        )
 
     def _update_flags(self) -> None:
         # Match classes from the old list so they can keep their flags
