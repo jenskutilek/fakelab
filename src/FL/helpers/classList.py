@@ -12,11 +12,7 @@ class ClassList(UserList[str]):
 
     __slots__ = ["_flags", "_kerning_flags", "_metrics_flags", "_names"]
 
-    def __init__(
-        self,
-        iterable: Iterable[str] | None = None,
-        old_list: ClassList | None = None,
-    ) -> None:
+    def __init__(self, iterable: Iterable[str] | None = None) -> None:
         super().__init__(iterable)
         self._flags = [0 for _ in iterable or []]
         self._kerning_flags: dict[str, list[int]] = {}
@@ -43,15 +39,6 @@ class ClassList(UserList[str]):
 
     def _update_flags(self) -> None:
         # Match classes from the old list so they can keep their flags
-        # for cur_index, class_string in enumerate(self.data):
-        #     try:
-        #         old_index = old_list.data.index(class_string)
-        #     except ValueError:
-        #         continue
-
-        #     self._flags[cur_index] = old_list._flags[old_index]
-
-        print("_update_flags")
 
         # Reset flags
         self._flags = [0] * len(self.data)
@@ -95,8 +82,8 @@ class ClassList(UserList[str]):
 
     def fake_set_classes(self, classes: list[str]) -> None:
         # Called from FL.vfb.reader
+        # Carries over the flags when setting the value
         self.data = classes
-        print("fake_set_classes:", self.data)
         self._update_flags()
 
     # Operations
@@ -171,18 +158,27 @@ class ClassList(UserList[str]):
         class_index: int,
         left_lsb: bool | int,
         right_rsb: bool | int,
-        width: bool | None = None,
+        width: bool | int | None = None,
     ) -> None:
-        if width is not None:
-            # Applies to metrics classes
-            raise NotImplementedError
-
         if class_index >= len(self.data) or class_index < 0:
-            return
+            return None
 
         value = 0
+
         if left_lsb:
             value += 1024
         if right_rsb:
             value += 2048
+        if width:
+            value += 4096
+
+        class_name = self._names[class_index]
+        if width is None:
+            # Kerning class
+            self._kerning_flags[class_name] = [value, 0]
+        else:
+            # Must be a metrics class
+            value += 1
+            self._metrics_flags[class_name] = [0, value, 0]
+
         self._flags[class_index] = value

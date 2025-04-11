@@ -182,8 +182,7 @@ class Font(FakeFont):
 
     @classes.setter
     def classes(self, value: list[str]) -> None:
-        # Carry over the flags when setting the value
-        self._classes: ClassList = ClassList(value, self._classes)
+        self._classes.fake_set_classes(value)
 
     @property
     def encoding(self) -> Encoding:
@@ -614,9 +613,9 @@ class Font(FakeFont):
     def SetClassFlags(
         self,
         class_index: int,
-        left_lsb: bool,
-        right_rsb: bool,
-        width: bool | None = None,
+        left_lsb: bool | int,
+        right_rsb: bool | int,
+        width: bool | int | None = None,
     ) -> None:
         """
         (int class_index, bool left, bool right)
