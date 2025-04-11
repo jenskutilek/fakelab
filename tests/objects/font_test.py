@@ -103,35 +103,35 @@ class FontTests(unittest.TestCase):
         vfb_path = Path(__file__).parent.parent / "data" / "empty.scratch.vfb"
         f.Save(str(vfb_path))
 
-    # def test_SaveAFM(self):
-    #     base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
-    #     f = Font(str(base_path))
-    #     f.SaveAFM(str(base_path.with_suffix(".gen.afm")))
-    #     with open(base_path.with_suffix(".gen.afm")) as afm:
-    #         actual = afm.read()
-    #     with open(base_path.with_suffix(".afm")) as afm:
-    #         expected = afm.read()
-    #     assert actual == expected
+    def test_SaveAFM(self):
+        base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
+        f = Font(str(base_path))
+        f.SaveAFM(str(base_path.with_suffix(".gen.afm")))
+        with open(base_path.with_suffix(".gen.afm")) as afm:
+            actual = afm.read()
+        with open(base_path.with_suffix(".afm")) as afm:
+            expected = afm.read()
+        assert actual == expected
 
-    # def test_SaveAFM_expanded(self):
-    #     base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
-    #     f = Font(str(base_path))
-    #     assert f.classes == ["_LAT_a_LEFT: a' c", "_LAT_c_RIGHT: c' a", "_LAT_b: b'"]
-    #     kerning = f.fake_get_afm_kerning(expand_kerning=True)
-    #     assert kerning == [
-    #         ("a", "period", -100),
-    #         ("c", "period", -100),  # expanded pair
-    #         ("period", "a", -90),
-    #         ("period", "c", -120),
-    #         ("period", "period", 10),
-    #         ("space", "period", -80),
-    #     ]
-    #     f.fake_save_afm_expanded(str(base_path.with_suffix(".expanded.gen.afm")))
-    #     with open(base_path.with_suffix(".expanded.gen.afm")) as afm:
-    #         actual = afm.read()
-    #     with open(base_path.with_suffix(".expanded.afm")) as afm:
-    #         expected = afm.read()
-    #     assert actual == expected
+    def test_SaveAFM_expanded(self):
+        base_path = Path(__file__).parent.parent / "data" / "mini.vfb"
+        f = Font(str(base_path))
+        assert f.classes == ["_LAT_a_LEFT: a' c", "_LAT_c_RIGHT: c' a", "_LAT_b: b'"]
+        kerning = f.fake_get_afm_kerning(expand_kerning=True)
+        assert kerning == [
+            ("a", "period", -100),
+            ("c", "period", -100),  # expanded pair
+            ("period", "a", -90),
+            ("period", "c", -120),
+            ("period", "period", 10),
+            ("space", "period", -80),
+        ]
+        f.fake_save_afm_expanded(str(base_path.with_suffix(".expanded.gen.afm")))
+        with open(base_path.with_suffix(".expanded.gen.afm")) as afm:
+            actual = afm.read()
+        with open(base_path.with_suffix(".expanded.afm")) as afm:
+            expected = afm.read()
+        assert actual == expected
 
     def test_classes(self):
         f = Font()
