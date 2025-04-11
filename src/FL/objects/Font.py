@@ -385,6 +385,10 @@ class Font(FakeFont):
         with open(inf_path, "w") as f:
             f.write(inf)
 
+    def _normalize_upm(self, value: float) -> int:
+        # TODO: truncate value before scaling?
+        return int(value * 1000 / self.upm)
+
     def fake_save_afm_expanded(self, filename: str) -> None:
         afm = self.fake_get_afm(expand_kerning=True)
         afm_path = Path(filename).with_suffix(".afm")
@@ -406,22 +410,28 @@ class Font(FakeFont):
                 f"IsFixedPitch {('false', 'true')[self.is_fixed_pitch]}",
                 f"ItalicAngle {self.italic_angle:0.2f}",
                 "FontBBox 0 -350 531 850",  # FIXME
-                f"Ascender {self.ascender[0]}",
-                f"Descender {self.descender[0]}",
-                f"XHeight {self.x_height[0]}",
-                f"CapHeight {self.cap_height[0]}",
-                f"UnderlinePosition {self.underline_position}",
-                f"UnderlineThickness {self.underline_thickness}",
+                f"Ascender {self._normalize_upm(self.ascender[0])}",
+                f"Descender {self._normalize_upm(self.descender[0])}",
+                f"XHeight {self._normalize_upm(self.x_height[0])}",
+                f"CapHeight {self._normalize_upm(self.cap_height[0])}",
+                f"UnderlinePosition {self._normalize_upm(self.underline_position)}",
+                f"UnderlineThickness {self._normalize_upm(self.underline_thickness)}",
                 "EncodingScheme FontSpecific",
                 f"StartCharMetrics {len(self.glyphs)}",
             ]
         )
         for g in self.glyphs:
             r = g.bounding_box
-            bbox = f"{int(r.ll.x)} {int(r.ll.y)} {int(r.ur.x)} {int(r.ur.y)}"
+            bbox = (
+                f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
+                f"{self._normalize_upm(r.ur.x)} {self._normalize_upm(r.ur.y)}"
+            )
             if bbox == "32767 32767 -32767 -32767":
                 bbox = "0 0 0 0"
-            afm.append(f"C {g.unicode or -1} ; WX {g.width} ; N {g.name} ; B {bbox} ;")
+            afm.append(
+                f"C {g.unicode or -1} ; WX {self._normalize_upm(g.width)} ; "
+                f"N {g.name} ; B {bbox} ;"
+            )
         afm.append("EndCharMetrics")
 
         kerning = self.fake_get_afm_kerning(expand_kerning)
@@ -432,7 +442,7 @@ class Font(FakeFont):
             for L, R, value in kerning:
                 if prev_L != "" and prev_L != L:
                     afm.append("")
-                afm.append(f"KPX {L} {R} {value}")
+                afm.append(f"KPX {L} {R} {self._normalize_upm(value)}")
                 prev_L = L
 
             afm.append("")
