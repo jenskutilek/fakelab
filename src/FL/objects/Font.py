@@ -635,7 +635,8 @@ class Font(FakeFont):
             class_index (int): _description_
 
         Returns:
-            int | None: _description_
+            int | None: Returns 0 for non-kerning classes, 0 or 1 for kerning classes,
+                None for class_index outside the classes list length.
         """
         return self._classes.GetClassLeft(class_index)
 
@@ -647,7 +648,8 @@ class Font(FakeFont):
             class_index (int): _description_
 
         Returns:
-            int | None: _description_
+            int | None: Returns 0 for non-kerning classes, 0 or 1 for kerning classes,
+                None for class_index outside the classes list length.
         """
         return self._classes.GetClassRight(class_index)
 
