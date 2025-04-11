@@ -29,7 +29,8 @@ class Point(Copyable):
             self.Assign(p_or_x, y)
 
     def __repr__(self) -> str:
-        return '<Point x="%g" y="%g">' % (self.x, self.y)
+        parent = "orphan" if self._parent is None else "active refernce"
+        return f"<Point: x={self.x:g}, y={self.y:g}, {parent}>"
 
     # Additions for FakeLab
 

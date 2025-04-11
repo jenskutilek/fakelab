@@ -71,7 +71,7 @@ class Node(Copyable):
         # else: Empty node
 
     def __repr__(self) -> str:
-        return "<Node: type=0x%x, x=%g, y=%g>" % (self.type, self.x, self.y)
+        return f"<Node: type=0x{self.type:x}, x={self.x:g}, y={self.y:g}>"
 
     # Additions for FakeLab
 
