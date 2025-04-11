@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import Any, Iterable
+from typing import Any, Iterable, SupportsIndex
 
 
 class ClassList(UserList[str]):
@@ -102,7 +102,7 @@ class ClassList(UserList[str]):
         self.data.__iadd__(item)
         return self
 
-    def __setitem__(self, index: int, item: Any) -> None:
+    def __setitem__(self, index: SupportsIndex | int | Any, item: Any) -> None:
         # Not implemented, it does nothing
         pass
 
