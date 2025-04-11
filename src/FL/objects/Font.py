@@ -420,7 +420,8 @@ class Font(FakeFont):
                 f"StartCharMetrics {len(self.glyphs)}",
             ]
         )
-        for g in self.glyphs:
+        glyphs = self.fake_sort_glyphs(self.glyphs.data)
+        for g in glyphs:
             r = g.bounding_box
             bbox = (
                 f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
@@ -436,6 +437,7 @@ class Font(FakeFont):
 
         kerning = self.fake_get_afm_kerning(expand_kerning)
         if kerning:
+            kerning = self.fake_sort_kerning(kerning)
             afm.append("StartKernData")
             afm.append(f"StartKernPairs {len(kerning)}")
             prev_L = ""
@@ -475,6 +477,24 @@ class Font(FakeFont):
     def fake_set_features(self, features: str) -> None:
         self._features.clean()
         print("Features are ignored")
+
+    def fake_sort_glyphs(self, glyphs: list[Glyph]) -> list[Glyph]:
+        glyph_order = tuple([rec.name for rec in self.encoding])
+        sortable = [(glyph_order.index(glyph.name), glyph) for glyph in glyphs]
+        sortable.sort()
+        print(sortable)
+        return [glyph for _, glyph in sortable]
+
+    def fake_sort_kerning(
+        self, kerning: list[tuple[str, str, int]]
+    ) -> list[tuple[str, str, int]]:
+        glyph_order = tuple([rec.name for rec in self.glyphs])
+        sortable = [
+            (glyph_order.index(L), glyph_order.index(R), L, R, value)
+            for L, R, value in kerning
+        ]
+        sortable.sort()
+        return [(L, R, value) for _, _, L, R, value in sortable]
 
     def Reencode(self, e: Encoding, style: int = 0) -> None:
         """
