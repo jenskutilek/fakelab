@@ -200,7 +200,7 @@ class Font(FakeFont):
 
     @features.setter
     def features(self, value: list[Feature]) -> None:
-        raise RuntimeError
+        raise RuntimeError("Class Font has no attribute features or it is read-only")
 
     @property
     def fontnames(self) -> ListParent[NameRecord]:
