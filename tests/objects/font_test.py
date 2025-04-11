@@ -230,9 +230,9 @@ class FontTests(unittest.TestCase):
         assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)
         assert (f.GetClassLeft(3), f.GetClassRight(3)) == (None, None)
 
-        f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'", "_A: A' Aacute"]
-        # 3rd class should still have the left flag
-        assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)
+        f.classes = ["caps: O", "_kern3: O'", ".mtrx1: O", "_A: A' Aacute"]
+        # Class "_kern3" should still have the left flag, but it is #1 now
+        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (1, 0)
         assert (f.GetClassLeft(3), f.GetClassRight(3)) == (0, 0)
         assert (f.GetClassLeft(4), f.GetClassRight(4)) == (None, None)
 
