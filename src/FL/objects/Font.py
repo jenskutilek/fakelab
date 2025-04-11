@@ -535,7 +535,7 @@ class Font(FakeFont):
 
     def FindGlyph(self, name_uni_int: str | Uni | int) -> int:
         """
-        (string name) | (Uni unicode) | (integer Unicode)
+        (name: str) | (unicode: Uni) | (unicode: int)
         - finds glyph and return its index or -1
         """
         if isinstance(name_uni_int, str):
@@ -563,20 +563,20 @@ class Font(FakeFont):
         """
         Defines a new Multiple Master axis.
 
-        :param name: Name
-        :type name:  str
-
-        :param name: Type
-        :type name:  str
-
-        :param name: ShortName
-        :type name:  str
+        Args:
+            name (str): _description_
+            type (str): _description_
+            shortname (str): _description_
         """
         raise NotImplementedError
 
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
         Removes the axis
+
+        Args:
+            axisindex (int): _description_
+            position (float): _description_
         """
         raise NotImplementedError
 
@@ -626,7 +626,7 @@ class Font(FakeFont):
             return 0
         return 1
 
-    def GenerateFont(self, fontType: int, filename: str | Path) -> None:
+    def GenerateFont(self, fontType: int, filename: str) -> None:
         """
         Generate a font. Deprecated. See the `FL.objects.FontLab` class for a
         description.
@@ -636,12 +636,11 @@ class Font(FakeFont):
         `FontLab` class.
 
         Args:
-            fontType (int): _description_
-            filename (str | Path): _description_
+            fontType (int): The font type.
+            filename (str): The path and file name of the generated font.
 
         Raises:
-            AttributeError: In FontLab 5, the deprecated methods raises an
-                AttributeError.
+            AttributeError: In FontLab 5, the method is deprecated.
         """
         raise AttributeError
 
