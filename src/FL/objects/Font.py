@@ -390,7 +390,6 @@ class Font(FakeFont):
         # TODO: truncate value before scaling?
         return int(value * 1000 / self.upm)
 
-    @property
     def fake_bounding_rect(self, for_afm: bool = False) -> Rect:
         if for_afm:
             x0 = 0
@@ -415,7 +414,7 @@ class Font(FakeFont):
 
     def fake_get_afm(self, expand_kerning: bool = False) -> str:
         afm = ["StartFontMetrics 2.0"]
-        r = self.fake_bounding_rect
+        r = self.fake_bounding_rect(for_afm=True)
         bbox = (
             f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
             f"{self._normalize_upm(r.ur.x)} {self._normalize_upm(r.ur.y)}"
