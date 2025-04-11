@@ -103,8 +103,10 @@ class Rect(Copyable):
         Returns:
             Rect: The enclosing rectangle.
         """
+        # This again doesn't check that the corner points are normalized, so we can
+        # start with a "negative" rect spanning the full area, and have easier
+        # comparisons.
         if isinstance(other, Point):
-            # This again doesn't check that the corner points are normalized.
             if other.x < self._x0:
                 self._x0 = other.x
             if other.y < self._y0:
@@ -114,7 +116,14 @@ class Rect(Copyable):
             if other.y > self._y1:
                 self._y1 = other.y
         elif isinstance(other, Rect):
-            raise NotImplementedError
+            if other.ll.x < self._x0:
+                self._x0 = other.ll.x
+            if other.ll.y < self._y0:
+                self._y0 = other.ll.y
+            if other.ur.x > self._x1:
+                self._x1 = other.ur.x
+            if other.ur.y > self._y1:
+                self._y1 = other.ur.y
         else:
             raise TypeError
         return self

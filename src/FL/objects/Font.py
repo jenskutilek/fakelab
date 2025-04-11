@@ -7,6 +7,7 @@ from FL.fake.Font import FakeFont
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
+from FL.objects.Rect import Rect
 from FL.objects.TTInfo import TTInfo
 from FL.objects.Uni import Uni
 from FL.objects.WeightVector import WeightVector
@@ -389,6 +390,23 @@ class Font(FakeFont):
         # TODO: truncate value before scaling?
         return int(value * 1000 / self.upm)
 
+    @property
+    def fake_bounding_rect(self, for_afm: bool = False) -> Rect:
+        if for_afm:
+            x0 = 0
+            y0 = self.descender[0] - (100 * self.upm / 1000)
+            y1 = self.ascender[0] + (100 * self.upm / 1000)
+        else:
+            x0 = 32767
+            y0 = 32767
+            y1 = -32767
+        rect = Rect(x0, y0, -32767, y1)
+        for g in self.glyphs:
+            gr = g.GetBoundingRect()
+            print(g.name, gr)
+            rect += gr
+        return rect
+
     def fake_save_afm_expanded(self, filename: str) -> None:
         afm = self.fake_get_afm(expand_kerning=True)
         afm_path = Path(filename).with_suffix(".afm")
@@ -397,6 +415,13 @@ class Font(FakeFont):
 
     def fake_get_afm(self, expand_kerning: bool = False) -> str:
         afm = ["StartFontMetrics 2.0"]
+        r = self.fake_bounding_rect
+        bbox = (
+            f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
+            f"{self._normalize_upm(r.ur.x)} {self._normalize_upm(r.ur.y)}"
+        )
+        if bbox == "32767 32767 -32767 -32767":
+            bbox = "0 0 0 0"
         afm.extend(
             [
                 f"Comment Copyright {self.notice}",
@@ -409,7 +434,7 @@ class Font(FakeFont):
                 f"Version {self.version_major}.{self.version_minor:03d}",
                 f"IsFixedPitch {('false', 'true')[self.is_fixed_pitch]}",
                 f"ItalicAngle {self.italic_angle:0.2f}",
-                "FontBBox 0 -350 531 850",  # FIXME
+                f"FontBBox {bbox}",
                 f"Ascender {self._normalize_upm(self.ascender[0])}",
                 f"Descender {self._normalize_upm(self.descender[0])}",
                 f"XHeight {self._normalize_upm(self.x_height[0])}",

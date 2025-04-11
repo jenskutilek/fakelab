@@ -555,7 +555,7 @@ class Glyph(Copyable):
         if masterindex != 0:
             raise NotImplementedError
 
-        rect = Rect(0, 0, 0, 0) if self._nodes else Rect(32767, 32767, -32767, -32767)
+        rect = Rect(32767, 32767, -32767, -32767)
         for n in self._nodes:
             for p in n.points:
                 rect += p
