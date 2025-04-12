@@ -21,6 +21,9 @@ if TYPE_CHECKING:
 
 
 class Font(FakeFont):
+    """
+    Base class to represent a font
+    """
 
     __slots__ = [
         "_axis",

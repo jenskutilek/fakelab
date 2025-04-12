@@ -26,6 +26,9 @@ if TYPE_CHECKING:
 
 
 class Glyph(Copyable):
+    """
+    A glyph
+    """
 
     # Constructor
 
@@ -40,7 +43,7 @@ class Glyph(Copyable):
             self._copy_constructor(glyph_or_masterscount)
 
         elif isinstance(glyph_or_masterscount, int):
-            self._layers_number = glyph_or_masterscount
+            self._layers_number: int = glyph_or_masterscount
             if nodes is not None:
                 # Assign nodes
                 for node in nodes:
@@ -56,19 +59,20 @@ class Glyph(Copyable):
         """
         Is called from FontLab.UpdateFont()
         """
-        self._parent = font
-        self._index = index
+        self._parent: Font | None = font
+        self._index: int = index
         if font is None:
             self._index = -1
         for n in self.nodes:
             n.fake_update(self)
 
     def fake_deserialize(self, name: str, data: Any) -> None:
-        """Add data from a VFB entry
+        """
+        Add data from a VFB entry
 
         Args:
-            name (str): The name of the entry
-            data (_type_): The entry data
+            name (str): The name of the entry.
+            data (_type_): The entry data.
         """
         if name == "Glyph":
             self.name = data["name"]
@@ -110,9 +114,9 @@ class Glyph(Copyable):
         elif name == "mark":
             self.mark: int = data
         elif name == "glyph.customdata":
-            self.customdata = data
+            self.customdata: str | None = data
         elif name == "glyph.note":
-            self.note = data
+            self.note: str | None = data
         elif name == "Glyph GDEF Data":
             pass
         elif name == "Glyph Anchors Supplemental":
@@ -127,7 +131,7 @@ class Glyph(Copyable):
         Serialize the glyph to a dict which resembles the low-level VFB structure
 
         Returns:
-            dict[str, Any]: _description_
+            dict[str, Any]: The serialized glyph.
         """
         # TODO: Which entries are required? Leave out the other ones.
         s: dict[str, Any] = {
@@ -172,111 +176,163 @@ class Glyph(Copyable):
     @property
     def parent(self) -> Font | None:
         """
-        Glyph's parent object, Font
+        The glyph's parent object.
+
+        Returns:
+            Font | None: The parent :py:class:`Font` or None.
         """
         return self._parent
 
     @property
     def nodes(self) -> ListParent[Node]:
         """
-        list of Nodes
+        The list of the glyph's nodes.
+
+        Returns:
+            ListParent[Node]: The nodes.
         """
         return self._nodes
+
+    # customdata
+    # note
+    # mark
 
     @property
     def anchors(self) -> list[Anchor]:
         """
-        list of anchors
+        The list of the glyph's anchos.
+
+        Returns:
+            list[Anchor]: The anchors.
         """
         return self._anchors
 
     @property
     def hhints(self) -> ListParent[Hint]:
         """
-        list of horizontal hints
+        The list of the glyph's horizontal stem hints.
+
+        Returns:
+            ListParent[Hint]: The list of hints.
         """
         return self._hhints
 
     @property
     def vhints(self) -> ListParent[Hint]:
         """
-        list of vertical hints
+        The list of the glyph's vertical stem hints.
+
+        Returns:
+            ListParent[Hint]: The list of hints.
         """
         return self._vhints
 
     @property
     def hlinks(self) -> ListParent[Link]:
         """
-        list of horizontal links
+        The list of the glyph's horizontal stem links.
+
+        Returns:
+            ListParent[Link]: The list of links.
         """
         return self._hlinks
 
     @property
     def vlinks(self) -> ListParent[Link]:
         """
-        list of vertical links
+        The list of the glyph's vertical stem links.
+
+        Returns:
+            ListParent[Link]: The list of links.
         """
         return self._vlinks
 
     @property
     def hguides(self) -> ListParent[Guide]:
         """
-        list of horizontal guides
+        The list of the glyph's horizontal guides.
+
+        Returns:
+            ListParent[Guide]: The list of guides.
         """
         return self._hguides
 
     @property
     def vguides(self) -> ListParent[Guide]:
         """
-        list of vertical guides
+        The list of the glyph's vertical guides.
+
+        Returns:
+            ListParent[Guide]: The list of guides.
         """
         return self._vguides
 
     @property
     def components(self) -> ListParent[Component]:
         """
-        list of components
+        The list of the glyph's components.
+
+        Returns:
+            ListParent[Component]: The list of components.
         """
         return self._components
 
     @property
     def replace_table(self) -> list[Replace]:
         """
-        hint replacing program, list of Replace objects
+        The hint replacement program, a list of :py:class:`Replace` objects.
+
+        Returns:
+            list[Replace]: The list of replace objects.
         """
         return self._replace_table
 
     @property
     def kerning(self) -> ListParent[KerningPair]:
         """
-        list of kerning pairs
+        The list of the glyph's kerning pairs.
+
+        Returns:
+            ListParent[KerningPair]: The list of kerning pairs.
         """
         return self._kerning
 
     @property
     def layers_number(self) -> int:
         """
-        number of masters
+        The number of masters for the glyph.
+
+        Returns:
+            int: The number of masters.
         """
         return self._layers_number
 
     @property
     def mask(self) -> Glyph | None:
-        """Return the mask of the glyph or None.
+        """
+        The mask (background layer) of the glyph.
 
         Returns:
-            Glyph | None: The mask glyph if present, otherwise None.
+            Glyph | None: The mask glyph if present.
         """
         return self._mask
 
+    # flags
+
     @property
     def nodes_number(self) -> int:
+        """
+        The number of nodes in the glyph, same as 'len(Glyph)'.
+
+        Returns:
+            int: The number of nodes.
+        """
         return len(self._nodes)
 
     @property
     def width(self) -> int:
         """
-        advance width for the first master
+        The advance width for the first master.
 
         Returns:
             int: _description_
@@ -285,6 +341,7 @@ class Glyph(Copyable):
 
     @width.setter
     def width(self, value: int) -> None:
+        # TODO: Does this set the first master only?
         self._width = value
 
     @property
@@ -299,12 +356,13 @@ class Glyph(Copyable):
 
     @height.setter
     def height(self, value: int) -> None:
+        # TODO: Does this set the first master only?
         self._height = value
 
     @property
     def unicode(self) -> int | None:
         """
-        Return the first Unicode index in integer form.
+        The first Unicode index as integer.
 
         Returns:
             int | None: The Unicode codepoint.
@@ -325,70 +383,142 @@ class Glyph(Copyable):
         else:
             self.unicodes[0] = value
 
+    # unicodes
+    # name
+    # image
+
     @property
     def index(self) -> int:
+        """
+        The glyph index in the font.
+
+        Returns:
+            int: The glyph index or -1 if the glyph has no parent font.
+        """
         if self.parent is None:
             return -1
         return self._index
+
+    # TrueType Data:
+
+    # advance_width
+    # advance_height
+    # left_side_bearing
+    # top_side_bearing
+    # y_pels
 
     @property
     def bounding_box(self) -> Rect:
         return self.GetBoundingRect(0)
 
+    # number_of_contours
+    # end_points
+    # points
+    # instructions
+    # hdmx
+
     # Operations
 
     def __len__(self) -> int:
         """
-        Return the number of nodes.
+        The number of nodes in the glyph.
+
+        Returns:
+            int: The number of nodes
         """
         return len(self._nodes)
 
     def __getitem__(self, index: int) -> Node:
         """
-        Accesses nodes array
+        Access the nodes list
+
+        Args:
+            index (int): The node index.
+
+        Returns:
+            Node: The node at index.
         """
         return self._nodes[index]
 
     def __slice__(self, a: int, b: int) -> list[Node]:
+        """
+        Access a slice of the glyph's nodes list.
+
+        Args:
+            a (int): The first node index.
+            b (int): The last node index.
+
+        Returns:
+            list[Node]: The slice of nodes.
+        """
         raise NotImplementedError
 
     def __add__(self, glyph_node_nodelist: Glyph | Node | Iterable[Node]) -> Glyph:
+        """
+        Append a :py:class:`Glyph`, a :py:class:`Node`, or a sequence of
+        :py:class:`Node`s.
+
+        Args:
+            glyph_node_nodelist (Glyph | Node | Iterable[Node]): The objects to append.
+
+        Returns:
+            Glyph: The resulting glyph.
+        """
         raise NotImplementedError
 
     def __mul__(self, matrix: Matrix) -> Glyph:
+        """
+        Apply a matrix transformation to the glyph.
+
+        Args:
+            matrix (Matrix): The transformation to apply.
+
+        Returns:
+            Glyph: The transformed glyph.
+        """
         raise NotImplementedError
 
     # Methods
 
     def Assign(self, g: Glyph) -> None:
         """
-        (Glyph)
-        - copies all information from the assigned glyph
+        Copy all information from a glyph.
+
+        Args:
+            g (Glyph): The source glyph.
         """
         raise NotImplementedError
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, matrix: Matrix) -> None:
         """
-        Applies Matrix transformation to the Glyph (see Matrix().__doc__)
+        Apply a matrix transformation to the glyph.
+
+        Args:
+            matrix (Matrix): The transformation to apply.
         """
         raise NotImplementedError
 
     def SetLayersNumber(self, mastersnumber: int) -> None:
         """
-        Change the number of masters, is applicable only to glyphs that have no
-        parent
+        Change the number of masters. Only applicable to glyphs that have no parent.
+
+        Args:
+            mastersnumber (int): The new number of masters.
         """
         raise NotImplementedError
 
     def Clear(self) -> None:
         """
-        Remove all nodes
+        Remove all nodes.
         """
         raise NotImplementedError
 
-    def Add(self, obj: Glyph | Node | Iterable[Node]) -> None:
+    def Add(self, glyph_node_nodelist: Glyph | Node | Iterable[Node]) -> None:
         """
-        - refer to '+' operator
+        Append a glyph, a node, or a sequence of nodes.
+
+        Args:
+            glyph_node_nodelist (Glyph | Node | Iterable[Node]): The objects to append.
         """
         raise NotImplementedError
 
@@ -396,68 +526,90 @@ class Glyph(Copyable):
         self, node_or_glyph_or_nodelist: Node | Glyph | list[Node], nodeindex: int = 0
     ) -> None:
         """
-        (Node | Glyph | [Node]) | (Node | Glyph | [Node], nodeindex)
+        Insert a node, a glyph, or a sequence of nodes at the beginning of the glyph's
+        nodes, or at the specified node index.
 
-        Insert Node, Glyph or sequence of Nodes at the begining of glyph's
-        nodes or at specified node index
+        Args:
+            node_or_glyph_or_nodelist (Node | Glyph | list[Node]): The nodes to insert.
+            nodeindex (int, optional): The place to insert. Defaults to 0.
         """
         raise NotImplementedError
 
     def Present(self, style) -> bool:
         """
-        (style)
+        Return True if a layer or a combination of layers are present in the glyph.
 
-        Return True if a layer or a combination of layers are present in the
-        glyph.
+        Args:
+            style (_type_): _description_
+
+        Returns:
+            bool: Whether the specified combination of layers is present.
         """
         raise NotImplementedError
 
     def Delete(self, index0: int, index1: int | None = None) -> None:
         """
-        (index) | (index0, index1)
+        Remove a node or a range of nodes.
 
-        Remove node or range of nodes.
+        Args:
+            index0 (int): The first node index
+            index1 (int | None, optional): The last node index. Defaults to None.
         """
         raise NotImplementedError
 
     def ExpandLayer(self, masterindex: int) -> None:
         """
-        (masterindex)
+        Expand the specified master to all other masters.
 
-        Expand selected master to all other masters.
+        Args:
+            masterindex (int): The master index.
         """
         raise NotImplementedError
 
     def Shift(self, point: Point, masterindex: int = 0) -> None:
         """
-        (Point) | (Point, masterindex)
+        Shift the positions of all nodes in the specified master.
 
-        Shift positions of all nodes at first or specified master.
+        Args:
+            point (Point): The point specifying the x and y shift.
+            masterindex (int, optional): The master to shift. Defaults to 0.
         """
         raise NotImplementedError
 
     def Scale(self, scale: Point, center: Point, masterindex: int = 0) -> None:
         """
-        (Point(float) scale) | (Point(float) scale, Point center) |
-        (Point(float) scale, Point center, masterindex)
-
         Scale the glyph.
+
+        Args:
+            scale (Point): The point specifying the x and y scale factor.
+            center (Point): The center of the scale transformation.
+            masterindex (int, optional): The master to scale. Defaults to 0.
         """
         raise NotImplementedError
 
     def Layer(self, masterindex: int) -> list[Point]:
         """
-        (masterindex)
+        Return a list of :py:class:`Points` for all nodes for the selected master.
 
-        Return a list of Points for all nodes for the selected master.
+        Args:
+            masterindex (int): The master index
+
+        Returns:
+            list[Point]: The list of each node's last point.
         """
         raise NotImplementedError
 
     def Section(self, masterindex: int, pointindex: int, nodetype: int) -> list[Point]:
         """
-        (masterindex, pointindex, nodetype)
+        Return a list of points matching the specified options.
 
-        Return a list of Points that conform to selected options.
+        Args:
+            masterindex (int): The master index.
+            pointindex (int): The point index.
+            nodetype (int): The node type (nLINE, nMOVE, nCURVE, nOFF).
+
+        Returns:
+            list[Point]: The list of points.
         """
         raise NotImplementedError
 
@@ -469,7 +621,10 @@ class Glyph(Copyable):
 
     def DeleteNode(self, nodeindex: int) -> None:
         """
-        Remove the Node.
+        Remove the specified Node.
+
+        Args:
+            nodeindex (int): The node index.
         """
         raise NotImplementedError
 
@@ -477,10 +632,14 @@ class Glyph(Copyable):
         self, nodeindex: int, time: float = 0.0, masterindex: int = 0
     ) -> None:
         """
-        (nodeindex) | (nodeindex, float time) |
-        (nodeindex, float time, masterindex)
-
         Insert a new node on a contour.
+
+        Args:
+            nodeindex (int): _description_
+            time (float, optional): The time on the segment. Start is 0.0, end is 1.0.
+                Defaults to 0.0.
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
         """
         raise NotImplementedError
 
@@ -488,59 +647,68 @@ class Glyph(Copyable):
 
     def Selection(self) -> list[Node]:
         """
-        Return a list of selected Nodes.
+        Return a list of selected nodes.
+
+        Returns:
+            list[Node]: The list of nodes.
         """
         raise NotImplementedError
 
     def SelectAll(self) -> None:
         """
-        Select all Nodes.
+        Select all nodes.
         """
         raise NotImplementedError
 
     def UnselectAll(self) -> None:
         """
-        Deselect all Nodes.
+        Deselect all nodes.
         """
         raise NotImplementedError
 
     def InvertSelection(self) -> None:
         """
-        Select unselected Nodes and deselects selected Nodes.
+        Select unselected nodes and deselect selected nodes.
         """
         raise NotImplementedError
 
     def isAnySelected(self) -> bool:
         """
-        Return True if at least one Node is selected.
+        Return True if at least one node is selected.
         """
         raise NotImplementedError
 
     def SelectedCount(self) -> int:
         """
-        Return the number of selected Nodes.
+        Return the number of selected nodes.
         """
         raise NotImplementedError
 
     def SelectRect(self, r: Rect, masterindex: int = 0) -> None:
         """
-        (Rect r) | (Rect r, masterindex)
+        Select all nodes that are inside a rectangle.
 
-        Select all Nodes that are inside the rectangle.
+        Args:
+            r (Rect): The rectangle.
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
         """
         raise NotImplementedError
 
     def UnselectRect(self, r: Rect, masterindex: int = 0) -> None:
         """
-        (Rect r) | (Rect r, masterindex)
+        Deselect all nodes that are inside a rectangle.
 
-        Deselect all Nodes that are inside the rectangle.
+        Args:
+            r (Rect): The rectangle.
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
         """
         raise NotImplementedError
 
     def DeleteSelected(self) -> None:
         """
-        Delete all selected Nodes.
+        Delete all selected nodes.
         """
         raise NotImplementedError
 
@@ -548,9 +716,14 @@ class Glyph(Copyable):
 
     def GetBoundingRect(self, masterindex: int = 0) -> Rect:
         """
-        () | (masterindex)
+        Return the glyph's bounding box.
 
-        Return Rect - bounding box of the glyph.
+        Args:
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
+
+        Returns:
+            Rect: The bounding box of the glyph.
         """
         if masterindex != 0:
             raise NotImplementedError
@@ -564,33 +737,47 @@ class Glyph(Copyable):
 
     def GetMetrics(self, masterindex: int = 0) -> Point:
         """
-        () | (masterindex)
+        Return the glyph's advance width and advance height as a point.
 
-        Return the glyph advance width and advance height in a form of Point.
+        Args:
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
+
+        Returns:
+            Point: The point containing the advance width (x) and heigh (y).
         """
         return self._metrics[masterindex]
 
     def SetMetrics(self, p: Point, masterindex: int = 0) -> None:
         """
-        (Point p) | (Point p, masterindex)
+        Assign new values to the advance width and advance height of the glyph.
 
-        Assign new values to the width and height of the glyph.
+        Args:
+            p (Point): The point containing the advance width (x) and heigh (y).
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
     def GetVSB(self, masterindex: int = 0) -> int:  # TODO: Is it int?
         """
-        () | (masterindex)
+        Return the glyph' bottom sidebearing position.
 
-        Return glyph bottom sidebearing position.
+        Args:
+            masterindex (int, optional): The master index used for measuring. Defaults
+                to 0.
+
+        Returns:
+            int: The bottom sidebearing.
         """
         raise NotImplementedError
 
-    def SetVSB(self, value: int, masterindex: int = 0) -> int:  # TODO: Is it int?
+    def SetVSB(self, value: int, masterindex: int = 0) -> None:  # TODO: Is it int?
         """
-        (value) | (value, masterindex)
-
         Assign new values to the bottom sidebearing of the glyph.
+
+        Args:
+            value (int): The bottom sidebearing.
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
@@ -598,17 +785,20 @@ class Glyph(Copyable):
 
     def RemoveOverlap(self, masterindex: int = 0) -> None:
         """
-        () | (masterindex)
+        Remove overlaps from the glyph's contours.
 
-        Remove overlap.
+        Args:
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
     def Badd(self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0) -> None:
         """
-        (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
+        Perform a boolean _Add_ operation with the glyph or list of nodes.
 
-        Perform boolean Add operation with the glyph or list of nodes.
+        Args:
+            glyph_nodelist (Glyph | list[Node]): _description_
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
@@ -616,9 +806,11 @@ class Glyph(Copyable):
         self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
     ) -> None:
         """
-        (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
+        Perform boolean _Subtract_ operation with the glyph or list of nodes.
 
-        Perform boolean Subtract operation with the glyph or list of nodes.
+        Args:
+            glyph_nodelist (Glyph | list[Node]): _description_
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
@@ -626,8 +818,11 @@ class Glyph(Copyable):
         self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
     ) -> None:
         """
-        (Glyph g) | ([Node]) | (Glyph g, masterindex) | ([Node], masterindex)
-        - performs bollean Insersect operation with the glyph or list of nodes
+        Perform a boolean _Intersect_ operation with the glyph or list of nodes.
+
+        Args:
+            glyph_nodelist (Glyph | list[Node]): _description_
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
@@ -641,73 +836,96 @@ class Glyph(Copyable):
 
     def GetContourBegin(self, contourindex: int) -> int:
         """
-        (contourindex)
+        Return the index of the first node of the speficied contour.
 
-        Return the index of the first node for a contour.
+        Args:
+            contourindex (int): The contour index.
+
+        Returns:
+            int: The node index.
         """
         raise NotImplementedError
 
     def GetContourLength(self, contourindex: int) -> int:
         """
-        (contourindex)
+        Return the number of nodes in the specified contour.
 
-        Return the number of nodes in a contour.
+        Args:
+            contourindex (int): The contour index.
+
+        Returns:
+            int: The number of nodes.
         """
         raise NotImplementedError
 
     def SelectContour(self, contourindex: int) -> None:
         """
-        (contourindex)
+        Select all nodes in the specified contour.
 
-        Select all nodes in the contour.
+        Args:
+            contourindex (int): The contour index.
         """
         raise NotImplementedError
 
     def DeleteContour(self, contourindex: int) -> None:
         """
-        (contourindex)
+        Remove in the specified contour.
 
-        Remove contour.
+        Args:
+            contourindex (int): The contour index.
         """
         raise NotImplementedError
 
     def ReverseContour(self, contourindex: int) -> None:
         """
-        (contourindex)
+        Reverse the specified contour's path direction.
 
-        Reverse contour's direction
+        Args:
+            contourindex (int): The contour index.
         """
         raise NotImplementedError
 
     def ReorderContour(self, contourindex: int, newindex: int) -> None:
         """
-        (contourindex, newindex)
+        Reorder the contours in the glyph by moving the specified contour to a new
+        index.
 
-        Reorder contours in the glyph.
+        Args:
+            contourindex (int): The contour index.
+            newindex (int): The new contour index.
         """
         raise NotImplementedError
 
     def isContourClockwise(self, contourindex: int) -> bool:
         """
-        (contourindex)
-
         Return True if direction of contour is clockwise.
+
+        Args:
+            contourindex (int): The contour index.
+
+        Returns:
+            bool: True if the path direction is clockwise.
         """
         raise NotImplementedError
 
     def SetStartNode(self, nodeindex: int) -> None:
         """
-        (nodeindex)
+        Make the specified node the starting node of its contour.
 
-        Make the node a starting node of the contour.
+        Args:
+            nodeindex (int): The node index.
         """
         raise NotImplementedError
 
     def FindContour(self, nodeindex: int) -> int:
         """
-        (nodeindex)
+        Return number of contour containing the speficied node.
 
-        Return number of contour containing the 'nodeindex'.
+        Args:
+            nodeindex (int): The node index
+
+        Returns:
+            int: The contour index.
         """
         raise NotImplementedError
 
@@ -715,17 +933,19 @@ class Glyph(Copyable):
 
     def RemoveHints(self, mode: int) -> None:
         """
-        (integer mode)
-
         Remove hints and links.
+
+        Args:
+            mode (int): _description_
         """
         raise NotImplementedError
 
     def Autohint(self, masterindex: int = 0) -> None:
         """
-        () | (masterindex)
+        Automatically generate PostScript hints for the glyph.
 
-        Automatically generates Type 1 hints
+        Args:
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
@@ -733,9 +953,13 @@ class Glyph(Copyable):
 
     def FindAnchor(self, name: str) -> Anchor:  # XXX: does it return an anchor?
         """
-        (string name)
+        Find an anchor by name.
 
-        Finds Anchor by name
+        Args:
+            name (str): The anchor name
+
+        Returns:
+            Anchor: _description_
         """
         raise NotImplementedError
 
@@ -747,85 +971,158 @@ class Glyph(Copyable):
         """
         raise NotImplementedError
 
-    def MakeExtremeNodes(self, masterindex: int) -> None:
+    def MakeExtremeNodes(self, masterindex: int = 0) -> None:
         """
-        () | (masterindex)
+        Automatically add nodes at contour extrema.
 
-        Automatically detect and adds extreme nodes.
+        Args:
+            masterindex (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
     def Audit(self) -> list[AuditRecord]:
         """
-        () | (masterindex)
-        Perform test of the glyph and returns list of AuditRecord objects.
+        Perform a test of the glyph and return a list of :py:class:`AuditRecord`
+        objects.
+
+        Returns:
+            list[AuditRecord]: The list of potential contour problems.
         """
         raise NotImplementedError
 
-    def Iterate(self) -> None:
+    def Iterate(self, iterator: Any) -> None:
         """
-        (Iterator)
-
-        Iterate glyph trough iterator class which must include following
+        Iterate the glyph through an iterator class which must provide the following
         methods:
 
-        * Start()
-        * ClosePath()
-        * StartPath(Node)
-        * LineTo(Node)
-        * CurveTo(Node)
-        * SplineTo(Node)
-        * Finish()
+        - :py:func:`Start()`
+        - :py:func:`ClosePath()`
+        - :py:func:`StartPath(Node)`
+        - :py:func:`LineTo(Node)`
+        - :py:func:`CurveTo(Node)`
+        - :py:func:`SplineTo(Node)`
+        - :py:func:`Finish()`
+
+        Args:
+            iterator (Any): The iterator object.
         """
         raise NotImplementedError
 
     def Rotate3D(self) -> None:
+        """
+        _summary_
+        """
         raise NotImplementedError
 
-    def Extrude3D(self, outlinewidth, shift_x, shift_y) -> None:
+    def Extrude3D(self, outlinewidth: int, shift_x: int, shift_y: int) -> None:
+        """
+        _summary_
+
+        Args:
+            outlinewidth (int): _description_
+            shift_x (int): _description_
+            shift_y (int): _description_
+        """
         raise NotImplementedError
 
-    def Shadow(self, outlinewidth, shift_x, shift_y) -> None:
+    def Shadow(self, outlinewidth: int, shift_x: int, shift_y: int) -> None:
+        """
+        _summary_
+
+        Args:
+            outlinewidth (int): _description_
+            shift_x (int): _description_
+            shift_y (int): _description_
+        """
         raise NotImplementedError
 
-    def College(self, outlinewidth, distance) -> None:
+    def College(self, outlinewidth: int, distance: int) -> None:
+        """
+        _summary_
+
+        Args:
+            outlinewidth (int): _description_
+            distance (int): _description_
+        """
         raise NotImplementedError
 
     def Gradient(
-        self, outlinewidth, direction, stripes_number, start_y, finish_y
+        self,
+        outlinewidth: int,
+        direction: int,
+        stripes_number: int,
+        start_y: int,
+        finish_y: int,
     ) -> None:
+        """
+        _summary_
+
+        Args:
+            outlinewidth (int): _description_
+            direction (int): _description_
+            stripes_number (int): _description_
+            start_y (int): _description_
+            finish_y (int): _description_
+        """
         raise NotImplementedError
 
-    def Distance(self, width_x, width_y, cornermode, dest=None) -> None:
+    def Distance(
+        self, width_x: int, width_y: int, cornermode: int, dest: Glyph | None = None
+    ) -> None:
         """
-        (width_x, width_y, cornermode) |
-        (width_x, width_y, cornermode, Glyph dest)
+        _summary_
+
+        Args:
+            width_x (int): _description_
+            width_y (int): _description_
+            cornermode (int): _description_
+            dest (Glyph | None, optional): _description_. Defaults to None.
         """
         raise NotImplementedError
 
-    def Interpolate(self, nodes) -> list[tuple[int, Point]]:
+    def Interpolate(self, nodes: list[tuple[int, Point]]) -> list[tuple[int, Point]]:
         """
-        ([(nodeindex, Point newposition)])
+        __summary__
+
+        Args:
+            nodes (list[tuple[int, Point]]): _description_
+
+        Returns:
+            list[tuple[int, Point]]: _description_
         """
         raise NotImplementedError
 
     def Warp(self, points: list[Point], force: float) -> None:
         """
-        ([Point], float force)
+        _summary_
+
+        Args:
+            points (list[Point]): _description_
+            force (float): _description_
         """
         raise NotImplementedError
 
-    def Rasterize(self) -> Image:
+    def Rasterize(self, image: Image) -> None:
         """
-        (Image)
+        _summary_
+
+        Args:
+            image (Image): _description_
         """
         raise NotImplementedError
 
     def Blend(self, source: Glyph, layer1: int, layer2: int, amount: Point) -> Glyph:
         """
-        (Glyph source, integer layer1, integer layer2, Point amount)
+        Return a blend of the glyph and source.
 
-        Return blend of the glyph and source.
+        Args:
+            source (Glyph): _description_
+            layer1 (int): _description_
+            layer2 (int): _description_
+            amount (Point): _description_
+
+        Returns:
+            Glyph: The blended glyph.
         """
         raise NotImplementedError
 
@@ -837,27 +1134,39 @@ class Glyph(Copyable):
 
     def SaveEPS(self, filename: str, layer: int = 0) -> None:
         """
-        (string filename) | (string filename, layer)
+        Write a glyph master into the EPS file named filename.
 
-        Write layer into the EPS file named filename.
+        Args:
+            filename (str): The path and file name.
+            layer (int, optional): The master index. Defaults to 0.
         """
         raise NotImplementedError
 
-    def LoadEPS(self, filename: str) -> None:
+    def LoadEPS(self, filename: str) -> Glyph:
         """
-        (string filename)
+        Read an EPS file from filename and return it as a Glyph object.
 
-        Read EPS from filename and returns Glyph object.
+        Use the :py:meth:`Assign` method to replace current the glyph with the
+        imported outline.
 
-        Use Assign method to replace current glyph with the loaded outline.
+        Args:
+            filename (str): The path and file name.
+
+        Returns:
+            Glyph: The imported glyph.
         """
         raise NotImplementedError
 
     def R(self, points: list[Point], force: float = 0.0) -> None:
         """
-        ([Point], float force)
+        Present in the docstring but raises an :py:class:`AttributeError`.
 
-        - (?? comes from the __doc__-string but raises an AttributeError)
+        Args:
+            points (list[Point]): A list of points.
+            force (float, optional): The force. Defaults to 0.0.
+
+        Raises:
+            AttributeError: Always.
         """
         raise AttributeError
 
@@ -872,17 +1181,17 @@ class Glyph(Copyable):
     def clear(self) -> None:
         raise NotImplementedError
 
-    # Defaults
+    # FakeLab Defaults
 
     def set_defaults(self) -> None:
         self._parent = None
         self._nodes: ListParent[Node] = ListParent([], self)
 
         # custom data defined for this glyph
-        self.customdata: str | None = None
+        self.customdata = None
 
         # note defined for this glyph
-        self.note: str | None = None
+        self.note = None
 
         self.mark = 0
         self._anchors: list[Anchor] = []
@@ -898,30 +1207,30 @@ class Glyph(Copyable):
         self._layers_number = 1
         self._mask: Glyph | None = None
 
-        # (integer)         - flags set for this glyph
+        # flags set for this glyph
         self.flags: int = 0
 
-        # [integer]      - list of Unicode indexes
+        # list of Unicode indexes
         self.unicodes: list[int] = []
 
-        # (string)           - glyph name
+        # glyph name
         self.name: str = ""
 
         # [Image]           - background image (new in FL 4.53 Win)
         self.image: Image = Image()
 
         # glyph index, -1 if orphan glyph (not reported by docstring)
-        self._index: int = -1
+        self._index = -1
 
         # TrueType data
 
-        self.advance_width: int = 0  # (integer)
-        self.advance_height: int = 0  # (integer)
-        self.left_side_bearing: int = 0  # (integer)
-        self.top_side_bearing: int = 0  # (integer)
-        self.y_pels: int = 1  # (integer)
-        self.number_of_contours: int = 0  # (integer)
-        self.end_points: list[int] = []  # [integer]
-        self.points: list[TTPoint] = []  # [TTPoint]
-        self.instructions: list[int] = []  # [Byte]
-        self.hdmx: list[int] = []  # [Byte]
+        self.advance_width: int = 0
+        self.advance_height: int = 0
+        self.left_side_bearing: int = 0
+        self.top_side_bearing: int = 0
+        self.y_pels: int = 1
+        self.number_of_contours: int = 0
+        self.end_points: list[int] = []
+        self.points: list[TTPoint] = []
+        self.instructions: list[int] = []
+        self.hdmx: list[int] = []

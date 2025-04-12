@@ -19,13 +19,13 @@ class AuditRecord:
 
     def __init__(self, parent: Glyph, _called_from_FL: bool = False) -> None:
         """
-        There is no explicit constructor for object of this type
+        There is no explicit constructor for object of this type.
 
         Note that objects of this class cannot be created explicitly, they are only
-        generated as a result of Glyph().Audit() operation
+        generated as a result of a Glyph.Audit() operation
 
         Args:
-            parent (Glyph): The parent of the AuditRecord, a `Glyph`
+            parent (Glyph): The parent of the AuditRecord, a glyph.
         """
         self._parent: Glyph = parent
         self._x = 0
@@ -56,60 +56,60 @@ class AuditRecord:
     @property
     def parent(self) -> Glyph:
         """
-        Parent object, Glyph
+        The audit record's parent object.
 
         Returns:
-            Glyph: The parent glyph
+            Glyph: The parent glyph.
         """
         return self._parent
 
     @property
     def position(self) -> Point:
         """
-        Position of the audit mark as a Point object
+        The position of the audit mark as a point.
 
         Returns:
-            Point: The point
+            Point: The point.
         """
         return Point(self._x, self._y)
 
     @property
     def p(self) -> Point:
         """
-        Position of the audit mark as a Point object
+        The position of the audit mark as a point.
 
         Returns:
-            Point: The point
+            Point: The point.
         """
         return Point(self._x, self._y)
 
     @property
     def id(self) -> str:
         """
-        Name of the error
+        The error name.
 
         Returns:
-            str: The name
+            str: The name.
         """
         return self._id
 
     @property
     def description(self) -> str:
         """
-        Description of the error
+        The error description.
 
         Returns:
-            str: The description
+            str: The description.
         """
         return self._description
 
     @property
     def index(self) -> int:
         """
-        Node index in the glyph to which error is attached
+        The node index in the glyph to which error is attached.
 
         Returns:
-            int: The node index
+            int: The node index.
         """
         return self._index
 
@@ -118,12 +118,12 @@ class AuditRecord:
     def CanBeFixed(self) -> bool:
         """
         Returns:
-            bool: True if this error can be automatically fixed
+            bool: True if this error can be automatically fixed.
         """
         raise NotImplementedError
 
     def Repair(self) -> None:
         """
-        Tries to automatically fix error
+        Try to automatically fix error.
         """
         raise NotImplementedError

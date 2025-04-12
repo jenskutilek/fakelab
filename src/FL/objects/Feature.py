@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 class Feature(Copyable):  # Or TagObject?
     """
-    Feature - class to represent OpenType feature-definition record
+    OpenType feature-definition record
     """
 
     __slots__ = ["_parent", "_tag", "_value"]
@@ -21,11 +21,11 @@ class Feature(Copyable):  # Or TagObject?
         self, feature_or_tag: Feature | str | None = None, value: str | None = None
     ) -> None:
         """
-        Feature()           - generic constructor, creates an empty Feature record
-        Feature(Feature)    - copy constructor
-        Feature(string tag) - creates feature, assigns 'tag' and empty value
-        Feature(string tag, string value)
-                            - creates feature and assigns values to both attributes
+        - `Feature()`: generic constructor, creates an empty Feature record
+        - `Feature(Feature)`: copy constructor
+        - `Feature(string tag)`: creates feature, assigns 'tag' and empty value
+        - `Feature(string tag, string value)`: creates feature and assigns values to both
+          attributes
 
         Args:
             feature_or_tag (Feature | str | None, optional): _description_. Defaults to None.
@@ -49,20 +49,16 @@ class Feature(Copyable):  # Or TagObject?
     @property
     def parent(self) -> Font | None:
         """
-        parent object, Font
-
         Returns:
-            Font | None: _description_
+            Font | None: The parent Font object, or None.
         """
         return self._parent
 
     @property
     def tag(self) -> str:
         """
-        feature's tag
-
         Returns:
-            str: _description_
+            str: The four-character feature tag.
         """
         return self._tag
 
@@ -73,10 +69,8 @@ class Feature(Copyable):  # Or TagObject?
     @property
     def value(self) -> str | None:
         """
-        feature's text
-
         Returns:
-            str | None: _description_
+            str | None: The feature code in AFDKO syntax.
         """
         return self._value
 

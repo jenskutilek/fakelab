@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 class FakeLab:
     """
-    FontLab - class to represent FontLab program interface
+    The FontLab program interface
 
     The main class. It is used via the pre-instantiated object `fl`.
 

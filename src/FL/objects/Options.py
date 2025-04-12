@@ -1028,6 +1028,9 @@ class Options:
         """
         option:   - Use following codepage to build cmap(1,0) table:
                     [Current codepage in the Font Window]
+
+        Returns:
+            int: _description_
         """
         return self._TTECmap10
 
@@ -1048,7 +1051,11 @@ class Options:
 
     @property
     def TTEExportUnicode(self) -> int:
-        """
+        """_summary_
+
+        Returns:
+            int: _description_
+
         checked:  - Ignore Unicode indexes in the font
         option    - Use following codepage for first 256 glyphs:
                     Do not reencode first 256 glyphs
