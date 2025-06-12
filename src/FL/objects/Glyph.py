@@ -12,7 +12,7 @@ from FL.objects.Point import Point
 from FL.objects.Rect import Rect
 
 if TYPE_CHECKING:
-    from typing import Iterable
+    from collections.abc import Iterable
 
     from FL.objects.Anchor import Anchor
     from FL.objects.AuditRecord import AuditRecord
