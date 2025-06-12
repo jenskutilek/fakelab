@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
@@ -23,6 +24,9 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
     from FL.objects.Replace import Replace
     from FL.objects.TTPoint import TTPoint
+
+
+logger = logging.getLogger(__name__)
 
 
 class Glyph(Copyable):
@@ -97,13 +101,13 @@ class Glyph(Copyable):
             pass
         elif name == "Glyph Sketch":
             pass
-        elif name == "2010":
+        elif name == "Glyph Hinting Options":
             pass
         elif name == "mask":
             pass
-        elif name == "2011":
+        elif name == "mask.metrics":
             pass
-        elif name == "2028":
+        elif name == "mask.metrics_mm":
             pass
         elif name == "Glyph Origin":
             pass
@@ -125,6 +129,8 @@ class Glyph(Copyable):
             pass
         elif name == "Glyph Guide Properties":
             pass
+        else:
+            logger.warning(f"Unhandled glyph entry: {name}")
 
     def fake_serialize(self) -> dict[str, Any]:
         """
@@ -152,10 +158,10 @@ class Glyph(Copyable):
             # "Glyph Bitmaps"
             # "2023"
             # "Glyph Sketch"
-            # "2010"
+            # "Glyph Hinting Options"
             # "mask"
-            # "2011"
-            # "2028"
+            # "mask.metrics"
+            # "mask.metrics_mm"
             # "Glyph Origin"
             # "unicodes"
             # "Glyph Unicode Non-BMP"

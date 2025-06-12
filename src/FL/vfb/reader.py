@@ -82,10 +82,11 @@ glyph_mapping = {
     "Glyph Bitmaps",
     "2023",
     "Glyph Sketch",
-    "2010",
+    "Glyph Hinting Options",
     "mask",
-    "2011",
-    "2028",
+    "2010",
+    "mask.metrics",
+    "mask.metrics_mm",
     "Glyph Origin",
     "unicodes",
     "Glyph Unicode Non-BMP",
@@ -168,7 +169,7 @@ class VfbToFontReader:
                 self.font._license_url = data
             elif name == "1140":
                 pass
-            elif name == "1093":
+            elif name == "PostScript Hinting Options":
                 pass
             elif name == "1068":
                 pass
@@ -182,7 +183,11 @@ class VfbToFontReader:
                 setattr(self.font.ttinfo, name, data)
             elif name == "ttinfo":
                 pass
-            elif name == "1271":
+            elif name == "TrueType Stem PPEMs 2 And 3":
+                pass
+            elif name == "vdmx":
+                pass
+            elif name == "Global Mask":
                 pass
             elif name == "TrueType Stem PPEMs":
                 pass
