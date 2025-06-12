@@ -267,7 +267,7 @@ class Font(FakeFont):
     @xuid_num.setter
     def xuid_num(self, value: int) -> None:
         if not 0 <= value <= 20:
-            raise RuntimeError('New "xuid_num" is out of range 0..2')
+            raise RuntimeError('New "xuid_num" is out of range 0..20')
         self._xuid_num = value
         # TODO: Adjust the length of self._xuid
 
