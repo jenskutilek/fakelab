@@ -268,8 +268,12 @@ class Font(FakeFont):
     def xuid_num(self, value: int) -> None:
         if not 0 <= value <= 20:
             raise RuntimeError('New "xuid_num" is out of range 0..20')
-        self._xuid_num = value
-        # TODO: Adjust the length of self._xuid
+        diff = value - self._xuid_num
+        if diff < 0:
+            self._xuid = self.xuid[:value]
+        elif diff > 0:
+            self._xuid.extend([0] * diff)
+        self._xuid_num: int = value
 
     # Operations
 
@@ -784,7 +788,7 @@ class Font(FakeFont):
         self.tt_version: str | None = None
         self.trademark: str | None = None
         self.xuid_num = 0
-        self._xuid: list[int] = [0] * 20
+        self._xuid: list[int] = []
         # TrueType vendor code
         self.vendor: str = ""
         self.vendor_url: str | None = None
