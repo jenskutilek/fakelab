@@ -1260,7 +1260,7 @@ class Glyph(Copyable):
         self.unicodes: list[int] = []
 
         # glyph name
-        self.name: str = ""
+        self.name = ""
 
         # [Image]           - background image (new in FL 4.53 Win)
         self.image: Image = Image()
