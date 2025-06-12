@@ -203,7 +203,10 @@ class Glyph(Copyable):
                 ],
                 "components": [comp.fake_serialize() for comp in self.components],
             },
-            # "Links"
+            "Links": {
+                "x": [[link.node1, link.node2] for link in self.vlinks],
+                "y": [[link.node1, link.node2] for link in self.hlinks],
+            },
             # "image"
             # "Glyph Bitmaps"
             # "2023"
