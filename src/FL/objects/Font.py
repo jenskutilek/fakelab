@@ -914,7 +914,7 @@ class Font(FakeFont):
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {}
         self._axis_count: int = 0
-        self._anisotropic_interpolation_mappings = []
+        self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]
         self._axis_mappings: list[list[float]] = [[0.0, 0.0] * 40]
         self._master_names = ["Untitled"]
