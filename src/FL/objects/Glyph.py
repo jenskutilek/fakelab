@@ -219,6 +219,7 @@ class Glyph(Copyable):
             "unicodes": [u for u in self.unicodes if u <= 0xFFFF],
             "Glyph Unicode Non-BMP": [u for u in self.unicodes if u > 0xFFFF],
             "mark": self.mark,
+            "glyph.customdata": self.customdata,
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
