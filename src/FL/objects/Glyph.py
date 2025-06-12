@@ -208,7 +208,7 @@ class Glyph(Copyable):
             # "Glyph Bitmaps"
             # "2023"
             # "Glyph Sketch"
-            # "Glyph Hinting Options"
+            "Glyph Hinting Options": self._glyph_hinting_options,
             # "mask"
             # "mask.metrics"
             # "mask.metrics_mm"
