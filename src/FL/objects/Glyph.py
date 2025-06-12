@@ -221,6 +221,10 @@ class Glyph(Copyable):
             "mark": self.mark,
             "glyph.customdata": self.customdata,
             "glyph.note": self.note,
+            # "Glyph GDEF Data"
+            # "Glyph Anchors Supplemental",
+            # "Glyph Anchors MM",
+            # "Glyph Guide Properties",
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
