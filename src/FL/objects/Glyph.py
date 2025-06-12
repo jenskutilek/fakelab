@@ -79,7 +79,7 @@ class Glyph(Copyable):
             data (_type_): The entry data.
         """
         if name == "Glyph":
-            self.name = data["name"]
+            self.name: str = data["name"]
             self._layers_number = data["num_masters"]
             for node_data in data["nodes"]:
                 node = Node()
