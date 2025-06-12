@@ -132,7 +132,11 @@ class Glyph(Copyable):
                 self.kerning.append(pair)
 
         elif name == "Links":
-            pass
+            for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
+                axis_links = data.get(axis, [])
+                for axis_link in axis_links:
+                    target.append(Link(*axis_link))
+
         elif name == "image":
             pass
         elif name == "Glyph Bitmaps":
