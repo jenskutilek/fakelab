@@ -34,6 +34,46 @@ class Glyph(Copyable):
     A glyph
     """
 
+    __slots__ = [
+        "_anchors",
+        "_components",
+        "_height",
+        "_hguides",
+        "_hhints",
+        "_hlinks",
+        "_index",
+        "_kerning",
+        "_layers_number",
+        "_mask",
+        "_nodes",
+        "_replace_table",
+        "_vguides",
+        "_vhints",
+        "_vlinks",
+        "_width",
+        "advance_height",
+        "advance_width",
+        "customdata",
+        "end_points",
+        "flags",
+        "hdmx",
+        "image",
+        "instructions",
+        "left_side_bearing",
+        "mark",
+        "note",
+        "number_of_contours",
+        "points",
+        "top_side_bearing",
+        "unicodes",
+        "y_pels",
+        # Non-API
+        "_glyph_hinting_options",
+        "_metrics",
+        "_parent",
+        "name",
+    ]
+
     # Constructor
 
     def __init__(
