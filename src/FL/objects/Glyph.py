@@ -215,10 +215,10 @@ class Glyph(Copyable):
             # "mask"
             # "mask.metrics"
             # "mask.metrics_mm"
-            # "unicodes"
             # "Glyph Unicode Non-BMP"
             # "mark"
             "Glyph Origin": self._glyph_origin,
+            "unicodes": [u for u in self.unicodes if u <= 0xFFFF],
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
