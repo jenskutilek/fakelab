@@ -65,6 +65,29 @@ class Component(Copyable):
                     self.scale = scale
         # else: Empty Component
 
+    # Additions for FakeLab
+
+    def fake_deserialize(
+        self, num_masters: int, data: dict[str, int | list[float]]
+    ) -> None:
+        self.index = data.get("gid", -1)
+        self._deltas = [
+            Point(data["offsetX"][i], data["offsetY"][i]) for i in range(num_masters)
+        ]
+        self._scales = [
+            Point(data["scaleX"][i], data["scaleY"][i]) for i in range(num_masters)
+        ]
+
+    def fake_serialize(self) -> dict[str, int | list[float]]:
+        d = {
+            "gid": self.index,
+            "offsetX": [p.x for p in self.deltas],
+            "offsetY": [p.y for p in self.deltas],
+            "scaleX": [p.x for p in self.scales],
+            "scaleY": [p.y for p in self.scales],
+        }
+        return d
+
     # Attributes
 
     @property

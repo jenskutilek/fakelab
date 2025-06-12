@@ -130,6 +130,10 @@ class Glyph(Copyable):
                 pair = KerningPair(int(index))
                 pair._values = values
                 self.kerning.append(pair)
+            for component_data in data.get("components", []):
+                component = Component()
+                component.fake_deserialize(self._layers_number, component_data)
+                self.components.append(component)
 
         elif name == "Links":
             for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
@@ -196,6 +200,7 @@ class Glyph(Copyable):
                     [int(p.x), int(p.y)]
                     for p in [self.GetMetrics(i) for i in range(self.layers_number)]
                 ],
+                "components": [comp.fake_serialize() for comp in self.components],
             },
             # "Links"
             # "image"
