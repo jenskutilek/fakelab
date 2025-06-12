@@ -69,6 +69,7 @@ class Glyph(Copyable):
         "y_pels",
         # Non-API
         "_glyph_hinting_options",
+        "_glyph_origin",
         "_metrics",
         "_parent",
         "name",
@@ -158,7 +159,7 @@ class Glyph(Copyable):
         elif name == "mask.metrics_mm":
             pass
         elif name == "Glyph Origin":
-            pass
+            self._glyph_origin = data
         elif name == "unicodes":
             self.unicodes.extend(data)
         elif name == "Glyph Unicode Non-BMP":
@@ -211,10 +212,10 @@ class Glyph(Copyable):
             # "mask"
             # "mask.metrics"
             # "mask.metrics_mm"
-            # "Glyph Origin"
             # "unicodes"
             # "Glyph Unicode Non-BMP"
             # "mark"
+            "Glyph Origin": self._glyph_origin,
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
