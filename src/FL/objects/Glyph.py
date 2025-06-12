@@ -146,7 +146,7 @@ class Glyph(Copyable):
         elif name == "Glyph Sketch":
             pass
         elif name == "Glyph Hinting Options":
-            pass
+            self._glyph_hinting_options = data
         elif name == "mask":
             pass
         elif name == "mask.metrics":
