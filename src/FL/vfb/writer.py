@@ -58,22 +58,22 @@ class FontToVfbWriter:
 
     def compile_header(self) -> None:
         header = self.vfb.header = VfbHeader()
+        # fmt: off
         header.decompiled = {
             "header0": 26,
             "filetype": "WLF10",
             "header1": 3,
-            # fmt: off
             "chunk1": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 10, 0
             ],
-            # fmt: on
             "creator": {"1": 1, "2": [5, 2, 2, 128], "3": 0},
             "end0": 6,
             "end1": 1,
             "end2": 0,
         }
+        # fmt: on
         header.modified = True
 
     def compile_encoding(self) -> None:
