@@ -146,7 +146,9 @@ class FontToVfbWriter:
             ),
             self.font,
         )
-        self.add_entry(1093, "0000")
+        self.add_entry(
+            "PostScript Hinting Options", self.font._postscript_hinting_options
+        )
         self.add_entry(1068, {"values": []})
         self.add_direct_entries(
             (
