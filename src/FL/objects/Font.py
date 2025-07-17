@@ -36,6 +36,7 @@ class Font(FakeFont):
         "_license_url",
         "_license",
         "_masters_count",
+        "_postscript_hinting_options",
         "_truetypetables",
         "_xuid_num",
         "_xuid",
@@ -956,3 +957,4 @@ class Font(FakeFont):
             "3": 316,
             "mapping_id": 1,
         }
+        self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
