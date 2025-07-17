@@ -170,7 +170,7 @@ class VfbToFontReader:
             elif name == "1140":
                 pass
             elif name == "PostScript Hinting Options":
-                pass
+                self.font._postscript_hinting_options = data
             elif name == "1068":
                 pass
             elif name == "Binary cvt Table":
