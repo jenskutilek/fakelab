@@ -58,6 +58,11 @@ class NameRecord(Copyable):
             assert s is not None
             self.name = s
 
+    # Additions for FakeLab
+
+    def fake_serialize(self) -> tuple[int, int, int, int, str]:
+        return (self.nid, self.pid, self.eid, self.lid, self.name)
+
     # Attributes
 
     @property

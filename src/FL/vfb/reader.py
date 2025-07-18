@@ -9,6 +9,7 @@ from FL.helpers.nametables import StandardNametable
 from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
+from FL.objects.NameRecord import NameRecord
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -210,7 +211,9 @@ class VfbToFontReader:
             elif name == "TrueType Zone Deltas":
                 pass
             elif name == "Name Records":
-                pass
+                assert isinstance(data, list)
+                for nr in data:
+                    self.font.fontnames.append(NameRecord(nr))
             elif name == "Custom CMAPs":
                 pass
             elif name == "PCLT Table":
