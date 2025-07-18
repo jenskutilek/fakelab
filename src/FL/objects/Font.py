@@ -102,7 +102,7 @@ class Font(FakeFont):
         "unique_id",
         "upm",
         "vendor_url",
-        "vendor",
+        "_vendor",
         "version_major",
         "version_minor",
         "version",
@@ -242,6 +242,17 @@ class Font(FakeFont):
     @truetypetables.setter
     def truetypetables(self, value: list[TrueTypeTable]) -> None:
         raise RuntimeError
+
+    @property
+    def vendor(self) -> str:
+        return self._vendor
+
+    @vendor.setter
+    def vendor(self, value: str) -> None:
+        if len(value) > 4:
+            self._vendor = value[:4]
+        else:
+            self._vendor = value
 
     @property
     def xuid(self) -> list[int]:
@@ -792,7 +803,7 @@ class Font(FakeFont):
         self._xuid = []
         self._xuid_num = 0
         # TrueType vendor code
-        self.vendor: str = ""
+        self._vendor: str = ""
         self.vendor_url: str | None = None
         self.version: str | None = None
 
