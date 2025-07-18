@@ -78,11 +78,11 @@ class Component(Copyable):
             Point(data["scaleX"][i], data["scaleY"][i]) for i in range(num_masters)
         ]
 
-    def fake_serialize(self) -> dict[str, int | list[float]]:
+    def fake_serialize(self) -> dict[str, int | list[int | float]]:
         d = {
             "gid": self.index,
-            "offsetX": [p.x for p in self.deltas],
-            "offsetY": [p.y for p in self.deltas],
+            "offsetX": [int(p.x) for p in self.deltas],  # FIXME: Round or int?
+            "offsetY": [int(p.y) for p in self.deltas],  # FIXME: Round or int?
             "scaleX": [p.x for p in self.scales],
             "scaleY": [p.y for p in self.scales],
         }
