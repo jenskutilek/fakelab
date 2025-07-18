@@ -789,7 +789,7 @@ class Font(FakeFont):
         self.tt_version: str | None = None
         self.trademark: str | None = None
         self.xuid_num = 0
-        self._xuid: list[int] = []
+        self._xuid = []
         # TrueType vendor code
         self.vendor: str = ""
         self.vendor_url: str | None = None
