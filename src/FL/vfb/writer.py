@@ -256,7 +256,7 @@ class FontToVfbWriter:
         self.add_entry(
             "TrueType Stem PPEMs 1", self.font.ttinfo.fake_serialize_stem_ppems1()
         )
-        self.add_entry("TrueType Zones", {"ttZonesT": [], "ttZonesB": []})
+        self.add_entry("TrueType Zones", self.font.ttinfo.fake_serialize_zones())
         self.add_entry("unicoderanges", self.font.unicoderanges)  # Not TTInfo
         self.add_entry("stemsnaplimit", self.font.ttinfo._stemsnaplimit)
         self.add_entry("zoneppm", self.font.ttinfo._zoneppm)
