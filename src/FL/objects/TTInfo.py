@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from vfbLib.helpers import deHexStr, hexStr, intListToBinary
+from vfbLib.parsers.truetype import settings
+
 from FL.fake.Base import Copyable
 
 if TYPE_CHECKING:
@@ -65,9 +68,16 @@ class TTInfo(Copyable):
         "_os2_us_win_ascent",
         "_os2_us_win_descent",
         # Non-API additions:
+        "_average_width",
+        "_codepages",
+        "_hdmx_ppms1",
+        "_hdmx_ppms2",
+        "_panose",
+        "_unknown_0x57",
         "_stemsnaplimit",
         "_zoneppm",
         "_codeppm",
+        "_unknown_pleasures",
     ]
 
     # Constructor
@@ -85,6 +95,127 @@ class TTInfo(Copyable):
             self._set_defaults()
         else:
             self._copy_constructor(ttinfo)
+
+    # Additions for FakeLab
+
+    def fake_deserialize(
+        self, data: dict[str, int | list[int] | dict[str, int]]
+    ) -> None:
+        for k in (
+            "max_zones",
+            "max_twilight_points",
+            "max_storage",
+            "max_function_defs",
+            "max_stack_elements",
+            # "head_flags",  # TODO: Different format in JSON
+            "head_units_per_em",
+            "head_mac_style",
+            "head_lowest_rec_ppem",
+            "head_creation",
+            # 0x57,  # TODO: What is this?
+            "head_font_direction_hint",
+            "os2_us_weight_class",
+            "os2_us_width_class",
+            "os2_fs_type",
+            "os2_y_subscript_x_size",
+            "os2_y_subscript_y_size",
+            "os2_y_subscript_x_offset",
+            "os2_y_subscript_y_offset",
+            "os2_y_superscript_x_size",
+            "os2_y_superscript_y_size",
+            "os2_y_superscript_x_offset",
+            "os2_y_superscript_y_offset",
+            "os2_y_strikeout_size",
+            "os2_y_strikeout_position",
+            "os2_s_family_class",
+            "os2_s_typo_ascender",
+            "os2_s_typo_descender",
+            "os2_s_typo_line_gap",
+            "os2_fs_selection",
+            "os2_us_win_ascent",
+            "os2_us_win_descent",
+        ):
+            if k in data:
+                setattr(self, k, data[k])
+        for k, attr in (
+            ("Average Width", "_average_width"),
+            ("OpenTypeOS2Panose", "_panose"),
+            ("Hdmx PPMs 1", "_hdmx_ppms_1"),
+            ("Hdmx PPMs 2", "_hdmx_ppms_2"),
+            ("Codepages", "_codepages"),
+        ):
+            if k in data:
+                setattr(self, attr, data[k])
+
+        # I tried to make this value more self-explanatory in vfbLib, but FL
+        # only shows us an int. So we have to convert it back ...
+        if "head_flags" in data:
+            head_flags = data["head_flags"]
+            assert isinstance(head_flags, dict)
+            flags_list: list[int] = head_flags.get("flags", [])
+            self.head_flags = intListToBinary(flags_list)
+            options: tuple[str]
+            if options := tuple(head_flags.get("options", [])):
+                option_bits = []
+                for k, v in settings.items():
+                    if v in options:
+                        option_bits.append(k)
+
+                self.head_flags += intListToBinary(option_bits) << 16
+
+    def fake_serialize(self) -> dict[str | int, int | list[int] | dict[str, int]]:
+        return {
+            "max_zones": self.max_zones,
+            "max_twilight_points": self.max_twilight_points,
+            "max_storage": self.max_storage,
+            "max_function_defs": self.max_function_defs,
+            "max_stack_elements": self.max_stack_elements,
+            "head_flags": self.head_flags,
+            "head_units_per_em": self.head_units_per_em,
+            "head_mac_style": self.head_mac_style,
+            "head_lowest_rec_ppem": self.head_lowest_rec_ppem,
+            "head_creation": self.head_creation,
+            0x57: 0,  # TODO: What is this?
+            "head_font_direction_hint": self.head_font_direction_hint,
+            "os2_us_weight_class": self.os2_us_weight_class,
+            "os2_us_width_class": self.os2_us_width_class,
+            "os2_fs_type": self.os2_fs_type,
+            "os2_y_subscript_x_size": self.os2_y_subscript_x_size,
+            "os2_y_subscript_y_size": self.os2_y_subscript_y_size,
+            "os2_y_subscript_x_offset": self.os2_y_subscript_x_offset,
+            "os2_y_subscript_y_offset": self.os2_y_subscript_y_offset,
+            "os2_y_superscript_x_size": self.os2_y_superscript_x_size,
+            "os2_y_superscript_y_size": self.os2_y_superscript_y_size,
+            "os2_y_superscript_x_offset": self.os2_y_superscript_x_offset,
+            "os2_y_superscript_y_offset": self.os2_y_superscript_y_offset,
+            "os2_y_strikeout_size": self.os2_y_strikeout_size,
+            "os2_y_strikeout_position": self.os2_y_strikeout_position,
+            "os2_s_family_class": self.os2_s_family_class,
+            "OpenTypeOS2Panose": self._panose,
+            "os2_s_typo_ascender": self.os2_s_typo_ascender,
+            "os2_s_typo_descender": self.os2_s_typo_descender,
+            "os2_s_typo_line_gap": self.os2_s_typo_line_gap,
+            "os2_fs_selection": self.os2_fs_selection,
+            "os2_us_win_ascent": self.os2_us_win_ascent,
+            "os2_us_win_descent": self.os2_us_win_descent,
+            "Average Width": self._average_width,
+            "Hdmx PPMs 1": self._hdmx_ppms1,
+            "Hdmx PPMs 2": self._hdmx_ppms2,
+            "Codepages": self._codepages,
+        }
+
+    def fake_get_binary(self, attr: str) -> str:
+        return hexStr(bytes(getattr(self, attr)))
+
+    def fake_set_binary(self, attr: str, data: str) -> None:
+        """
+        Set a binary table (cvt, prep, fpgm) from the representation chosen in JSON.
+
+        Args:
+            attr (str): The attribute name the data should go to
+            data (str): The data as a hexStr
+        """
+        setattr(self, attr, list(deHexStr(data)))
 
     @property
     def hstem_data(self) -> list[TTStem]:
@@ -546,6 +677,20 @@ class TTInfo(Copyable):
         self.os2_us_win_descent = 0
 
         # Not in API:
+        self._average_width = 0
+        self._codepages: dict[str, int] = {
+            "os2_ul_code_page_range1": 0,
+            "os2_ul_code_page_range2": 0,
+        }
+        self._hdmx_ppms1: list[int] = []
+        self._hdmx_ppms2: list[int] = []
+        self._panose: list[int] = [0] * 10
+        # TT-related non-API:
         self._stemsnaplimit: int = 68  # 68/64 pixel
         self._zoneppm: int = 48  # Zones active until ppm
         self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
+
+        self._unknown_pleasures = {
+            "1604": 255,
+            "2032": 0,
+        }

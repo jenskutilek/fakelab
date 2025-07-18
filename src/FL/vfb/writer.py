@@ -170,6 +170,10 @@ class FontToVfbWriter:
         # "Binary cvt Table"
         # "Binary prep Table"
         # "Binary fpgm Table"
+        for k in ("cvt", "prep", "fpgm"):
+            d = self.font.ttinfo.fake_get_binary(k)
+            if d:
+                self.add_entry(k, d)
 
         self.compile_ttinfo()
 
@@ -252,8 +256,8 @@ class FontToVfbWriter:
         self.add_entry("zoneppm", self.font.ttinfo._zoneppm)
         self.add_entry("codeppm", self.font.ttinfo._codeppm)
 
-        self.add_entry(1604, 255)
-        self.add_entry(2032, 300)
+        self.add_entry(1604, self.font.ttinfo._unknown_pleasures["1604"])
+        self.add_entry(2032, self.font.ttinfo._unknown_pleasures["2032"])
 
         self.add_entry("TrueType Zone Deltas", {})
 

@@ -100,6 +100,9 @@ glyph_mapping = {
 }
 
 ttinfo_mapping_direct = {
+    # "cvt",  # custom format
+    # "prep",  # custom format
+    # "fpgm",  # custom format
     "gasp",
     "hhea_line_gap",
     "hhea_ascender",
@@ -172,17 +175,13 @@ class VfbToFontReader:
             elif name == "PostScript Hinting Options":
                 self.font._postscript_hinting_options = data
             elif name == "1068":
-                pass
-            elif name == "Binary cvt Table":
-                pass
-            elif name == "Binary prep Table":
-                pass
-            elif name == "Binary fpgm Table":
-                pass
+                self.font._unknown_pleasures[name] = data
+            elif name in ("cvt", "prep", "fpgm"):
+                self.font.ttinfo.fake_set_binary(name, data)
             elif name in ttinfo_mapping_direct:
                 setattr(self.font.ttinfo, name, data)
             elif name == "ttinfo":
-                pass
+                self.font.ttinfo.fake_deserialize(data)
             elif name == "TrueType Stem PPEMs 2 And 3":
                 pass
             elif name == "vdmx":
@@ -206,10 +205,8 @@ class VfbToFontReader:
                 pass
             elif name == "codeppm":
                 pass
-            elif name == "1604":
-                pass
-            elif name == "2032":
-                pass
+            elif name in ("1604", "2032"):
+                self.font.ttinfo._unknown_pleasures[name] = data
             elif name == "TrueType Zone Deltas":
                 pass
             elif name == "Name Records":
