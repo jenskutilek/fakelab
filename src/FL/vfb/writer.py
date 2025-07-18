@@ -233,7 +233,7 @@ class FontToVfbWriter:
     def compile_ttinfo(self) -> None:
         # TODO:
         # "gasp"
-        # self.add_entry("ttinfo", self.font.ttinfo)
+        self.add_entry("ttinfo", self.font.ttinfo.fake_serialize())
         self.add_direct_entries(
             ("vdmx", "hhea_line_gap", "hhea_ascender", "hhea_descender"),
             self.font.ttinfo,
