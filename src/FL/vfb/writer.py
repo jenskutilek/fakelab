@@ -77,6 +77,7 @@ class FontToVfbWriter:
         header.modified = True
 
     def compile_encoding(self) -> None:
+        # TODO: "Encoding Default"?
         for i in range(len(self.font.encoding)):
             self.add_entry("Encoding", [i, self.font.encoding[i].name])
 
@@ -160,17 +161,21 @@ class FontToVfbWriter:
                 "stem_snap_h_num",
                 "stem_snap_v_num",
                 "font_style",
-                # "pcl_id",  # TODO
+            ),
+            self.font,
+        )
+        if self.font.pcl_id >= 0:
+            self.add_entry("pcl_id", self.font.pcl_id)
+        if self.font.vp_id >= 0:
+            self.add_entry("vp_id", self.font.vp_id)
+
+        self.add_direct_entries(
+            (
                 "ms_id",
                 "pcl_chars_set",
             ),
             self.font,
         )
-
-        for k in ("cvt", "prep", "fpgm"):
-            d = self.font.ttinfo.fake_get_binary(k)
-            if d:
-                self.add_entry(k, d)
 
         self.compile_ttinfo()
 
@@ -231,23 +236,26 @@ class FontToVfbWriter:
         # "default_character"
 
     def compile_ttinfo(self) -> None:
+        for k in ("cvt", "prep", "fpgm"):
+            d = self.font.ttinfo.fake_get_binary(k)
+            if d:
+                self.add_entry(k, d)
         # TODO:
-        # "gasp"
+        self.add_entry("gasp", self.font.ttinfo.fake_serialize_gasp())
         self.add_entry("ttinfo", self.font.ttinfo.fake_serialize())
+        self.add_entry("vdmx", self.font.ttinfo.fake_serialize_vdmx())
         self.add_direct_entries(
-            ("vdmx", "hhea_line_gap", "hhea_ascender", "hhea_descender"),
-            self.font.ttinfo,
+            ("hhea_line_gap", "hhea_ascender", "hhea_descender"), self.font.ttinfo
         )
+        # "TrueType Stem PPEMS 2 And 3" are skipped, it is apparently a remnant of some
+        # old FontLab version. The data is also contained in "TrueType Stem PPEMs"
         self.add_entry(
-            "TrueType Stem PPEMs",
-            {
-                # FIXME: Which is which?
-                "ttStemsV": self.font.ttinfo.hstem_data,
-                "ttStemsH": self.font.ttinfo.vstem_data,
-            },
+            "TrueType Stem PPEMs", self.font.ttinfo.fake_serialize_stem_ppems()
         )
-        self.add_entry("TrueType Stems", {"ttStemsV": [], "ttStemsH": []})
-        self.add_entry("TrueType Stem PPEMs 1", {"ttStemsV": [], "ttStemsH": []})
+        self.add_entry("TrueType Stems", self.font.ttinfo.fake_serialize_stems())
+        self.add_entry(
+            "TrueType Stem PPEMs 1", self.font.ttinfo.fake_serialize_stem_ppems1()
+        )
         self.add_entry("TrueType Zones", {"ttZonesT": [], "ttZonesB": []})
         self.add_entry("unicoderanges", self.font.unicoderanges)  # Not TTInfo
         self.add_entry("stemsnaplimit", self.font.ttinfo._stemsnaplimit)
@@ -257,7 +265,9 @@ class FontToVfbWriter:
         self.add_entry(1604, self.font.ttinfo._unknown_pleasures["1604"])
         self.add_entry(2032, self.font.ttinfo._unknown_pleasures["2032"])
 
-        self.add_entry("TrueType Zone Deltas", {})
+        self.add_entry(
+            "TrueType Zone Deltas", self.font.ttinfo.fake_serialize_zone_deltas()
+        )
 
     def compile_glyphs(self) -> None:
         for glyph in self.font.glyphs:

@@ -25,6 +25,16 @@ class TTVdmx(Copyable):
             f"{self.y_max}, Orphan>"
         )
 
+    # Additions for FakeLab
+
+    def fake_deserialize(self, data: dict[str, int]) -> None:
+        self.y_pel_height = data["pelHeight"]
+        self.y_max = data["max"]
+        self.y_min = data["min"]
+
+    def fake_serialize(self) -> dict[str, int]:
+        return {"pelHeight": self.y_pel_height, "max": self.y_max, "min": self.y_min}
+
     # Attributes
 
     @property

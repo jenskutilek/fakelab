@@ -10,6 +10,8 @@ from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
 from FL.objects.NameRecord import NameRecord
+from FL.objects.TTGasp import TTGasp
+from FL.objects.TTVdmx import TTVdmx
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -104,7 +106,7 @@ ttinfo_mapping_direct = {
     # "cvt",  # custom format
     # "prep",  # custom format
     # "fpgm",  # custom format
-    "gasp",
+    # "gasp",  # custom format
     "hhea_line_gap",
     "hhea_ascender",
     "hhea_descender",
@@ -151,7 +153,6 @@ class VfbToFontReader:
                 else:
                     raise AttributeError(f"Unknown font attribute: {name}")
             elif name == "xuid":
-                # Has no setter in Python API
                 self.font._xuid = data
             elif name == "Encoding":
                 gid, glyph_name = data
@@ -175,37 +176,35 @@ class VfbToFontReader:
                 self.font._unknown_pleasures[name] = data
             elif name in ("cvt", "prep", "fpgm"):
                 self.font.ttinfo.fake_set_binary(name, data)
-            elif name in ttinfo_mapping_direct:
-                setattr(self.font.ttinfo, name, data)
+            elif name == "gasp":
+                self.font.ttinfo.fake_deserialize_gasp(data)
             elif name == "ttinfo":
                 self.font.ttinfo.fake_deserialize(data)
-            elif name == "TrueType Stem PPEMs 2 And 3":
-                pass
             elif name == "vdmx":
-                pass
-            elif name == "Global Mask":
-                pass
-            elif name == "TrueType Stem PPEMs":
-                pass
-            elif name == "TrueType Stem PPEMs 1":
-                pass
-            elif name == "TrueType Stems":
-                pass
+                self.font.ttinfo.fake_deserialize_vdmx(data)
+            elif name in ttinfo_mapping_direct:
+                setattr(self.font.ttinfo, name, data)
+            elif name in (
+                "TrueType Stem PPEMs 2 And 3",
+                "TrueType Stem PPEMs",
+                "TrueType Stems",
+                "TrueType Stem PPEMs 1",
+            ):
+                self.font.ttinfo.fake_deserialize_stems(data)
             elif name == "TrueType Zones":
-                pass
+                self.font.ttinfo.fake_deserialize_zones(data)
             elif name == "unicoderanges":
-                # Must be converted to list
-                pass
+                self.font.unicoderanges = data
             elif name == "stemsnaplimit":
-                pass
+                self.font.ttinfo._stemsnaplimit = data
             elif name == "zoneppm":
-                pass
+                self.font.ttinfo._zoneppm = data
             elif name == "codeppm":
-                pass
+                self.font.ttinfo._codeppm = data
             elif name in ("1604", "2032"):
                 self.font.ttinfo._unknown_pleasures[name] = data
             elif name == "TrueType Zone Deltas":
-                pass
+                self.font.ttinfo.fake_deserialize_zone_deltas(data)
             elif name == "Name Records":
                 assert isinstance(data, list)
                 for nr in data:
@@ -257,6 +256,8 @@ class VfbToFontReader:
             elif name == "Global Guides":
                 pass
             elif name == "Global Guide Properties":
+                pass
+            elif name == "Global Mask":
                 pass
 
             elif name == "Glyph":

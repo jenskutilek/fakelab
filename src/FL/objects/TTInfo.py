@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-from vfbLib.helpers import deHexStr, hexStr, intListToBinary
-from vfbLib.parsers.truetype import settings
+from vfbLib.compilers.truetype import convert_flags_options_to_int
+from vfbLib.helpers import deHexStr, hexStr
+from vfbLib.typing import TTStemsDict, TTZonesDict
 
 from FL.fake.Base import Copyable
-
-if TYPE_CHECKING:
-    from FL.objects.TTGasp import TTGasp
-    from FL.objects.TTStem import TTStem
-    from FL.objects.TTVdmx import TTVdmx
+from FL.objects.TTGasp import TTGasp
+from FL.objects.TTStem import TTStem
+from FL.objects.TTVdmx import TTVdmx
 
 
 class TTInfo(Copyable):
@@ -70,13 +67,14 @@ class TTInfo(Copyable):
         # Non-API additions:
         "_average_width",
         "_codepages",
-        "_hdmx_ppms1",
-        "_hdmx_ppms2",
+        "_hdmx_ppms_1",
+        "_hdmx_ppms_2",
         "_panose",
         "_unknown_0x57",
         "_stemsnaplimit",
         "_zoneppm",
         "_codeppm",
+        "_zones",
         "_unknown_pleasures",
     ]
 
@@ -150,18 +148,7 @@ class TTInfo(Copyable):
         # I tried to make this value more self-explanatory in vfbLib, but FL
         # only shows us an int. So we have to convert it back ...
         if "head_flags" in data:
-            head_flags = data["head_flags"]
-            assert isinstance(head_flags, dict)
-            flags_list: list[int] = head_flags.get("flags", [])
-            self.head_flags = intListToBinary(flags_list)
-            options: tuple[str]
-            if options := tuple(head_flags.get("options", [])):
-                option_bits = []
-                for k, v in settings.items():
-                    if v in options:
-                        option_bits.append(k)
-
-                self.head_flags += intListToBinary(option_bits) << 16
+            self.head_flags = convert_flags_options_to_int(data)
 
     def fake_serialize(self) -> dict[str | int, int | list[int] | dict[str, int]]:
         return {
@@ -169,6 +156,7 @@ class TTInfo(Copyable):
             "max_twilight_points": self.max_twilight_points,
             "max_storage": self.max_storage,
             "max_function_defs": self.max_function_defs,
+            "max_instruction_defs": self.max_instruction_defs,
             "max_stack_elements": self.max_stack_elements,
             "head_flags": self.head_flags,
             "head_units_per_em": self.head_units_per_em,
@@ -199,10 +187,150 @@ class TTInfo(Copyable):
             "os2_us_win_ascent": self.os2_us_win_ascent,
             "os2_us_win_descent": self.os2_us_win_descent,
             "Average Width": self._average_width,
-            "Hdmx PPMs 1": self._hdmx_ppms1,
-            "Hdmx PPMs 2": self._hdmx_ppms2,
+            "Hdmx PPMs 1": self._hdmx_ppms_1,
+            "Hdmx PPMs 2": self._hdmx_ppms_2,
             "Codepages": self._codepages,
         }
+
+    def fake_deserialize_gasp(self, data: list[dict[str, int]]) -> None:
+        for rec in data:
+            gasp_rec = TTGasp()
+            gasp_rec.fake_deserialize(rec)
+            self.gasp.append(gasp_rec)
+
+    def fake_serialize_gasp(self) -> list[dict[str, int]]:
+        gasp = []
+        for rec in self.gasp:
+            gasp.append(rec.fake_serialize())
+        return gasp
+
+    def fake_deserialize_stems(self, data: TTStemsDict) -> None:
+        # Some TrueType stem entries are optional, so the stems lists may have been
+        # populated yet
+        if not (self.hstem_data or self.vstem_data):
+            # Stem lists are empty, make new stems
+            for stem_dict in data["ttStemsV"]:
+                ttstem = TTStem()
+                ttstem.fake_deserialize(stem_dict)
+                self.hstem_data.append(ttstem)
+            for stem_dict in data["ttStemsH"]:
+                ttstem = TTStem()
+                ttstem.fake_deserialize(stem_dict)
+                self.vstem_data.append(ttstem)
+        else:
+            for i, stem_dict in enumerate(data["ttStemsV"]):
+                ttstem = self.hstem_data[i]
+                ttstem.fake_deserialize(stem_dict)
+            for i, stem_dict in enumerate(data["ttStemsH"]):
+                ttstem = self.vstem_data[i]
+                ttstem.fake_deserialize(stem_dict)
+
+    def fake_serialize_stem_ppems(self) -> TTStemsDict:
+        d: TTStemsDict = {"ttStemsV": [], "ttStemsH": []}
+        for i, ttstem in enumerate(self.hstem_data):
+            d["ttStemsV"].append(
+                {
+                    "stem": i,
+                    "round": {
+                        "2": ttstem.ppm2,
+                        "3": ttstem.ppm3,
+                        "4": ttstem.ppm4,
+                        "5": ttstem.ppm5,
+                    },
+                }
+            )
+        for i, ttstem in enumerate(self.vstem_data):
+            d["ttStemsH"].append(
+                {
+                    "stem": i,
+                    "round": {
+                        "2": ttstem.ppm2,
+                        "3": ttstem.ppm3,
+                        "4": ttstem.ppm4,
+                        "5": ttstem.ppm5,
+                    },
+                }
+            )
+        return d
+
+    def fake_serialize_stem_ppems1(self) -> TTStemsDict:
+        d: TTStemsDict = {"ttStemsV": [], "ttStemsH": []}
+        for i, ttstem in enumerate(self.hstem_data):
+            d["ttStemsV"].append({"stem": i, "round": {"1": ttstem._ppm1}})
+        for i, ttstem in enumerate(self.vstem_data):
+            d["ttStemsH"].append({"stem": i, "round": {"1": ttstem._ppm1}})
+        return d
+
+    def fake_serialize_stems(self) -> TTStemsDict:
+        d: TTStemsDict = {"ttStemsV": [], "ttStemsH": []}
+        for ttstem in self.hstem_data:
+            d["ttStemsV"].append(
+                {
+                    "value": ttstem.width,
+                    "name": ttstem.name,
+                    "round": {
+                        "6": ttstem.ppm6,
+                    },
+                }
+            )
+        for ttstem in self.vstem_data:
+            d["ttStemsH"].append(
+                {
+                    "value": ttstem.width,
+                    "name": ttstem.name,
+                    "round": {
+                        "6": ttstem.ppm6,
+                    },
+                }
+            )
+        return d
+
+    def fake_deserialize_vdmx(self, data: list[dict[str, int]]) -> None:
+        for rec in data:
+            vdmx_rec = TTVdmx()
+            vdmx_rec.fake_deserialize(rec)
+            self.vdmx.append(vdmx_rec)
+
+    def fake_serialize_vdmx(self) -> list[dict[str, int]]:
+        vdmx = []
+        for rec in self.vdmx:
+            vdmx.append(rec.fake_serialize())
+        return vdmx
+
+    def fake_deserialize_zones(self, data: TTZonesDict) -> None:
+        self._zones = data
+
+    def fake_serialize_zones(self) -> TTZonesDict:
+        d: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
+        for side in ("ttZonesT", "ttZonesB"):
+            for zone in self._zones[side]:
+                d[side].append(
+                    {
+                        "position": zone["position"],
+                        "value": zone["value"],
+                        "name": zone["name"],
+                    }
+                )
+        return d
+
+    def fake_deserialize_zone_deltas(self, data: dict[int, dict[int, int]]) -> None:
+        num_bottom_zones = len(self._zones["ttZonesB"])
+        for zone_index, deltas in data.items():
+            if zone_index < num_bottom_zones:
+                zone = self._zones["ttZonesB"][zone_index]
+            else:
+                zone = self._zones["ttZonesT"][zone_index - num_bottom_zones]
+            zone["deltas"] = deltas
+
+    def fake_serialize_zone_deltas(self) -> dict[int, dict[int, int]]:
+        d: dict[int, dict[int, int]] = {}
+        # Zone deltas are indexed, bottom zones first
+        bottom_index = 0
+        for bottom_index, zone_dict in enumerate(self._zones["ttZonesB"]):
+            d[bottom_index] = zone_dict.get("deltas", {})
+        for top_index, zone_dict in enumerate(self._zones["ttZonesT"], bottom_index):
+            d[top_index] = zone_dict.get("deltas", {})
+        return d
 
     def fake_get_binary(self, attr: str) -> str:
         return hexStr(bytes(getattr(self, attr)))
@@ -288,9 +416,9 @@ class TTInfo(Copyable):
         self._cvt = value
 
     @property
-    def gasp(self) -> list[TTGasp]:  # FL gives type as "VSArray"
+    def gasp(self) -> list[TTGasp]:
         """
-        Grid-fitting/Scan-conversion: list of smoothing control records 'VSITTGaspArray'
+        Grid-fitting/Scan-conversion: list of smoothing control records 'VSArray'
 
         Returns:
             list[TTGasp]: _description_
@@ -318,7 +446,7 @@ class TTInfo(Copyable):
     @property
     def vdmx(self) -> list[TTVdmx]:
         """
-        Vertical device metrics: list 'VSITTVdmxArray'
+        Vertical device metrics: list 'VSArray'
 
         Returns:
             list[TTVdmx]: _description_
@@ -682,13 +810,15 @@ class TTInfo(Copyable):
             "os2_ul_code_page_range1": 0,
             "os2_ul_code_page_range2": 0,
         }
-        self._hdmx_ppms1: list[int] = []
-        self._hdmx_ppms2: list[int] = []
+        self._hdmx_ppms_1: list[int] = []
+        self._hdmx_ppms_2: list[int] = []
         self._panose: list[int] = [0] * 10
         # TT-related non-API:
         self._stemsnaplimit: int = 68  # 68/64 pixel
         self._zoneppm: int = 48  # Zones active until ppm
         self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
+
+        self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
 
         self._unknown_pleasures = {
             "1604": 255,

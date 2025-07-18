@@ -41,6 +41,17 @@ class TTGasp(Copyable):
         # Or if parent is present:
         # f"<TTGasp: {self.ppm}, {self.behavior}, Reference>"
 
+    # Additions for FakeLab
+
+    def fake_deserialize(self, data: dict[str, int]) -> None:
+        self.ppm = data["maxPpem"]
+        self.behavior = data["flags"]
+
+    def fake_serialize(self) -> dict[str, int]:
+        return {"maxPpem": self.ppm, "flags": self.behavior}
+
+    # Attributes
+
     @property
     def ppm(self) -> int:
         """

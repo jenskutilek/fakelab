@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from vfbLib.typing import TTStemDict
+
 from FL.fake.Base import Copyable
 
 
@@ -10,7 +12,16 @@ class TTStem(Copyable):
     TTStem.__doc__ reports only 'TTStem' ... so use this information with care
     """
 
-    __slots__ = ["_name", "_width", "_ppm2", "_ppm3", "_ppm4", "_ppm5", "_ppm6"]
+    __slots__ = [
+        "_name",
+        "_width",
+        "_ppm1",
+        "_ppm2",
+        "_ppm3",
+        "_ppm4",
+        "_ppm5",
+        "_ppm6",
+    ]
 
     # Constructor
 
@@ -37,6 +48,19 @@ class TTStem(Copyable):
         return f"<TTStem: ppms: {self.ppm2}, {self.ppm3}, {self.ppm4}, {self.ppm5}, {self.ppm6}>"
 
     # FakeLab additions
+
+    def fake_deserialize(self, data: TTStemDict) -> None:
+        if "stem" not in data:
+            # the actual stems entry, with value, name, ppm6
+            self.width = data["value"]
+            self.name = data["name"]
+        ppms: dict[str, int] = data["round"]
+        for ppm in range(2, 7):
+            if str(ppm) in ppms:
+                setattr(self, f"ppm{ppm}", ppms[str(ppm)])
+        if "1" in ppms:
+            # "TrueType Stem PPEMs 1" has no public API
+            self._ppm1 = ppms["1"]
 
     def fake_recalc_ppms(self, width: int, upm: int) -> None:
         """
