@@ -111,7 +111,7 @@ class TTInfo(Copyable):
             "head_mac_style",
             "head_lowest_rec_ppem",
             "head_creation",
-            # 0x57,  # TODO: What is this?
+            "_unknown_0x57",  # TODO: What is this?
             "head_font_direction_hint",
             "os2_us_weight_class",
             "os2_us_width_class",
@@ -164,7 +164,7 @@ class TTInfo(Copyable):
             "head_mac_style": self.head_mac_style,
             "head_lowest_rec_ppem": self.head_lowest_rec_ppem,
             "head_creation": self.head_creation,
-            0x57: 0,  # TODO: What is this?
+            "_unknown_0x57": self._unknown_0x57,  # TODO: What is this?
             "head_font_direction_hint": self.head_font_direction_hint,
             "os2_us_weight_class": self.os2_us_weight_class,
             "os2_us_width_class": self.os2_us_width_class,
@@ -774,6 +774,7 @@ class TTInfo(Copyable):
         self.max_instruction_defs = 0
         self.max_stack_elements = 0
         self.head_creation = [-467938523, 0]
+        self._unknown_0x57 = 0
         self.head_flags = 131072
         self.head_font_direction_hint = 2
         self.head_lowest_rec_ppem = 9
