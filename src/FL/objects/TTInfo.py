@@ -328,9 +328,13 @@ class TTInfo(Copyable):
         # Zone deltas are indexed, bottom zones first
         bottom_index = 0
         for bottom_index, zone_dict in enumerate(self._zones["ttZonesB"]):
-            d[bottom_index] = zone_dict.get("deltas", {})
-        for top_index, zone_dict in enumerate(self._zones["ttZonesT"], bottom_index):
-            d[top_index] = zone_dict.get("deltas", {})
+            zone_deltas = zone_dict.get("deltas", {})
+            if zone_deltas:
+                d[bottom_index] = zone_deltas
+        for top_index, zone_dict in enumerate(self._zones["ttZonesT"]):
+            zone_deltas = zone_dict.get("deltas", {})
+            if zone_deltas:
+                d[bottom_index + top_index + 1] = zone_deltas
         return d
 
     def fake_get_binary(self, attr: str) -> str:
