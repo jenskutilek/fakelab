@@ -205,10 +205,10 @@ class VfbToFontReader:
                 self.font.ttinfo._unknown_pleasures[name] = data
             elif name == "TrueType Zone Deltas":
                 self.font.ttinfo.fake_deserialize_zone_deltas(data)
-            elif name == "Name Records":
+            elif name == "fontnames":
                 assert isinstance(data, list)
                 for nr in data:
-                    self.font.fontnames.append(NameRecord(nr))
+                    self.font.fontnames.append(NameRecord(tuple(nr)))
             elif name == "Custom CMAPs":
                 pass
             elif name == "PCLT Table":
