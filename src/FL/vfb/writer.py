@@ -80,11 +80,12 @@ class FontToVfbWriter:
         for i in range(len(self.font.encoding)):
             self.add_entry("Encoding", [i, self.font.encoding[i].name])
 
-        # We don't know what this does exactly:
-        self.add_entry(1502, 1)  # Sometimes 0, sometimes 1?
-
-        self.add_entry(518, None)
-        self.add_entry(257, None)
+        # We don't know what these do exactly:
+        # Sometimes 0, sometimes 1, sometimes 42694?
+        self.add_entry(1502, self.font._unknown_pleasures["1502"])
+        # Apparently always empty:
+        self.add_entry(518, self.font._unknown_pleasures["518"])
+        self.add_entry(257, self.font._unknown_pleasures["257"])
 
     def compile_font_info(self) -> None:
         num_masters = self.font._masters_count
@@ -132,7 +133,7 @@ class FontToVfbWriter:
             ),
             self.font,
         )
-        self.add_entry(1140, None)
+        self.add_entry(1140, self.font._unknown_pleasures["1140"])
         self.add_direct_entries(
             (
                 "vendor",
@@ -149,7 +150,7 @@ class FontToVfbWriter:
         self.add_entry(
             "PostScript Hinting Options", self.font._postscript_hinting_options
         )
-        self.add_entry(1068, {"values": []})
+        self.add_entry(1068, self.font._unknown_pleasures["1068"])
         self.add_direct_entries(
             (
                 "blue_values_num",
@@ -186,7 +187,7 @@ class FontToVfbWriter:
         # TODO:
         # "note"
 
-        self.add_entry(2030, "00000000")
+        self.add_entry(2030, self.font._unknown_pleasures["2030"])
 
         # TODO:
         # "customdata"
@@ -199,8 +200,8 @@ class FontToVfbWriter:
         if self.font.features:
             self.add_entry("features", self.font.features)
 
-        self.add_entry(513, None)
-        self.add_entry(271, None)
+        self.add_entry(513, self.font._unknown_pleasures["513"])
+        self.add_entry(271, self.font._unknown_pleasures["271"])
 
         self.add_entry("Axis Count", len(self.font.axis))
 
@@ -226,7 +227,7 @@ class FontToVfbWriter:
         for master_ps_info in self.font._master_ps_infos:
             self.add_entry("PostScript Info", master_ps_info)
 
-        self.add_entry(527, None)
+        self.add_entry(527, self.font._unknown_pleasures["527"])
 
         # TODO:
         # "Global Guides"

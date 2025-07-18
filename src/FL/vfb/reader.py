@@ -159,12 +159,8 @@ class VfbToFontReader:
             elif name == "Encoding Default":
                 # Where is this used?
                 pass
-            elif name == "1502":
-                pass
-            elif name == "518":
-                pass
-            elif name == "257":
-                pass
+            elif name in ("1502", "518", "257"):
+                self.font._unknown_pleasures[name] = data
             elif name == "Master Count":
                 self.font._masters_count = data
             elif name == "License":
@@ -172,7 +168,7 @@ class VfbToFontReader:
             elif name == "License URL":
                 self.font._license_url = data
             elif name == "1140":
-                pass
+                self.font._unknown_pleasures[name] = data
             elif name == "PostScript Hinting Options":
                 self.font._postscript_hinting_options = data
             elif name == "1068":
@@ -221,7 +217,7 @@ class VfbToFontReader:
             elif name == "Export PCLT Table":
                 pass
             elif name == "2030":
-                pass
+                self.font._unknown_pleasures[name] = data
             elif name == "TrueTypeTable":
                 pass
             elif name == "OpenType Metrics Class Flags":
@@ -233,9 +229,9 @@ class VfbToFontReader:
             elif name == "OpenType Class":
                 classes.append(data)
             elif name == "513":
-                pass
+                self.font._unknown_pleasures[name] = data
             elif name == "271":
-                pass
+                self.font._unknown_pleasures[name] = data
             elif name == "Axis Count":
                 pass
             elif name == "Axis Name":
@@ -257,7 +253,7 @@ class VfbToFontReader:
             elif name == "PostScript Info":
                 pass
             elif name == "527":
-                pass
+                self.font._unknown_pleasures[name] = data
             elif name == "Global Guides":
                 pass
             elif name == "Global Guide Properties":

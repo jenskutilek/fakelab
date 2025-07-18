@@ -38,6 +38,7 @@ class Font(FakeFont):
         "_masters_count",
         "_postscript_hinting_options",
         "_truetypetables",
+        "_unknown_pleasures",
         "_xuid_num",
         "_xuid",
         "apple_name",
@@ -958,3 +959,14 @@ class Font(FakeFont):
             "mapping_id": 1,
         }
         self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
+        self._unknown_pleasures = {
+            "1502": 0,
+            "518": "",
+            "257": "",
+            "1140": "",
+            "1068": [],
+            "2030": "",
+            "513": "",
+            "271": "",
+            "527": "",
+        }
