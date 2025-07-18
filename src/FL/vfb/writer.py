@@ -167,10 +167,6 @@ class FontToVfbWriter:
             self.font,
         )
 
-        # TODO
-        # "Binary cvt Table"
-        # "Binary prep Table"
-        # "Binary fpgm Table"
         for k in ("cvt", "prep", "fpgm"):
             d = self.font.ttinfo.fake_get_binary(k)
             if d:
