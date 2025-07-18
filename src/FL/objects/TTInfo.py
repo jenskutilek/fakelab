@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from vfbLib.compilers.truetype import convert_flags_options_to_int
 from vfbLib.helpers import deHexStr, hexStr
+from vfbLib.parsers.truetype import convert_int_to_flags_options
 from vfbLib.typing import TTStemsDict, TTZonesDict
 
 from FL.fake.Base import Copyable
@@ -105,7 +106,7 @@ class TTInfo(Copyable):
             "max_storage",
             "max_function_defs",
             "max_stack_elements",
-            # "head_flags",  # TODO: Different format in JSON
+            # "head_flags",  # Different format in JSON
             "head_units_per_em",
             "head_mac_style",
             "head_lowest_rec_ppem",
@@ -158,7 +159,7 @@ class TTInfo(Copyable):
             "max_function_defs": self.max_function_defs,
             "max_instruction_defs": self.max_instruction_defs,
             "max_stack_elements": self.max_stack_elements,
-            "head_flags": self.head_flags,
+            "head_flags": convert_int_to_flags_options(self.head_flags),
             "head_units_per_em": self.head_units_per_em,
             "head_mac_style": self.head_mac_style,
             "head_lowest_rec_ppem": self.head_lowest_rec_ppem,
