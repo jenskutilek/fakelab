@@ -205,7 +205,8 @@ class FontToVfbWriter:
         self.add_entry("Axis Count", len(self.font.axis))
 
         # TODO: Per axis or all in one list?
-        # "Axis Name"
+        for axis_name in self.font.fake_serialize_axis():
+            self.add_entry("Axis Name", axis_name)
 
         self.add_entry(
             "Anisotropic Interpolation Mappings",

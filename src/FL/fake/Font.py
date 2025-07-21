@@ -120,6 +120,16 @@ class FakeFont(Copyable):
 
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
+    def fake_deserialize_axis(self, data: str) -> None:
+        self.axis.append((data, data[:2], data))
+
+    def fake_serialize_axis(self) -> list[str]:
+        names = []
+        for axis in self.axis:
+            long, _, _ = axis
+            names.append(long)
+        return names
+
     def fake_deserialize_features(self, features: list[str]) -> None:
         self._features.clean()
         features_dict = OpenTypeStringParser.build_fea_dict(features)

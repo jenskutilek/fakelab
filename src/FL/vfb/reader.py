@@ -232,9 +232,9 @@ class VfbToFontReader:
             elif name == "271":
                 self.font._unknown_pleasures[name] = data
             elif name == "Axis Count":
-                pass
+                self.font._axis_count = data
             elif name == "Axis Name":
-                pass
+                self.font.fake_deserialize_axis(data)
             elif name == "Anisotropic Interpolation Mappings":
                 pass
             elif name == "Axis Mappings Count":
