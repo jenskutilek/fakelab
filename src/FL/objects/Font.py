@@ -13,6 +13,8 @@ from FL.objects.Uni import Uni
 from FL.objects.WeightVector import WeightVector
 
 if TYPE_CHECKING:
+    from vfbLib.typing import CustomCmap
+
     from FL.objects.Feature import Feature
     from FL.objects.Glyph import Glyph
     from FL.objects.Guide import Guide
@@ -115,6 +117,7 @@ class Font(FakeFont):
         "x_height",
         "year",
         # Non-API:
+        "_custom_cmaps",
         "_export_pclt_table",
         "_pclt_table",
         "_axis_count",
@@ -920,6 +923,7 @@ class Font(FakeFont):
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
+        self._custom_cmaps: list[CustomCmap] = []
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {}
         self._axis_count: int = 0

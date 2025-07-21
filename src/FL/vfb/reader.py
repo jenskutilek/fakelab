@@ -210,7 +210,7 @@ class VfbToFontReader:
                 for nr in data:
                     self.font.fontnames.append(NameRecord(tuple(nr)))
             elif name == "Custom CMAPs":
-                pass
+                self.font._custom_cmaps = data
             elif name == "PCLT Table":
                 pass
             elif name == "Export PCLT Table":
