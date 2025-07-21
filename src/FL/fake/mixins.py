@@ -1,4 +1,4 @@
-from vfbLib.typing import GuidePropertiesDict, MMGuidesDict
+from vfbLib.typing import GuidePropertiesDict, GuidePropertyDict, MMGuidesDict
 
 from FL.objects.Guide import Guide
 
@@ -37,4 +37,13 @@ class GuidePropertiesMixin:
 
     def fake_serialize_guide_properties(self) -> GuidePropertiesDict:
         gpl = GuidePropertiesDict(h=[], v=[])
+        for k, target in (("h", self.hguides), ("v", self.vguides)):
+            for i, guide in enumerate(target):
+                d = GuidePropertyDict(index=i + 1)
+                if guide._color:
+                    d["color"] = guide._color
+                if guide._name:
+                    d["name"] = guide._name
+                if "color" in d or "name" in d:
+                    gpl[k].append(d)
         return gpl
