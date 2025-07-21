@@ -89,10 +89,11 @@ class FontToVfbWriter:
         self.add_entry(257, self.font._unknown_pleasures["257"])
 
     def compile_font_info(self) -> None:
-        num_masters = self.font._masters_count
-        self.add_entry("font_name", self.font.font_name)
+        font = self.font
+        num_masters = font._masters_count
+        self.add_entry("font_name", font.font_name)
         self.add_entry("Master Count", num_masters)
-        self.add_entry("weight_vector", self.font.weight_vector[:num_masters])
+        self.add_entry("weight_vector", font.weight_vector[:num_masters])
         self.add_direct_entries(
             (
                 "unique_id",
@@ -106,10 +107,10 @@ class FontToVfbWriter:
                 "weight",
                 "width",
             ),
-            self.font,
+            font,
         )
-        self.add_entry("License", self.font._license)
-        self.add_entry("License URL", self.font._license_url)
+        self.add_entry("License", font._license)
+        self.add_entry("License URL", font._license_url)
         self.add_direct_entries(
             (
                 "copyright",
@@ -132,9 +133,9 @@ class FontToVfbWriter:
                 "pref_style_name",
                 "mac_compatible",
             ),
-            self.font,
+            font,
         )
-        self.add_entry(1140, self.font._unknown_pleasures["1140"])
+        self.add_entry(1140, font._unknown_pleasures["1140"])
         self.add_direct_entries(
             (
                 "vendor",
@@ -146,12 +147,10 @@ class FontToVfbWriter:
                 "upm",
                 "fond_id",
             ),
-            self.font,
+            font,
         )
-        self.add_entry(
-            "PostScript Hinting Options", self.font._postscript_hinting_options
-        )
-        self.add_entry(1068, self.font._unknown_pleasures["1068"])
+        self.add_entry("PostScript Hinting Options", font._postscript_hinting_options)
+        self.add_entry(1068, font._unknown_pleasures["1068"])
         self.add_direct_entries(
             (
                 "blue_values_num",
@@ -162,71 +161,73 @@ class FontToVfbWriter:
                 "stem_snap_v_num",
                 "font_style",
             ),
-            self.font,
+            font,
         )
-        if self.font.pcl_id >= 0:
-            self.add_entry("pcl_id", self.font.pcl_id)
-        if self.font.vp_id >= 0:
-            self.add_entry("vp_id", self.font.vp_id)
+        if font.pcl_id >= 0:
+            self.add_entry("pcl_id", font.pcl_id)
+        if font.vp_id >= 0:
+            self.add_entry("vp_id", font.vp_id)
 
         self.add_direct_entries(
             (
                 "ms_id",
                 "pcl_chars_set",
             ),
-            self.font,
+            font,
         )
 
         self.compile_ttinfo()
 
         # Special handling required:
-        self.add_entry("fontnames", [nr.fake_serialize() for nr in self.font.fontnames])
-        self.add_entry("Custom CMAPs", self.font._custom_cmaps)
-        self.add_entry("PCLT Table", self.font._pclt_table)
-        self.add_entry("Export PCLT Table", self.font._export_pclt_table)
-        self.add_entry("note", self.font.note)
-        self.add_entry(2030, self.font._unknown_pleasures["2030"])
-        self.add_entry("customdata", self.font.customdata)
+        self.add_entry("fontnames", [nr.fake_serialize() for nr in font.fontnames])
+        self.add_entry("Custom CMAPs", font._custom_cmaps)
+        self.add_entry("PCLT Table", font._pclt_table)
+        self.add_entry("Export PCLT Table", font._export_pclt_table)
+        self.add_entry("note", font.note)
+        self.add_entry(2030, font._unknown_pleasures["2030"])
+        self.add_entry("customdata", font.customdata)
 
-        for ttt in self.font.truetypetables:
+        for ttt in font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
 
         # TODO:
         # "OpenType Metrics Class Flags"
         # "OpenType Kerning Class Flags"
 
-        fea = self.font.fake_serialize_features()
+        fea = font.fake_serialize_features()
         if fea:
             self.add_entry("features", fea)
 
-        self.add_entry(513, self.font._unknown_pleasures["513"])
-        self.add_entry(271, self.font._unknown_pleasures["271"])
+        self.add_entry(513, font._unknown_pleasures["513"])
+        self.add_entry(271, font._unknown_pleasures["271"])
 
-        self.add_entry("Axis Count", len(self.font.axis))
+        self.add_entry("Axis Count", len(font.axis))
 
-        # TODO: Per axis or all in one list?
-        for axis_name in self.font.fake_serialize_axis():
+        for axis_name in font.fake_serialize_axis():
             self.add_entry("Axis Name", axis_name)
 
         self.add_entry(
             "Anisotropic Interpolation Mappings",
-            self.font._anisotropic_interpolation_mappings,
+            font._anisotropic_interpolation_mappings,
         )
-        self.add_entry("Axis Mappings Count", self.font._axis_mappings_count)
-        self.add_entry("Axis Mappings", self.font._axis_mappings)
+        self.add_entry("Axis Mappings Count", font._axis_mappings_count)
+        self.add_entry("Axis Mappings", font._axis_mappings)
 
         for master_index in range(num_masters):
-            self.add_entry("Master Name", self.font._master_names[master_index])
-            self.add_entry("Master Location", self.font._master_locations[master_index])
+            self.add_entry("Master Name", font._master_names[master_index])
+            self.add_entry("Master Location", font._master_locations[master_index])
 
-        # TODO:
-        # "Primary Instance Locations"
-        # "Primary Instances"
+        if font._primary_instance_locations:
+            self.add_entry(
+                "Primary Instance Locations", font._primary_instance_locations
+            )
+        if font._primary_instances:
+            self.add_entry("Primary Instances", font._primary_instances)
 
-        for master_ps_info in self.font._master_ps_infos:
+        for master_ps_info in font._master_ps_infos:
             self.add_entry("PostScript Info", master_ps_info)
 
-        self.add_entry(527, self.font._unknown_pleasures["527"])
+        self.add_entry(527, font._unknown_pleasures["527"])
 
         # TODO:
         # "Global Guides"
