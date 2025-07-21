@@ -236,15 +236,15 @@ class VfbToFontReader:
             elif name == "Axis Name":
                 self.font.fake_deserialize_axis(data)
             elif name == "Anisotropic Interpolation Mappings":
-                pass
+                self.font._anisotropic_interpolation_mappings = data
             elif name == "Axis Mappings Count":
-                pass
+                self.font._axis_mappings_count = data
             elif name == "Axis Mappings":
-                pass
+                self.font._axis_mappings = data
             elif name == "Master Name":
-                pass
+                self.font._master_names.append(data)
             elif name == "Master Location":
-                pass
+                self.font._master_locations.append(data)
             elif name == "Primary Instance Locations":
                 pass
             elif name == "Primary Instances":

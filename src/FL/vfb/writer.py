@@ -215,10 +215,9 @@ class FontToVfbWriter:
         self.add_entry("Axis Mappings Count", self.font._axis_mappings_count)
         self.add_entry("Axis Mappings", self.font._axis_mappings)
 
-        for master_name in self.font._master_names:
-            self.add_entry("Master Name", master_name)
-        for master_location in self.font._master_locations:
-            self.add_entry("Master Location", master_location)
+        for master_index in range(num_masters):
+            self.add_entry("Master Name", self.font._master_names[master_index])
+            self.add_entry("Master Location", self.font._master_locations[master_index])
 
         # TODO:
         # "Primary Instance Locations"
