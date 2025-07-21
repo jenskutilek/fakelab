@@ -142,6 +142,8 @@ class VfbToFontReader:
         glyph: Glyph | None = None
         gids = {}
 
+        self.font.fake_clear_defaults()
+
         for e in self.vfb.entries:
             name = e.key
             data = e.decompiled

@@ -745,6 +745,11 @@ class Font(FakeFont):
 
     # Defaults
 
+    def fake_clear_defaults(self) -> None:
+        self._master_names.clear()
+        self._master_locations.clear()
+        self._master_ps_infos.clear()
+
     def _set_defaults(self) -> None:
         # Identification
 
