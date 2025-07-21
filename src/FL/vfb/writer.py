@@ -179,10 +179,10 @@ class FontToVfbWriter:
 
         self.compile_ttinfo()
 
-        self.add_entry("PCLT Table", self.font._pclt_table)
         # Special handling required:
         self.add_entry("fontnames", [nr.fake_serialize() for nr in self.font.fontnames])
         self.add_entry("Custom CMAPs", self.font._custom_cmaps)
+        self.add_entry("PCLT Table", self.font._pclt_table)
         self.add_entry("Export PCLT Table", self.font._export_pclt_table)
 
         # TODO:

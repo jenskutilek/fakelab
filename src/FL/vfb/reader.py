@@ -212,9 +212,9 @@ class VfbToFontReader:
             elif name == "Custom CMAPs":
                 self.font._custom_cmaps = data
             elif name == "PCLT Table":
-                pass
+                self.font._pclt_table = data
             elif name == "Export PCLT Table":
-                pass
+                self.font._export_pclt_table = data
             elif name == "2030":
                 self.font._unknown_pleasures[name] = data
             elif name == "TrueTypeTable":
