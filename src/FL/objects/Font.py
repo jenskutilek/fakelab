@@ -427,7 +427,7 @@ class Font(FakeFont):
         rect = Rect(x0, y0, -32767, y1)
         for g in self.glyphs:
             gr = g.GetBoundingRect()
-            print(g.name, gr)
+            # print(g.name, gr)
             rect += gr
         return rect
 
@@ -527,7 +527,7 @@ class Font(FakeFont):
         glyph_order = tuple([rec.name for rec in self.encoding])
         sortable = [(glyph_order.index(glyph.name), glyph) for glyph in glyphs]
         sortable.sort()
-        print(sortable)
+        # print(sortable)
         return [glyph for _, glyph in sortable]
 
     def fake_sort_kerning(
