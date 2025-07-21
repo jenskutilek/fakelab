@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import logging
 from code import InteractiveConsole
+from pathlib import Path
 from typing import Any
 
 from FL import environment, fl
@@ -66,7 +67,8 @@ def main() -> None:
             fl.Open(vfb_path, addtolist=True)
         if args.script:
             # If we have scripts, run them and exit.
-            raise NotImplementedError
+            for script_path in args.script:
+                exec(Path(script_path).read_text(), locals=environment)
         else:
             # Run the interactive console.
             console = FontLab5Console(locals=environment)
