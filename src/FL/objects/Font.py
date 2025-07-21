@@ -518,10 +518,6 @@ class Font(FakeFont):
         inf = ""
         return inf
 
-    def fake_set_features(self, features: str) -> None:
-        self._features.clean()
-        print("Features are ignored")
-
     def fake_sort_glyphs(self, glyphs: list[Glyph]) -> list[Glyph]:
         glyph_order = tuple([rec.name for rec in self.encoding])
         sortable = [(glyph_order.index(glyph.name), glyph) for glyph in glyphs]

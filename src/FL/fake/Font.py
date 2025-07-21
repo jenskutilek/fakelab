@@ -3,15 +3,17 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from vfbLib.parsers.text import OpenTypeStringParser
+
 from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
+from FL.objects.Feature import Feature
 
 if TYPE_CHECKING:
     from FL.objects.Uni import Uni
 
 
 class FakeFont(Copyable):
-
     __slots__ = [
         "_fake_binaries",
         "_fake_kerning",
@@ -117,3 +119,23 @@ class FakeFont(Copyable):
             return
 
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
+
+    def fake_deserialize_features(self, features: list[str]) -> None:
+        self._features.clean()
+        features_dict = OpenTypeStringParser.build_fea_dict(features)
+        prefix = features_dict.get("prefix")
+        if prefix:
+            self.ot_classes = "\n".join(prefix)
+        for feature_dict in features_dict.get("features", []):
+            feature = Feature(feature_dict["tag"], "\n".join(feature_dict["code"]))
+            self.features.append(feature)
+
+    def fake_serialize_features(self) -> list[str]:
+        fea = []
+        if self.ot_classes:
+            fea.extend(self.ot_classes.splitlines())
+        for feature in self.features:
+            fea.append("feature %s {" % feature.tag)
+            fea.extend(feature.value.splitlines())
+            fea.append("} %s;" % feature.tag)
+        return fea

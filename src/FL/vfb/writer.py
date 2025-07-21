@@ -198,8 +198,9 @@ class FontToVfbWriter:
         for ttt in self.font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
 
-        if self.font.features:
-            self.add_entry("features", self.font.features)
+        fea = self.font.fake_serialize_features()
+        if fea:
+            self.add_entry("features", fea)
 
         self.add_entry(513, self.font._unknown_pleasures["513"])
         self.add_entry(271, self.font._unknown_pleasures["271"])
