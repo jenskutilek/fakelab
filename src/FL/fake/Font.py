@@ -144,6 +144,7 @@ class FakeFont(Copyable):
         fea = []
         if self.ot_classes:
             fea.extend(self.ot_classes.splitlines())
+            # FIXME: Do we need empty lines as separator?
         for feature in self.features:
             fea.append("feature %s {" % feature.tag)
             fea.extend(feature.value.splitlines())
