@@ -128,6 +128,8 @@ class Font(FakeFont):
         "_master_locations",
         "_master_ps_infos",
         "_mapping_mode",
+        "_primary_instance_locations",
+        "_primary_instances",
         # Internal:
         "fake_vfb_object",
     ]
@@ -969,6 +971,8 @@ class Font(FakeFont):
             "3": 316,
             "mapping_id": 1,
         }
+        self._primary_instance_locations: list[float] = []
+        self._primary_instances: list[dict[str, Any]] = []
         self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
         self._unknown_pleasures = {
             "1502": 0,

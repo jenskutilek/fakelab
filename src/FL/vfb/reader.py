@@ -246,9 +246,9 @@ class VfbToFontReader:
             elif name == "Master Location":
                 self.font._master_locations.append(data)
             elif name == "Primary Instance Locations":
-                pass
+                self.font._primary_instance_locations = data
             elif name == "Primary Instances":
-                pass
+                self.font._primary_instances = data
             elif name == "PostScript Info":
                 pass
             elif name == "527":
