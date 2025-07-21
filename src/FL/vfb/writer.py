@@ -184,17 +184,14 @@ class FontToVfbWriter:
         self.add_entry("Custom CMAPs", self.font._custom_cmaps)
         self.add_entry("PCLT Table", self.font._pclt_table)
         self.add_entry("Export PCLT Table", self.font._export_pclt_table)
-
-        # TODO:
-        # "note"
-
+        self.add_entry("note", self.font.note)
         self.add_entry(2030, self.font._unknown_pleasures["2030"])
+        self.add_entry("customdata", self.font.customdata)
 
         for ttt in self.font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
 
         # TODO:
-        # "customdata"
         # "OpenType Metrics Class Flags"
         # "OpenType Kerning Class Flags"
 
