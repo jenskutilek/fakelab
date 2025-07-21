@@ -8,8 +8,11 @@ from vfbLib.parsers.text import OpenTypeStringParser
 from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
 from FL.objects.Feature import Feature
+from FL.objects.Guide import Guide
 
 if TYPE_CHECKING:
+    from vfbLib.typing import GuidePropertyList, MMGuidesDict
+
     from FL.objects.Uni import Uni
 
 
@@ -150,3 +153,32 @@ class FakeFont(Copyable):
             fea.extend(feature.value.splitlines())
             fea.append("} %s;" % feature.tag)
         return fea
+
+    def fake_deserialize_guides(self, data: MMGuidesDict) -> None:
+        for k, target in (("h", self.hguides), ("v", self.vguides)):
+            if dir_master_guides := data[k]:
+                first_master_guides = dir_master_guides[0]
+                num_guides = len(first_master_guides)
+                for guide_dict in first_master_guides:
+                    g = Guide(guide_dict["pos"], guide_dict["angle"])
+                    target.append(g)
+                for master_index in range(1, self._masters_count):
+                    for guide_index in range(num_guides):
+                        guide_dict = dir_master_guides[master_index][guide_index]
+                        target[guide_index].position.append(guide_dict["pos"])
+                        target[guide_index].angle.append(guide_dict["angle"])
+
+    def fake_serialize_guides(self): ...
+
+    def fake_deserialize_guide_properties(self, data: GuidePropertyList) -> None:
+        for guide_prop_dict in data:
+            # Index over h + v: # FIXME
+            guide_index = guide_prop_dict["index"]
+            color = guide_prop_dict.get("color")
+            if color:
+                self.hguides[guide_index]._color = color
+            name = guide_prop_dict.get("name")
+            if name:
+                self.hguides[guide_index]._name = name
+
+    def fake_serialize_guide_properties(self): ...

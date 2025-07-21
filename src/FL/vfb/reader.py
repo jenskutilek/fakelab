@@ -255,9 +255,9 @@ class VfbToFontReader:
             elif name == "527":
                 font._unknown_pleasures[name] = data
             elif name == "Global Guides":
-                pass
+                font.fake_deserialize_guides(data)
             elif name == "Global Guide Properties":
-                pass
+                font.fake_deserialize_guide_properties(data)
             elif name == "Global Mask":
                 pass
 

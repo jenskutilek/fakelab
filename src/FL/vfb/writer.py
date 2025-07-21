@@ -229,10 +229,12 @@ class FontToVfbWriter:
 
         self.add_entry(527, font._unknown_pleasures["527"])
 
-        # TODO:
-        # "Global Guides"
-        # "Global Guide Properties"
-        # "default_character"
+        if font.hguides or font.vguides:
+            self.add_entry("Global Guides", font.fake_serialize_guides())
+            self.add_entry(
+                "Global Guide Properties", font.fake_serialize_guide_properties()
+            )
+
 
     def compile_ttinfo(self) -> None:
         for k in ("cvt", "prep", "fpgm"):
