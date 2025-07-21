@@ -190,13 +190,13 @@ class FontToVfbWriter:
 
         self.add_entry(2030, self.font._unknown_pleasures["2030"])
 
+        for ttt in self.font.truetypetables:
+            self.add_entry("TrueTypeTable", ttt)
+
         # TODO:
         # "customdata"
         # "OpenType Metrics Class Flags"
         # "OpenType Kerning Class Flags"
-
-        for ttt in self.font.truetypetables:
-            self.add_entry("TrueTypeTable", ttt)
 
         fea = self.font.fake_serialize_features()
         if fea:

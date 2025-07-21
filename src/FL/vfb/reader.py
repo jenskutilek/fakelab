@@ -218,7 +218,7 @@ class VfbToFontReader:
             elif name == "2030":
                 self.font._unknown_pleasures[name] = data
             elif name == "TrueTypeTable":
-                pass
+                self.font.truetypetables.append(data)
             elif name == "OpenType Metrics Class Flags":
                 self.font._classes.fake_metrics_flags = data
             elif name == "OpenType Kerning Class Flags":
