@@ -10,8 +10,6 @@ from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
 from FL.objects.NameRecord import NameRecord
-from FL.objects.TTGasp import TTGasp
-from FL.objects.TTVdmx import TTVdmx
 
 if TYPE_CHECKING:
     from pathlib import Path
