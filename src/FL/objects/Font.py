@@ -746,6 +746,9 @@ class Font(FakeFont):
     # Defaults
 
     def fake_clear_defaults(self) -> None:
+        """
+        Clear some lists prior to deserializing a font from a Vfb.
+        """
         self._master_names.clear()
         self._master_locations.clear()
         self._master_ps_infos.clear()
