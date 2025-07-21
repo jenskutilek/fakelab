@@ -235,6 +235,8 @@ class FontToVfbWriter:
                 "Global Guide Properties", font.fake_serialize_guide_properties()
             )
 
+        if font.default_character:
+            self.add_entry("default_character", font.default_character)
 
     def compile_ttinfo(self) -> None:
         for k in ("cvt", "prep", "fpgm"):
