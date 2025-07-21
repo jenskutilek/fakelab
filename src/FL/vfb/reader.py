@@ -140,7 +140,8 @@ class VfbToFontReader:
         glyph: Glyph | None = None
         gids = {}
 
-        self.font.fake_clear_defaults()
+        font = self.font
+        font.fake_clear_defaults()
 
         for e in self.vfb.entries:
             name = e.key
@@ -148,12 +149,12 @@ class VfbToFontReader:
             if name == "header":
                 pass
             elif name in font_mapping_direct:
-                if hasattr(self.font, name):
-                    setattr(self.font, name, data)
+                if hasattr(font, name):
+                    setattr(font, name, data)
                 else:
                     raise AttributeError(f"Unknown font attribute: {name}")
             elif name == "xuid":
-                self.font._xuid = data
+                font._xuid = data
             elif name == "Encoding":
                 gid, glyph_name = data
                 gids[gid] = glyph_name
@@ -161,98 +162,98 @@ class VfbToFontReader:
                 # Where is this used?
                 pass
             elif name in ("1502", "518", "257"):
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "Master Count":
-                self.font._masters_count = data
+                font._masters_count = data
             elif name == "License":
-                self.font._license = data
+                font._license = data
             elif name == "License URL":
-                self.font._license_url = data
+                font._license_url = data
             elif name == "1140":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "PostScript Hinting Options":
-                self.font._postscript_hinting_options = data
+                font._postscript_hinting_options = data
             elif name == "1068":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name in ("cvt", "prep", "fpgm"):
-                self.font.ttinfo.fake_set_binary(name, data)
+                font.ttinfo.fake_set_binary(name, data)
             elif name == "gasp":
-                self.font.ttinfo.fake_deserialize_gasp(data)
+                font.ttinfo.fake_deserialize_gasp(data)
             elif name == "ttinfo":
-                self.font.ttinfo.fake_deserialize(data)
+                font.ttinfo.fake_deserialize(data)
             elif name == "vdmx":
-                self.font.ttinfo.fake_deserialize_vdmx(data)
+                font.ttinfo.fake_deserialize_vdmx(data)
             elif name in ttinfo_mapping_direct:
-                setattr(self.font.ttinfo, name, data)
+                setattr(font.ttinfo, name, data)
             elif name in (
                 "TrueType Stem PPEMs 2 And 3",
                 "TrueType Stem PPEMs",
                 "TrueType Stems",
                 "TrueType Stem PPEMs 1",
             ):
-                self.font.ttinfo.fake_deserialize_stems(data)
+                font.ttinfo.fake_deserialize_stems(data)
             elif name == "TrueType Zones":
-                self.font.ttinfo.fake_deserialize_zones(data)
+                font.ttinfo.fake_deserialize_zones(data)
             elif name == "unicoderanges":
-                self.font.unicoderanges = data
+                font.unicoderanges = data
             elif name == "stemsnaplimit":
-                self.font.ttinfo._stemsnaplimit = data
+                font.ttinfo._stemsnaplimit = data
             elif name == "zoneppm":
-                self.font.ttinfo._zoneppm = data
+                font.ttinfo._zoneppm = data
             elif name == "codeppm":
-                self.font.ttinfo._codeppm = data
+                font.ttinfo._codeppm = data
             elif name in ("1604", "2032"):
-                self.font.ttinfo._unknown_pleasures[name] = data
+                font.ttinfo._unknown_pleasures[name] = data
             elif name == "TrueType Zone Deltas":
-                self.font.ttinfo.fake_deserialize_zone_deltas(data)
+                font.ttinfo.fake_deserialize_zone_deltas(data)
             elif name == "fontnames":
                 assert isinstance(data, list)
                 for nr in data:
-                    self.font.fontnames.append(NameRecord(tuple(nr)))
+                    font.fontnames.append(NameRecord(tuple(nr)))
             elif name == "Custom CMAPs":
-                self.font._custom_cmaps = data
+                font._custom_cmaps = data
             elif name == "PCLT Table":
-                self.font._pclt_table = data
+                font._pclt_table = data
             elif name == "Export PCLT Table":
-                self.font._export_pclt_table = data
+                font._export_pclt_table = data
             elif name == "2030":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "TrueTypeTable":
-                self.font.truetypetables.append(data)
+                font.truetypetables.append(data)
             elif name == "OpenType Metrics Class Flags":
-                self.font._classes.fake_metrics_flags = data
+                font._classes.fake_metrics_flags = data
             elif name == "OpenType Kerning Class Flags":
-                self.font._classes.fake_kerning_flags = data
+                font._classes.fake_kerning_flags = data
             elif name == "features":
-                self.font.fake_deserialize_features(data)
+                font.fake_deserialize_features(data)
             elif name == "OpenType Class":
                 classes.append(data)
             elif name == "513":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "271":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "Axis Count":
-                self.font._axis_count = data
+                font._axis_count = data
             elif name == "Axis Name":
-                self.font.fake_deserialize_axis(data)
+                font.fake_deserialize_axis(data)
             elif name == "Anisotropic Interpolation Mappings":
-                self.font._anisotropic_interpolation_mappings = data
+                font._anisotropic_interpolation_mappings = data
             elif name == "Axis Mappings Count":
-                self.font._axis_mappings_count = data
+                font._axis_mappings_count = data
             elif name == "Axis Mappings":
-                self.font._axis_mappings = data
+                font._axis_mappings = data
             elif name == "Master Name":
-                self.font._master_names.append(data)
+                font._master_names.append(data)
             elif name == "Master Location":
-                self.font._master_locations.append(data)
+                font._master_locations.append(data)
             elif name == "Primary Instance Locations":
-                self.font._primary_instance_locations = data
+                font._primary_instance_locations = data
             elif name == "Primary Instances":
-                self.font._primary_instances = data
+                font._primary_instances = data
             elif name == "PostScript Info":
-                self.font._master_ps_infos.append(data)
+                font._master_ps_infos.append(data)
             elif name == "527":
-                self.font._unknown_pleasures[name] = data
+                font._unknown_pleasures[name] = data
             elif name == "Global Guides":
                 pass
             elif name == "Global Guide Properties":
@@ -263,7 +264,7 @@ class VfbToFontReader:
             elif name == "Glyph":
                 # Append the current glyph
                 if glyph is not None:
-                    self.font.glyphs.append(glyph)
+                    font.glyphs.append(glyph)
                 # Make a new glyph
                 logger.info(f"Adding Glyph: '{data.get('name')}'")
                 glyph = Glyph()
@@ -286,11 +287,11 @@ class VfbToFontReader:
                 print(f"Unhandled VFB entry: {name}")
 
         if glyph is not None:
-            self.font.glyphs.append(glyph)
+            font.glyphs.append(glyph)
 
         if gids:
-            enc = self.font._encoding = Encoding()
-            enc._parent = self.font
+            enc = font._encoding = Encoding()
+            enc._parent = font
 
             max_gid = min(255, max(gids))
             for i in range(max_gid + 1):
@@ -304,4 +305,4 @@ class VfbToFontReader:
 
         if classes:
             # The setter can't append, assign the whole list
-            self.font._classes.fake_set_classes(classes)
+            font._classes.fake_set_classes(classes)
