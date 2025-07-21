@@ -250,7 +250,7 @@ class VfbToFontReader:
             elif name == "Primary Instances":
                 self.font._primary_instances = data
             elif name == "PostScript Info":
-                pass
+                self.font._master_ps_infos.append(data)
             elif name == "527":
                 self.font._unknown_pleasures[name] = data
             elif name == "Global Guides":
