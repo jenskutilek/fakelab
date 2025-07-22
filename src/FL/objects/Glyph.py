@@ -63,6 +63,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "instructions",
         "left_side_bearing",
         "mark",
+        "name",
         "note",
         "number_of_contours",
         "points",
@@ -74,7 +75,6 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "_glyph_origin",
         "_metrics",
         "_parent",
-        "name",
         "_write_empty_links",
         "_write_empty_origin",
     ]
