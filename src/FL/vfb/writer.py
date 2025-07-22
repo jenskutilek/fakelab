@@ -90,10 +90,10 @@ class FontToVfbWriter:
 
     def compile_font_info(self) -> None:
         font = self.font
-        num_masters = font._masters_count
+        self.vfb.num_masters = font._masters_count
         self.add_entry("font_name", font.font_name)
-        self.add_entry("Master Count", num_masters)
-        self.add_entry("weight_vector", font.weight_vector[:num_masters])
+        self.add_entry("Master Count", self.vfb.num_masters)
+        self.add_entry("weight_vector", font.weight_vector[: self.vfb.num_masters])
         self.add_direct_entries(
             (
                 "unique_id",
@@ -213,7 +213,7 @@ class FontToVfbWriter:
         self.add_entry("Axis Mappings Count", font._axis_mappings_count)
         self.add_entry("Axis Mappings", font._axis_mappings)
 
-        for master_index in range(num_masters):
+        for master_index in range(self.vfb.num_masters):
             self.add_entry("Master Name", font._master_names[master_index])
             self.add_entry("Master Location", font._master_locations[master_index])
 
