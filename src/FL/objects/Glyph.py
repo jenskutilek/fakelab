@@ -224,12 +224,10 @@ class Glyph(Copyable, GuidePropertiesMixin):
             # "mask"
             # "mask.metrics"
             # "mask.metrics_mm"
-            "Glyph Origin": self._glyph_origin,
             # "2034"
             # "Glyph GDEF Data"
             # "Glyph Anchors Supplemental",
             # "Glyph Anchors MM",
-            "Glyph Guide Properties": self.fake_serialize_guide_properties(),
         }
 
         # Additions for Glyph
@@ -244,27 +242,43 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         # Additions related to glyph
 
-        if self.customdata:
-            s["glyph.customdata"] = self.customdata
-        if self.note:
-            s["glyph.note"] = self.note
-        unicodes = [u for u in self.unicodes if u <= 0xFFFF]
-        if unicodes:
-            s["unicodes"] = unicodes
-        unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
-        if unicodes_non_bmp:
-            s["Glyph Unicode Non-BMP"] = unicodes_non_bmp
-        if self.hlinks or self.vlinks:
+        if self._write_empty_links or self.hlinks or self.vlinks:
             s["Links"] = {
                 "x": [[link.node1, link.node2] for link in self.vlinks],
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
-        if self.mark != 0:
-            s["mark"] = self.mark
+
+        origin = self._glyph_origin
+        if self._write_empty_origin or origin != {"x": 0, "y": 0}:
+            s["Glyph Origin"] = origin
+
+        unicodes = [u for u in self.unicodes if u <= 0xFFFF]
+        if unicodes:
+            s["unicodes"] = unicodes
+
+        unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
+        if unicodes_non_bmp:
+            s["Glyph Unicode Non-BMP"] = unicodes_non_bmp
+
         if self.customdata:
             s["glyph.customdata"] = self.customdata
+
         if self.note:
             s["glyph.note"] = self.note
+
+        if self.mark != 0:
+            s["mark"] = self.mark
+
+        if self.customdata:
+            s["glyph.customdata"] = self.customdata
+
+        if self.note:
+            s["glyph.note"] = self.note
+
+        guide_properties = self.fake_serialize_guide_properties()
+        if guide_properties["h"] or guide_properties["v"]:
+            # Must not be present if there are no glyph guides
+            s["Glyph Guide Properties"] = guide_properties
 
         return s
 
