@@ -47,6 +47,7 @@ class Glyph(Copyable):
         "_mask",
         "_nodes",
         "_replace_table",
+        "_unknown_pleasures",
         "_vguides",
         "_vhints",
         "_vlinks",
@@ -89,6 +90,7 @@ class Glyph(Copyable):
 
         elif isinstance(glyph_or_masterscount, int):
             self._layers_number: int = glyph_or_masterscount
+            self._unknown_pleasures["2023"] = [0 for _ in range(self._layers_number)]
             if nodes is not None:
                 # Assign nodes
                 for node in nodes:
@@ -147,7 +149,7 @@ class Glyph(Copyable):
         elif name == "Glyph Bitmaps":
             pass
         elif name == "2023":
-            pass
+            self._unknown_pleasures[name] = data
         elif name == "Glyph Sketch":
             pass
         elif name == "Glyph Hinting Options":
@@ -209,7 +211,7 @@ class Glyph(Copyable):
             },
             # "image"
             # "Glyph Bitmaps"
-            # "2023"
+            "2023": self._unknown_pleasures["2023"],
             # "Glyph Sketch"
             "Glyph Hinting Options": self._glyph_hinting_options,
             # "mask"
@@ -1299,3 +1301,7 @@ class Glyph(Copyable):
         self.points: list[TTPoint] = []
         self.instructions: list[int] = []
         self.hdmx: list[int] = []
+
+        self._unknown_pleasures: dict[str, Any] = {
+            "2023": [0 for _ in range(self.layers_number)]
+        }
