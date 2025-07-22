@@ -137,13 +137,13 @@ class Glyph(Copyable, GuidePropertiesMixin):
             data (_type_): The entry data.
         """
         if name == "Glyph":
-            self.name: str = data["name"]
+            self.name: str = data.get("name")
             self._layers_number = data["num_masters"]
             for node_data in data["nodes"]:
                 node = Node()
                 node.fake_deserialize(self._layers_number, node_data)
                 self.nodes.append(node)
-            self._metrics = [Point(x, y) for x, y in data["metrics"]]
+            self._metrics = [Point(x, y) for x, y in data.get("metrics", [])]
             for index, values in data.get("kerning", {}).items():
                 pair = KerningPair(int(index))
                 pair._values = values
