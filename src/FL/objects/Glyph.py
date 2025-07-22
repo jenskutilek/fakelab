@@ -76,6 +76,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         # Non-API
         "_glyph_hinting_options",
         "_glyph_origin",
+        "_mask_metrics_mm",
+        "_mask_metrics",
         "_metrics",
         "_parent",
         "_write_empty_hints",
@@ -173,9 +175,11 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "mask":
             pass
         elif name == "mask.metrics":
-            pass
+            self._mask_metrics: Point | None = Point(*data)
         elif name == "mask.metrics_mm":
-            pass
+            self._mask_metrics_mm: list[Point] | None = [
+                Point(*coords) for coords in data
+            ]
         elif name == "Glyph Origin":
             self._write_empty_origin = True
             self._glyph_origin = data
@@ -228,8 +232,6 @@ class Glyph(Copyable, GuidePropertiesMixin):
             # "Glyph Sketch"
             "Glyph Hinting Options": self._glyph_hinting_options,
             # "mask"
-            # "mask.metrics"
-            # "mask.metrics_mm"
             # "2034"
             # "Glyph GDEF Data"
             # "Glyph Anchors Supplemental",
@@ -256,6 +258,11 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 "x": [[link.node1, link.node2] for link in self.vlinks],
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
+
+        if self._mask_metrics:
+            s["mask.metrics"] = (int(self._mask_metrics.x), int(self._mask_metrics.y))
+        if self._mask_metrics_mm:
+            s["mask.metrics_mm"] = [(int(p.x), int(p.y)) for p in self._mask_metrics_mm]
 
         origin = self._glyph_origin
         if self._write_empty_origin or origin != {"x": 0, "y": 0}:
@@ -1356,6 +1363,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         self._kerning: ListParent[KerningPair] = ListParent([], self)
         self._layers_number = 1
         self._mask: Glyph | None = None
+        self._mask_metrics: Point | None = None
+        self._mask_metrics_mm: list[Point] | None = None
 
         # flags set for this glyph
         self.flags: int = 0
