@@ -3,15 +3,20 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any
 
+from vfbLib import replace_types
+from vfbLib.typing import HintDict, MMHintsDict
+
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuidePropertiesMixin
 from FL.helpers.ListParent import ListParent
 from FL.objects.Component import Component
+from FL.objects.Hint import Hint
 from FL.objects.Image import Image
 from FL.objects.KerningPair import KerningPair
 from FL.objects.Node import Node
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect
+from FL.objects.Replace import Replace
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -20,10 +25,8 @@ if TYPE_CHECKING:
     from FL.objects.AuditRecord import AuditRecord
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
-    from FL.objects.Hint import Hint
     from FL.objects.Link import Link
     from FL.objects.Matrix import Matrix
-    from FL.objects.Replace import Replace
     from FL.objects.TTPoint import TTPoint
 
 
@@ -75,6 +78,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "_glyph_origin",
         "_metrics",
         "_parent",
+        "_write_empty_hints",
         "_write_empty_links",
         "_write_empty_origin",
     ]
@@ -144,6 +148,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 component = Component()
                 component.fake_deserialize(self._layers_number, component_data)
                 self.components.append(component)
+            if hint_data := data.get("hints", {}):
+                self.fake_deserialize_hints(hint_data)
             if imported := data.get("imported"):
                 self._unknown_pleasures["imported"] = imported
 
@@ -232,6 +238,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         # Additions for Glyph
 
+        if self._write_empty_hints or self.vhints or self.hhints:
+            s["Glyph"]["hints"] = self.fake_serialize_hints()
+
         if self.kerning:
             s["Glyph"]["kerning"] = {
                 str(pair.key): pair.values for pair in self.kerning
@@ -281,6 +290,36 @@ class Glyph(Copyable, GuidePropertiesMixin):
             s["Glyph Guide Properties"] = guide_properties
 
         return s
+
+    def fake_deserialize_hints(self, data: MMHintsDict) -> None:
+        for direction, target in (("v", self.vhints), ("h", self.hhints)):
+            for hint_list in data[direction]:
+                hint = Hint()
+                hint.fake_deserialize(hint_list)
+                target.append(hint)
+        for record_type, index in data.get("hintmasks", []):
+            self.replace_table.append(
+                Replace({"h": 0x01, "v": 0x02, "r": 0xFF}[record_type], index)
+            )
+
+    def fake_serialize_hints(self) -> MMHintsDict:
+        hints_dict = MMHintsDict(v=[], h=[])
+        for direction, source in (("v", self.vhints), ("h", self.hhints)):
+            for hint in source:
+                mmhint = []
+                for master_index in range(self._masters_count):
+                    mmhint.append(
+                        HintDict(
+                            pos=hint._positions[master_index],
+                            width=hint._widths[master_index],
+                        )
+                    )
+                hints_dict[direction].append(mmhint)
+        if self.replace_table:
+            hintmasks = hints_dict["hintmasks"] = []
+            for r in self.replace_table:
+                hintmasks.append((replace_types[r.type], r.index))
+        return hints_dict
 
     # Attributes
 
@@ -1352,5 +1391,6 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         # For binary compatibility with FL-written files:
 
+        self._write_empty_hints = False
         self._write_empty_links = False
         self._write_empty_origin = False

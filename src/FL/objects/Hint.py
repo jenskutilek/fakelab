@@ -39,8 +39,6 @@ class Hint(Copyable):
         self._parent: Glyph | None = None
         self._positions = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self._widths = [21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21]
-        self.position = 0
-        self.width = 21
 
         arg1 = hint_or_position
 
@@ -82,6 +80,12 @@ class Hint(Copyable):
         for hint_dict in data:
             self._positions.append(hint_dict["pos"])
             self._widths.append(hint_dict["width"])
+
+    def fake_serialize(self) -> list[HintDict]:
+        hint_dicts = []
+        hint_dict = HintDict()
+        hint_dicts.append(hint_dict)
+        return hint_dicts
 
     # Attributes
 
