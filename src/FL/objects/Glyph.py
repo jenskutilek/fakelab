@@ -75,6 +75,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "_metrics",
         "_parent",
         "name",
+        "_write_empty_links",
+        "_write_empty_origin",
     ]
 
     # Constructor
@@ -146,6 +148,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 self._unknown_pleasures["imported"] = imported
 
         elif name == "Links":
+            self._write_empty_links = True
             for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
                 axis_links = data.get(axis, [])
                 for axis_link in axis_links:
@@ -168,6 +171,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "mask.metrics_mm":
             pass
         elif name == "Glyph Origin":
+            self._write_empty_origin = True
             self._glyph_origin = data
         elif name == "unicodes":
             self.unicodes.extend(data)
@@ -1331,3 +1335,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         self._unknown_pleasures: dict[str, Any] = {
             "2023": [0 for _ in range(self.layers_number)]
         }
+
+        # For binary compatibility with FL-written files:
+
+        self._write_empty_links = False
+        self._write_empty_origin = False
