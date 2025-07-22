@@ -260,9 +260,10 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
-        # image
-        if self._glyph_bitmaps:
-            s["Glyph Bitmaps"] = self._glyph_bitmaps
+        # if self.image:
+        #     s["image"] = self.image
+        # if self._glyph_bitmaps:
+        #     s["Glyph Bitmaps"] = self._glyph_bitmaps
         if self._glyph_sketch:
             s["Glyph Sketch"] = self._glyph_sketch
         if self.mask:
