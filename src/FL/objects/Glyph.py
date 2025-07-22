@@ -276,14 +276,14 @@ class Glyph(Copyable, GuidePropertiesMixin):
         if unicodes_non_bmp:
             s["Glyph Unicode Non-BMP"] = unicodes_non_bmp
 
+        if self.mark != 0:
+            s["mark"] = self.mark
+
         if self.customdata:
             s["glyph.customdata"] = self.customdata
 
         if self.note:
             s["glyph.note"] = self.note
-
-        if self.mark != 0:
-            s["mark"] = self.mark
 
         if self.customdata:
             s["glyph.customdata"] = self.customdata
