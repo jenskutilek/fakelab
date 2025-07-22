@@ -137,6 +137,8 @@ class Glyph(Copyable):
                 component = Component()
                 component.fake_deserialize(self._layers_number, component_data)
                 self.components.append(component)
+            if imported := data.get("imported"):
+                self._unknown_pleasures["imported"] = imported
 
         elif name == "Links":
             for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
@@ -232,6 +234,10 @@ class Glyph(Copyable):
             s["Glyph"]["kerning"] = {
                 str(pair.key): pair.values for pair in self.kerning
             }
+        imported = self._unknown_pleasures.get("imported")
+        if imported:
+            s["Glyph"]["imported"] = imported
+
         if self.customdata:
             s["glyph.customdata"] = self.customdata
         if self.note:
