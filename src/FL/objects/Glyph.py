@@ -74,8 +74,10 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "unicodes",
         "y_pels",
         # Non-API
+        "_glyph_bitmaps",
         "_glyph_hinting_options",
         "_glyph_origin",
+        "_glyph_sketch",
         "_mask_metrics_mm",
         "_mask_metrics",
         "_metrics",
@@ -165,11 +167,11 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "image":
             pass
         elif name == "Glyph Bitmaps":
-            pass
         elif name == "2023":
+            self._glyph_bitmaps = data
             self._unknown_pleasures[name] = data
         elif name == "Glyph Sketch":
-            pass
+            self._glyph_sketch = data
         elif name == "Glyph Hinting Options":
             self._glyph_hinting_options = data
         elif name == "mask":
@@ -227,9 +229,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 "components": [comp.fake_serialize() for comp in self.components],
             },
             # "image"
-            # "Glyph Bitmaps"
             "2023": self._unknown_pleasures["2023"],
-            # "Glyph Sketch"
             "Glyph Hinting Options": self._glyph_hinting_options,
             # "mask"
             # "2034"
@@ -259,6 +259,10 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
+        if self._glyph_bitmaps:
+            s["Glyph Bitmaps"] = self._glyph_bitmaps
+        if self._glyph_sketch:
+            s["Glyph Sketch"] = self._glyph_sketch
         if self._mask_metrics:
             s["mask.metrics"] = (int(self._mask_metrics.x), int(self._mask_metrics.y))
         if self._mask_metrics_mm:
@@ -1393,6 +1397,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
         self.points: list[TTPoint] = []
         self.instructions: list[int] = []
         self.hdmx: list[int] = []
+
+        self._glyph_bitmaps = None
+        self._glyph_sketch = None
 
         self._unknown_pleasures: dict[str, Any] = {
             "2023": [0 for _ in range(self.layers_number)]
