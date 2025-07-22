@@ -167,8 +167,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "image":
             pass
         elif name == "Glyph Bitmaps":
-        elif name == "2023":
             self._glyph_bitmaps = data
+        elif name in ("2023", "2034"):
             self._unknown_pleasures[name] = data
         elif name == "Glyph Sketch":
             self._glyph_sketch = data
@@ -275,6 +275,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
         unicodes = [u for u in self.unicodes if u <= 0xFFFF]
         if unicodes:
             s["unicodes"] = unicodes
+
+        if "2034" in self._unknown_pleasures:
+            s["2034"] = self._unknown_pleasures["2034"]
 
         unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
         if unicodes_non_bmp:
