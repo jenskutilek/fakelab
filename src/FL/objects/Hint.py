@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from vfbLib.typing import HintDict
+
 from FL.fake.Base import Copyable
 from FL.objects.Link import Link
 
@@ -17,7 +19,7 @@ class Hint(Copyable):
     This class is Multiple Master - compatible
     """
 
-    __slots__ = ["_parent", "_position", "_width", "_positions", "_widths"]
+    __slots__ = ["_parent", "_positions", "_widths"]
 
     # Constructor
 
@@ -62,6 +64,25 @@ class Hint(Copyable):
             else:
                 raise RuntimeError("Hint type is expected in arg 1: Hint(Hint)")
 
+    def __repr__(self) -> str:
+        if self._parent is None:
+            return f"<Hint: p={self.position}, w={self.width}, orphan>"
+        else:
+            # TODO: return HHint or VHint
+            return (
+                f"<Hint: p={self.position}, w={self.width}, "
+                f'parent: "{self._parent.name}">'
+            )
+
+    # Additions for FakeLab
+
+    def fake_deserialize(self, data: list[HintDict]) -> None:
+        self._positions: list[int] = []
+        self._widths: list[int] = []
+        for hint_dict in data:
+            self._positions.append(hint_dict["pos"])
+            self._widths.append(hint_dict["width"])
+
     # Attributes
 
     @property
@@ -80,13 +101,12 @@ class Hint(Copyable):
         Position of the hint
 
         Returns:
-            int: _description_
+            int: The position of the hint in the first master
         """
-        return self._position
+        return self._positions[0]
 
     @position.setter
     def position(self, value: int) -> None:
-        self._position = value
         # Sets the position for all masters
         # TODO: Must we keep the list, or could we just replace it?
         for i in range(16):
@@ -95,16 +115,15 @@ class Hint(Copyable):
     @property
     def width(self) -> int:
         """
-        width of the hint
+        Width of the hint
 
         Returns:
-            int: _description_
+            int: The width of the hint in the first master
         """
-        return self._width
+        return self._widths[0]
 
     @width.setter
     def width(self, value: int) -> None:
-        self._width = value
         # Sets the width for all masters
         # TODO: Must we keep the list, or could we just replace it?
         for i in range(16):
