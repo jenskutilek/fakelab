@@ -4,6 +4,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
+from FL.fake.mixins import GuidePropertiesMixin
 from FL.helpers.ListParent import ListParent
 from FL.objects.Component import Component
 from FL.objects.Image import Image
@@ -29,7 +30,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class Glyph(Copyable):
+class Glyph(Copyable, GuidePropertiesMixin):
     """
     A glyph
     """
@@ -101,6 +102,10 @@ class Glyph(Copyable):
         return "<Glyph: '%s', %i nodes, orphan>" % (self.name, len(self))
 
     # Additions for FakeLab
+
+    @property
+    def _masters_count(self) -> int:
+        return self.layers_number
 
     def fake_update(self, font: Font | None = None, index: int = -1) -> None:
         """
@@ -229,6 +234,7 @@ class Glyph(Copyable):
             # "Glyph Anchors Supplemental",
             # "Glyph Anchors MM",
             # "Glyph Guide Properties",
+            "Glyph Guide Properties": self.fake_serialize_guide_properties(),
         }
         if self.kerning:
             s["Glyph"]["kerning"] = {
