@@ -190,7 +190,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "Glyph Anchors MM":
             pass
         elif name == "Glyph Guide Properties":
-            pass
+            self.fake_deserialize_guide_properties(data)
         else:
             logger.warning(f"Unhandled glyph entry: {name}")
 
