@@ -36,7 +36,14 @@ class Node(Copyable):
     coordinates of the final point
     """
 
-    __slots__ = ["_parent", "_points", "type", "alignment", "selected"]
+    __slots__ = [
+        "alignment",
+        "selected",
+        "type",
+        "_masters_count",
+        "_parent",
+        "_points",
+    ]
 
     # Constructor
 
@@ -67,7 +74,7 @@ class Node(Copyable):
             self.type = node_or_type
             p = Point(int(p.x), int(p.y))
             p._parent = self
-            self._points = [p]
+            self._points = [[p] for _ in range(self._masters_count)]
         # else: Empty node
 
     def __repr__(self) -> str:
@@ -76,9 +83,10 @@ class Node(Copyable):
     # Additions for FakeLab
 
     def fake_deserialize(self, num_masters: int, data: dict[str, Any]) -> None:
+        self._masters_count = num_masters
         self.type = vfb2json_node_types[data["type"]]
         self.alignment = vfb2json_node_conns[data["flags"]]
-        self.points.clear()
+        self._points = [[] for _ in range(self._masters_count)]
         points = data.get("points", [])
         for master_index in range(num_masters):
             master_points = points[master_index]
@@ -89,7 +97,7 @@ class Node(Copyable):
             else:
                 raise ValueError(f"Unknown Node type: {self.type}")
             for x, y in master_points:
-                self.points.append(Point(x, y))
+                self._points[master_index].append(Point(x, y))
         if self.type in (nMOVE, nLINE, nOFF):
             assert len(self.points) == 1
         elif self.type == nCURVE:
@@ -103,12 +111,11 @@ class Node(Copyable):
             "flags": json2vfb_node_conns[self.alignment],
             "points": [],
         }
-        points = d["points"]
-        for i in range(num_masters):
-            points.append([])
-            master_points = points[i]
-            for p in self.points:
-                master_points.append([int(p.x), int(p.y)])
+        points: list[list[tuple[int, int]]] = [[] for _ in range(num_masters)]
+        for master_index, master_points in enumerate(self._points):
+            for p in master_points:
+                points[master_index].append((int(p.x), int(p.y)))
+        d["points"] = points
         return d
 
     def fake_update(self, glyph: Glyph | None = None) -> None:
@@ -130,21 +137,21 @@ class Node(Copyable):
 
     @property
     def count(self) -> int:
-        return len(self._points)
+        return len(self)
 
     @property
     def point(self) -> Point:
         """
         position of the final point of the first master
         """
-        return self._points[-1]
+        return self._points[0][-1]
 
     @property
     def points(self) -> list[Point]:
         """
         positions of all points of the first master
         """
-        return self._points
+        return self._points[0]
 
     @property
     def x(self) -> int:
@@ -160,13 +167,13 @@ class Node(Copyable):
         """
         Return the number of points.
         """
-        return len(self._points)
+        return len(self._points[0])
 
     def __getitem__(self, index: int) -> Point:
         """
         Accesses points array of the first master
         """
-        return self._points[index]
+        return self._points[0][index]
 
     def __mul__(self, matrix: Matrix) -> Node:
         raise NotImplementedError
@@ -193,7 +200,7 @@ class Node(Copyable):
         """
         Returns list of points for the master 'masterindex'
         """
-        raise NotImplementedError
+        return self._points[masterindex]
 
     def Section(self, pointindex: int) -> list[Point]:
         """
@@ -223,6 +230,7 @@ class Node(Copyable):
 
     def _set_defaults(self) -> None:
         self._parent = None
+        self._masters_count = 1
 
         # type of the node, values are: nMOVE, nLINE, nCURVE or nOFF
         self.type = nLINE
@@ -233,4 +241,4 @@ class Node(Copyable):
 
         # True if node is selected
         self.selected = 0
-        self._points = [Point()]
+        self._points = [[Point()] for _ in range(self._masters_count)]
