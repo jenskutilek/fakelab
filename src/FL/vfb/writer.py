@@ -183,9 +183,11 @@ class FontToVfbWriter:
         self.add_entry("Custom CMAPs", font._custom_cmaps)
         self.add_entry("PCLT Table", font._pclt_table)
         self.add_entry("Export PCLT Table", font._export_pclt_table)
-        self.add_entry("note", font.note)
+        if font.note:
+            self.add_entry("note", font.note)
         self.add_entry(2030, font._unknown_pleasures["2030"])
-        self.add_entry("customdata", font.customdata)
+        if font.customdata:
+            self.add_entry("customdata", font.customdata)
 
         for ttt in font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
@@ -243,8 +245,10 @@ class FontToVfbWriter:
             d = self.font.ttinfo.fake_get_binary(k)
             if d:
                 self.add_entry(k, d)
-        # TODO:
-        self.add_entry("gasp", self.font.ttinfo.fake_serialize_gasp())
+
+        if gasp := self.font.ttinfo.fake_serialize_gasp():
+            self.add_entry("gasp", gasp)
+
         self.add_entry("ttinfo", self.font.ttinfo.fake_serialize())
         self.add_entry("vdmx", self.font.ttinfo.fake_serialize_vdmx())
         self.add_direct_entries(
