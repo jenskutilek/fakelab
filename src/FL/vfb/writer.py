@@ -307,8 +307,9 @@ class FontToVfbWriter:
                     self.add_entry(key, glyph_dict[key])
 
     def compile_options(self) -> None:
-        # TODO:
-        # "OpenType Export Options"
-        # "Export Options"
+        if ot_export_options := self.font._ot_export_options:
+            self.add_entry("OpenType Export Options", ot_export_options)
+        if export_options := self.font._export_options:
+            self.add_entry("Export Options", export_options)
 
         self.add_entry("Mapping Mode", self.font._mapping_mode)

@@ -119,6 +119,8 @@ class Font(FakeFont):
         # Non-API:
         "_custom_cmaps",
         "_export_pclt_table",
+        "_export_options",
+        "_ot_export_options",
         "_pclt_table",
         "_axis_count",
         "_anisotropic_interpolation_mappings",
@@ -936,6 +938,8 @@ class Font(FakeFont):
         self._custom_cmaps: list[CustomCmap] = []
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {}
+        self._export_options: list[str] = []
+        self._ot_export_options: list[dict[str, int]] = []
         self._axis_count: int = 0
         self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]

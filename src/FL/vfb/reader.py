@@ -275,11 +275,11 @@ class VfbToFontReader:
                 glyph.fake_deserialize(name, data)
 
             elif name == "OpenType Export Options":
-                pass
+                font._ot_export_options = data
             elif name == "Export Options":
-                pass
+                font._export_options = data
             elif name == "Mapping Mode":
-                pass
+                font._mapping_mode = data
             elif name == "1410":
                 pass
 
