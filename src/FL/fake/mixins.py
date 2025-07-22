@@ -20,6 +20,18 @@ class GuideMixin:
 
     def fake_serialize_guides(self) -> MMGuidesDict:
         mgd = MMGuidesDict(h=[], v=[])
+        mgd["h"] = [[] for _ in range(self._masters_count)]
+        mgd["v"] = [[] for _ in range(self._masters_count)]
+        for direction, target in (("h", self.hguides), ("v", self.vguides)):
+            for master_index in range(self._masters_count):
+                for guide in target:
+                    mgd[direction][master_index].append(
+                        {
+                            "pos": guide.position,
+                            "angle": guide.angle,
+                        }
+                    )
+        print(mgd)
         return mgd
 
 
