@@ -175,7 +175,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "Glyph Hinting Options":
             self._glyph_hinting_options = data
         elif name == "mask":
-            pass
+            mask = Glyph()
+            mask.fake_deserialize("Glyph", data)
+            self._mask: Glyph | None = mask
         elif name == "mask.metrics":
             self._mask_metrics: Point | None = Point(*data)
         elif name == "mask.metrics_mm":
@@ -228,14 +230,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 ],
                 "components": [comp.fake_serialize() for comp in self.components],
             },
-            # "image"
             "2023": self._unknown_pleasures["2023"],
             "Glyph Hinting Options": self._glyph_hinting_options,
-            # "mask"
-            # "2034"
-            # "Glyph GDEF Data"
-            # "Glyph Anchors Supplemental",
-            # "Glyph Anchors MM",
         }
 
         # Additions for Glyph
@@ -259,10 +255,13 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
+        # image
         if self._glyph_bitmaps:
             s["Glyph Bitmaps"] = self._glyph_bitmaps
         if self._glyph_sketch:
             s["Glyph Sketch"] = self._glyph_sketch
+        if self.mask:
+            s["mask"] = self._mask
         if self._mask_metrics:
             s["mask.metrics"] = (int(self._mask_metrics.x), int(self._mask_metrics.y))
         if self._mask_metrics_mm:
@@ -297,6 +296,10 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         if self.note:
             s["glyph.note"] = self.note
+
+        # "Glyph GDEF Data"
+        # "Glyph Anchors Supplemental",
+        # "Glyph Anchors MM",
 
         guide_properties = self.fake_serialize_guide_properties()
         if guide_properties["h"] or guide_properties["v"]:
