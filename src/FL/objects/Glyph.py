@@ -212,10 +212,6 @@ class Glyph(Copyable, GuidePropertiesMixin):
                 ],
                 "components": [comp.fake_serialize() for comp in self.components],
             },
-            "Links": {
-                "x": [[link.node1, link.node2] for link in self.vlinks],
-                "y": [[link.node1, link.node2] for link in self.hlinks],
-            },
             # "image"
             # "Glyph Bitmaps"
             "2023": self._unknown_pleasures["2023"],
@@ -225,17 +221,15 @@ class Glyph(Copyable, GuidePropertiesMixin):
             # "mask.metrics"
             # "mask.metrics_mm"
             "Glyph Origin": self._glyph_origin,
-            "unicodes": [u for u in self.unicodes if u <= 0xFFFF],
-            "Glyph Unicode Non-BMP": [u for u in self.unicodes if u > 0xFFFF],
-            "mark": self.mark,
-            "glyph.customdata": self.customdata,
-            "glyph.note": self.note,
+            # "2034"
             # "Glyph GDEF Data"
             # "Glyph Anchors Supplemental",
             # "Glyph Anchors MM",
-            # "Glyph Guide Properties",
             "Glyph Guide Properties": self.fake_serialize_guide_properties(),
         }
+
+        # Additions for Glyph
+
         if self.kerning:
             s["Glyph"]["kerning"] = {
                 str(pair.key): pair.values for pair in self.kerning
@@ -244,10 +238,30 @@ class Glyph(Copyable, GuidePropertiesMixin):
         if imported:
             s["Glyph"]["imported"] = imported
 
+        # Additions related to glyph
+
         if self.customdata:
             s["glyph.customdata"] = self.customdata
         if self.note:
             s["glyph.note"] = self.note
+        unicodes = [u for u in self.unicodes if u <= 0xFFFF]
+        if unicodes:
+            s["unicodes"] = unicodes
+        unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
+        if unicodes_non_bmp:
+            s["Glyph Unicode Non-BMP"] = unicodes_non_bmp
+        if self.hlinks or self.vlinks:
+            s["Links"] = {
+                "x": [[link.node1, link.node2] for link in self.vlinks],
+                "y": [[link.node1, link.node2] for link in self.hlinks],
+            }
+        if self.mark != 0:
+            s["mark"] = self.mark
+        if self.customdata:
+            s["glyph.customdata"] = self.customdata
+        if self.note:
+            s["glyph.note"] = self.note
+
         return s
 
     # Attributes
