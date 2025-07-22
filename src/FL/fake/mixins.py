@@ -1,6 +1,12 @@
+from __future__ import annotations
+
+import logging
+
 from vfbLib.typing import GuidePropertiesDict, GuidePropertyDict, MMGuidesDict
 
 from FL.objects.Guide import Guide
+
+logger = logging.getLogger(__name__)
 
 
 class GuideMixin:
@@ -31,15 +37,22 @@ class GuideMixin:
                             "angle": guide.angle,
                         }
                     )
-        print(mgd)
         return mgd
 
 
 class GuidePropertiesMixin:
     def fake_deserialize_guide_properties(self, data: GuidePropertiesDict) -> None:
         for k, target in (("h", self.hguides), ("v", self.vguides)):
+            num_guides = len(target)
             for guide_prop_dict in data[k]:
                 guide_index = guide_prop_dict["index"] - 1
+                if guide_index >= num_guides:
+                    logger.info(
+                        "Skipping properties for guide that isn't present: "
+                        f"{guide_index} in {target}"
+                    )
+                    continue
+
                 color = guide_prop_dict.get("color")
                 if color:
                     target[guide_index]._color = color
