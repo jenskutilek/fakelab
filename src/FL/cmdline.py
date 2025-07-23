@@ -15,6 +15,13 @@ try:
 except ImportError:
     have_ptpython = False
 
+try:
+    from IPython import embed as iembed
+
+    have_ipython = True
+except ImportError:
+    have_ipython = False
+
 logger = logging.getLogger(__name__)
 
 
@@ -80,6 +87,8 @@ def main() -> None:
             # Run the interactive console.
             if have_ptpython:
                 embed(globals(), locals=environment, vi_mode=True)
+            elif have_ipython:
+                iembed(globals=globals(), locals=environment, header="FakeLab")
             else:
                 console = FontLab5Console(locals=environment)
                 console.interact(
