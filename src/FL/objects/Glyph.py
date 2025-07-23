@@ -29,6 +29,8 @@ from FL.objects.Replace import Replace
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from vfbLib.typing import Instruction
+
     from FL.objects.AuditRecord import AuditRecord
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
@@ -1537,7 +1539,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._gdef_unknown: list[int] = []
         self._glyph_bitmaps = None
         self._glyph_sketch = None
-        self._tth = None
+        self._tth: list[Instruction] = []
 
         self._unknown_pleasures: dict[str, Any] = {
             "2023": [0 for _ in range(self.layers_number)]

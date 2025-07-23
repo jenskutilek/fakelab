@@ -2,14 +2,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from vfbLib.truetype import TT_COMMAND_CONSTANTS, TT_COMMANDS
+
 from FL.helpers.FLList import FLList
 from FL.objects.Point import Point
+from FL.objects.TTHCommand import TTHCommand
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
     from FL.objects.Glyph import Glyph
     from FL.objects.Hint import Hint
-    from FL.objects.TTHCommand import TTHCommand
     from FL.objects.TTHPoint import TTHPoint
     from FL.objects.TTHProblem import TTHProblem
 
@@ -260,18 +262,34 @@ class TTH:
     def LoadProgram(self, g: Glyph | None = None) -> None:
         # Initialize TTH object with Glyph first or specify it explicitly
         if g is None:
-            raise ValueError(
-                "TTH.LoadProgram without glyph argument will send FontLab into an "
-                "infinite loop (if the TTH was not initialized with a Glyph)."
-            )
-        raise NotImplementedError
+            if self.glyph is None:
+                raise ValueError(
+                    "TTH.LoadProgram without glyph argument will send FontLab into an "
+                    "infinite loop (if the TTH was not initialized with a Glyph)."
+                )
+            g = self.glyph
+
+        # TODO: Does calling this with a glyph replace the current glyph?
+
+        self.commands.clear()
+        for i in g._tth:
+            cmd = i["cmd"]
+            cmd_int = TT_COMMAND_CONSTANTS[cmd]
+            params = [i["params"][param] for param in TT_COMMANDS[cmd_int]["params"]]
+            tthcmd = TTHCommand(cmd_int, *params)
+            self.commands.append(tthcmd)
 
     def SaveProgram(self, g: Glyph | None = None) -> None:
         if g is None:
-            raise ValueError(
-                "TTH.LoadProgram without glyph argument will send FontLab into an "
-                "infinite loop (if the TTH was not initialized with a Glyph)."
-            )
+            if self.glyph is None:
+                raise ValueError(
+                    "TTH.LoadProgram without glyph argument will send FontLab into an "
+                    "infinite loop (if the TTH was not initialized with a Glyph)."
+                )
+            g = self.glyph
+
+        # TODO: Does calling this with a glyph replace the current glyph?
+
         raise NotImplementedError
 
     def SortProgram(self) -> None:
