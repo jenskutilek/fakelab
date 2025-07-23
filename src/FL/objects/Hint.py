@@ -177,7 +177,10 @@ class Hint(Copyable):
         Returns:
             Link: The Link.
         """
-        raise NotImplementedError
+        # TODO: If this works at all in FontLab, I haven't managed to get it working
+        raise RuntimeError(
+            "In order to be converted to a Link, Hint must not be an orphan"
+        )
 
     def Transform(self, m: Matrix) -> None:
         """
