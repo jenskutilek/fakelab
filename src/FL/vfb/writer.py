@@ -192,9 +192,10 @@ class FontToVfbWriter:
         for ttt in font.truetypetables:
             self.add_entry("TrueTypeTable", ttt)
 
-        # TODO:
-        # "OpenType Metrics Class Flags"
-        # "OpenType Kerning Class Flags"
+        if metrics_class_flags := font._classes.fake_metrics_flags:
+            self.add_entry("OpenType Metrics Class Flags", metrics_class_flags)
+        if kerning_class_flags := font._classes.fake_kerning_flags:
+            self.add_entry("OpenType Kerning Class Flags", kerning_class_flags)
 
         fea = font.fake_serialize_features()
         if fea:
