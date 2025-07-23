@@ -218,7 +218,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
             self._write_empty_anchor_supp = True
             self.fake_deserialize_anchor_supp(data)
         elif name == "Glyph Anchors MM":
-            pass
+            self.fake_deserialize_anchors_mm(data)
         elif name == "Glyph Guide Properties":
             self.fake_deserialize_guide_properties(data)
         else:
@@ -327,7 +327,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         if self._write_empty_anchor_supp or anchors_supp:
             s["Glyph Anchors Supplemental"] = anchors_supp
 
-        # "Glyph Anchors MM",
+        if self.anchors and self.layers_number > 1:
+            s["Glyph Anchors MM"] = self.fake_serialize_anchors_mm()
 
         guide_properties = self.fake_serialize_guide_properties()
         if guide_properties["h"] or guide_properties["v"]:
@@ -379,7 +380,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
     def fake_deserialize_gdef(self, data: GdefDict) -> None:
         for anchor_dict in data.get("anchors", []):
             self.anchors.append(
-                Anchor(anchor_dict["name"], anchor_dict["x"], anchor_dict["y"])
+                Anchor(anchor_dict.get("name", ""), anchor_dict["x"], anchor_dict["y"])
             )
         for caret in data.get("carets", []):
             self._carets.append(caret)
@@ -410,6 +411,25 @@ class Glyph(Copyable, GuidePropertiesMixin):
         for anchor in self.anchors:
             data.append({"hue": anchor.mark, "reserved": anchor._reserved})
         return data
+
+    def fake_deserialize_anchors_mm(self, data: MMAnchorDict) -> None:
+        for i, anchor in enumerate(data):
+            target = self.anchors[i]._points
+            ax = anchor["x"]
+            ay = anchor["y"]
+            for master_index in range(self._masters_count):
+                target[master_index].x = ax[master_index]
+                target[master_index].y = ay[master_index]
+
+    def fake_serialize_anchors_mm(self) -> list[MMAnchorDict]:
+        anchors = []
+        for anchor in self.anchors:
+            anchor_dict = MMAnchorDict(x=[], y=[])
+            for p in anchor._points:
+                anchor_dict["x"].append(int(p.x))
+                anchor_dict["y"].append(int(p.y))
+            anchors.append(anchor_dict)
+        return anchors
 
     # Attributes
 

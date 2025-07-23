@@ -15,7 +15,7 @@ class Anchor(Copyable):
     Anchor - class to represent Anchor point
     """
 
-    __slots__ = ["_parent", "_name", "_x", "_y", "_mark", "_reserved"]
+    __slots__ = ["_mark", "_name", "_parent", "_points", "_reserved"]
 
     # Constructor
 
@@ -44,16 +44,17 @@ class Anchor(Copyable):
             self.y = y
 
     def __repr__(self) -> str:
-        return f"<Anchor: name={self.name}, x={self.x}, y={self.y}, orphan>"
+        if self._parent is None:
+            return f"<Anchor: name={self.name}, x={self.x}, y={self.y}, orphan>"
+        return f"<Anchor: name={self.name}, x={self.x}, y={self.y}, active refernce>"
 
     def _set_defaults(self) -> None:
+        self._parent = None
         self._name = ""
-        self._x = 0
-        self._y = 0
 
         self._mark = 1
         self._reserved = 0
-        self._parent = None
+        self._points = [Point() for _ in range(16)]
 
     # Attributes
 
@@ -86,13 +87,14 @@ class Anchor(Copyable):
         Returns:
             int: The x coordinate
         """
-        return self._x
+        return int(self._points[0].x)
 
     @x.setter
     def x(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError
-        self._x = value
+        for p in self._points:
+            p.x = value
 
     @property
     def y(self) -> int:
@@ -102,13 +104,14 @@ class Anchor(Copyable):
         Returns:
             int: The y coordinate
         """
-        return self._y
+        return int(self._points[0].y)
 
     @y.setter
     def y(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError
-        self._y = value
+        for p in self._points:
+            p.y = value
 
     @property
     def p(self) -> Point:
@@ -118,12 +121,16 @@ class Anchor(Copyable):
         Returns:
             Point: The point
         """
-        return Point(self.x, self.y)
+        return self._points[0]
 
     @p.setter
     def p(self, value: Point) -> None:
-        self._x = int(value.x)
-        self._y = int(value.y)
+        # Truncates any floats
+        x = int(value.x)
+        y = int(value.y)
+        for p in self._points:
+            p.x = x
+            p.y = y
 
     @property
     def mark(self) -> int:
@@ -137,6 +144,8 @@ class Anchor(Copyable):
 
     @mark.setter
     def mark(self, value: int) -> None:
+        # TODO: clamp to 0 to 65535
+        # actually: -1 -> 65535, 65536 -> 0 etc.
         self._mark = value
 
     # Operations
@@ -144,6 +153,12 @@ class Anchor(Copyable):
     # Anchor has no operations
 
     # Methods
+
+    def Layer(self, masterindex: int) -> Point:
+        """
+        Returns point for the master 'masterindex'.
+        """
+        return self._points[masterindex]
 
     def Transform(self, m: Matrix) -> None:
         """
