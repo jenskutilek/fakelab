@@ -4,11 +4,19 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from vfbLib import replace_types
-from vfbLib.typing import HintDict, MaskData, MMHintsDict
+from vfbLib.typing import (
+    AnchorDict,
+    GdefDict,
+    HintDict,
+    MaskData,
+    MMAnchorDict,
+    MMHintsDict,
+)
 
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuidePropertiesMixin
 from FL.helpers.ListParent import ListParent
+from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
 from FL.objects.Hint import Hint
 from FL.objects.Image import Image
@@ -21,7 +29,6 @@ from FL.objects.Replace import Replace
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from FL.objects.Anchor import Anchor
     from FL.objects.AuditRecord import AuditRecord
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
@@ -83,6 +90,8 @@ class Glyph(Copyable, GuidePropertiesMixin):
         "_mask_metrics",
         "_metrics",
         "_parent",
+        "_write_empty_anchor_supp",
+        "_write_empty_gdef",
         "_write_empty_hints",
         "_write_empty_links",
         "_write_empty_origin",
@@ -203,9 +212,11 @@ class Glyph(Copyable, GuidePropertiesMixin):
         elif name == "glyph.note":
             self.note: str | None = data
         elif name == "Glyph GDEF Data":
-            pass
+            self._write_empty_gdef = True
+            self.fake_deserialize_gdef(data)
         elif name == "Glyph Anchors Supplemental":
-            pass
+            self._write_empty_anchor_supp = True
+            self.fake_deserialize_anchor_supp(data)
         elif name == "Glyph Anchors MM":
             pass
         elif name == "Glyph Guide Properties":
@@ -303,8 +314,19 @@ class Glyph(Copyable, GuidePropertiesMixin):
         if self.note:
             s["glyph.note"] = self.note
 
-        # "Glyph GDEF Data"
-        # "Glyph Anchors Supplemental",
+        gdef = self.fake_serialize_gdef()
+        if self._write_empty_gdef or (
+            gdef["anchors"]
+            or gdef["carets"]
+            or gdef["unknown"]
+            or gdef["glyph_class"] != "unassigned"
+        ):
+            s["Glyph GDEF Data"] = gdef
+
+        anchors_supp = self.fake_serialize_anchor_supp()
+        if self._write_empty_anchor_supp or anchors_supp:
+            s["Glyph Anchors Supplemental"] = anchors_supp
+
         # "Glyph Anchors MM",
 
         guide_properties = self.fake_serialize_guide_properties()
@@ -353,6 +375,41 @@ class Glyph(Copyable, GuidePropertiesMixin):
             node.fake_serialize(self.layers_number) for node in self.mask.nodes
         ]
         return mask
+
+    def fake_deserialize_gdef(self, data: GdefDict) -> None:
+        for anchor_dict in data.get("anchors", []):
+            self.anchors.append(
+                Anchor(anchor_dict["name"], anchor_dict["x"], anchor_dict["y"])
+            )
+        for caret in data.get("carets", []):
+            self._carets.append(caret)
+        glyph_class = data.get("glyph_class")
+        if glyph_class:
+            self._gdef_class: str | None = glyph_class
+        self._gdef_unknown.extend(data.get("unknown", []))
+
+    def fake_serialize_gdef(self) -> GdefDict:
+        gdef = GdefDict(anchors=[], carets=[], glyph_class="unassigned", unknown=[])
+        for anchor in self.anchors:
+            gdef["anchors"].append(
+                AnchorDict(name=anchor.name, x=anchor.x, x1=-1, y=anchor.y, y1=-1)
+            )
+        gdef["carets"] = self._carets
+        gdef["glyph_class"] = self._gdef_class
+        gdef["unknown"].extend(self._gdef_unknown)
+        return gdef
+
+    def fake_deserialize_anchor_supp(self, data: list[dict[str, int]]) -> None:
+        for i, d in enumerate(data):
+            anchor = self.anchors[i]
+            anchor.mark = d["hue"]
+            anchor._reserved = d["reserved"]
+
+    def fake_serialize_anchor_supp(self) -> list[dict[str, int]]:
+        data = []
+        for anchor in self.anchors:
+            data.append({"hue": anchor.mark, "reserved": anchor._reserved})
+        return data
 
     # Attributes
 
@@ -1421,6 +1478,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
         self.instructions: list[int] = []
         self.hdmx: list[int] = []
 
+        self._carets: list[tuple[int, int]] = []
+        self._gdef_class = None
+        self._gdef_unknown: list[int] = []
         self._glyph_bitmaps = None
         self._glyph_sketch = None
 
@@ -1430,6 +1490,7 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         # For binary compatibility with FL-written files:
 
+        self._write_empty_gdef = False
         self._write_empty_hints = False
         self._write_empty_links = False
         self._write_empty_origin = False

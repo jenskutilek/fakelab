@@ -15,7 +15,7 @@ class Anchor(Copyable):
     Anchor - class to represent Anchor point
     """
 
-    __slots__ = ["_parent", "_name", "_x", "_y", "_p", "_mark"]
+    __slots__ = ["_parent", "_name", "_x", "_y", "_mark", "_reserved"]
 
     # Constructor
 
@@ -52,6 +52,7 @@ class Anchor(Copyable):
         self._y = 0
 
         self._mark = 1
+        self._reserved = 0
         self._parent = None
 
     # Attributes
