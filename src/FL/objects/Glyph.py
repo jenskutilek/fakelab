@@ -402,6 +402,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         mask = MaskData(num_masters=self.layers_number, num=num)
         for i in range(num):
             mask[f"reserved{i}"] = self._mask_additional[f"reserved{i}"]
+        if self.mask is None:
+            return mask
+
         mask["nodes"] = [
             node.fake_serialize(self.layers_number) for node in self.mask.nodes
         ]
