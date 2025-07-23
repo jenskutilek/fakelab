@@ -14,7 +14,7 @@ from vfbLib.typing import (
 )
 
 from FL.fake.Base import Copyable
-from FL.fake.mixins import GuidePropertiesMixin
+from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.ListParent import ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class Glyph(Copyable, GuidePropertiesMixin):
+class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     """
     A glyph
     """
@@ -147,23 +147,33 @@ class Glyph(Copyable, GuidePropertiesMixin):
             data (_type_): The entry data.
         """
         if name == "Glyph":
-            self.name: str = data.get("name")
             self._layers_number = data["num_masters"]
-            for node_data in data["nodes"]:
-                node = Node()
-                node.fake_deserialize(self._layers_number, node_data)
-                self.nodes.append(node)
+            # 0x01
+            self.name: str = data.get("name")
+            # 0x02
             self._metrics = [Point(x, y) for x, y in data.get("metrics", [])]
-            for index, values in data.get("kerning", {}).items():
-                pair = KerningPair(int(index))
-                pair._values = values
-                self.kerning.append(pair)
+            # 0x03
+            if hint_data := data.get("hints", {}):
+                self.fake_deserialize_hints(hint_data)
+            # 0x04
+            if guides_data := data.get("guides", []):
+                self.fake_deserialize_guides(guides_data)
+            # 0x05
             for component_data in data.get("components", []):
                 component = Component()
                 component.fake_deserialize(self._layers_number, component_data)
                 self.components.append(component)
-            if hint_data := data.get("hints", {}):
-                self.fake_deserialize_hints(hint_data)
+            # 0x06
+            for index, values in data.get("kerning", {}).items():
+                pair = KerningPair(int(index))
+                pair._values = values
+                self.kerning.append(pair)
+            # 0x08
+            for node_data in data["nodes"]:
+                node = Node()
+                node.fake_deserialize(self._layers_number, node_data)
+                self.nodes.append(node)
+            # 0x09
             if imported := data.get("imported"):
                 self._unknown_pleasures["imported"] = imported
 
@@ -254,6 +264,9 @@ class Glyph(Copyable, GuidePropertiesMixin):
 
         if self._write_empty_hints or self.vhints or self.hhints:
             s["Glyph"]["hints"] = self.fake_serialize_hints()
+
+        if self.hguides or self.vguides:
+            s["Glyph"]["guides"] = self.fake_serialize_guides()
 
         if self.kerning:
             s["Glyph"]["kerning"] = {
