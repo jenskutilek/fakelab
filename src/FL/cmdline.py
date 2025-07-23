@@ -8,6 +8,13 @@ from typing import Any
 
 from FL import environment, fl
 
+try:
+    from ptpython.repl import embed
+
+    have_ptpython = True
+except ImportError:
+    have_ptpython = False
+
 logger = logging.getLogger(__name__)
 
 
@@ -71,10 +78,13 @@ def main() -> None:
                 exec(Path(script_path).read_text(), locals=environment)
         else:
             # Run the interactive console.
-            console = FontLab5Console(locals=environment)
-            console.interact(
-                banner="Welcome to the Headless FakeLab REPL.",
-                exitmsg="Happy fonting, my friend!",
-            )
+            if have_ptpython:
+                embed(globals(), locals=environment, vi_mode=True)
+            else:
+                console = FontLab5Console(locals=environment)
+                console.interact(
+                    banner="Welcome to the Headless FakeLab REPL.",
+                    exitmsg="Happy fonting, my friend!",
+                )
     else:
         parser.print_help()

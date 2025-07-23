@@ -27,6 +27,7 @@ dependencies = [
 [project.optional-dependencies]
 all = [
     "fakelab[generate]",
+    "fakelab[repl]",
     "fakelab[vfb]",
 ]
 
@@ -34,6 +35,11 @@ generate = [
     # Generate actual fonts with ufo2ft
     "ufo2ft >= 3.4.2",
     "fakelab[vfb]",
+]
+
+repl = [
+    # Better interactive prompt
+    "ptpython >= 3.0.30"
 ]
 
 vfb = [
