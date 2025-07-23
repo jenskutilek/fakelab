@@ -37,8 +37,8 @@ class Hint(Copyable):
             width (int | None, optional): _description_. Defaults to None.
         """
         self._parent: Glyph | None = None
-        self._positions = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self._widths = [21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21]
+        self._positions: list[int] = [0] * 16
+        self._widths: list[int] = [21] * 16
 
         arg1 = hint_or_position
 
@@ -75,8 +75,8 @@ class Hint(Copyable):
     # Additions for FakeLab
 
     def fake_deserialize(self, data: list[HintDict]) -> None:
-        self._positions: list[int] = []
-        self._widths: list[int] = []
+        self._positions = []
+        self._widths = []
         for hint_dict in data:
             self._positions.append(hint_dict["pos"])
             self._widths.append(hint_dict["width"])
