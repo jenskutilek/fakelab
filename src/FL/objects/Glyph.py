@@ -92,6 +92,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_parent",
         "_write_empty_anchor_supp",
         "_write_empty_gdef",
+        "_write_empty_guide_props",
         "_write_empty_links",
         "_write_empty_origin",
     ]
@@ -229,6 +230,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         elif name == "Glyph Anchors MM":
             self.fake_deserialize_anchors_mm(data)
         elif name == "Glyph Guide Properties":
+            self._write_empty_guide_props = True
             self.fake_deserialize_guide_properties(data)
         else:
             logger.warning(f"Unhandled glyph entry: {name}")
@@ -343,8 +345,16 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             s["Glyph Anchors MM"] = self.fake_serialize_anchors_mm()
 
         guide_properties = self.fake_serialize_guide_properties()
-        if guide_properties["h"] or guide_properties["v"]:
-            # Must not be present if there are no glyph guides
+        # Only write if there are glyph guides
+        if (
+            self.hguides
+            or self.vguides
+            and (
+                self._write_empty_guide_props
+                or guide_properties["h"]
+                or guide_properties["v"]
+            )
+        ):
             s["Glyph Guide Properties"] = guide_properties
 
         return s
@@ -1523,5 +1533,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # For binary compatibility with FL-written files:
 
         self._write_empty_gdef = False
+        self._write_empty_guide_props = False
         self._write_empty_links = False
         self._write_empty_origin = False
