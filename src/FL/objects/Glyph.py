@@ -90,6 +90,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_mask_metrics",
         "_metrics",
         "_parent",
+        "_tth",
         "_write_empty_anchor_supp",
         "_write_empty_gdef",
         "_write_empty_guide_props",
@@ -178,8 +179,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._unknown_pleasures["imported"] = imported
             # 0x0a
             if tth := data.get("tth"):
-                # FIXME
-                self._unknown_pleasures["tth"] = tth
+                self._tth = tth
 
         elif name == "Links":
             self._write_empty_links = True
@@ -281,7 +281,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if imported:
             s["Glyph"]["imported"] = imported
 
-        tth = self._unknown_pleasures.get("tth")
+        tth = self._tth
         if tth:
             s["Glyph"]["tth"] = tth
 
@@ -1534,6 +1534,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._gdef_unknown: list[int] = []
         self._glyph_bitmaps = None
         self._glyph_sketch = None
+        self._tth = None
 
         self._unknown_pleasures: dict[str, Any] = {
             "2023": [0 for _ in range(self.layers_number)]
