@@ -261,7 +261,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         # Additions for Glyph
 
-        if self._write_empty_hints or self.vhints or self.hhints:
+        if self.vhints or self.hhints:
             s["Glyph"]["hints"] = self.fake_serialize_hints()
 
         if self.hguides or self.vguides:
