@@ -92,7 +92,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_parent",
         "_write_empty_anchor_supp",
         "_write_empty_gdef",
-        "_write_empty_hints",
         "_write_empty_links",
         "_write_empty_origin",
     ]
@@ -1478,10 +1477,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._replace_table: list[Replace] = []
         self._kerning: ListParent[KerningPair] = ListParent([], self)
         self._layers_number = 1
-        self._mask: Glyph | None = None
-        self._mask_additional = {}
-        self._mask_metrics: Point | None = None
-        self._mask_metrics_mm: list[Point] | None = None
+        self._mask = None
+        self._mask_additional: dict[str, int] = {}
+        self._mask_metrics = None
+        self._mask_metrics_mm = None
 
         # flags set for this glyph
         self.flags: int = 0
@@ -1524,6 +1523,5 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # For binary compatibility with FL-written files:
 
         self._write_empty_gdef = False
-        self._write_empty_hints = False
         self._write_empty_links = False
         self._write_empty_origin = False
