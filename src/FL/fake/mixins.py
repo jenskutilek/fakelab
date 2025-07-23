@@ -25,7 +25,7 @@ class GuideMixin:
                         target[guide_index].angle.append(guide_dict["angle"])
 
     def fake_serialize_guides(self) -> MMGuidesDict:
-        mgd = MMGuidesDict(h=[], v=[])
+        mgd = MMGuidesDict()
         mgd["h"] = [[] for _ in range(self._masters_count)]
         mgd["v"] = [[] for _ in range(self._masters_count)]
         for direction, target in (("h", self.hguides), ("v", self.vguides)):
