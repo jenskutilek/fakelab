@@ -20,8 +20,8 @@ classifiers = [
 
 requires-python = ">=3.11"
 dependencies = [
-    # "pyyaml >= 6.0.1",
-    # "vfbLib > 0.9.2",  # Could be made optional for a lean test framework
+    # "pyyaml >= 6.0.2",
+    # "vfbLib >= 0.10.0",  # Could be made optional for a lean test framework
 ]
 
 [project.optional-dependencies]
@@ -39,7 +39,7 @@ generate = [
 vfb = [
     # Optional for a lean test framework
     # Load and save VFB files
-    "vfbLib > 0.9.2",
+    "vfbLib >= 0.10.0",
 ]
 
 test = [
