@@ -176,6 +176,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             # 0x09
             if imported := data.get("imported"):
                 self._unknown_pleasures["imported"] = imported
+            # 0x0a
+            if tth := data.get("tth"):
+                # FIXME
+                self._unknown_pleasures["tth"] = tth
 
         elif name == "Links":
             self._write_empty_links = True
@@ -276,6 +280,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         imported = self._unknown_pleasures.get("imported")
         if imported:
             s["Glyph"]["imported"] = imported
+
+        tth = self._unknown_pleasures.get("tth")
+        if tth:
+            s["Glyph"]["tth"] = tth
 
         # Additions related to glyph
 
@@ -1508,6 +1516,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._index = -1
 
         # TrueType data
+        # probably all are only present for imported TTFs
 
         self.advance_width: int = 0
         self.advance_height: int = 0
