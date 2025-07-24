@@ -148,7 +148,5 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             # FIXME: Do we need empty lines as separator?
             fea.append("\n")
         for feature in self.features:
-            fea.append("feature %s {" % feature.tag)
             fea.extend(feature.value.splitlines())
-            fea.append("} %s;\n" % feature.tag)
         return fea
