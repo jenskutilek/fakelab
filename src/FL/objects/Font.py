@@ -128,10 +128,12 @@ class Font(FakeFont):
         "_anisotropic_interpolation_mappings",
         "_axis_mappings_count",
         "_axis_mappings",
+        "_kerning_class_flags",
         "_master_names",
         "_master_locations",
         "_master_ps_infos",
         "_mapping_mode",
+        "_metrics_class_flags",
         "_primary_instance_locations",
         "_primary_instances",
         # Internal:
