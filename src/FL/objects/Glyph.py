@@ -150,6 +150,12 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             data (_type_): The entry data.
         """
         if name == "Glyph":
+            self._write_empty_anchor_supp = False
+            self._write_empty_gdef = False
+            self._write_empty_links = False
+            self._write_empty_origin = False
+            self._write_empty_guide_props = False
+
             self._layers_number = data["num_masters"]
             # 0x01
             self.name: str = data.get("name")
@@ -1547,6 +1553,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         # For binary compatibility with FL-written files:
 
+        self._write_empty_anchor_supp = False
         self._write_empty_gdef = False
         self._write_empty_guide_props = False
         self._write_empty_links = False
