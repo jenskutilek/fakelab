@@ -21,6 +21,7 @@ from FL.objects.Component import Component
 from FL.objects.Hint import Hint
 from FL.objects.Image import Image
 from FL.objects.KerningPair import KerningPair
+from FL.objects.Link import Link
 from FL.objects.Node import Node
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect
@@ -34,7 +35,6 @@ if TYPE_CHECKING:
     from FL.objects.AuditRecord import AuditRecord
     from FL.objects.Font import Font
     from FL.objects.Guide import Guide
-    from FL.objects.Link import Link
     from FL.objects.Matrix import Matrix
     from FL.objects.TTPoint import TTPoint
 
