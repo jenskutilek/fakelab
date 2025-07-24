@@ -15,6 +15,7 @@ from FL.objects.WeightVector import WeightVector
 if TYPE_CHECKING:
     from vfbLib.typing import CustomCmap
 
+    from FL.objects.EncodingRecord import EncodingRecord
     from FL.objects.Feature import Feature
     from FL.objects.Glyph import Glyph
     from FL.objects.Guide import Guide
@@ -118,6 +119,7 @@ class Font(FakeFont):
         "year",
         # Non-API:
         "_custom_cmaps",
+        "_encoding_default",
         "_export_pclt_table",
         "_export_options",
         "_ot_export_options",
@@ -932,6 +934,7 @@ class Font(FakeFont):
         self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
         # Font data that is not accessible via FL5 Python API
+        self._encoding_default: list[EncodingRecord] = []
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""

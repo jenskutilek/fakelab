@@ -77,7 +77,8 @@ class FontToVfbWriter:
         header.modified = True
 
     def compile_encoding(self) -> None:
-        # TODO: "Encoding Default"?
+        for i in range(len(self.font._encoding_default)):
+            self.add_entry("Encoding Default", [i, self.font._encoding_default[i].name])
         for i in range(len(self.font.encoding)):
             self.add_entry("Encoding", [i, self.font.encoding[i].name])
 

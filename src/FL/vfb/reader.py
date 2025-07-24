@@ -160,7 +160,10 @@ class VfbToFontReader:
                 gids[gid] = glyph_name
             elif name == "Encoding Default":
                 # Where is this used?
-                pass
+                gid, glyph_name = data
+                e = EncodingRecord()
+                e.name = glyph_name
+                font._encoding_default.append(e)
             elif name in ("1502", "518", "257"):
                 font._unknown_pleasures[name] = data
             elif name == "Master Count":
