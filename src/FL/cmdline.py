@@ -6,6 +6,8 @@ from code import InteractiveConsole
 from pathlib import Path
 from typing import Any
 
+from vfbLib.json import save_vfb_json
+
 from FL import environment, fl
 
 try:
@@ -50,6 +52,13 @@ def main() -> None:
         help="Save files to output path instead of overwriting the original files",
     )
     parser.add_argument(
+        "-r",
+        "--roundtrip",
+        action="store_true",
+        default=False,
+        help="Roundtrip specified VFB file(s) through FakeLab, then exit",
+    )
+    parser.add_argument(
         "-s",
         "--script",
         type=str,
@@ -76,24 +85,33 @@ def main() -> None:
     if args:
         if args.verbose:
             logging.basicConfig(level=logging.INFO)
-        for vfb_path in args.vfb:
-            logger.info(vfb_path)
-            fl.Open(vfb_path, addtolist=True)
-        if args.script:
-            # If we have scripts, run them and exit.
-            for script_path in args.script:
-                exec(Path(script_path).read_text(), locals=environment)
+        if args.roundtrip:
+            for vfb_path in args.vfb:
+                logger.info(vfb_path)
+                fl.Open(vfb_path, addtolist=False)
+                out_path = Path(vfb_path).with_suffix(".fake.vfb")
+                fl.Save(str(out_path))
+                save_vfb_json(out_path)
         else:
-            # Run the interactive console.
-            if have_ptpython:
-                embed(globals(), locals=environment, vi_mode=True)
-            elif have_ipython:
-                iembed(globals=globals(), locals=environment, header="FakeLab")
+            for vfb_path in args.vfb:
+                logger.info(vfb_path)
+                fl.Open(vfb_path, addtolist=True)
+            if args.script:
+                # If we have scripts, run them and exit.
+                for script_path in args.script:
+                    exec(Path(script_path).read_text(), locals=environment)
             else:
-                console = FontLab5Console(locals=environment)
-                console.interact(
-                    banner="Welcome to the Headless FakeLab REPL.",
-                    exitmsg="Happy fonting, my friend!",
-                )
+                # Run the interactive console.
+                if have_ptpython:
+                    # globals=globals()?
+                    embed(locals=environment, vi_mode=True)
+                elif have_ipython:
+                    iembed(globals=globals(), locals=environment, header="FakeLab")
+                else:
+                    console = FontLab5Console(locals=environment)
+                    console.interact(
+                        banner="Welcome to the Headless FakeLab REPL.",
+                        exitmsg="Happy fonting, my friend!",
+                    )
     else:
         parser.print_help()
