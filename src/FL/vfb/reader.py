@@ -221,9 +221,9 @@ class VfbToFontReader:
             elif name == "TrueTypeTable":
                 font.truetypetables.append(data)
             elif name == "OpenType Metrics Class Flags":
-                font._classes.fake_metrics_flags = data
+                font._metrics_class_flags = data
             elif name == "OpenType Kerning Class Flags":
-                font._classes.fake_kerning_flags = data
+                font._kerning_class_flags = data
             elif name == "features":
                 font.fake_deserialize_features(data)
             elif name == "OpenType Class":

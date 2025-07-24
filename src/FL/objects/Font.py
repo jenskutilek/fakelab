@@ -944,6 +944,8 @@ class Font(FakeFont):
         self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]
         self._axis_mappings: list[list[float]] = [[0.0, 0.0] * 40]
+        self._kerning_class_flags: dict[str, tuple[int, int]] = {}
+        self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         self._master_names = ["Untitled"]
         self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
         self._master_ps_infos = [
