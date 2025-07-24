@@ -52,6 +52,13 @@ def main() -> None:
         help="Save files to output path instead of overwriting the original files",
     )
     parser.add_argument(
+        "-d",
+        "--no-decompile",
+        action="store_true",
+        default=False,
+        help="When roundtripping, don't decompile entries in JSON file",
+    )
+    parser.add_argument(
         "-r",
         "--roundtrip",
         action="store_true",
@@ -91,7 +98,7 @@ def main() -> None:
                 fl.Open(vfb_path, addtolist=False)
                 out_path = Path(vfb_path).with_suffix(".fake.vfb")
                 fl.Save(str(out_path))
-                save_vfb_json(out_path)
+                save_vfb_json(out_path, no_decompile=args.no_decompile)
         else:
             for vfb_path in args.vfb:
                 logger.info(vfb_path)
