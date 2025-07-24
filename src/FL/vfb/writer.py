@@ -202,6 +202,9 @@ class FontToVfbWriter:
         if fea:
             self.add_entry("features", fea)
 
+        for ot_class in font._classes:
+            self.add_entry("OpenType Class", ot_class)
+
         self.add_entry(513, font._unknown_pleasures["513"])
         self.add_entry(271, font._unknown_pleasures["271"])
 
