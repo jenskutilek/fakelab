@@ -288,10 +288,10 @@ class FontToVfbWriter:
             for key in (
                 "Glyph",
                 "Links",
-                "image",
-                "Glyph Bitmaps",
+                # "image",  # FIXME
+                # "Glyph Bitmaps",  # FIXME
                 "2023",
-                "Glyph Sketch",
+                # "Glyph Sketch",  # FIXME
                 "Glyph Hinting Options",
                 "mask",
                 "mask.metrics",
