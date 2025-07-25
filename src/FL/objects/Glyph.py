@@ -345,7 +345,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             gdef["anchors"]
             or gdef["carets"]
             or gdef["unknown"]
-            or gdef["glyph_class"] != "unassigned"
+            or gdef["glyph_class"] not in (None, "unassigned")
         ):
             s["Glyph GDEF Data"] = gdef
 
