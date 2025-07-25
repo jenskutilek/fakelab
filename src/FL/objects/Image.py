@@ -60,6 +60,14 @@ class Image:
             self._size = image.size
         # else empty image
 
+    # Additions for FakeLab
+
+    def fake_deserialize(self, data: dict) -> None:
+        pass
+
+    def fake_serialize(self) -> dict:
+        return {}
+
     # Attributes
 
     @property

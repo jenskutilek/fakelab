@@ -71,7 +71,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "end_points",
         "flags",
         "hdmx",
-        "image",
+        "_image",
         "instructions",
         "left_side_bearing",
         "mark",
@@ -197,7 +197,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                     target.append(Link(*axis_link))
 
         elif name == "image":
-            pass
+            self._image.fake_deserialize(data)
         elif name == "Glyph Bitmaps":
             self._glyph_bitmaps = data
         elif name in ("2023", "2034"):
@@ -301,10 +301,11 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
-        # if self.image:
-        #     s["image"] = self.image
         # if self._glyph_bitmaps:
         #     s["Glyph Bitmaps"] = self._glyph_bitmaps
+        if self.image:
+            logger.warning(f"Dropping background image for glyph '{self.name}'")
+            s["image"] = self.image.fake_serialize()
         if self._glyph_sketch:
             s["Glyph Sketch"] = self._glyph_sketch
         if self.mask:
@@ -686,7 +687,17 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     # unicodes
     # name
-    # image
+
+    @property
+    def image(self) -> Image:
+        return self._image
+
+    @image.setter
+    def image(self, value: Image) -> None:
+        if not isinstance(value, Image):
+            raise TypeError
+
+        self._image = value
 
     @property
     def index(self) -> int:
@@ -1521,7 +1532,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.name = ""
 
         # [Image]           - background image (new in FL 4.53 Win)
-        self.image: Image = Image()
+        self._image: Image = Image(24, 24)
 
         # glyph index, -1 if orphan glyph (not reported by docstring)
         self._index = -1
