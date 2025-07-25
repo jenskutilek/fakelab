@@ -3,9 +3,10 @@ from __future__ import annotations
 import array
 from typing import TYPE_CHECKING
 
+from FL.objects.Point import Point
+
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
-    from FL.objects.Point import Point
     from FL.objects.Rect import Rect
 
 
