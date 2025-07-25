@@ -80,7 +80,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "number_of_contours",
         "points",
         "top_side_bearing",
-        "unicodes",
+        "_unicodes",
         "y_pels",
         # Non-API
         "_glyph_bitmaps",
@@ -218,9 +218,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             self._write_empty_origin = True
             self._glyph_origin = data
         elif name == "unicodes":
-            self.unicodes.extend(data)
+            self._unicodes.extend(data)
         elif name == "Glyph Unicode Non-BMP":
-            self.unicodes.extend(data)
+            self._unicodes.extend(data)
         elif name == "mark":
             self.mark: int = data
         elif name == "glyph.customdata":
@@ -664,8 +664,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         Returns:
             int | None: The Unicode codepoint.
         """
-        if self.unicodes:
-            return self.unicodes[0]
+        if self._unicodes:
+            return self._unicodes[0]
         else:
             return None
 
@@ -675,12 +675,19 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             raise TypeError
         if value == -1:
             return
-        if not self.unicodes:
-            self.unicodes.append(value)
+        if not self._unicodes:
+            self._unicodes.append(value)
         else:
-            self.unicodes[0] = value
+            self._unicodes[0] = value
 
-    # unicodes
+    @property
+    def unicodes(self) -> list[int]:
+        return self._unicodes
+
+    @unicodes.setter
+    def unicodes(self, value: list[int]) -> None:
+        self._unicodes = value.copy()
+
     # name
 
     @property
@@ -1521,7 +1528,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.flags: int = 0
 
         # list of Unicode indexes
-        self.unicodes: list[int] = []
+        self._unicodes: list[int] = []
 
         # glyph name
         self.name = ""
