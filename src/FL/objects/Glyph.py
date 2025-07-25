@@ -301,11 +301,12 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
-        # if self._glyph_bitmaps:
-        #     s["Glyph Bitmaps"] = self._glyph_bitmaps
         if self.image:
             logger.warning(f"Dropping background image for glyph '{self.name}'")
             s["image"] = self.image.fake_serialize()
+        if self._glyph_bitmaps:
+            logger.warning(f"Dropping bitmaps for glyph '{self.name}'")
+            # s["Glyph Bitmaps"] = self._glyph_bitmaps
         if self._glyph_sketch:
             s["Glyph Sketch"] = self._glyph_sketch
         if self.mask:
