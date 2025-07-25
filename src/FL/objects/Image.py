@@ -1,9 +1,198 @@
 from __future__ import annotations
 
+import array
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from FL.objects.Glyph import Glyph
+    from FL.objects.Point import Point
+    from FL.objects.Rect import Rect
+
 
 class Image:
+    __slots__ = [
+        "_data",
+        "_empty",
+        "_size",
+        "_traceenabled",
+        "_height",
+        "_width",
+        # Non-API
+        "_origin",
+        "_size_units",
+    ]
 
-    # Constructor
+    def __init__(
+        self, width_or_image: int | Image | None = None, height: int | None = None
+    ) -> None:
+        """
+        Image - class to represent image
 
-    def __init__(self) -> None:
-        pass
+        Image() - generic constructor, creates an Image with zero coordinates
+        Image(Image) - copy constructor
+        Image(int width, int height) - creates an Image of given size
+        """
+        self._empty = True
+        self._data = array.array("H")
+        self._size = len(self._data)
+        self._width = 0
+        self._height = 0
+        self._traceenabled = True
+
+        # Non-API
+        self._origin = Point()
+        self._size_units = Point()
+
+        if isinstance(width_or_image, int):
+            self._width = width_or_image
+            if not isinstance(height, int):
+                raise TypeError
+            self._height = height
+            self._empty = False
+        elif isinstance(width_or_image, Image):
+            # copy constructor
+            image = width_or_image
+            self._width = image.width
+            self._height = image.height
+            self._empty = bool(image.empty)
+            self._traceenabled = bool(image.traceenabled)
+            self.data = image.data
+            self._size = image.size
+        # else empty image
+
+    # Attributes
+
+    @property
+    def width(self) -> int:
+        """
+        Dimensions of the image
+
+        Returns:
+            int: The width of the image in pixels
+        """
+        return self._width
+
+    @width.setter
+    def width(self, value: int) -> None:
+        raise RuntimeError("Class Image does not have writable attributes")
+
+    @property
+    def height(self) -> int:
+        """
+        Dimensions of the image
+
+        Returns:
+            int: The height of the image in pixels
+        """
+        return self._height
+
+    @height.setter
+    def height(self, value: int) -> None:
+        raise RuntimeError("Class Image does not have writable attributes")
+
+    @property
+    def empty(self) -> int:
+        """
+        The empty status of the image
+
+        Returns:
+            int: Whether the image is empty
+        """
+        return int(self._empty)
+
+    @empty.setter
+    def empty(self, value: int) -> None:
+        raise RuntimeError("Class Image does not have writable attributes")
+
+    @property
+    def size(self) -> int:
+        """
+        The size of the image buffer
+
+        Returns:
+            int: The size of the image buffer
+        """
+        return len(self.data)
+
+    @size.setter
+    def size(self, value: int) -> None:
+        raise RuntimeError("Class Image does not have writable attributes")
+
+    @property
+    def data(self) -> bytes:
+        """
+        Access the image buffer
+
+        Returns:
+            bytes | None: _description_
+        """
+        return self._data.tobytes()
+
+    @data.setter
+    def data(self, value: bytes | None) -> None:
+        if value is None:
+            self._data = array.array("H", [0] * self.width * self.height)
+        else:
+            self._data = array.array("H", value)
+
+    @property
+    def traceenabled(self) -> int:
+        """
+        There is a possibility to trace the image with the Trace command
+
+        Returns:
+            int: Whether the image can be traced
+        """
+        return int(self._traceenabled)
+
+    @traceenabled.setter
+    def traceenabled(self, value: int) -> None:
+        raise RuntimeError("Class Image does not have writable attributes")
+
+    # Methods
+
+    def Create(self, width: int, height: int) -> None:
+        """
+        Creates a blank image of given size.
+
+        Args:
+            width (int): The width in pixels
+            height (int): The height in pixels
+        """
+        raise NotImplementedError
+
+    def Trace(self, glyph: Glyph) -> None:
+        """
+        Traces the image with the current option and adds it to the glyph
+
+        Args:
+            glyph (Glyph): The glyph to which the traced outline will be added
+        """
+        raise NotImplementedError
+
+    def Clear(self) -> None:
+        """
+        Clears the image
+        """
+        # (not reported by docstring)
+        raise NotImplementedError
+
+    def GetPixel(self, p: Point) -> int:
+        # (not reported by docstring)
+        raise NotImplementedError
+
+    def HLine(self, x0: int, x1: int, y: int, color: int) -> None:
+        # (not reported by docstring)
+        raise NotImplementedError
+
+    def ImageBlt(self, dest: Image, source_rect: Rect, dest_point: Point) -> None:
+        # (not reported by docstring)
+        raise NotImplementedError
+
+    def Invert(self) -> None:
+        # (not reported by docstring)
+        raise NotImplementedError
+
+    def SetPixel(self, p: Point) -> None:
+        # (not reported by docstring)
+        raise NotImplementedError
