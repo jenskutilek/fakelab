@@ -144,9 +144,9 @@ class TTInfo(Copyable):
             if k in data:
                 setattr(self, attr, data[k])
         if "head_creation" in data:
-            self._head_creation[0] = uint32_to_signed(data)
+            self._head_creation[0] = uint32_to_signed(data["head_creation"])
         if "head_creation2" in data:
-            self._head_creation[1] = uint32_to_signed(data)
+            self._head_creation[1] = uint32_to_signed(data["head_creation2"])
 
         # I tried to make this value more self-explanatory in vfbLib, but FL
         # only shows us an int. So we have to convert it back ...
@@ -828,6 +828,6 @@ class TTInfo(Copyable):
         self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
 
         self._unknown_pleasures = {
-            "1604": 255,
-            "2032": 0,
+            1604: 255,
+            2032: 0,
         }

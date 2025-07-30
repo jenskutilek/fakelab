@@ -4,6 +4,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from vfbLib import replace_types
+from vfbLib.enum import G
 from vfbLib.typing import (
     AnchorDict,
     GdefDict,
@@ -72,6 +73,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "flags",
         "hdmx",
         "_image",
+        "_imported",
         "instructions",
         "left_side_bearing",
         "mark",
@@ -114,7 +116,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         elif isinstance(glyph_or_masterscount, int):
             self._layers_number: int = glyph_or_masterscount
-            self._unknown_pleasures["2023"] = [0 for _ in range(self._layers_number)]
+            self._unknown_pleasures[2023] = [0 for _ in range(self._layers_number)]
             if nodes is not None:
                 # Assign nodes
                 for node in nodes:
@@ -141,7 +143,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         for n in self.nodes:
             n.fake_update(self)
 
-    def fake_deserialize(self, name: str, data: Any) -> None:
+    def fake_deserialize(self, key: int, data: Any) -> None:
         """
         Add data from a VFB entry
 
@@ -149,99 +151,102 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             name (str): The name of the entry.
             data (_type_): The entry data.
         """
-        if name == "Glyph":
-            self._layers_number = data["num_masters"]
-            # 0x01
-            self.name: str = data.get("name")
-            # 0x02
-            self._metrics = [Point(x, y) for x, y in data.get("metrics", [])]
-            # 0x03
-            if hint_data := data.get("hints", {}):
-                self.fake_deserialize_hints(hint_data)
-            # 0x04
-            if guides_data := data.get("guides", []):
-                self.fake_deserialize_guides(guides_data)
-            # 0x05
-            for component_data in data.get("components", []):
-                component = Component()
-                component.fake_deserialize(self._layers_number, component_data)
-                self.components.append(component)
-            # 0x06
-            for index, values in data.get("kerning", {}).items():
-                pair = KerningPair(int(index))
-                pair._values = values
-                self.kerning.append(pair)
-            # 0x08
-            for node_data in data["nodes"]:
-                node = Node()
-                node.fake_deserialize(self._layers_number, node_data)
-                self.nodes.append(node)
-            # 0x09
-            if imported := data.get("imported"):
-                self._unknown_pleasures["imported"] = imported
-            # 0x0a
-            if tth := data.get("tth"):
-                self._tth = tth
+        if key in (2023, 2034):
+            self._unknown_pleasures[key] = data
+            return
 
-        elif name == "Links":
-            self._write_empty_links = True
-            for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
-                axis_links = data.get(axis, [])
-                for axis_link in axis_links:
-                    target.append(Link(*axis_link))
+        match key:
+            case 2001:
+                self._layers_number = data["num_masters"]
+                # 0x01
+                self.name: str = data.get("name")
+                # 0x02
+                self._metrics = [Point(x, y) for x, y in data.get("metrics", [])]
+                # 0x03
+                if hint_data := data.get("hints", {}):
+                    self.fake_deserialize_hints(hint_data)
+                # 0x04
+                if guides_data := data.get("guides", []):
+                    self.fake_deserialize_guides(guides_data)
+                # 0x05
+                for component_data in data.get("components", []):
+                    component = Component()
+                    component.fake_deserialize(self._layers_number, component_data)
+                    self.components.append(component)
+                # 0x06
+                for index, values in data.get("kerning", {}).items():
+                    pair = KerningPair(int(index))
+                    pair._values = values
+                    self.kerning.append(pair)
+                # 0x08
+                for node_data in data["nodes"]:
+                    node = Node()
+                    node.fake_deserialize(self._layers_number, node_data)
+                    self.nodes.append(node)
+                # 0x09
+                if imported := data.get("imported"):
+                    self._imported = imported
+                # 0x0a
+                if tth := data.get("tth"):
+                    self._tth = tth
 
-        elif name == "image":
-            self._image.fake_deserialize(data)
-        elif name == "Glyph Bitmaps":
-            self._glyph_bitmaps = data
-        elif name in ("2023", "2034"):
-            self._unknown_pleasures[name] = data
-        elif name == "Glyph Sketch":
-            self._glyph_sketch = data
-        elif name == "Glyph Hinting Options":
-            self._glyph_hinting_options = data
-        elif name == "mask":
-            mask = Glyph()
-            mask.fake_deserialize("Glyph", data)
-            num = data["num"]
-            self._mask_additional["num"] = num
-            for i in range(num):
-                self._mask_additional[f"reserved{i}"] = data[f"reserved{i}"]
-            self._mask: Glyph | None = mask
-        elif name == "mask.metrics":
-            self._mask_metrics: Point | None = Point(*data)
-        elif name == "mask.metrics_mm":
-            self._mask_metrics_mm: list[Point] | None = [
-                Point(*coords) for coords in data
-            ]
-        elif name == "Glyph Origin":
-            self._write_empty_origin = True
-            self._glyph_origin = data
-        elif name == "unicodes":
-            self._unicodes.extend(data)
-        elif name == "Glyph Unicode Non-BMP":
-            self._unicodes.extend(data)
-        elif name == "mark":
-            self.mark: int = data
-        elif name == "glyph.customdata":
-            self.customdata: str | None = data
-        elif name == "glyph.note":
-            self.note: str | None = data
-        elif name == "Glyph GDEF Data":
-            self._write_empty_gdef = True
-            self.fake_deserialize_gdef(data)
-        elif name == "Glyph Anchors Supplemental":
-            self._write_empty_anchor_supp = True
-            self.fake_deserialize_anchor_supp(data)
-        elif name == "Glyph Anchors MM":
-            self.fake_deserialize_anchors_mm(data)
-        elif name == "Glyph Guide Properties":
-            self._write_empty_guide_props = True
-            self.fake_deserialize_guide_properties(data)
-        else:
-            logger.warning(f"Unhandled glyph entry: {name}")
+            case G.Links:
+                self._write_empty_links = True
+                for axis, target in (("x", self.vlinks), ("y", self.hlinks)):
+                    axis_links = data.get(axis, [])
+                    for axis_link in axis_links:
+                        target.append(Link(*axis_link))
 
-    def fake_serialize(self) -> dict[str, Any]:
+            case G.image:
+                self._image.fake_deserialize(data)
+            case G.Bitmaps:
+                self._glyph_bitmaps = data
+            case G.Sketch:
+                self._glyph_sketch = data
+            case G.HintingOptions:
+                self._glyph_hinting_options = data
+            case G.mask:
+                mask = Glyph()
+                mask.fake_deserialize(G.Glyph, data)
+                num = data["num"]
+                self._mask_additional["num"] = num
+                for i in range(num):
+                    self._mask_additional[f"reserved{i}"] = data[f"reserved{i}"]
+                self._mask: Glyph | None = mask
+            case G.MaskMetrics:
+                self._mask_metrics: Point | None = Point(*data)
+            case G.MaskMetricsMM:
+                self._mask_metrics_mm: list[Point] | None = [
+                    Point(*coords) for coords in data
+                ]
+            case G.Origin:
+                self._write_empty_origin = True
+                self._glyph_origin = data
+            case G.unicodes:
+                self._unicodes.extend(data)
+            case G.UnicodesNonBMP:
+                self._unicodes.extend(data)
+            case G.mark:
+                self.mark: int = data
+            case G.customdata:
+                self.customdata: str | None = data
+            case G.note:
+                self.note: str | None = data
+            case G.GDEFData:
+                self._write_empty_gdef = True
+                self.fake_deserialize_gdef(data)
+            case G.AnchorsProperties:
+                self._write_empty_anchor_supp = True
+                self.fake_deserialize_anchor_supp(data)
+            case G.AnchorsMM:
+                self.fake_deserialize_anchors_mm(data)
+            case G.GuideProperties:
+                self._write_empty_guide_props = True
+                self.fake_deserialize_guide_properties(data)
+            case _:
+                logger.warning(f"Unhandled glyph entry: {key}")
+
+    def fake_serialize(self) -> dict[int, Any]:
         """
         Serialize the glyph to a dict which resembles the low-level VFB structure
 
@@ -249,8 +254,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             dict[str, Any]: The serialized glyph.
         """
         # TODO: Which entries are required? Leave out the other ones.
-        s: dict[str, Any] = {
-            "Glyph": {
+        s: dict[int, Any] = {
+            G.Glyph: {
                 # Minimum wage, yeah!
                 "name": self.name,
                 "num_masters": self.layers_number,
@@ -263,82 +268,74 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 ],
                 "components": [comp.fake_serialize() for comp in self.components],
             },
-            "2023": self._unknown_pleasures["2023"],
-            "Glyph Hinting Options": self._glyph_hinting_options,
+            2023: self._unknown_pleasures[2023],
+            G.HintingOptions: self._glyph_hinting_options,
         }
 
         # Additions for Glyph
 
         if self.vhints or self.hhints:
-            s["Glyph"]["hints"] = self.fake_serialize_hints()
+            s[G.Glyph]["hints"] = self.fake_serialize_hints()
 
         if self.hguides or self.vguides:
-            s["Glyph"]["guides"] = self.fake_serialize_guides()
+            s[G.Glyph]["guides"] = self.fake_serialize_guides()
 
         if self.kerning:
-            s["Glyph"]["kerning"] = {
+            s[G.Glyph]["kerning"] = {
                 str(pair.key): pair.values for pair in self.kerning
             }
-        imported = self._unknown_pleasures.get("imported")
+        imported = self._imported
         if imported:
-            s["Glyph"]["imported"] = imported
+            s[G.Glyph]["imported"] = imported
 
         tth = self._tth
         if tth:
-            s["Glyph"]["tth"] = tth
+            s[G.Glyph]["tth"] = tth
 
         # Additions related to glyph
 
         if self._write_empty_links or self.hlinks or self.vlinks:
-            s["Links"] = {
+            s[G.Links] = {
                 "x": [[link.node1, link.node2] for link in self.vlinks],
                 "y": [[link.node1, link.node2] for link in self.hlinks],
             }
 
         if self.image:
-            logger.warning(f"Dropping background image for glyph '{self.name}'")
-            s["image"] = self.image.fake_serialize()
+            s[G.image] = self.image.fake_serialize()
         if self._glyph_bitmaps:
-            logger.warning(f"Dropping bitmaps for glyph '{self.name}'")
-            # s["Glyph Bitmaps"] = self._glyph_bitmaps
+            s[G.Bitmaps] = self._glyph_bitmaps
         if self._glyph_sketch:
-            s["Glyph Sketch"] = self._glyph_sketch
+            s[G.Sketch] = self._glyph_sketch
         if self.mask:
-            s["mask"] = self.fake_serialize_mask()
+            s[G.mask] = self.fake_serialize_mask()
         if self._mask_metrics:
-            s["mask.metrics"] = (int(self._mask_metrics.x), int(self._mask_metrics.y))
+            s[G.MaskMetrics] = (int(self._mask_metrics.x), int(self._mask_metrics.y))
         if self._mask_metrics_mm:
-            s["mask.metrics_mm"] = [(int(p.x), int(p.y)) for p in self._mask_metrics_mm]
+            s[G.MaskMetricsMM] = [(int(p.x), int(p.y)) for p in self._mask_metrics_mm]
 
         origin = self._glyph_origin
         if self._write_empty_origin or origin != {"x": 0, "y": 0}:
-            s["Glyph Origin"] = origin
+            s[G.Origin] = origin
 
         unicodes = [u for u in self.unicodes if u <= 0xFFFF]
         if unicodes:
-            s["unicodes"] = unicodes
+            s[G.unicodes] = unicodes
 
-        if "2034" in self._unknown_pleasures:
-            s["2034"] = self._unknown_pleasures["2034"]
+        if 2034 in self._unknown_pleasures:
+            s[2034] = self._unknown_pleasures[2034]
 
         unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
         if unicodes_non_bmp:
-            s["Glyph Unicode Non-BMP"] = unicodes_non_bmp
+            s[G.UnicodesNonBMP] = unicodes_non_bmp
 
         if self.mark != 0:
-            s["mark"] = self.mark
+            s[G.mark] = self.mark
 
         if self.customdata:
-            s["glyph.customdata"] = self.customdata
+            s[G.customdata] = self.customdata
 
         if self.note:
-            s["glyph.note"] = self.note
-
-        if self.customdata:
-            s["glyph.customdata"] = self.customdata
-
-        if self.note:
-            s["glyph.note"] = self.note
+            s[G.note] = self.note
 
         gdef = self.fake_serialize_gdef()
         if self._write_empty_gdef or (
@@ -347,14 +344,14 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             or gdef["unknown"]
             or gdef["glyph_class"] not in (None, "unassigned")
         ):
-            s["Glyph GDEF Data"] = gdef
+            s[G.GDEFData] = gdef
 
         anchors_supp = self.fake_serialize_anchor_supp()
         if self._write_empty_anchor_supp or anchors_supp:
-            s["Glyph Anchors Supplemental"] = anchors_supp
+            s[G.AnchorsProperties] = anchors_supp
 
         if self.anchors and self.layers_number > 1:
-            s["Glyph Anchors MM"] = self.fake_serialize_anchors_mm()
+            s[G.AnchorsMM] = self.fake_serialize_anchors_mm()
 
         guide_properties = self.fake_serialize_guide_properties()
         # Only write if there are glyph guides
@@ -367,7 +364,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 or guide_properties["v"]
             )
         ):
-            s["Glyph Guide Properties"] = guide_properties
+            s[G.GuideProperties] = guide_properties
 
         return s
 
@@ -1551,6 +1548,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.end_points: list[int] = []
         self.points: list[TTPoint] = []
         self.instructions: list[int] = []
+        self._imported: dict | None = None
         self.hdmx: list[int] = []
 
         self._carets: list[tuple[int, int]] = []
@@ -1560,8 +1558,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._glyph_sketch = None
         self._tth: list[Instruction] = []
 
-        self._unknown_pleasures: dict[str, Any] = {
-            "2023": [0 for _ in range(self.layers_number)]
+        self._unknown_pleasures: dict[int, Any] = {
+            2023: [0 for _ in range(self.layers_number)]
         }
 
         # For binary compatibility with FL-written files:

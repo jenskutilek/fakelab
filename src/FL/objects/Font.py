@@ -993,14 +993,14 @@ class Font(FakeFont):
         self._primary_instance_locations: list[float] = []
         self._primary_instances: list[dict[str, Any]] = []
         self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
-        self._unknown_pleasures = {
-            "1502": 0,
-            "518": "",
-            "257": "",
-            "1140": "",
-            "1068": [],
-            "2030": "",
-            "513": "",
-            "271": "",
-            "527": "",
+        self._unknown_pleasures: dict[int, int | str | list] = {
+            1502: 0,
+            518: "",
+            257: "",
+            1140: "",
+            1068: [],
+            2030: "",
+            513: "",
+            271: "",
+            527: "",
         }

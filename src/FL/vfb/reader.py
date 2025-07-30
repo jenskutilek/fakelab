@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from vfbLib.enum import F, G, M, T
 from vfbLib.vfb.vfb import Vfb
 
 from FL.helpers.nametables import StandardNametable
@@ -21,93 +22,88 @@ logger = logging.getLogger(__name__)
 
 
 font_mapping_direct = {
-    "font_name",
-    "weight_vector",
-    "unique_id",
-    "version",
-    "notice",
-    "full_name",
-    "family_name",
-    "pref_family_name",
-    "menu_name",
-    "apple_name",
-    "weight",
-    "width",
-    "copyright",
-    "trademark",
-    "designer",
-    "designer_url",
-    "vendor_url",
-    "source",
-    "is_fixed_pitch",
-    "weight_code",
-    "italic_angle",
-    "slant_angle",
-    "underline_position",
-    "underline_thickness",
-    "ms_charset",
-    "panose",
-    "tt_version",
-    "tt_u_id",
-    "style_name",
-    "pref_style_name",
-    "mac_compatible",
-    "vendor",
-    # "xuid",  # has no setter
-    "xuid_num",
-    "year",
-    "version_major",
-    "version_minor",
-    "upm",
-    "fond_id",
-    "blue_values_num",
-    "other_blues_num",
-    "family_blues_num",
-    "family_other_blues_num",
-    "stem_snap_h_num",
-    "stem_snap_v_num",
-    "font_style",
-    "pcl_id",
-    "vp_id",
-    "ms_id",
-    "pcl_chars_set",
-    # "unicoderanges",  # must be converted to a list of bits
-    "note",
-    "customdata",
-    "default_character",
+    F.font_name,
+    F.weight_vector,
+    F.unique_id,
+    F.version,
+    F.notice,
+    F.full_name,
+    F.family_name,
+    F.pref_family_name,
+    F.menu_name,
+    F.apple_name,
+    F.weight,
+    F.width,
+    F.copyright,
+    F.trademark,
+    F.designer,
+    F.designer_url,
+    F.vendor_url,
+    F.source,
+    F.is_fixed_pitch,
+    F.weight_code,
+    F.italic_angle,
+    F.slant_angle,
+    F.underline_position,
+    F.underline_thickness,
+    F.ms_charset,
+    F.panose,
+    F.tt_version,
+    F.tt_u_id,
+    F.style_name,
+    F.pref_style_name,
+    F.mac_compatible,
+    F.vendor,
+    # F.xuid,  # has no setter
+    F.xuid_num,
+    F.year,
+    F.version_major,
+    F.version_minor,
+    F.upm,
+    F.fond_id,
+    F.blue_values_num,
+    F.other_blues_num,
+    F.family_blues_num,
+    F.family_other_blues_num,
+    F.stem_snap_h_num,
+    F.stem_snap_v_num,
+    F.font_style,
+    F.pcl_id,
+    F.vp_id,
+    F.ms_id,
+    F.pcl_chars_set,
+    # F.unicoderanges,  # must be converted to a list of bits
+    F.note,
+    F.customdata,
+    F.default_character,
 }
 
 glyph_mapping = {
-    "Links",
-    "image",
-    "Glyph Bitmaps",
-    "2023",
-    "Glyph Sketch",
-    "Glyph Hinting Options",
-    "mask",
-    "2010",
-    "mask.metrics",
-    "mask.metrics_mm",
-    "Glyph Origin",
-    "unicodes",
-    "Glyph Unicode Non-BMP",
-    "mark",
-    "glyph.customdata",
-    "glyph.note",
-    "Glyph GDEF Data",
-    "Glyph Anchors Supplemental",
-    "Glyph Anchors MM",
-    "Glyph Guide Properties",
+    G.Links,
+    G.image,
+    G.Bitmaps,
+    G.E2023,
+    G.Sketch,
+    G.HintingOptions,
+    G.mask,
+    G.MaskMetrics,
+    G.MaskMetricsMM,
+    G.Origin,
+    G.unicodes,
+    G.UnicodesNonBMP,
+    G.mark,
+    G.customdata,
+    G.note,
+    G.GDEFData,
+    G.AnchorsProperties,
+    G.AnchorsMM,
+    G.GuideProperties,
 }
 
 ttinfo_mapping_direct = {
-    # "cvt",  # custom format
-    # "prep",  # custom format
-    # "fpgm",  # custom format
-    # "gasp",  # custom format
-    "hhea_line_gap",
-    "hhea_ascender",
-    "hhea_descender",
+    T.hhea_line_gap,
+    T.hhea_ascender,
+    T.hhea_descender,
 }
 
 
@@ -144,150 +140,162 @@ class VfbToFontReader:
         font.fake_clear_defaults()
 
         for e in self.vfb.entries:
-            name = e.key
-            data = e.decompiled
-            if name == "header":
-                pass
-            elif name in font_mapping_direct:
-                if hasattr(font, name):
-                    setattr(font, name, data)
+            key = e.id
+            assert isinstance(key, int)
+            data = e.data
+
+            if key in font_mapping_direct:
+                attr = F(key).name
+                if hasattr(font, attr):
+                    setattr(font, attr, data)
                 else:
-                    raise AttributeError(f"Unknown font attribute: {name}")
-            elif name == "xuid":
-                font._xuid = data
-            elif name == "Encoding":
-                gid, glyph_name = data
-                gids[gid] = glyph_name
-            elif name == "Encoding Default":
-                # Where is this used?
-                gid, glyph_name = data
-                e = EncodingRecord()
-                e.name = glyph_name
-                font._encoding_default.append(e)
-            elif name in ("1502", "518", "257"):
-                font._unknown_pleasures[name] = data
-            elif name == "Master Count":
-                font._masters_count = data
-            elif name == "License":
-                font._license = data
-            elif name == "License URL":
-                font._license_url = data
-            elif name == "1140":
-                font._unknown_pleasures[name] = data
-            elif name == "PostScript Hinting Options":
-                font._postscript_hinting_options = data
-            elif name == "1068":
-                font._unknown_pleasures[name] = data
-            elif name in ("cvt", "prep", "fpgm"):
-                font.ttinfo.fake_set_binary(name, data)
-            elif name == "gasp":
-                font.ttinfo.fake_deserialize_gasp(data)
-            elif name == "ttinfo":
-                font.ttinfo.fake_deserialize(data)
-            elif name == "vdmx":
-                font.ttinfo.fake_deserialize_vdmx(data)
-            elif name in ttinfo_mapping_direct:
-                setattr(font.ttinfo, name, data)
-            elif name in (
-                "TrueType Stem PPEMs 2 And 3",
-                "TrueType Stem PPEMs",
-                "TrueType Stems",
-                "TrueType Stem PPEMs 1",
+                    raise AttributeError(f"Unknown font attribute: {attr}")
+                continue
+
+            if key in glyph_mapping:
+                assert glyph is not None, "Glyph must exist before adding data"
+                glyph.fake_deserialize(key, data)
+                continue
+
+            if key in (T.cvt, T.prep, T.fpgm):
+                font.ttinfo.fake_set_binary(T(key).name, data)
+                continue
+
+            if key in (
+                T.TrueTypeStems,
+                T.TrueTypeStemPPEMs1,
+                T.TrueTypeStemPPEMs2And3,
+                T.TrueTypeStemPPEMs,
             ):
                 font.ttinfo.fake_deserialize_stems(data)
-            elif name == "TrueType Zones":
-                font.ttinfo.fake_deserialize_zones(data)
-            elif name == "unicoderanges":
-                font.unicoderanges = data
-            elif name == "stemsnaplimit":
-                font.ttinfo._stemsnaplimit = data
-            elif name == "zoneppm":
-                font.ttinfo._zoneppm = data
-            elif name == "codeppm":
-                font.ttinfo._codeppm = data
-            elif name in ("1604", "2032"):
-                font.ttinfo._unknown_pleasures[name] = data
-            elif name == "TrueType Zone Deltas":
-                font.ttinfo.fake_deserialize_zone_deltas(data)
-            elif name == "fontnames":
-                assert isinstance(data, list)
-                for nr in data:
-                    font.fontnames.append(NameRecord(tuple(nr)))
-            elif name == "Custom CMAPs":
-                font._custom_cmaps = data
-            elif name == "PCLT Table":
-                font._pclt_table = data
-            elif name == "Export PCLT Table":
-                font._export_pclt_table = data
-            elif name == "2030":
-                font._unknown_pleasures[name] = data
-            elif name == "TrueTypeTable":
-                font.truetypetables.append(data)
-            elif name == "OpenType Metrics Class Flags":
-                font._metrics_class_flags = data
-            elif name == "OpenType Kerning Class Flags":
-                font._kerning_class_flags = data
-            elif name == "features":
-                font.fake_deserialize_features(data)
-            elif name == "OpenType Class":
-                classes.append(data)
-            elif name == "513":
-                font._unknown_pleasures[name] = data
-            elif name == "271":
-                font._unknown_pleasures[name] = data
-            elif name == "Axis Count":
-                font._axis_count = data
-            elif name == "Axis Name":
-                font.fake_deserialize_axis(data)
-            elif name == "Anisotropic Interpolation Mappings":
-                font._anisotropic_interpolation_mappings = data
-            elif name == "Axis Mappings Count":
-                font._axis_mappings_count = data
-            elif name == "Axis Mappings":
-                font._axis_mappings = data
-            elif name == "Master Name":
-                font._master_names.append(data)
-            elif name == "Master Location":
-                font._master_locations.append(data)
-            elif name == "Primary Instance Locations":
-                font._primary_instance_locations = data
-            elif name == "Primary Instances":
-                font._primary_instances = data
-            elif name == "PostScript Info":
-                font._master_ps_infos.append(data)
-            elif name == "527":
-                font._unknown_pleasures[name] = data
-            elif name == "Global Guides":
-                font.fake_deserialize_guides(data)
-            elif name == "Global Guide Properties":
-                font.fake_deserialize_guide_properties(data)
-            elif name == "Global Mask":
-                pass
+                continue
 
-            elif name == "Glyph":
-                # Append the current glyph
-                if glyph is not None:
-                    font.glyphs.append(glyph)
-                # Make a new glyph
-                logger.info(f"Adding Glyph: '{data.get('name')}'")
-                glyph = Glyph()
-                # Add the data
-                glyph.fake_deserialize(name, data)
-            elif name in glyph_mapping:
-                assert glyph is not None, "Glyph must exist before adding data"
-                glyph.fake_deserialize(name, data)
+            if key in (
+                F.E257,
+                F.E271,
+                F.E513,
+                F.E518,
+                F.E527,
+                F.E1068,
+                F.E1140,
+                F.E1502,
+                F.E2030,
+                F.E2030,
+            ):
+                font._unknown_pleasures[key] = data
+                continue
 
-            elif name == "OpenType Export Options":
-                font._ot_export_options = data
-            elif name == "Export Options":
-                font._export_options = data
-            elif name == "Mapping Mode":
-                font._mapping_mode = data
-            elif name == "1410":
-                pass
+            if key in ttinfo_mapping_direct:
+                setattr(font.ttinfo, T(key).name, data)
+                continue
 
-            else:
-                print(f"Unhandled VFB entry: {name}")
+            if key in (T.E1604, T.E2032):
+                font.ttinfo._unknown_pleasures[key] = data
+                continue
+
+            match key:
+                case F.xuid:
+                    font._xuid = data
+                case F.Encoding:
+                    gid, glyph_name = data
+                    gids[gid] = glyph_name
+                case F.EncodingDefault:
+                    # Where is this used?
+                    gid, glyph_name = data
+                    e = EncodingRecord()
+                    e.name = glyph_name
+                    font._encoding_default.append(e)
+                case F.MasterCount:
+                    font._masters_count = data
+                case F.License:
+                    font._license = data
+                case F.LicenseURL:
+                    font._license_url = data
+                case F.PostScriptHintingOptions:
+                    font._postscript_hinting_options = data
+                case T.gasp:
+                    font.ttinfo.fake_deserialize_gasp(data)
+                case F.ttinfo:
+                    font.ttinfo.fake_deserialize(data)
+                case T.vdmx:
+                    font.ttinfo.fake_deserialize_vdmx(data)
+                case T.TrueTypeZones:
+                    font.ttinfo.fake_deserialize_zones(data)
+                case F.unicoderanges:
+                    font.unicoderanges = data
+                case T.stemsnaplimit:
+                    font.ttinfo._stemsnaplimit = data
+                case T.zoneppm:
+                    font.ttinfo._zoneppm = data
+                case T.codeppm:
+                    font.ttinfo._codeppm = data
+                case T.TrueTypeZoneDeltas:
+                    font.ttinfo.fake_deserialize_zone_deltas(data)
+                case F.fontnames:
+                    assert isinstance(data, list)
+                    for nr in data:
+                        font.fontnames.append(NameRecord(tuple(nr)))
+                case F.CustomCMAPs:
+                    font._custom_cmaps = data
+                case F.PCLTTable:
+                    font._pclt_table = data
+                case F.ExportPCLTTable:
+                    font._export_pclt_table = data
+                case F.TrueTypeTable:
+                    font.truetypetables.append(data)
+                case F.MetricsClassFlags:
+                    font._metrics_class_flags = data
+                case F.KerningClassFlags:
+                    font._kerning_class_flags = data
+                case F.features:
+                    font.fake_deserialize_features(data)
+                case F.GlyphClass:
+                    classes.append(data)
+                case F.AxisCount:
+                    font._axis_count = data
+                case F.AxisName:
+                    font.fake_deserialize_axis(data)
+                case F.AnisotropicInterpolationMappings:
+                    font._anisotropic_interpolation_mappings = data
+                case F.AxisMappingsCount:
+                    font._axis_mappings_count = data
+                case F.AxisMappings:
+                    font._axis_mappings = data
+                case M.MasterName:
+                    font._master_names.append(data)
+                case M.MasterLocation:
+                    font._master_locations.append(data)
+                case F.PrimaryInstanceLocations:
+                    font._primary_instance_locations = data
+                case F.PrimaryInstances:
+                    font._primary_instances = data
+                case M.PostScriptInfo:
+                    font._master_ps_infos.append(data)
+                case F.GlobalGuides:
+                    font.fake_deserialize_guides(data)
+                case F.GlobalGuideProperties:
+                    font.fake_deserialize_guide_properties(data)
+                case F.GlobalMask:
+                    pass
+                case G.Glyph:
+                    # Append the current glyph
+                    if glyph is not None:
+                        font.glyphs.append(glyph)
+                    # Make a new glyph
+                    logger.info(f"Adding Glyph: '{data.get('name')}', {key}")
+                    glyph = Glyph()
+                    # Add the data
+                    glyph.fake_deserialize(2001, data)
+                case F.OpenTypeExportOptions:
+                    font._ot_export_options = data
+                case F.ExportOptions:
+                    font._export_options = data
+                case F.MappingMode:
+                    font._mapping_mode = data
+                case F.E1410:
+                    pass
+                case _:
+                    print(f"Unhandled VFB entry: {key}")
 
         if glyph is not None:
             font.glyphs.append(glyph)
