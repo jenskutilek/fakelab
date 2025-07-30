@@ -96,7 +96,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_parent",
         "_tth",
         "_write_empty_anchor_supp",
+        "_write_empty_anchors_mm",
         "_write_empty_gdef",
+        "_write_empty_guides",
         "_write_empty_guide_props",
         "_write_empty_links",
         "_write_empty_origin",
@@ -167,6 +169,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                     self.fake_deserialize_hints(hint_data)
                 # 0x04
                 if guides_data := data.get("guides", []):
+                    self._write_empty_guides = True
                     self.fake_deserialize_guides(guides_data)
                 # 0x05
                 for component_data in data.get("components", []):
@@ -239,6 +242,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._write_empty_anchor_supp = True
                 self.fake_deserialize_anchor_supp(data)
             case G.AnchorsMM:
+                self._write_empty_anchors_mm = True
                 self.fake_deserialize_anchors_mm(data)
             case G.GuideProperties:
                 self._write_empty_guide_props = True
@@ -277,7 +281,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if self.vhints or self.hhints:
             s[G.Glyph]["hints"] = self.fake_serialize_hints()
 
-        if self.hguides or self.vguides:
+        if self._write_empty_guides or self.hguides or self.vguides:
             s[G.Glyph]["guides"] = self.fake_serialize_guides()
 
         if self.kerning:
@@ -352,13 +356,14 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if self._write_empty_anchor_supp or anchors_supp:
             s[G.AnchorsProperties] = anchors_supp
 
-        if self.anchors and self.layers_number > 1:
+        if self.anchors and self.layers_number > 1 or self._write_empty_anchors_mm:
             s[G.AnchorsMM] = self.fake_serialize_anchors_mm()
 
         guide_properties = self.fake_serialize_guide_properties()
         # Only write if there are glyph guides
         if (
-            self.hguides
+            self._write_empty_guides
+            or self.hguides
             or self.vguides
             and (
                 self._write_empty_guide_props
@@ -1566,8 +1571,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         # For binary compatibility with FL-written files:
 
+        self._write_empty_anchors_mm = False
         self._write_empty_anchor_supp = False
         self._write_empty_gdef = False
+        self._write_empty_guides = False
         self._write_empty_guide_props = False
         self._write_empty_links = False
         self._write_empty_origin = False
