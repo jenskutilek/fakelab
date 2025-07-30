@@ -13,19 +13,14 @@ class GuideMixin:
     def fake_deserialize_guides(self, data: MMGuidesDict) -> None:
         for k, target in (("h", self.hguides), ("v", self.vguides)):
             if dir_master_guides := data[k]:
-                first_master_guides = dir_master_guides[0]
-                num_guides = len(first_master_guides)
-                for guide_dict in first_master_guides:
-                    g = Guide(guide_dict["pos"], guide_dict["angle"])
-                    target.append(g)
-                for master_index in range(1, self._masters_count):
-                    for guide_index in range(num_guides):
-                        guide_dict = dir_master_guides[master_index][guide_index]
-                        guide = target[guide_index]
-                        guide._positions[master_index] = guide_dict["pos"]
-                        guide._widths[master_index] = Guide.fake_angle_to_width(
-                            guide_dict["angle"]
+                for guide_dict in dir_master_guides:
+                    g = Guide(guide_dict[0]["pos"], guide_dict[0]["angle"])
+                    for master_index in range(1, self._masters_count):
+                        g._positions[master_index] = guide_dict[master_index]["pos"]
+                        g._widths[master_index] = Guide.fake_angle_to_width(
+                            guide_dict[master_index]["angle"]
                         )
+                    target.append(g)
 
     def fake_serialize_guides(self) -> MMGuidesDict:
         mgd = MMGuidesDict()
