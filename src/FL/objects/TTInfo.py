@@ -6,6 +6,7 @@ from vfbLib.parsers.truetype import convert_int_to_flags_options
 from vfbLib.typing import TTStemsDict, TTZonesDict
 
 from FL.fake.Base import Copyable
+from FL.helpers.math import int32_to_unsigned, uint32_to_signed
 from FL.objects.TTGasp import TTGasp
 from FL.objects.TTStem import TTStem
 from FL.objects.TTVdmx import TTVdmx
@@ -71,7 +72,6 @@ class TTInfo(Copyable):
         "_hdmx_ppms_1",
         "_hdmx_ppms_2",
         "_panose",
-        "_unknown_0x57",
         "_stemsnaplimit",
         "_zoneppm",
         "_codeppm",
@@ -110,8 +110,6 @@ class TTInfo(Copyable):
             "head_units_per_em",
             "head_mac_style",
             "head_lowest_rec_ppem",
-            "head_creation",
-            "_unknown_0x57",  # TODO: What is this?
             "head_font_direction_hint",
             "os2_us_weight_class",
             "os2_us_width_class",
@@ -145,6 +143,10 @@ class TTInfo(Copyable):
         ):
             if k in data:
                 setattr(self, attr, data[k])
+        if "head_creation" in data:
+            self._head_creation[0] = uint32_to_signed(data)
+        if "head_creation2" in data:
+            self._head_creation[1] = uint32_to_signed(data)
 
         # I tried to make this value more self-explanatory in vfbLib, but FL
         # only shows us an int. So we have to convert it back ...
@@ -163,8 +165,8 @@ class TTInfo(Copyable):
             "head_units_per_em": self.head_units_per_em,
             "head_mac_style": self.head_mac_style,
             "head_lowest_rec_ppem": self.head_lowest_rec_ppem,
-            "head_creation": self.head_creation,
-            "_unknown_0x57": self._unknown_0x57,  # TODO: What is this?
+            "head_creation": int32_to_unsigned(self.head_creation[0]),
+            "head_creation2": int32_to_unsigned(self.head_creation[1]),
             "head_font_direction_hint": self.head_font_direction_hint,
             "os2_us_weight_class": self.os2_us_weight_class,
             "os2_us_width_class": self.os2_us_width_class,
@@ -512,13 +514,13 @@ class TTInfo(Copyable):
 
     @property
     def head_creation(self) -> list[int]:
-        # [-467938523, 0]
-        # Some kind of large int split into two?
         return self._head_creation
 
     @head_creation.setter
     def head_creation(self, value: list[int]) -> None:
-        self._head_creation = value
+        raise RuntimeError(
+            "class TTInfo has no attribute head_creation or it's read-only"
+        )
 
     @property
     def head_flags(self) -> int:
@@ -777,8 +779,7 @@ class TTInfo(Copyable):
         self.max_function_defs = 0
         self.max_instruction_defs = 0
         self.max_stack_elements = 0
-        self.head_creation = [-467938523, 0]
-        self._unknown_0x57 = 0
+        self._head_creation: list[int] = [-467938523, 0]
         self.head_flags = 131072
         self.head_font_direction_hint = 2
         self.head_lowest_rec_ppem = 9
