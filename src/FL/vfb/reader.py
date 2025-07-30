@@ -295,7 +295,7 @@ class VfbToFontReader:
                 case F.E1410:
                     pass
                 case _:
-                    print(f"Unhandled VFB entry: {key}")
+                    logger.error(f"Unhandled VFB entry: {key}")
 
         if glyph is not None:
             font.glyphs.append(glyph)

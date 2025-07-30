@@ -140,8 +140,8 @@ class KerningClass:
             if self.glyphs:
                 self.keyglyph = self.glyphs[0]
             else:
-                print("WARNING: Empty class: %s" % self.name)
-                print("         %s" % flClass)
+                logger.warning("Empty class: %s" % self.name)
+                logger.warning("             %s" % flClass)
 
     def getFontLabExternalClassCode(self) -> str:
         """

@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 standard_nam = r"""%%FONTLAB NAMETABLE: Recommended (no afiiXXXXX, no double-encoding)
 % FontLab DEFAULT nametable recommended for all new fonts
 %
@@ -6079,7 +6084,7 @@ class StandardNametable:
 
             parts = line.split(" ", 1)
             if len(parts) != 2:
-                print(f"Skipping malformed line {i} in Nametable: '{line}'")
+                logger.warning(f"Skipping malformed line {i} in Nametable: '{line}'")
                 continue
 
             us, n = parts
