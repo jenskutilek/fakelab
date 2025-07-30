@@ -3,6 +3,8 @@ from __future__ import annotations
 import array
 from typing import TYPE_CHECKING
 
+from vfbLib.typing import BackgroundImageDict, BitmapDataDict
+
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -19,7 +21,9 @@ class Image:
         "_height",
         "_width",
         # Non-API
+        "_flag",
         "_origin",
+        "_preview",
         "_size_units",
     ]
 
@@ -41,6 +45,7 @@ class Image:
         self._traceenabled = True
 
         # Non-API
+        self._flag = 0
         self._origin = Point()
         self._size_units = Point()
 
@@ -49,7 +54,7 @@ class Image:
             if not isinstance(height, int):
                 raise TypeError
             self._height = height
-            self._empty = False
+            self._empty = True
         elif isinstance(width_or_image, Image):
             # copy constructor
             image = width_or_image
@@ -57,17 +62,43 @@ class Image:
             self._height = image.height
             self._empty = bool(image.empty)
             self._traceenabled = bool(image.traceenabled)
-            self.data = image.data
+            self._data = array.array("H", image.data)
             self._size = image.size
         # else empty image
 
     # Additions for FakeLab
 
-    def fake_deserialize(self, data: dict) -> None:
-        pass
+    def fake_deserialize(self, data: BackgroundImageDict) -> None:
+        x, y = data["origin"]
+        self._origin.x = x
+        self._origin.y = y
+        x, y = data["size_units"]
+        self._size_units.x = x
+        self._size_units.y = y
+        x, y = data["size_pixels"]
+        self._width = x
+        self._height = y
+        self._flag = data["bitmap"]["flag"]
+        self._data = array.array("H", data["bitmap"]["data"])
+        self._empty = False
 
-    def fake_serialize(self) -> dict:
-        return {}
+    def fake_serialize(self) -> BackgroundImageDict | None:
+        if self._empty:
+            return None
+
+        d = BackgroundImageDict(
+            origin=(
+                int(self._origin.x),
+                int(self._origin.y),
+            ),
+            size_units=(
+                int(self._size_units.x),
+                int(self._size_units.y),
+            ),
+            size_pixels=(self.width, self.height),
+            bitmap=BitmapDataDict(flag=self._flag, data=self.data),
+        )
+        return d
 
     # Attributes
 
@@ -128,21 +159,23 @@ class Image:
         raise RuntimeError("Class Image does not have writable attributes")
 
     @property
-    def data(self) -> bytes:
+    def data(self) -> list[int]:
         """
         Access the image buffer
 
         Returns:
-            bytes | None: _description_
+            list[int] | None: _description_
         """
-        return self._data.tobytes()
+        return [i for i in self._data]
 
     @data.setter
     def data(self, value: bytes | None) -> None:
-        if value is None:
-            self._data = array.array("H", [0] * self.width * self.height)
-        else:
-            self._data = array.array("H", value)
+        # if value is None:
+        #     self._data = array.array("H", [0] * self.width * self.height)
+        # else:
+        #     self._data = array.array("H", value)
+        # Does nothing
+        pass
 
     @property
     def traceenabled(self) -> int:

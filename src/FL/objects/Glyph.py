@@ -301,7 +301,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             }
 
         if self.image:
-            s[G.image] = self.image.fake_serialize()
+            image = self.image.fake_serialize()
+            if image is not None:
+                s[G.image] = self.image.fake_serialize()
         if self._glyph_bitmaps:
             s[G.Bitmaps] = self._glyph_bitmaps
         if self._glyph_sketch:
