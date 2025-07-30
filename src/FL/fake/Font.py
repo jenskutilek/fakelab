@@ -149,4 +149,5 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             fea.append("\n")
         for feature in self.features:
             fea.extend(feature.value.splitlines())
+            fea.append("")
         return fea
