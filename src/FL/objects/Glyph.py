@@ -1560,6 +1560,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._gdef_class = None
         self._gdef_unknown: list[int] = []
         self._glyph_bitmaps = None
+        self._glyph_hinting_options = {}
+        self._glyph_origin = {"x": 0, "y": 0}
         self._glyph_sketch = None
         self._tth: list[Instruction] = []
 
