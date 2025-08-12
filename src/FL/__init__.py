@@ -1,0 +1,344 @@
+from __future__ import annotations
+
+from FL import fl_cmd
+from FL.constants import (
+    ftFONTLAB,
+    ftMACTRUETYPE,
+    ftMACTRUETYPE_DFONT,
+    ftMACTYPE1,
+    ftOPENTYPE,
+    ftTRUETYPE,
+    ftTYPE1,
+    ftTYPE1_MM,
+    ftTYPE1ASCII,
+    ftTYPE1ASCII_MM,
+)
+from FL.FLdict import *  # noqa: F403
+from FL.objects.Anchor import Anchor
+from FL.objects.AuditRecord import AuditRecord
+from FL.objects.Canvas import Canvas
+from FL.objects.Component import Component
+from FL.objects.Dialog import Dialog
+from FL.objects.Encoding import Encoding
+from FL.objects.EncodingRecord import EncodingRecord
+from FL.objects.Feature import Feature
+from FL.objects.Font import Font
+from FL.objects.FontLab import FakeLab
+from FL.objects.Glyph import Glyph
+from FL.objects.Guide import Guide
+from FL.objects.Hint import Hint
+from FL.objects.Image import Image
+from FL.objects.KerningPair import KerningPair
+from FL.objects.Link import Link
+from FL.objects.Matrix import Matrix
+from FL.objects.NameRecord import NameRecord
+from FL.objects.Node import Node
+from FL.objects.Options import Options
+from FL.objects.Point import Point
+from FL.objects.Rect import Rect
+from FL.objects.Replace import Replace
+from FL.objects.TrueTypeTable import TrueTypeTable
+from FL.objects.TTGasp import TTGasp
+from FL.objects.TTH import TTH
+from FL.objects.TTHCommand import TTHCommand
+from FL.objects.TTHPoint import TTHPoint
+from FL.objects.TTHProblem import TTHProblem
+from FL.objects.TTInfo import TTInfo
+from FL.objects.TTPoint import TTPoint
+from FL.objects.TTStem import TTStem
+from FL.objects.TTVdmx import TTVdmx
+from FL.objects.Uni import Uni
+from FL.objects.WeightVector import WeightVector
+
+"""
+FakeLab. A FontLab Studio 5 replacement for testing Python code.
+
+Everything is only implemented so far as to make FontLab objects importable
+outside of FontLab Studio 5, and run tests.
+"""
+
+# fl is pre-instantiated
+fl = FakeLab()  # noqa: F405
+
+# Everything that is needed for a convincing emulation:
+
+environment = {
+    "fl": fl,
+    "fl_cmd": fl_cmd,
+    # 'fl_decoder': <built-in function raw_unicode_escape_decode>
+    # 'fl_encoder': <built-in function raw_unicode_escape_encode>
+    # 'fl_stream_reader': <class encodings.raw_unicode_escape.StreamReader>
+    # 'fl_stream_writer': <class encodings.raw_unicode_escape.StreamWriter>
+    # 'flsys': <module 'flsys' from 'C:\Program Files (x86)\FontLab\Studio 5\flsys.py'>
+    # "codecs": codecs,
+    # 'cPickle': <module 'cPickle' (built-in)>,
+    # "sys": "<module 'sys' (built-in)>",
+    # Objects:
+    "Anchor": Anchor,
+    "AuditRecord": AuditRecord,
+    "Canvas": Canvas,
+    "Component": Component,
+    "Dialog": Dialog,
+    "Encoding": Encoding,
+    "EncodingRecord": EncodingRecord,
+    "Feature": Feature,
+    "Font": Font,
+    "FontLab": FakeLab,
+    "Glyph": Glyph,
+    "Guide": Guide,
+    "Hint": Hint,
+    "Image": Image,
+    "KerningPair": KerningPair,
+    "Link": Link,
+    "Matrix": Matrix,
+    "NameRecord": NameRecord,
+    "Node": Node,
+    "Options": Options,
+    "Point": Point,
+    "Rect": Rect,
+    "Replace": Replace,
+    "TrueTypeTable": TrueTypeTable,
+    "TTH": TTH,
+    "TTHCommand": TTHCommand,
+    "TTHPoint": TTHPoint,
+    "TTInfo": TTInfo,
+    "TTPoint": TTPoint,
+    "TTStem": TTStem,
+    # Undocumented:
+    # 'CmapTable': <built-in function CmapTable>,
+    # 'GlyphAudit': <built-in function GlyphAudit>,
+    # 'KerningArray': <built-in function KerningArray>,
+    # "options": "<FontLab Options>",
+    # "RGB": "<function RGB at 0x07109DB0>",
+    "TTGasp": TTGasp,
+    "TTHProblem": TTHProblem,
+    "TTVdmx": TTVdmx,
+    "Uni": Uni,
+    # "VArray": "<built-in function VArray>",
+    # "VExAnchorArray": "<built-in function VExAnchorArray>",
+    # "VExCmapTables": "<built-in function VExCmapTables>",
+    # "VExFontNames": "<built-in function VExFontNames>",
+    # "VExGlyphArray": "<built-in function VExGlyphArray>",
+    # "VExGuideArray": "<built-in function VExGuideArray>",
+    # "VExHintArray": "<built-in function VExHintArray>",
+    # "VExIntArray": "<built-in function VExIntArray>",
+    # "VExLinkArray": "<built-in function VExLinkArray>",
+    # "VExOTFeatures": "<built-in function VExOTFeatures>",
+    # "VExReplaceArray": "<built-in function VExReplaceArray>",
+    # "VExSeacArray": "<built-in function VExSeacArray>",
+    # "VExTTHCommandArray": "<built-in function VExTTHCommandArray>",
+    # "VExTTHPointArray": "<built-in function VExTTHPointArray>",
+    # "VExTTStemArray": "<built-in function VExTTStemArray>",
+    # "VExTTTables": "<built-in function VExTTTables>",
+    # "VSBByteArray": "<built-in function VSBByteArray>,",
+    # "VSICharArray": "<built-in function VSICharArray>",
+    # "VSITTGaspArray": "<built-in function VSITTGaspArray>",
+    # "VSITTVdmxArray": "<built-in function VSITTVdmxArray>",
+    # "VSSByteArray": "<built-in function VSSByteArray>",
+    # "VSSTTPointArray": "<built-in function VSSTTPointArray>",
+    # "VSSWordArray": "<built-in function VSSWordArray>",
+    "WeightVector": WeightVector,
+    # From this file:
+    "ftFONTLAB": ftFONTLAB,
+    "ftTYPE1": ftTYPE1,
+    "ftTYPE1_MM": ftTYPE1_MM,
+    "ftTYPE1ASCII": ftTYPE1ASCII,
+    "ftTYPE1ASCII_MM": ftTYPE1ASCII_MM,
+    "ftTRUETYPE": ftTRUETYPE,
+    "ftOPENTYPE": ftOPENTYPE,
+    "ftMACTYPE1": ftMACTYPE1,
+    "ftMACTRUETYPE": ftMACTRUETYPE,
+    "ftMACTRUETYPE_DFONT": ftMACTRUETYPE_DFONT,
+    # From FLdict:
+    "cBRUSH_NULL": cBRUSH_NULL,
+    "cBRUSH_SOLID": cBRUSH_SOLID,
+    "cDS_BLACK": cDS_BLACK,
+    "cDS_NOTOR": cDS_NOTOR,
+    "cDS_NOTCOPY": cDS_NOTCOPY,
+    "cDS_NOT": cDS_NOT,
+    "cDS_XOR": cDS_XOR,
+    "cDS_NOTAND": cDS_NOTAND,
+    "cDS_AND": cDS_AND,
+    "cDS_NOTXOR": cDS_NOTXOR,
+    "cDS_COPY": cDS_COPY,
+    "cDS_OR": cDS_OR,
+    "cDS_WHITE": cDS_WHITE,
+    "cPEN_DASH": cPEN_DASH,
+    "cPEN_DOT": cPEN_DOT,
+    "cPEN_NULL": cPEN_NULL,
+    "cPEN_SOLID": cPEN_SOLID,
+    "cRGB_BLACK": cRGB_BLACK,
+    "cRGB_BLUE": cRGB_BLUE,
+    "cRGB_GRAY": cRGB_GRAY,
+    "cRGB_GREEN": cRGB_GREEN,
+    "cRGB_LTGRAY": cRGB_LTGRAY,
+    "cRGB_RED": cRGB_RED,
+    "cRGB_WHITE": cRGB_WHITE,
+    "cRGB_YELLOW": cRGB_YELLOW,
+    "EDITCONTROL": EDITCONTROL,
+    "STATICCONTROL": STATICCONTROL,
+    "CHECKBOXCONTROL": CHECKBOXCONTROL,
+    "BUTTONCONTROL": BUTTONCONTROL,
+    "LISTCONTROL": LISTCONTROL,
+    "CHOICECONTROL": CHOICECONTROL,
+    "PREVIEWCONTROL": PREVIEWCONTROL,
+    "STYLE_BUTTON": STYLE_BUTTON,
+    "STYLE_CHECKBOX": STYLE_CHECKBOX,
+    "STYLE_CHOICE": STYLE_CHOICE,
+    "STYLE_CUSTOM": STYLE_CUSTOM,
+    "STYLE_EDIT": STYLE_EDIT,
+    "STYLE_FRAME": STYLE_FRAME,
+    "STYLE_LABEL": STYLE_LABEL,
+    "STYLE_LIST": STYLE_LIST,
+    "cTO_BOTTOM": cTO_BOTTOM,
+    "cTO_CENTER": cTO_CENTER,
+    "cTO_LEFT": cTO_LEFT,
+    "cTO_RIGHT": cTO_RIGHT,
+    "cTO_TOP": cTO_TOP,
+    "cTO_VCENTER": cTO_VCENTER,
+    "aALIGN": aALIGN,
+    "aAUTO": aAUTO,
+    "aIDENT": aIDENT,
+    "aIDENT2": aIDENT2,
+    "aIDENT3": aIDENT3,
+    "aNEXT": aNEXT,
+    "aSAME": aSAME,
+    "OK": OK,
+    "Cancel": Cancel,
+    "nLINE": nLINE,
+    "nMOVE": nMOVE,
+    "nCURVE": nCURVE,
+    "nOFF": nOFF,
+    "nSHARP": nSHARP,
+    "nSMOOTH": nSMOOTH,
+    "nFIXED": nFIXED,
+    "TR_CODE_SHIFT": TR_CODE_SHIFT,
+    "TR_CODE_MIRROR": TR_CODE_MIRROR,
+    "TR_CODE_SCALE": TR_CODE_SCALE,
+    "TR_CODE_ROTATE": TR_CODE_ROTATE,
+    "TR_CODE_SLANT": TR_CODE_SLANT,
+    "TR_CODE_REMOVE": TR_CODE_REMOVE,
+    "TR_CODE_AUTOHINT": TR_CODE_AUTOHINT,
+    "TR_CODE_TT_AUTOHINT": TR_CODE_TT_AUTOHINT,
+    "TR_CODE_AUTOREPLACE": TR_CODE_AUTOREPLACE,
+    "TR_CODE_TOLINKS": TR_CODE_TOLINKS,
+    "TR_CODE_TOHINTS": TR_CODE_TOHINTS,
+    "TR_CODE_DECOMPOSE": TR_CODE_DECOMPOSE,
+    "TR_CODE_CONVERT3": TR_CODE_CONVERT3,
+    "TR_CODE_CONVERT2": TR_CODE_CONVERT2,
+    "TR_CODE_REVERSE_ALL": TR_CODE_REVERSE_ALL,
+    "TR_CODE_ALIGNMENT": TR_CODE_ALIGNMENT,
+    "TR_CODE_EXTREMES": TR_CODE_EXTREMES,
+    "TR_CODE_OVERLAP": TR_CODE_OVERLAP,
+    "TR_CODE_WIDTH": TR_CODE_WIDTH,
+    "TR_CODE_BEARING": TR_CODE_BEARING,
+    "TR_CODE_ALIGNWIDTH": TR_CODE_ALIGNWIDTH,
+    "TR_CODE_AUTOSPACING": TR_CODE_AUTOSPACING,
+    "TR_CODE_BOLD": TR_CODE_BOLD,
+    "TR_CODE_COLLEGE": TR_CODE_COLLEGE,
+    "TR_CODE_SHADOW": TR_CODE_SHADOW,
+    "TR_CODE_3D": TR_CODE_3D,
+    "TR_CODE_3DROTATE": TR_CODE_3DROTATE,
+    "TR_CODE_GRADIENT": TR_CODE_GRADIENT,
+    "TR_CODE_RANDOM": TR_CODE_RANDOM,
+    "TR_CODE_ENVELOPE": TR_CODE_ENVELOPE,
+    "TR_CODE_MAKELAYER": TR_CODE_MAKELAYER,
+    "TR_CODE_OPTIMIZE": TR_CODE_OPTIMIZE,
+    "TR_CODE_DROP_TTH": TR_CODE_DROP_TTH,
+    "TR_CODE_ADJUST": TR_CODE_ADJUST,
+    "SS_BITMAP": SS_BITMAP,
+    "SS_BLACKFRAME": SS_BLACKFRAME,
+    "SS_BLACKRECT": SS_BLACKRECT,
+    "SS_CENTER": SS_CENTER,
+    "SS_CENTERIMAGE": SS_CENTERIMAGE,
+    "SS_ELLIPSISMASK": SS_ELLIPSISMASK,
+    "SS_ENDELLIPSIS": SS_ENDELLIPSIS,
+    "SS_ENHMETAFILE": SS_ENHMETAFILE,
+    "SS_ETCHEDFRAME": SS_ETCHEDFRAME,
+    "SS_ETCHEDHORZ": SS_ETCHEDHORZ,
+    "SS_ETCHEDVERT": SS_ETCHEDVERT,
+    "SS_GRAYFRAME": SS_GRAYFRAME,
+    "SS_GRAYRECT": SS_GRAYRECT,
+    "SS_ICON": SS_ICON,
+    "SS_LEFT": SS_LEFT,
+    "SS_LEFTNOWORDWRAP": SS_LEFTNOWORDWRAP,
+    "SS_NOPREFIX": SS_NOPREFIX,
+    "SS_NOTIFY": SS_NOTIFY,
+    "SS_OWNERDRAW": SS_OWNERDRAW,
+    "SS_PATHELLIPSIS": SS_PATHELLIPSIS,
+    "SS_REALSIZEIMAGE": SS_REALSIZEIMAGE,
+    "SS_RIGHT": SS_RIGHT,
+    "SS_RIGHTJUST": SS_RIGHTJUST,
+    "SS_SIMPLE": SS_SIMPLE,
+    "SS_SUNKEN": SS_SUNKEN,
+    "SS_TYPEMASK": SS_TYPEMASK,
+    "SS_USERITEM": SS_USERITEM,
+    "SS_WHITEFRAME": SS_WHITEFRAME,
+    "SS_WHITERECT": SS_WHITERECT,
+    "SS_WORDELLIPSIS": SS_WORDELLIPSIS,
+    "WS_BORDER": WS_BORDER,
+    "WS_CAPTION": WS_CAPTION,
+    "WS_CHILD": WS_CHILD,
+    "WS_CLIPCHILDREN": WS_CLIPCHILDREN,
+    "WS_CLIPSIBLINGS": WS_CLIPSIBLINGS,
+    "WS_DISABLED": WS_DISABLED,
+    "WS_DLGFRAME": WS_DLGFRAME,
+    "WS_GROUP": WS_GROUP,
+    "WS_HSCROLL": WS_HSCROLL,
+    "WS_MAXIMIZE": WS_MAXIMIZE,
+    "WS_MAXIMIZEBOX": WS_MAXIMIZEBOX,
+    "WS_MINIMIZE": WS_MINIMIZE,
+    "WS_MINIMIZEBOX": WS_MINIMIZEBOX,
+    "WS_OVERLAPPED": WS_OVERLAPPED,
+    "WS_OVERLAPPEDWINDOW": WS_OVERLAPPEDWINDOW,
+    "WS_POPUP": WS_POPUP,
+    "WS_POPUPWINDOW": WS_POPUPWINDOW,
+    "WS_SYSMENU": WS_SYSMENU,
+    "WS_TABSTOP": WS_TABSTOP,
+    "WS_THICKFRAME": WS_THICKFRAME,
+    "WS_VISIBLE": WS_VISIBLE,
+    "WS_VSCROLL": WS_VSCROLL,
+    "cRECT_3DDOWN": cRECT_3DDOWN,
+    "cRECT_3DDOWN_FLAT": cRECT_3DDOWN_FLAT,
+    "cRECT_3DDOWN_SOLID": cRECT_3DDOWN_SOLID,
+    "cRECT_3DUP": cRECT_3DUP,
+    "cRECT_3DUP_FLAT": cRECT_3DUP_FLAT,
+    "cRECT_3DUP_SOLID": cRECT_3DUP_SOLID,
+    "cRECT_BLACK_FRAME": cRECT_BLACK_FRAME,
+    "cRECT_BLACK_SOLID": cRECT_BLACK_SOLID,
+    "cRECT_BLACK_THICK_FRAME": cRECT_BLACK_THICK_FRAME,
+    "cRECT_ELLIPSE": cRECT_ELLIPSE,
+    "cRECT_FOCUS": cRECT_FOCUS,
+    "cRECT_GRAY_FRAME": cRECT_GRAY_FRAME,
+    "cRECT_GRAY_SOLID": cRECT_GRAY_SOLID,
+    "cRECT_INVERT": cRECT_INVERT,
+    "cRECT_LTGRAY_SOLID": cRECT_LTGRAY_SOLID,
+    "cRECT_RECTANGLE": cRECT_RECTANGLE,
+    "cRECT_SIZE": cRECT_SIZE,
+    "cRECT_WHITE_SOLID": cRECT_WHITE_SOLID,
+    "cRECT_YELLOW_FRAME": cRECT_YELLOW_FRAME,
+    "cRECT_YELLOW_SOLID": cRECT_YELLOW_SOLID,
+    # Undocumented:
+    "CMAPTYPE_CODEPAGE": 1,
+    "CMAPTYPE_FONTWINDOW": 2,
+    "CMAPTYPE_UNICODE": 0,
+    "metricsKERNING": 2,
+    "metricsMETRICS": 1,
+    "metricsSAMPLE": 0,
+    "metricsTEXT": 3,
+    "mfMARK_RESULT": 2,
+    "mfOVERLAP_IGNORE": 1,
+    "mfOVERLAP_RENAME_DEST": 16,
+    "mfOVERLAP_RENAME_SOURCE": 8,
+    "mfOVERLAP_REPLACE": 32,
+    "mfOVERLAP_SKIP": 4,
+    "STYLE_BEVELBUTTON": 268435456,
+    "TTFLAGS_CREATE_CHARACTERS": 262144,
+    "TTFLAGS_CREATE_HDMX": 524288,
+    "TTFLAGS_CREATE_VDMX": 131072,
+    "TTFLAGS_CREATE_VMTX": 1048576,
+    # TODO: tools, e.g.:
+    # 'Circles': <module 'Circles' from 'C:\Users\jens\Documents\FontLab\Studio 5\macros\system\tool\Circles.pyc'>
+    # 'Drop': <module 'Drop' from 'C:\Users\jens\Documents\FontLab\Studio 5\macros\system\tool\Drop.pyc'>
+    # 'Line': <module 'Line' from 'C:\Users\jens\Documents\FontLab\Studio 5\macros\system\tool\Line.pyc'>
+}

@@ -1,7 +1,185 @@
+[project]
+name = "fakelab"
+dynamic = ["version"]
+description = "Fake FontLab Studio 5 for automated tests and external scripting"
+keywords = ["vfb", "fonttools"]
+
+readme = "README.md"
+license = {text = "proprietary"}
+
+authors = [{name = "Jens Kutílek", email = "webmail@kutilek.de"}]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+requires-python = ">=3.11"
+dependencies = [
+    # "pyyaml >= 6.0.2",
+    # "vfbLib >= 0.10.0",  # Could be made optional for a lean test framework
+]
+
+[project.optional-dependencies]
+all = [
+    "fakelab[generate]",
+    "fakelab[repl]",
+    "fakelab[vfb]",
+]
+
+generate = [
+    # Generate actual fonts with ufo2ft
+    "ufo2ft >= 3.4.2",
+    "fakelab[vfb]",
+]
+
+repl = [
+    # Better interactive prompt
+    "ptpython >= 3.0.30"
+]
+
+vfb = [
+    # Optional for a lean test framework
+    # Load and save VFB files
+    "vfbLib >= 0.10.2",
+]
+
+test = [
+    "mypy",                 # type hinting verifier
+    "pytest",               # pytest testing framework
+    "pytest-black-ng",      # code formatter (--black)
+    "pytest-cov",           # code coverage (--cov)
+    "pytest-isort",         # imports sorter (--isort)
+    "pytest-mock",          # mocker fixtures for monkey patching
+    "pytest-mypy",          # type hinting verifier (--mypy)
+    "pytest-pylint",        # static code analysis (--pylint)
+]
+
+dev = [
+    "build",                # packaging build frontend
+    "wheel",                # build system (also downloaded during build)
+    "setuptools-scm[toml]"  # git tags-based versioning (also downloaded during build)
+]
+
+doc = [
+    "sphinx >= 8.1.3",      # documentation generator
+    "sphinx_rtd_theme",     # read the docs theme
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jenskutilek/fakelab"
+"Documentation" = "https://fakelab.readthedocs.io/"
+"Bug Tracker" = "https://github.com/jenskutilek/fakelab/issues"
+"Changelog" = "https://github.com/jenskutilek/fakelab/blob/develop/docs/CHANGELOG.md"
+
+[project.scripts]
+fakelab = "FL.cmdline:main"
+
+
+[build-system]
+requires = ["setuptools>=78.1.0", "setuptools-scm[toml]>=8.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.package-data]
+"fakelab" = ["py.typed"]         # PEP 561
+
+
+[tool.setuptools_scm]
+version_scheme = "no-guess-dev"
+write_to = "src/FL/_version.py"
+
+
+[tool.towncrier]
+directory = "docs/changelog.d"
+filename = "docs/CHANGELOG.md"
+
+title_format = "fakelab {version} ({project_date})"
+issue_format = "[#{issue}](https://github.com/jenskutilek/fakelab/pull/{issue})"
+
+
+[tool.pytest.ini_options]
+# addopts = "--mypy --pylint --black --isort --cov --cov-report=term --cov-report=html --cov-report=xml"
+testpaths = ["tests", "src"]    # "src" required for pylint and mypy (whereas cov considers imported files)
+cache_dir = "build/tests/pytest_cache"
+
+
+[tool.pylint.main]
+py-version = "3.11"
+ignore-paths = ["src/FL/_version.py"]
+# extension-pkg-allow-list = ["pycurl"]
+
+[tool.pylint.format]
+expected-line-ending-format = "LF"
+max-line-length = 88
+
+[tool.pylint.basic]
+good-names-rgxs = "^(dl)$"
+
+[tool.pylint.design]
+min-public-methods = 1
+max-args = 15
+max-positional-arguments = 10
+max-attributes = 15
+max-locals = 20
+
+[tool.pylint.miscellaneous]
+notes = ["FIXME", "XXX"]
+
+
+[tool.mypy]
+warn_unused_configs = true
+cache_dir = "build/tests/mypy_cache"
+
+allow_redefinition = true
+warn_unreachable = true
+
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+warn_incomplete_stub = true
+
+# disallow_any_explicit = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+warn_return_any = true
+
+
 [tool.black]
+exclude = '[\\/]_version\.py$'
 line-length = 88
 target-version = ["py311"]
 
-[build-system]
-requires = ["setuptools>=45", "wheel"]
-build-backend = "setuptools.build_meta"
+
+[tool.isort]
+known_first_party = ["FL"]
+profile = "black"
+
+
+[tool.coverage.run]
+data_file = "build/tests/coverage.sqlite"
+omit = ["/etc/*"]
+
+branch = true
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+skip_covered = true
+
+[tool.coverage.html]
+directory = "build/tests/coverage"
+show_contexts = true
+skip_covered = false
+
+[tool.coverage.xml]
+output = "build/tests/coverage/coverage.xml"
+
+
+[tool.bandit]
+skips = ["B101"]

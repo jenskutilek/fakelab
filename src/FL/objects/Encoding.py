@@ -1,51 +1,137 @@
 from __future__ import annotations
 
-import unittest
-from pathlib import Path
+from collections import UserList
+from typing import TYPE_CHECKING
 
-import pytest
-from vfbLib.json import save_vfb_json
+from FL.fake.Base import Copyable
+from FL.objects.EncodingRecord import EncodingRecord
 
-from FL import FakeLab, Font, fl
-from FL.constants import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
-
-# fl is pre-instantiated, take care not to modify the global state
+if TYPE_CHECKING:
+    from FL.objects.Font import Font
 
 
-def get_vfb_path(filename):
-    return Path(__file__).parent / "data" / filename
+class Encoding(UserList[EncodingRecord], Copyable):
+    """
+    Encoding - class to represent Encoding
+    """
 
+    __slots__ = ["_parent", "data"]
 
-def save_vfb_json_file(filename):
-    vfb_path = get_vfb_path(filename)
-    save_vfb_json(vfb_path)
+    # Constructor
 
+    def __init__(self, encoding_or_none: Encoding | None = None) -> None:
+        """
+        Encoding()         - generic constructor, creates Encoding
+        Encoding(Encoding) - copy constructor
 
-class FLTests(unittest.TestCase):
-    def test_instantiation(self):
-        assert isinstance(fl, FakeLab)
+        Args:
+            encoding_or_none (Encoding | None, optional): _description_. Defaults to None.
+        """
+        self._parent: Font | None = None
+        self.data: list[EncodingRecord] = []
+        if isinstance(encoding_or_none, Encoding):
+            self._copy_constructor(encoding_or_none)
+        # ??? We can't inspect a just initialized encoding in FL, it just crashes.
+        # else:
+        #     self._set_default()
 
-    def test_no_font(self):
-        fk = FakeLab()
-        assert fk.font is None
+    def __repr__(self) -> str:
+        if self.parent is None:
+            p = "orpahn"  # sic
+        else:
+            p = f'parent: "{self.parent.font_name or "(null)"}"'
+        return f"<Encoding: {p}>"
 
-    def test_no_font_no_glyph(self):
-        fk = FakeLab()
-        assert fk.glyph is None
+    # Attributes
 
-    def test_font_no_glyph(self):
-        fk = FakeLab()
-        fk.Add(Font())
-        assert isinstance(fk.font, Font)
-        assert fk.glyph is None
+    @property
+    def parent(self) -> Font | None:
+        """
+        Encoding's parent object, Font
+        """
+        return self._parent
 
-    def test_load_empty(self):
-        fk = FakeLab()
-        fk.Open(str(get_vfb_path("empty.vfb")))
-        assert isinstance(fk.font, Font)
-        assert fk.ifont == 0
-        enc = [(e.name, e.unicode) for e in fk.font.encoding]
-        assert enc == [
+    # Operations
+
+    def __delitem__(self, i: int) -> None:
+        """
+        del Encoding[] - remove an element from the encoding
+        """
+        del self.data[i]
+
+    def __getitem__(self, i: int) -> EncodingRecord:
+        """
+        Accesses individial EncodingRecord objects
+        """
+        return self.data[i]
+
+    def __len__(self) -> int:
+        """
+        Return the number of EncodingRecords in the Encoding.
+        """
+        return len(self.data)
+
+    # Methods
+
+    def append(self, encoding_record: EncodingRecord) -> None:
+        """
+        Append an EncodingRecord to the end of the encoding.
+
+        Args:
+            encoding_record (EncodingRecord): _description_
+        """
+        self.data.append(encoding_record)
+
+    def insert(self, index: int, encoding_record: EncodingRecord) -> None:
+        """
+        Insert an EncodingRecord at index.
+
+        Args:
+            index (int): _description_
+            encoding_record (EncodingRecord): _description_
+        """
+        self.data.insert(index, encoding_record)
+
+    def FillUnencoded(self) -> None:
+        raise NotImplementedError
+
+    def FillUnicodes(self) -> None:
+        raise NotImplementedError
+
+    def FindName(self, name: str) -> int:
+        """
+        Find a glyph name in the encoding and return its index or -1.
+
+        Args:
+            name (str): The glyph name
+        """
+        raise NotImplementedError
+
+    def Load(self, filename: str) -> None:
+        """
+        Opens encoding from .ENC format.
+
+        Args:
+            filename (str): _description_
+        """
+        raise NotImplementedError
+
+    def Save(self, filename: str, EncodingTitle: str, Id: int) -> None:
+        """
+        Saves encoding in .ENC format.
+
+        Args:
+            filename (str): _description_
+            EncodingTitle (str): _description_
+            Id (int): _description_
+        """
+        raise NotImplementedError
+
+    # Internal
+
+    def load_font_default(self) -> None:
+        # How is the unicode derived? It is not stored in Encoding in the VFB.
+        for name, uni in (
             ("_0000", -1),
             ("_0001", -1),
             ("_0002", -1),
@@ -302,20 +388,8 @@ class FLTests(unittest.TestCase):
             ("yacute", 253),
             ("thorn", 254),
             ("ydieresis", 255),
-        ]
-
-    def test_generate_otf(self):
-        fk = FakeLab()
-        fk.Open(str(get_vfb_path("mini.vfb")))
-        fk.GenerateFont(0, ftOPENTYPE, str(get_vfb_path("mini.gen.otf")))
-
-    def test_generate_ttf(self):
-        fk = FakeLab()
-        fk.Open(str(get_vfb_path("mini.vfb")))
-        fk.GenerateFont(0, ftTRUETYPE, str(get_vfb_path("mini.gen.ttf")))
-
-    def test_generate_vfb(self):
-        fk = FakeLab()
-        fk.Open(str(get_vfb_path("mini.vfb")))
-        fk.GenerateFont(ftFONTLAB, str(get_vfb_path("mini.gen.vfb")))
-        save_vfb_json_file("mini.gen.vfb")
+        ):
+            rec = EncodingRecord()
+            rec.name = name
+            rec.unicode = uni
+            self.append(rec)
