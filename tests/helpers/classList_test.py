@@ -56,19 +56,19 @@ class ClassListTests(unittest.TestCase):
 
     def test_font(self) -> None:
         f = Font()
-        f.classes = ["a"]
+        f.classes = ["a: a"]
         assert isinstance(f.classes, list)
         assert isinstance(f._classes, ClassList)
         assert f._classes._flags == [0]
 
     def test_font_add(self) -> None:
         f = Font()
-        f.classes += "b"
-        assert f.classes == ["b"]
+        f.classes += ["b: b"]
+        assert f.classes == ["b: b"]
         assert f.GetClassLeft(0) == 0
         assert f.GetClassRight(0) == 0
-        f.classes += "c"
-        assert f.classes == ["b", "c"]
+        f.classes += ["c: c"]
+        assert f.classes == ["b: b", "c: c"]
         assert f.GetClassLeft(1) == 0
         assert f.GetClassRight(1) == 0
         assert f.GetClassLeft(2) is None
@@ -76,12 +76,12 @@ class ClassListTests(unittest.TestCase):
 
     def test_font_iadd(self) -> None:
         f = Font()
-        f.classes = f.classes + ["b"]
-        assert f.classes == ["b"]
+        f.classes = f.classes + ["b: b"]
+        assert f.classes == ["b: b"]
         assert f.GetClassLeft(0) == 0
         assert f.GetClassRight(0) == 0
-        f.classes = f.classes + ["c"]
-        assert f.classes == ["b", "c"]
+        f.classes = f.classes + ["c: c"]
+        assert f.classes == ["b: b", "c: c"]
         assert f.GetClassLeft(1) == 0
         assert f.GetClassRight(1) == 0
         assert f.GetClassLeft(2) is None
@@ -90,17 +90,17 @@ class ClassListTests(unittest.TestCase):
     def test_font_append(self) -> None:
         # Append has no effect
         f = Font()
-        f.classes.append("b")
+        f.classes.append("b: b")
         assert len(f.classes) == 0
 
     def test_font_extend(self) -> None:
         # Extend has no effect
         f = Font()
-        f.classes.extend(["b"])
+        f.classes.extend(["b: b"])
         assert len(f.classes) == 0
 
     def test_font_insert(self) -> None:
         # Insert has no effect
         f = Font()
-        f.classes.insert(0, "b")
+        f.classes.insert(0, "b: b")
         assert len(f.classes) == 0
