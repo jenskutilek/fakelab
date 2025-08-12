@@ -1,6 +1,5 @@
 import unittest
 
-
 from FL.helpers.nametables import StandardNametable
 
 nt = StandardNametable()

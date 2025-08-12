@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import unittest
 
-
 from FL.helpers.FLList import adjust_list
 
 

@@ -1,6 +1,5 @@
 import unittest
 
-
 from FL.objects.Matrix import Matrix
 from FL.objects.Point import Point
 

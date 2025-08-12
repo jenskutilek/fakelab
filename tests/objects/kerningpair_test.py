@@ -1,6 +1,5 @@
 import unittest
 
-
 from FL.objects.KerningPair import KerningPair
 
 
