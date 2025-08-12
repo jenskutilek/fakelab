@@ -285,9 +285,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             s[G.Glyph]["guides"] = self.fake_serialize_guides()
 
         if self.kerning:
-            s[G.Glyph]["kerning"] = {
-                str(pair.key): pair.values for pair in self.kerning
-            }
+            s[G.Glyph]["kerning"] = {pair.key: pair.values for pair in self.kerning}
         imported = self._imported
         if imported:
             s[G.Glyph]["imported"] = imported
