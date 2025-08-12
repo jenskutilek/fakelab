@@ -5,17 +5,17 @@ from FL.helpers.classList import ClassList
 
 
 class ClassListTests(unittest.TestCase):
-    def test_instantiation_empty(self):
+    def test_instantiation_empty(self) -> None:
         c = ClassList()
         assert isinstance(c, ClassList)
         assert c._flags == []
 
-    def test_instantiation(self):
+    def test_instantiation(self) -> None:
         c = ClassList(["_A: A'"])
         assert c == ["_A: A'"]
         assert c._flags == [0]
 
-    def test_instantiation_flags(self):
+    def test_instantiation_flags(self) -> None:
         c = ClassList(["_A: A'"])
         c.SetClassFlags(0, True, True)
         assert c == ["_A: A'"]
@@ -33,7 +33,7 @@ class ClassListTests(unittest.TestCase):
         c = ClassList(["_B: B'"], old_list=c)
         assert c._flags == [1024]
 
-    def test_add(self):
+    def test_add(self) -> None:
         c1 = ClassList(["_A: A'"])
         c2 = ["_O: O'"]
         assert c1 == ["_A: A'"]
@@ -43,7 +43,7 @@ class ClassListTests(unittest.TestCase):
         assert c3._flags == [0, 0]
         assert id(c1) != id(c3)
 
-    def test_iadd(self):
+    def test_iadd(self) -> None:
         c1 = ClassList(["_A: A'"])
         id1 = id(c1)
         c2 = ["_O: O'"]
@@ -54,14 +54,14 @@ class ClassListTests(unittest.TestCase):
         assert c1._flags == [0, 0]
         assert id1 == id(c1)
 
-    def test_font(self):
+    def test_font(self) -> None:
         f = Font()
         f.classes = ["a"]
         assert isinstance(f.classes, list)
         assert isinstance(f._classes, ClassList)
         assert f._classes._flags == [0]
 
-    def test_font_add(self):
+    def test_font_add(self) -> None:
         f = Font()
         f.classes += "b"
         assert f.classes == ["b"]
@@ -74,7 +74,7 @@ class ClassListTests(unittest.TestCase):
         assert f.GetClassLeft(2) is None
         assert f.GetClassRight(2) is None
 
-    def test_font_iadd(self):
+    def test_font_iadd(self) -> None:
         f = Font()
         f.classes = f.classes + ["b"]
         assert f.classes == ["b"]
@@ -87,19 +87,19 @@ class ClassListTests(unittest.TestCase):
         assert f.GetClassLeft(2) is None
         assert f.GetClassRight(2) is None
 
-    def test_font_append(self):
+    def test_font_append(self) -> None:
         # Append has no effect
         f = Font()
         f.classes.append("b")
         assert len(f.classes) == 0
 
-    def test_font_extend(self):
+    def test_font_extend(self) -> None:
         # Extend has no effect
         f = Font()
         f.classes.extend(["b"])
         assert len(f.classes) == 0
 
-    def test_font_insert(self):
+    def test_font_insert(self) -> None:
         # Insert has no effect
         f = Font()
         f.classes.insert(0, "b")
