@@ -58,11 +58,14 @@ test = [
     "pytest-mock",          # mocker fixtures for monkey patching
     "pytest-mypy",          # type hinting verifier (--mypy)
     "pytest-pylint",        # static code analysis (--pylint)
+    "ruff",
 ]
 
 dev = [
     "build",                # packaging build frontend
+    "flake8",
     "wheel",                # build system (also downloaded during build)
+    "ruff",
     "setuptools-scm[toml]"  # git tags-based versioning (also downloaded during build)
 ]
 
@@ -155,11 +158,11 @@ exclude = '[\\/]_version\.py$'
 line-length = 88
 target-version = ["py311"]
 
+[tool.ruff]
+extend-exclude =  ["examples"]
 
-[tool.isort]
-known_first_party = ["FL"]
-profile = "black"
-
+[tool.ruff.lint.isort]
+known-first-party = ["FL"]
 
 [tool.coverage.run]
 data_file = "build/tests/coverage.sqlite"
