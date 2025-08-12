@@ -942,13 +942,27 @@ class Font(FakeFont):
         self._license_url: str = ""
         self._custom_cmaps: list[CustomCmap] = []
         self._export_pclt_table: int = 0
-        self._pclt_table: dict[str, Any] = {}
+        self._pclt_table: dict[str, Any] = {
+            "font_number": 0,
+            "pitch": 0,
+            "x_height": 0,
+            "style": 0,
+            "type_family": 0,
+            "cap_height": 0,
+            "symbol_set": 0,
+            "typeface": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+            "character_complement": [0] * 8,
+            "file_name": "\u0000\u0000\u0000\u0000\u0000\u0000",
+            "stroke_weight": 0,
+            "width_type": 0,
+            "serif_style": 0,
+        }
         self._export_options: list[str] = []
         self._ot_export_options: list[dict[str, int]] = []
         self._axis_count: int = 0
         self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]
-        self._axis_mappings: list[list[float]] = [[0.0, 0.0] * 40]
+        self._axis_mappings: list[tuple[float, float]] = [(0.0, 0.0)] * 40
         self._kerning_class_flags: dict[str, tuple[int, int]] = {}
         self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         self._master_names = ["Untitled"]
