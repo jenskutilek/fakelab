@@ -30,6 +30,7 @@ class TTStem(Copyable):
     ) -> None:
         self._name = ""
         self._width = 0
+        self._ppm1 = 0  # Not in API
         self._ppm2 = 0
         self._ppm3 = 0
         self._ppm4 = 0
@@ -71,6 +72,7 @@ class TTStem(Copyable):
             upm (int): The units per em of the font
         """
         self.width = width
+        self._ppm1 = 0
         self.ppm2 = int(upm // self.width * 1.5)
         self.ppm3 = int(upm // self.width * 2.5)
         self.ppm4 = int(upm // self.width * 3.5)
