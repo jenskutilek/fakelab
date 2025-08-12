@@ -15,5 +15,5 @@ typing-extensions==4.14.1
 ufo2ft==3.6.0
 ufolib2==0.18.1
 ufonormalizer==0.6.2
-vfblib==0.10.3
+vfblib==0.10.4
 wcwidth==0.2.13

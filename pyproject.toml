@@ -46,7 +46,7 @@ repl = [
 vfb = [
     # Optional for a lean test framework
     # Load and save VFB files
-    "vfbLib >= 0.10.3",
+    "vfbLib >= 0.10.4",
 ]
 
 test = [
