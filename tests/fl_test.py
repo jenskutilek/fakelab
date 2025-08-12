@@ -11,34 +11,34 @@ from FL.constants import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 # fl is pre-instantiated, take care not to modify the global state
 
 
-def get_vfb_path(filename):
+def get_vfb_path(filename: str) -> Path:
     return Path(__file__).parent / "data" / filename
 
 
-def save_vfb_json_file(filename):
+def save_vfb_json_file(filename: str) -> None:
     vfb_path = get_vfb_path(filename)
     save_vfb_json(vfb_path)
 
 
 class FLTests(unittest.TestCase):
-    def test_instantiation(self):
+    def test_instantiation(self) -> None:
         assert isinstance(fl, FakeLab)
 
-    def test_no_font(self):
+    def test_no_font(self) -> None:
         fk = FakeLab()
         assert fk.font is None
 
-    def test_no_font_no_glyph(self):
+    def test_no_font_no_glyph(self) -> None:
         fk = FakeLab()
         assert fk.glyph is None
 
-    def test_font_no_glyph(self):
+    def test_font_no_glyph(self) -> None:
         fk = FakeLab()
         fk.Add(Font())
         assert isinstance(fk.font, Font)
         assert fk.glyph is None
 
-    def test_load_empty(self):
+    def test_load_empty(self) -> None:
         fk = FakeLab()
         fk.Open(str(get_vfb_path("empty.vfb")))
         assert isinstance(fk.font, Font)
@@ -303,17 +303,17 @@ class FLTests(unittest.TestCase):
             ("ydieresis", 255),
         ]
 
-    def test_generate_otf(self):
+    def test_generate_otf(self) -> None:
         fk = FakeLab()
         fk.Open(str(get_vfb_path("mini.vfb")))
         fk.GenerateFont(0, ftOPENTYPE, str(get_vfb_path("mini.gen.otf")))
 
-    def test_generate_ttf(self):
+    def test_generate_ttf(self) -> None:
         fk = FakeLab()
         fk.Open(str(get_vfb_path("mini.vfb")))
         fk.GenerateFont(0, ftTRUETYPE, str(get_vfb_path("mini.gen.ttf")))
 
-    def test_generate_vfb(self):
+    def test_generate_vfb(self) -> None:
         fk = FakeLab()
         fk.Open(str(get_vfb_path("mini.vfb")))
         fk.GenerateFont(ftFONTLAB, str(get_vfb_path("mini.gen.vfb")))
