@@ -5,7 +5,7 @@ description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
 
 readme = "README.md"
-license = {text = "proprietary"}
+license = "GPL-3.0-or-later"
 
 authors = [{name = "Jens Kutílek", email = "webmail@kutilek.de"}]
 classifiers = [
@@ -33,7 +33,7 @@ all = [
 
 generate = [
     # Generate actual fonts with ufo2ft
-    "ufo2ft >= 3.4.2",
+    "ufo2ft >= 3.6.0",
     "fakelab[vfb]",
 ]
 
@@ -45,7 +45,7 @@ repl = [
 vfb = [
     # Optional for a lean test framework
     # Load and save VFB files
-    "vfbLib >= 0.10.2",
+    "vfbLib >= 0.10.3",
 ]
 
 test = [
