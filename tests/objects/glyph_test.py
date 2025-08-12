@@ -9,14 +9,15 @@ glyph_a = {
     "name": "a",
     "num_masters": 1,
     "nodes": [
-        {"type": "move", "flags": 3, "points": [[[77, 359]]]},
-        {"type": "curve", "flags": 3, "points": [[[272, 106], [77, 219], [164, 106]]]},
-        {"type": "curve", "flags": 3, "points": [[[468, 359], [380, 106], [468, 219]]]},
-        {"type": "curve", "flags": 3, "points": [[[272, 613], [468, 499], [380, 613]]]},
-        {"type": "curve", "flags": 3, "points": [[[77, 359], [164, 613], [77, 499]]]},
+        {"type": "move", "flags": 3, "points": [[(77, 359)]]},
+        {"type": "curve", "flags": 3, "points": [[(272, 106), (77, 219), (164, 106)]]},
+        {"type": "curve", "flags": 3, "points": [[(468, 359), (380, 106), (468, 219)]]},
+        {"type": "curve", "flags": 3, "points": [[(272, 613), (468, 499), (380, 613)]]},
+        {"type": "curve", "flags": 3, "points": [[(77, 359), (164, 613), (77, 499)]]},
     ],
     "metrics": [[556, 0]],
     "kerning": {4: [-100]},
+    "components": [],
 }
 
 
