@@ -1,5 +1,7 @@
 import unittest
 
+from vfbLib.enum import G
+
 from FL.objects.Glyph import Glyph
 from FL.objects.Point import Point
 
@@ -26,11 +28,11 @@ class GlyphTests(unittest.TestCase):
     def test_deserialize(self) -> None:
         # Deserialize the Glyph object from json.
         g = Glyph()
-        g.fake_deserialize("Glyph", glyph_a)
+        g.fake_deserialize(G.Glyph, glyph_a)
         assert g.name == "a"
         assert len(g) == 5  # number of nodes
         assert g.GetMetrics() == Point(556, 0)
         assert len(g.kerning) == 1
 
         s = g.fake_serialize()
-        assert s["Glyph"] == glyph_a
+        assert s[G.Glyph] == glyph_a
