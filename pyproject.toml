@@ -74,7 +74,7 @@ doc = [
 "Homepage" = "https://github.com/jenskutilek/fakelab"
 "Documentation" = "https://fakelab.readthedocs.io/"
 "Bug Tracker" = "https://github.com/jenskutilek/fakelab/issues"
-"Changelog" = "https://github.com/jenskutilek/fakelab/blob/develop/docs/CHANGELOG.md"
+"Changelog" = "https://github.com/jenskutilek/fakelab/blob/main/CHANGELOG.md"
 
 [project.scripts]
 fakelab = "FL.cmdline:main"
