@@ -1,7 +1,6 @@
-import pytest
-
-from FL import fl, Component, Font, Glyph, Point
 from fakeLabDemo.selection.composites import selectComposites
+
+from FL import Component, Font, Glyph, Point, fl
 
 
 def test_selectComposites():

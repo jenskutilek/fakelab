@@ -1,6 +1,5 @@
 import unittest
 
-import pytest
 
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect

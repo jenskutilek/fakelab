@@ -4,7 +4,6 @@ from FL.fake.Base import Copyable
 
 
 class EncodingRecord(Copyable):
-
     __slots__ = ["_name", "_unicode"]
 
     # Constructor

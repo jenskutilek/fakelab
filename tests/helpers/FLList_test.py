@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-import pytest
 
-from FL.helpers.FLList import FLList, adjust_list
+from FL.helpers.FLList import adjust_list
 
 
 class FLListTests(unittest.TestCase):

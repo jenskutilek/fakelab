@@ -1,6 +1,5 @@
 import unittest
 
-import pytest
 
 from FL.objects.Node import Node, nLINE
 from FL.objects.Point import Point

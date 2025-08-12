@@ -1,6 +1,5 @@
 import unittest
 
-import pytest
 
 from FL.objects.TTStem import TTStem
 

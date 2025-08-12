@@ -1,8 +1,8 @@
-import pytest
 import unittest
+from pathlib import Path
+
 
 from FL import Options
-from pathlib import Path
 
 
 def get_reg_path(filename):

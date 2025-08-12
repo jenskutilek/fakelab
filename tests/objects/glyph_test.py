@@ -1,6 +1,5 @@
 import unittest
 
-import pytest
 
 from FL.objects.Glyph import Glyph
 from FL.objects.Point import Point

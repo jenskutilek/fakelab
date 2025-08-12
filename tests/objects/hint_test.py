@@ -2,7 +2,6 @@ import unittest
 
 import pytest
 
-from FL.objects.Glyph import Glyph
 from FL.objects.Hint import Hint
 
 

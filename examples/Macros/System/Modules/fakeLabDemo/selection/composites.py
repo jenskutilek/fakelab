@@ -44,6 +44,4 @@ def selectComposites(font):
     """
     Select composites in font.
     """
-    setSelection(
-        font, [glyph.name for glyph in font.glyphs if glyph.components]
-    )
+    setSelection(font, [glyph.name for glyph in font.glyphs if glyph.components])

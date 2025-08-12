@@ -3,7 +3,6 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-import pytest
 from vfbLib.json import save_vfb_json
 
 from FL import FakeLab, Font, fl

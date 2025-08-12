@@ -1,8 +1,9 @@
-import pytest
 import unittest
+from pathlib import Path
+
+import pytest
 
 from FL.helpers.registry import parse_registry_file
-from pathlib import Path
 
 
 def get_reg_path(filename):
