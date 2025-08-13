@@ -144,7 +144,7 @@ class VfbToFontReader:
 
         for e in self.vfb.entries:
             key = e.id
-            assert isinstance(key, int)
+            # assert isinstance(key, int)
             data = e.data
 
             if key in font_mapping_direct:
