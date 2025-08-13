@@ -358,8 +358,8 @@ class Font(FakeFont):
         self._set_file_name(None)  # TODO: What if the font already is loaded from disk?
         try:
             reader = VfbToFontReader(Path(filename))
-            self.fake_vfb_object = reader.vfb
             reader.read(self)
+            self.fake_vfb_object = reader.vfb
         except:  # noqa: E722
             raise
             return 0
