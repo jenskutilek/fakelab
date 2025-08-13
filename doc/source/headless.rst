@@ -61,3 +61,30 @@ experience with autocompletion, history, and other niceties. If both are install
 
 See `ptpython <https://github.com/prompt-toolkit/ptpython>`_ or 
 `ipython <https://github.com/ipython/ipython>`_ for more information on those packages.
+
+
+Limitations
+-----------
+
+Did I mention that only a small part of all FontLab Studio 5 Python API methods is
+implemented? I plan to add them as needed, or you can help with that.
+
+
+Generating fonts
+~~~~~~~~~~~~~~~~
+
+When FakeLab is installed with the `generate` extra, or the `ufo2ft` package is
+installed in the Python environment, FakeLab can generate actual fonts.
+
+This is achieved by converting the internal `Font` object to UFO(s) using the
+`VfbToUfoBuilder` from `vfbLib`, and then generating binary fonts with `compileOTF` or
+`compileTTF` from `ufo2ft`.
+
+Note that those generated fonts won't be binary-compatible with those generated from the
+actual FLS5.
+
+*  FontLab's high-level TrueType commands are not compiled to TrueType bytecode, which
+   `ufo2ft` would pick up
+*  `ufo2ft` does not output PostScript hinting present in the UFO
+*  Interpolation is not supported
+*  OpenType layout features are compiled by `fontTools.feaLib` instead of the AFDKO.
