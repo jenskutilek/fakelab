@@ -1,4 +1,4 @@
-﻿FL.objects.TTGasp
+FL.objects.TTGasp
 =================
 
 .. automodule:: FL.objects.TTGasp

@@ -1,4 +1,4 @@
-﻿FL.objects.Encoding
+FL.objects.Encoding
 ===================
 
 .. automodule:: FL.objects.Encoding

@@ -1,4 +1,4 @@
-﻿FL.objects.NameRecord
+FL.objects.NameRecord
 =====================
 
 .. automodule:: FL.objects.NameRecord

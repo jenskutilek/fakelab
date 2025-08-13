@@ -1,4 +1,4 @@
-﻿FL.objects.Point
+FL.objects.Point
 ================
 
 .. automodule:: FL.objects.Point

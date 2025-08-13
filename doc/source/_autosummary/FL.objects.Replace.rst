@@ -1,4 +1,4 @@
-﻿FL.objects.Replace
+FL.objects.Replace
 ==================
 
 .. automodule:: FL.objects.Replace

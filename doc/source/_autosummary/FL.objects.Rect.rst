@@ -1,4 +1,4 @@
-﻿FL.objects.Rect
+FL.objects.Rect
 ===============
 
 .. automodule:: FL.objects.Rect

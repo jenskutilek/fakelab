@@ -1,4 +1,4 @@
-﻿FL.objects.KerningPair
+FL.objects.KerningPair
 ======================
 
 .. automodule:: FL.objects.KerningPair

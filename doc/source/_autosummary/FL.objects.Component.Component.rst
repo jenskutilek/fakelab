@@ -19,6 +19,8 @@ FL.objects.Component.Component
       ~Component.Get
       ~Component.Paste
       ~Component.__init__
+      ~Component.fake_deserialize
+      ~Component.fake_serialize
    
    
 

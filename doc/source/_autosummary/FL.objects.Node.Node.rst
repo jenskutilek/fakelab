@@ -36,9 +36,9 @@ FL.objects.Node.Node
 
    .. autosummary::
    
-      ~Node.type
       ~Node.alignment
       ~Node.selected
+      ~Node.type
       ~Node.count
       ~Node.parent
       ~Node.point

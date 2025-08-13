@@ -1,4 +1,4 @@
-﻿FL.objects.Dialog
+FL.objects.Dialog
 =================
 
 .. automodule:: FL.objects.Dialog

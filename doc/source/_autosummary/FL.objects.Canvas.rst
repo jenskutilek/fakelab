@@ -1,4 +1,4 @@
-﻿FL.objects.Canvas
+FL.objects.Canvas
 =================
 
 .. automodule:: FL.objects.Canvas

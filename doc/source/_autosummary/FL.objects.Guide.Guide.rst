@@ -19,6 +19,8 @@ FL.objects.Guide.Guide
       ~Guide.Transform
       ~Guide.TransformLayer
       ~Guide.__init__
+      ~Guide.fake_angle_to_width
+      ~Guide.fake_width_to_angle
    
    
 
@@ -28,6 +30,11 @@ FL.objects.Guide.Guide
 
    .. autosummary::
    
+      ~Guide.angle
       ~Guide.parent
+      ~Guide.position
+      ~Guide.positions
+      ~Guide.width
+      ~Guide.widths
    
    

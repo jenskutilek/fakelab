@@ -40,14 +40,22 @@ FL.objects.Font.Font
       ~Font.fake_binary_from_path
       ~Font.fake_binary_get
       ~Font.fake_bounding_rect
+      ~Font.fake_clear_defaults
       ~Font.fake_deselect_all
+      ~Font.fake_deserialize_axis
+      ~Font.fake_deserialize_features
+      ~Font.fake_deserialize_guide_properties
+      ~Font.fake_deserialize_guides
       ~Font.fake_get_afm
       ~Font.fake_get_afm_kerning
       ~Font.fake_get_inf
       ~Font.fake_save_afm_expanded
       ~Font.fake_select
+      ~Font.fake_serialize_axis
+      ~Font.fake_serialize_features
+      ~Font.fake_serialize_guide_properties
+      ~Font.fake_serialize_guides
       ~Font.fake_set_class_flags
-      ~Font.fake_set_features
       ~Font.fake_sort_glyphs
       ~Font.fake_sort_kerning
       ~Font.fake_update
@@ -122,7 +130,6 @@ FL.objects.Font.Font
       ~Font.unique_id
       ~Font.upm
       ~Font.vendor_url
-      ~Font.vendor
       ~Font.version_major
       ~Font.version_minor
       ~Font.version
@@ -145,6 +152,7 @@ FL.objects.Font.Font
       ~Font.fontnames
       ~Font.glyphs
       ~Font.truetypetables
+      ~Font.vendor
       ~Font.xuid
       ~Font.xuid_num
    

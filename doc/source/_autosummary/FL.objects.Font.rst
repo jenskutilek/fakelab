@@ -1,4 +1,4 @@
-﻿FL.objects.Font
+FL.objects.Font
 ===============
 
 .. automodule:: FL.objects.Font

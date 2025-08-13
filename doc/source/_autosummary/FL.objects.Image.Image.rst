@@ -16,10 +16,31 @@ FL.objects.Image.Image
 
    .. autosummary::
    
+      ~Image.Clear
+      ~Image.Create
+      ~Image.GetPixel
+      ~Image.HLine
+      ~Image.ImageBlt
+      ~Image.Invert
+      ~Image.SetPixel
+      ~Image.Trace
       ~Image.__init__
+      ~Image.fake_deserialize
+      ~Image.fake_serialize
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Image.data
+      ~Image.empty
+      ~Image.height
+      ~Image.size
+      ~Image.traceenabled
+      ~Image.width
    
    

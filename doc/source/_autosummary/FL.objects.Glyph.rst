@@ -1,4 +1,4 @@
-﻿FL.objects.Glyph
+FL.objects.Glyph
 ================
 
 .. automodule:: FL.objects.Glyph

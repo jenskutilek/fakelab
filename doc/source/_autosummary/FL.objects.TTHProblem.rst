@@ -1,4 +1,4 @@
-﻿FL.objects.TTHProblem
+FL.objects.TTHProblem
 =====================
 
 .. automodule:: FL.objects.TTHProblem

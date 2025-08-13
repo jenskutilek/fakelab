@@ -1,4 +1,4 @@
-﻿FL.objects.Hint
+FL.objects.Hint
 ===============
 
 .. automodule:: FL.objects.Hint

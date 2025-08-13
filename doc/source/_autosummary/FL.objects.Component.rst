@@ -1,4 +1,4 @@
-﻿FL.objects.Component
+FL.objects.Component
 ====================
 
 .. automodule:: FL.objects.Component

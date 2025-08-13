@@ -17,6 +17,22 @@ FL.objects.TTInfo.TTInfo
    .. autosummary::
    
       ~TTInfo.__init__
+      ~TTInfo.fake_deserialize
+      ~TTInfo.fake_deserialize_gasp
+      ~TTInfo.fake_deserialize_stems
+      ~TTInfo.fake_deserialize_vdmx
+      ~TTInfo.fake_deserialize_zone_deltas
+      ~TTInfo.fake_deserialize_zones
+      ~TTInfo.fake_get_binary
+      ~TTInfo.fake_serialize
+      ~TTInfo.fake_serialize_gasp
+      ~TTInfo.fake_serialize_stem_ppems
+      ~TTInfo.fake_serialize_stem_ppems1
+      ~TTInfo.fake_serialize_stems
+      ~TTInfo.fake_serialize_vdmx
+      ~TTInfo.fake_serialize_zone_deltas
+      ~TTInfo.fake_serialize_zones
+      ~TTInfo.fake_set_binary
    
    
 

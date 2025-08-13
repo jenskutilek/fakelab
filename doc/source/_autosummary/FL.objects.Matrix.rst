@@ -1,4 +1,4 @@
-﻿FL.objects.Matrix
+FL.objects.Matrix
 =================
 
 .. automodule:: FL.objects.Matrix

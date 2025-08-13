@@ -1,4 +1,4 @@
-﻿FL.objects.TrueTypeTable
+FL.objects.TrueTypeTable
 ========================
 
 .. automodule:: FL.objects.TrueTypeTable

@@ -17,6 +17,8 @@ FL.objects.TTVdmx.TTVdmx
    .. autosummary::
    
       ~TTVdmx.__init__
+      ~TTVdmx.fake_deserialize
+      ~TTVdmx.fake_serialize
    
    
 
