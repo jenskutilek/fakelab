@@ -24,11 +24,14 @@ class Feature(Copyable):  # Or TagObject?
         self, feature_or_tag: Feature | str | None = None, value: str | None = None
     ) -> None:
         """
-        - `Feature()`: generic constructor, creates an empty Feature record
-        - `Feature(Feature)`: copy constructor
-        - `Feature(string tag)`: creates feature, assigns 'tag' and empty value
-        - `Feature(string tag, string value)`: creates feature and assigns values to both
-          attributes
+        Feature()
+            generic constructor, creates an empty Feature record
+        Feature(Feature)
+            copy constructor
+        Feature(string tag)
+            creates feature, assigns 'tag' and empty value
+        Feature(string tag, string value)
+            creates feature and assigns values to both attributes
 
         Args:
             feature_or_tag (Feature | str | None, optional): _description_. Defaults to None.
