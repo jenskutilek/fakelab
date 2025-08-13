@@ -9,6 +9,9 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+__doc__ = "Class to represent a kerning pair"
+
+
 class KerningPair(Copyable):
     """
     Class to represent kerning pair. This class is Multiple Master-compatible.

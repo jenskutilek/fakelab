@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+__doc__ = "Class to represent a glyph component"
+
+
 class Component(Copyable):
     """
     Component - class to represent glyph component

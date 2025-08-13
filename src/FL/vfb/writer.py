@@ -16,6 +16,9 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
+__doc__ = "VFB file writer"
+
+
 class FontToVfbWriter:
     """
     Convert the Font object to the low-level `vfbLib.vfb.vfb.Vfb` structure and write it

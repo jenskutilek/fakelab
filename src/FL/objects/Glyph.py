@@ -43,6 +43,9 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+__doc__ = "Class to represent a glyph"
+
+
 class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     """
     A glyph

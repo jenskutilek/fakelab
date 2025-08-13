@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "Class to represent a custom OpenType table"
+
+
 class TrueTypeTable(Copyable):
     """
     TrueTypeTable - class to represent custom OpenType table

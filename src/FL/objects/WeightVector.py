@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "Class to represent a weight vector"
+
+
 class WeightVector(Copyable):
     """This class is completely undocumented.
 

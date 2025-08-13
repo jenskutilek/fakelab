@@ -3,6 +3,8 @@ from __future__ import annotations
 from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
+__doc__ = "Class to represent a visual TrueType point"
+
 
 class TTHPoint(Copyable):
     """

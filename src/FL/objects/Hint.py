@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
+__doc__ = "Class to represent a PostScript hint"
+
+
 class Hint(Copyable):
     """
     Hint - class to represent hint

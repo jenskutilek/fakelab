@@ -5,6 +5,8 @@ from typing import Any
 from FL.fake.Base import Copyable
 from FL.objects.Matrix import Matrix
 
+__doc__ = "Class to represent a point"
+
 
 class Point(Copyable):
     __slots__ = ["_parent", "_x", "_y"]

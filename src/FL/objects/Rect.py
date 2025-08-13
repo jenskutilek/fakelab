@@ -9,15 +9,14 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
+__doc__ = "Class to represent a rectangle"
+
+
 class Rect(Copyable):
     """
-    Rect()                   - generic constructor, creates a Rect with zero coordinates
-    Rect(Rect r)             - copy constructor
-    Rect(Point p)            - creates rectangle with one corner at (0, 0) and another
-                               at coordinates defined by p
-    Rect(Point p0, Point p1) - creates rectangle defined by the corner points
-    Rect(x0, y0, x1, y1)     - creates a rectangle defined by the coordinates of the
-                               corner points
+    Rect - base class to represent rectangle
+
+    Integer or float values are accepted as coordinates
     """
 
     __slots__ = ["_x0", "_y0", "_x1", "_y1"]

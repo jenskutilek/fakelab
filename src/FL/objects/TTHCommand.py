@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from FL.helpers.tth import TT_COMMANDS
 
+__doc__ = "Class to represent a visual TrueType instruction"
+
 
 class TTHCommand:
     """

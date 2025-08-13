@@ -4,10 +4,12 @@ from vfbLib.typing import TTStemDict
 
 from FL.fake.Base import Copyable
 
+__doc__ = "Class to represent a TrueType stem definition"
+
 
 class TTStem(Copyable):
     """
-    TTStem - class to represent TrueType-Stem
+    TTStem - class to represent a TrueType stem definition
 
     TTStem.__doc__ reports only 'TTStem' ... so use this information with care
     """

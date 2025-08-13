@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "Class to represent an OpenType feature-definition record"
+
+
 class Feature(Copyable):  # Or TagObject?
     """
     OpenType feature-definition record

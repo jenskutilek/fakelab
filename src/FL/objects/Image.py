@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from FL.objects.Rect import Rect
 
 
+__doc__ = "Class to represent a background image"
+
+
 class Image:
     __slots__ = [
         "_data",

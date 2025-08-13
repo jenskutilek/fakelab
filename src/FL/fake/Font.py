@@ -14,6 +14,11 @@ if TYPE_CHECKING:
     from FL.objects.Uni import Uni
 
 
+__doc__ = """
+Base class for Font
+"""
+
+
 class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
     __slots__ = [
         "_fake_binaries",

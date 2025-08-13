@@ -23,6 +23,9 @@ if TYPE_CHECKING:
     from FL.objects.TrueTypeTable import TrueTypeTable
 
 
+__doc__ = "Class to represent a font"
+
+
 class Font(FakeFont):
     """
     Base class to represent a font

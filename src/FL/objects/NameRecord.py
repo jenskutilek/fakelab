@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "Class to represent an OpenType name table record"
+
+
 class NameRecord(Copyable):
     """
     NameRecord - class to represent OpenType name table record

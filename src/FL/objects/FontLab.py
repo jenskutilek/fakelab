@@ -13,6 +13,9 @@ if TYPE_CHECKING:
     from FL.objects.Uni import Uni
 
 
+__doc__ = "Class to represent the FontLab program interface"
+
+
 class FakeLab:
     """
     The FontLab program interface

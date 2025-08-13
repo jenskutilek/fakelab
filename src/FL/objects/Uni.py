@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from FL.fake.Base import Copyable
 
+__doc__ = "Class to represent a Unicode codepoint"
+
 
 class Uni(Copyable):
     """
-    Uni - class to represent Unicode index
+    Uni - class to represent a Unicode codepoint
 
     This class is necessary to distinguish integers and Unicode indexes. Integers are
     usually read as glyph indexes, so it is necessary to create Uni objects to access

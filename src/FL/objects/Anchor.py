@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
+__doc__ = "Class to represent an anchor point"
+
+
 class Anchor(Copyable):
     """
     Anchor - class to represent Anchor point

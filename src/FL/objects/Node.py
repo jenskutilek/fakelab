@@ -28,6 +28,9 @@ vfb2json_node_conns = {0: nSHARP, 1: nSMOOTH, 2: nCLOSEPATH, 3: nFIXED}
 json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
 
 
+__doc__ = "Class to represent a node"
+
+
 class Node(Copyable):
     __slots__ = [
         "alignment",

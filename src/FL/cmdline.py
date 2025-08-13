@@ -24,6 +24,12 @@ try:
 except ImportError:
     have_ipython = False
 
+
+__doc__ = """
+The interactive console
+"""
+
+
 logger = logging.getLogger(__name__)
 
 

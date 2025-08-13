@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+__doc__ = "Class to represent a TrueType point"
+
 
 class TTPoint:
     """
-    TTPoint - class to represent TrueType points
+    TTPoint - class to represent a TrueType point
 
     All coordinates in TTPoint class are set in 10.6 fixed-point format
     """

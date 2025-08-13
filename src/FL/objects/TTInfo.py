@@ -11,6 +11,8 @@ from FL.objects.TTGasp import TTGasp
 from FL.objects.TTStem import TTStem
 from FL.objects.TTVdmx import TTVdmx
 
+__doc__ = "Class to represent TrueType information"
+
 
 class TTInfo(Copyable):
     """

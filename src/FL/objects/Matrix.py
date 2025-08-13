@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Point import Point
 
 
+__doc__ = "Class to represent planar transformations"
+
+
 class Matrix(Copyable):
     """
     Matrix - class to represent planar transformations

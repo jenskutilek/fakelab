@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "VFB file reader"
+
+
 logger = logging.getLogger(__name__)
 
 

@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
+__doc__ = "Class to represent the FontLab options interface"
+
+
 class Options:
     """
     Options() - generic constructor
@@ -1056,11 +1059,15 @@ class Options:
         Returns:
             int: _description_
 
-        checked:  - Ignore Unicode indexes in the font
-        option    - Use following codepage for first 256 glyphs:
-                    Do not reencode first 256 glyphs
-        unchecked - Export only first 256 glyphs of the selected codepage
-        unchecked - Put MS Char Set value into fsSelection field
+        checked
+            Ignore Unicode indexes in the font
+        option
+            Use following codepage for first 256 glyphs:
+            Do not reencode first 256 glyphs
+        unchecked
+            Export only first 256 glyphs of the selected codepage
+        unchecked
+            Put MS Char Set value into fsSelection field
         """
         return self._TTEExportUnicode
 

@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
+__doc__ = "Class to represent a guideline"
+
+
 class Guide(Copyable):
     # Constructor
 

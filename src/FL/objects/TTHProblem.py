@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+__doc__ = "Class to represent a TrueType instruction problem"
+
 
 class TTHProblem:
     """
-    TTHProblem - class to represent TrueType problems
+    TTHProblem - class to represent a TrueType instruction problem
     """
 
     __slots__ = ["_id", "_command", "_direction"]

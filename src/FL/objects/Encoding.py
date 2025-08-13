@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "Class to represent an encoding"
+
+
 class Encoding(UserList[EncodingRecord], Copyable):
     """
     Encoding - class to represent Encoding

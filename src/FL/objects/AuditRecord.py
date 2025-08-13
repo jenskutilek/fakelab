@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+__doc__ = "Class to represent a font audit error record"
+
+
 class AuditRecord:
     """
     AuditRecord - class to represent Font Audit error record
