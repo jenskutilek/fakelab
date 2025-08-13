@@ -21,10 +21,14 @@ class Guide(Copyable):
         """
         Guide - class to represent guideline
 
-        Guide()                - generic constructor, creates a Guide with zero coordinates
-        Guide(Guide)           - copy constructor
-        Guide(position)        - creates a Guide and assigns position
-        Guide(position, angle) - creates a Guide and assigns position and width values
+        Guide()
+            generic constructor, creates a Guide with zero coordinates
+        Guide(Guide)
+            copy constructor
+        Guide(position)
+            creates a Guide and assigns position
+        Guide(position, angle)
+            creates a Guide and assigns position and width values
 
         Args:
             guide_or_position (Guide | int | None, optional): The guide to be copied,

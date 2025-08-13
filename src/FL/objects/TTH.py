@@ -45,10 +45,12 @@ class TTH:
 
     def __init__(self, g: Glyph | None = None, f: Font | None = None) -> None:
         """
-        TTH()                - generic constructor, creates an empty TTH
-        TTH(Glyph g)         - creates TTH, assigns 'g' as glyph and 'parent' of 'g' as
-                               font
-        TTH(Glyph g, Font f) - creates TTH, assigns 'g' as glyph and 'f' as font
+        TTH()
+            generic constructor, creates an empty TTH
+        TTH(Glyph g)
+            creates TTH, assigns 'g' as glyph and 'parent' of 'g' as font
+        TTH(Glyph g, Font f)
+            creates TTH, assigns 'g' as glyph and 'f' as font
 
         Args:
             g (Glyph | None, optional): _description_. Defaults to None.

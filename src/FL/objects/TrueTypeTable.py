@@ -24,16 +24,17 @@ class TrueTypeTable(Copyable):
         valuelen: int | None = None,
     ) -> None:
         """
-        TrueTypeTable()              - generic constructor, creates an empty
-                                       TrueTypeTable record
-        TrueTypeTable(TrueTypeTable) - copy constructor
-        TrueTypeTable(string tag)    - creates table, assigns 'tag' and empty value
+        TrueTypeTable()
+            generic constructor, creates an empty TrueTypeTable record
+        TrueTypeTable(TrueTypeTable)
+            copy constructor
+        TrueTypeTable(string tag)
+            creates table, assigns 'tag' and empty value
         TrueTypeTable(string tag, string value)
-                                     - creates TrueType table and assigns values to both
-                                       attributes
+            creates TrueType table and assigns values to both attributes
         TrueTypeTable(string tag, string value, integer valuelen)
-                                     - creates TrueType table and assigns values to both
-                                       attributes.
+            creates TrueType table and assigns values to both attributes.
+
         'value' may include zeroes
 
         Args:

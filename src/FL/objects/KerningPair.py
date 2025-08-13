@@ -22,12 +22,14 @@ class KerningPair(Copyable):
         self, kerningpair_or_index: KerningPair | int | None = None, value: int = 0
     ) -> None:
         """
-        KerningPair()             - generic constructor, creates an empty KerningPair
-        KerningPair(KerningPair)  - copy constructor
-        KerningPair(index)        - creates a KerningPair to glyph referenced by index
-                                    but zero value
-        KerningPair(index, value) - creates a KerningPair to glyph referenced by index
-                                    but and assigns value
+        KerningPair()
+            generic constructor, creates an empty KerningPair
+        KerningPair(KerningPair)
+            copy constructor
+        KerningPair(index)
+            creates a KerningPair to glyph referenced by index but zero value
+        KerningPair(index, value)
+            creates a KerningPair to glyph referenced by index and assigns value
 
         Args:
             kerningpair_or_index (KerningPair | int | None, optional): _description_. Defaults to None.

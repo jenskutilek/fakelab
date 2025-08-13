@@ -29,13 +29,6 @@ json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
 
 
 class Node(Copyable):
-    """
-    Node() - generic constructor, creates an empty node
-    Node(Node) - copy constructor
-    Node(integer type, Point p) - creates a Node and assigns type and
-    coordinates of the final point
-    """
-
     __slots__ = [
         "alignment",
         "selected",
@@ -51,10 +44,12 @@ class Node(Copyable):
         self, node_or_type: Node | int | None = None, p: Point | None = None
     ) -> None:
         """
-        Node()                      - generic constructor, creates an empty node
-        Node(Node)                  - copy constructor
-        Node(integer type, Point p) - creates a Node and assigns type and coordinates of
-                                      the final point
+        Node()
+            generic constructor, creates an empty node
+        Node(Node)
+            copy constructor
+        Node(integer type, Point p)
+            creates a Node and assigns type and coordinates of the final point
 
         Args:
             node_or_type (Node | int | None, optional): _description_. Defaults to None.

@@ -28,6 +28,14 @@ class TTStem(Copyable):
     def __init__(
         self, ttstem_or_width: TTStem | int | None = None, upm: int | None = None
     ) -> None:
+        """
+        Args:
+            ttstem_or_width (TTStem | int | None, optional): _description_. Defaults to None.
+            upm (int | None, optional): _description_. Defaults to None.
+
+        Raises:
+            RuntimeError: When the arguments don't match the expectations.
+        """
         self._name = ""
         self._width = 0
         self._ppm1 = 0  # Not in API

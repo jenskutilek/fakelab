@@ -12,13 +12,11 @@ class NameRecord(Copyable):
     """
     NameRecord - class to represent OpenType name table record
 
-    Unicode-encoding syntax ('/XX' - for Mac name records
-                   and '/XXXX' - for Windows and Unicode name records)
-    must be used to assign characters with codes above 127.
-    Refer to OpenType specification for information about constants used
-    for platform, encoding, language and name IDs
-    for newline, Use /000D/000A in Win records and /0D in Mac records. (Description
-    revised)
+    Unicode-encoding syntax ('/XX' - for Mac name records and '/XXXX' - for Windows and
+    Unicode name records) must be used to assign characters with codes above 127.
+    Refer to OpenType specification for information about constants used for platform,
+    encoding, language and name IDs.
+    For newline, Use /000D/000A in Win records and /0D in Mac records.
     """
 
     __slots__ = ["_parent", "_nid", "_pid", "_eid", "_lid", "_name"]

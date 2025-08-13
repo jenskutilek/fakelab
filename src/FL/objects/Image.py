@@ -33,9 +33,12 @@ class Image:
         """
         Image - class to represent image
 
-        Image() - generic constructor, creates an Image with zero coordinates
-        Image(Image) - copy constructor
-        Image(int width, int height) - creates an Image of given size
+        Image()
+            generic constructor, creates an Image with zero coordinates
+        Image(Image)
+            copy constructor
+        Image(int width, int height)
+            creates an Image of given size
         """
         self._empty = True
         self._data = array.array("H")
