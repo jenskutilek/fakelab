@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import UserList
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, SupportsIndex
 
 from FL.fake.Base import Copyable
 from FL.objects.EncodingRecord import EncodingRecord
@@ -53,13 +53,13 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     # Operations
 
-    def __delitem__(self, i: int) -> None:
+    def __delitem__(self, i: SupportsIndex | slice[Any, Any, Any]) -> None:
         """
         del Encoding[] - remove an element from the encoding
         """
         del self.data[i]
 
-    def __getitem__(self, i: int) -> EncodingRecord:
+    def __getitem__(self, i: SupportsIndex | slice[Any, Any, Any]) -> EncodingRecord:
         """
         Accesses individial EncodingRecord objects
         """
@@ -73,16 +73,16 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     # Methods
 
-    def append(self, encoding_record: EncodingRecord) -> None:
+    def append(self, item: EncodingRecord) -> None:
         """
         Append an EncodingRecord to the end of the encoding.
 
         Args:
             encoding_record (EncodingRecord): _description_
         """
-        self.data.append(encoding_record)
+        self.data.append(item)
 
-    def insert(self, index: int, encoding_record: EncodingRecord) -> None:
+    def insert(self, i: int, item: EncodingRecord) -> None:
         """
         Insert an EncodingRecord at index.
 
@@ -90,7 +90,7 @@ class Encoding(UserList[EncodingRecord], Copyable):
             index (int): _description_
             encoding_record (EncodingRecord): _description_
         """
-        self.data.insert(index, encoding_record)
+        self.data.insert(i, item)
 
     def FillUnencoded(self) -> None:
         raise NotImplementedError
