@@ -25,18 +25,25 @@ class FontToVfbWriter:
     to `vfb_path`
     """
 
-    def __init__(self, font: Font, vfb_path: Path) -> None:
-        """Save the `font` into the VFB file at `vfb_path`.
+    def __init__(self, font: Font) -> None:
+        """
+        Instantiate a writer that can write the `font` into a VFB file.
 
         Args:
             font (Font): The source object of the data
-            vfb_path (Path): The file path to which to write the VFB data
         """
-        self.vfb_path = vfb_path
         self.font = font
         self.vfb = Vfb()
         self.compile()
-        self.vfb.write(self.vfb_path)
+
+    def write(self, vfb_path: Path) -> None:
+        """
+        Write the VFB to `vfb_path`.
+
+        Args:
+            vfb_path (Path): The file path to which to write the VFB data.
+        """
+        self.vfb.write(vfb_path)
 
     def add_direct_entries(
         self, keys: tuple[int, ...], parent: Font | TTInfo, enum: type[IntEnum] = F

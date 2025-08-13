@@ -357,8 +357,9 @@ class Font(FakeFont):
 
         self._set_file_name(None)  # TODO: What if the font already is loaded from disk?
         try:
-            reader = VfbToFontReader(Path(filename), self)
+            reader = VfbToFontReader(Path(filename))
             self.fake_vfb_object = reader.vfb
+            reader.read(self)
         except:  # noqa: E722
             raise
             return 0
@@ -375,7 +376,8 @@ class Font(FakeFont):
         from FL.vfb.writer import FontToVfbWriter
 
         self._set_file_name(filename)
-        FontToVfbWriter(self, Path(filename))
+        writer = FontToVfbWriter(self)
+        writer.write(Path(filename))
 
     def OpenAFM(self, filename: str, mode: int, layer: int) -> None:
         """
