@@ -6,20 +6,15 @@ Welcome to fakelab's documentation!
 Further reading
 ---------------
 
-* The VFB file format is described in the
-`vfbLib-rust <https://github.com/jenskutilek/vfbLib-rust/blob/main/FILEFORMAT.md>` repo
-
-* The FontLab Studio 5 TrueType hinting is described in
-`truetype-hinting <https://github.com/jenskutilek/fakelab/blob/main/doc/truetype-hinting/index.md>`
-
-
+* The VFB file format is described in https://github.com/jenskutilek/vfbLib-rust/blob/main/FILEFORMAT.md
+* The FontLab Studio 5 TrueType hinting is described in https://github.com/jenskutilek/fakelab/blob/main/doc/truetype-hinting/index.md
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
 
 .. note::
 
-   This project is under active development.
+   This project is under active development. Expect road bumps and potholes.
 
 Contents
 --------
