@@ -159,13 +159,13 @@ class Anchor(Copyable):
 
     def Layer(self, masterindex: int) -> Point:
         """
-        Returns point for the master 'masterindex'.
+        Returns point for the master `masterindex`.
         """
         return self._points[masterindex]
 
     def SetLayer(self, masterindex: int, point: Point) -> None:
         """
-        Set the point for the master 'masterindex'.
+        Set the point for the master `masterindex`.
         """
         pt = self._points[masterindex]
         pt.x = int(point.x)
