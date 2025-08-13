@@ -1,4 +1,4 @@
-﻿FL.objects.AuditRecord
+FL.objects.AuditRecord
 ======================
 
 .. automodule:: FL.objects.AuditRecord

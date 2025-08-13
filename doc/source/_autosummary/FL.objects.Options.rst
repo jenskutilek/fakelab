@@ -1,4 +1,4 @@
-﻿FL.objects.Options
+FL.objects.Options
 ==================
 
 .. automodule:: FL.objects.Options

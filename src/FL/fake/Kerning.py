@@ -14,6 +14,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+__doc__ = """
+Base class for Kerning
+"""
+
+
 class FakeKerning:
     def __init__(self, font: Font | None = None) -> None:
         self._font = font

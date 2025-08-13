@@ -1,4 +1,4 @@
-﻿FL.objects.TTVdmx
+FL.objects.TTVdmx
 =================
 
 .. automodule:: FL.objects.TTVdmx

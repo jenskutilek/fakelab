@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from FL.objects.Matrix import Matrix
 
 
+__doc__ = "Class to represent a PostScript hint"
+
+
 class Hint(Copyable):
     """
     Hint - class to represent hint
@@ -27,10 +30,12 @@ class Hint(Copyable):
         self, hint_or_position: Hint | int | None = None, width: int | None = None
     ) -> None:
         """
-        Hint()                - generic constructor,
-                                creates a Hint with zero coordinates
-        Hint(Hint)            - copy constructor
-        Hint(position, width) - creates a Hint and assigns position and width values
+        Hint()
+            generic constructor, creates a Hint with zero coordinates
+        Hint(Hint)
+            copy constructor
+        Hint(position, width)
+            creates a Hint and assigns position and width values
 
         Args:
             hint_or_position (Hint | int | None): _description_

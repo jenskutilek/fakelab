@@ -16,9 +16,12 @@ if TYPE_CHECKING:
     from FL.objects.TTHProblem import TTHProblem
 
 
+__doc__ = "Class to represent a TrueType program"
+
+
 class TTH:
     """
-    TTH - class to represent TrueType points
+    TTH - class to represent a TrueType program
     """
 
     __slots__ = [
@@ -45,10 +48,12 @@ class TTH:
 
     def __init__(self, g: Glyph | None = None, f: Font | None = None) -> None:
         """
-        TTH()                - generic constructor, creates an empty TTH
-        TTH(Glyph g)         - creates TTH, assigns 'g' as glyph and 'parent' of 'g' as
-                               font
-        TTH(Glyph g, Font f) - creates TTH, assigns 'g' as glyph and 'f' as font
+        TTH()
+            generic constructor, creates an empty TTH
+        TTH(Glyph g)
+            creates TTH, assigns 'g' as glyph and 'parent' of 'g' as font
+        TTH(Glyph g, Font f)
+            creates TTH, assigns 'g' as glyph and 'f' as font
 
         Args:
             g (Glyph | None, optional): _description_. Defaults to None.
@@ -68,10 +73,10 @@ class TTH:
         self._bottom_zones: list[Hint] = FLList()
         self._base_top_zones: list[Hint] = FLList()
         self._base_bottom_zones: list[Hint] = FLList()
-        self.hstems: list[int] = FLList()
-        self.vstems: list[int] = FLList()
-        self.base_hstems: list[int] = FLList()
-        self.base_vstems: list[int] = FLList()
+        self._hstems: list[int] = FLList()
+        self._vstems: list[int] = FLList()
+        self._base_hstems: list[int] = FLList()
+        self._base_vstems: list[int] = FLList()
         self.zero_point = Point(0, 0)
         # self.zero_point._parent = self  # Needed?
         self.upm = 1000
@@ -339,112 +344,112 @@ class TTH:
             filename (str): The path and filename of the text file.
 
         Example file:
-        ----
-        34 POINTS
-        439 412 17
-        421 419 2
-        382 427 2
-        363 427 1
-        318 427 2
-        255 384 2
-        220 322 2
-        205 254 2
-        205 225 1
-        205 181 2
-        248 135 2
-        296 135 1
-        320 135 2
-        364 144 2
-        388 152 1
-        385 11 1
-        354 2 2
-        282 -7 2
-        250 -7 1
-        185 -7 2
-        97 30 2
-        51 90 2
-        33 158 2
-        33 194 1
-        33 259 2
-        73 390 2
-        154 500 2
-        287 569 2
-        374 569 1
-        405 569 2
-        459 562 2
-        482 554 1
-        0 -17 17
-        441 -17 17
 
-        5 BOTTOMZONES
-        344 10
-        0 15
-        -83 15
-        -171 15
-        -233 15
+        .. code-block:: text
 
-        10 TOPZONES
-        815 8
-        792 10
-        730 15
-        705 15
-        675 15
-        650 15
-        600 15
-        520 15
-        497 15
-        470 15
+           34 POINTS
+           439 412 17
+           421 419 2
+           382 427 2
+           363 427 1
+           318 427 2
+           255 384 2
+           220 322 2
+           205 254 2
+           205 225 1
+           205 181 2
+           248 135 2
+           296 135 1
+           320 135 2
+           364 144 2
+           388 152 1
+           385 11 1
+           354 2 2
+           282 -7 2
+           250 -7 1
+           185 -7 2
+           97 30 2
+           51 90 2
+           33 158 2
+           33 194 1
+           33 259 2
+           73 390 2
+           154 500 2
+           287 569 2
+           374 569 1
+           405 569 2
+           459 562 2
+           482 554 1
+           0 -17 17
+           441 -17 17
 
-        19 HSTEMS
-        140
-        152
-        158
-        171
-        220
-        116
-        85
-        97
-        109
-        123
-        130
-        164
-        145
-        180
-        200
-        22222
-        44444
-        100
-        44
+           5 BOTTOMZONES
+           344 10
+           0 15
+           -83 15
+           -171 15
+           -233 15
 
-        25 VSTEMS
-        182
-        195
-        220
-        152
-        208
-        91
-        128
-        139
-        66
-        100
-        110
-        117
-        127
-        135
-        144
-        148
-        169
-        179
-        189
-        200
-        215
-        225
-        22222
-        55555
-        54
+           10 TOPZONES
+           815 8
+           792 10
+           730 15
+           705 15
+           675 15
+           650 15
+           600 15
+           520 15
+           497 15
+           470 15
 
-        0 PROGRAM
-        ----
+           19 HSTEMS
+           140
+           152
+           158
+           171
+           220
+           116
+           85
+           97
+           109
+           123
+           130
+           164
+           145
+           180
+           200
+           22222
+           44444
+           100
+           44
 
+           25 VSTEMS
+           182
+           195
+           220
+           152
+           208
+           91
+           128
+           139
+           66
+           100
+           110
+           117
+           127
+           135
+           144
+           148
+           169
+           179
+           189
+           200
+           215
+           225
+           22222
+           55555
+           54
+
+           0 PROGRAM
         """
         raise NotImplementedError

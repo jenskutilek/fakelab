@@ -1,4 +1,4 @@
-﻿FL.objects.TTHPoint
+FL.objects.TTHPoint
 ===================
 
 .. automodule:: FL.objects.TTHPoint

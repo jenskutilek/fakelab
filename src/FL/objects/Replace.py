@@ -15,6 +15,9 @@ TYPE_VERTICAL_HINT = 2
 TYPE_NODE = 255
 
 
+__doc__ = "Class to represent an item of a hint replacment program"
+
+
 class Replace(Copyable):
     """
     Replace - class to represent item of hint replacment program

@@ -1,4 +1,4 @@
-﻿FL.objects.Node
+FL.objects.Node
 ===============
 
 .. automodule:: FL.objects.Node

@@ -1,4 +1,4 @@
-﻿FL.objects.Image
+FL.objects.Image
 ================
 
 .. automodule:: FL.objects.Image

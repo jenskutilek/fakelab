@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from FL.fake.Base import Copyable
 
+__doc__ = "Class to represent a Unicode codepoint"
+
 
 class Uni(Copyable):
     """
-    Uni - class to represent Unicode index
+    Uni - class to represent a Unicode codepoint
 
     This class is necessary to distinguish integers and Unicode indexes. Integers are
     usually read as glyph indexes, so it is necessary to create Uni objects to access
@@ -20,10 +22,14 @@ class Uni(Copyable):
 
     def __init__(self, uni_or_int_or_hex: Uni | int | str | None = None) -> None:
         """
-        Uni() - generic constructor, creates an empty Uni record (bullshit)
-        Uni(Uni) - copy constructor
-        Uni(uni: int) - creates Uni object and assigns integer value
-        Uni(uni_hex: string) - creates Uni object and reads value from the string in hex form
+        Uni()
+            generic constructor, creates an empty Uni record (bullshit)
+        Uni(Uni)
+            copy constructor
+        Uni(uni: int)
+            creates Uni object and assigns integer value
+        Uni(uni_hex: string)
+            creates Uni object and reads value from the string in hex form
         """
         if uni_or_int_or_hex is None:
             # The error message is bullshit, but here we are:

@@ -1,3 +1,7 @@
+__doc__ = """
+Constants for font formats
+"""
+
 # Font formats
 
 # FontLab VFB font

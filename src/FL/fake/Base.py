@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
+__doc__ = """
+Base classes for custom list classes
+"""
+
 
 class Copyable:
     __slots__: list[str] = ["_parent"]

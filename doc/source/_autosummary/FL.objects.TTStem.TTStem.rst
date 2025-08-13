@@ -17,6 +17,7 @@ FL.objects.TTStem.TTStem
    .. autosummary::
    
       ~TTStem.__init__
+      ~TTStem.fake_deserialize
       ~TTStem.fake_recalc_ppms
    
    

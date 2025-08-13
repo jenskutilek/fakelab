@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+__doc__ = """
+Miscellaneous constants
+"""
+
 # FLdict
 
 ## Canvas

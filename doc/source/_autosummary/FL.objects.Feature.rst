@@ -1,4 +1,4 @@
-﻿FL.objects.Feature
+FL.objects.Feature
 ==================
 
 .. automodule:: FL.objects.Feature

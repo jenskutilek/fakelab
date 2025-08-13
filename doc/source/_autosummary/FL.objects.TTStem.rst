@@ -1,4 +1,4 @@
-﻿FL.objects.TTStem
+FL.objects.TTStem
 =================
 
 .. automodule:: FL.objects.TTStem

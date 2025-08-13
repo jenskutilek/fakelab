@@ -1,4 +1,4 @@
-FL.vfb.writer.FontToVfbWriter
+﻿FL.vfb.writer.FontToVfbWriter
 =============================
 
 .. currentmodule:: FL.vfb.writer
@@ -26,6 +26,7 @@ FL.vfb.writer.FontToVfbWriter
       ~FontToVfbWriter.compile_header
       ~FontToVfbWriter.compile_options
       ~FontToVfbWriter.compile_ttinfo
+      ~FontToVfbWriter.write
    
    
 

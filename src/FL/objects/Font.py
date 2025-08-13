@@ -23,6 +23,9 @@ if TYPE_CHECKING:
     from FL.objects.TrueTypeTable import TrueTypeTable
 
 
+__doc__ = "Class to represent a font"
+
+
 class Font(FakeFont):
     """
     Base class to represent a font
@@ -354,7 +357,8 @@ class Font(FakeFont):
 
         self._set_file_name(None)  # TODO: What if the font already is loaded from disk?
         try:
-            reader = VfbToFontReader(Path(filename), self)
+            reader = VfbToFontReader(Path(filename))
+            reader.read(self)
             self.fake_vfb_object = reader.vfb
         except:  # noqa: E722
             raise
@@ -372,7 +376,8 @@ class Font(FakeFont):
         from FL.vfb.writer import FontToVfbWriter
 
         self._set_file_name(filename)
-        FontToVfbWriter(self, Path(filename))
+        writer = FontToVfbWriter(self)
+        writer.write(Path(filename))
 
     def OpenAFM(self, filename: str, mode: int, layer: int) -> None:
         """

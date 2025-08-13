@@ -9,7 +9,7 @@ Notice Copyright waived
 Version 1.002
 IsFixedPitch false
 ItalicAngle 0.00
-FontBBox 0 -350 531 850
+FontBBox 0 -66 531 646
 Ascender 750
 Descender -250
 XHeight 500
@@ -17,16 +17,15 @@ CapHeight 700
 UnderlinePosition -100
 UnderlineThickness 50
 EncodingScheme FontSpecific
-StartCharMetrics 6
+StartCharMetrics 5
 C 32 ; WX 0 ; N space ; B 0 0 0 0 ;
 C 46 ; WX 300 ; N period ; B 66 0 234 170 ;
 C 97 ; WX 556 ; N a ; B 77 106 468 613 ;
 C 98 ; WX 600 ; N b ; B 97 -66 489 630 ;
 C 99 ; WX 600 ; N c ; B 69 184 531 646 ;
-C 160 ; WX 0 ; N space ; B 0 0 0 0 ;
 EndCharMetrics
 StartKernData
-StartKernPairs 6
+StartKernPairs 5
 KPX space period -80
 
 KPX period a -90

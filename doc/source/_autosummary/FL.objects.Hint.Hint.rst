@@ -20,6 +20,8 @@ FL.objects.Hint.Hint
       ~Hint.Transform
       ~Hint.TransformLayer
       ~Hint.__init__
+      ~Hint.fake_deserialize
+      ~Hint.fake_serialize
    
    
 

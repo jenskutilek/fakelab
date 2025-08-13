@@ -10,6 +10,11 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+__doc__ = """
+Base class for KerningClass
+"""
+
+
 class KerningClass:
     """
     Object representing a kerning class.

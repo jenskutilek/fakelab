@@ -13,6 +13,9 @@ if TYPE_CHECKING:
     from FL.objects.Uni import Uni
 
 
+__doc__ = "Class to represent the FontLab program interface"
+
+
 class FakeLab:
     """
     The FontLab program interface
@@ -301,18 +304,26 @@ class FakeLab:
 
         Available font types:
 
-        - ftFONTLAB            - FontLab VFB font
-        - ftTYPE1              - PC Type 1 font (binary/PFB)
-        - ftTYPE1_MM           - PC MultipleMaster font (PFB)
-        - ftTYPE1ASCII         - PC Type 1 font (ASCII/PFA)
-        - ftTYPE1ASCII_MM      - PC MultipleMaster font (ASCII/PFA)
-        - ftTRUETYPE           - PC TrueType/TT OpenType font (TTF)
-        - ftOPENTYPE           - PS OpenType (CFF-based) font (OTF)
-        - ftMACTYPE1           - Mac Type 1 font (generates suitcase and LWFN file,
-                                 optionally AFM)
-        - ftMACTRUETYPE        - Mac TrueType font (generates suitcase)
-        - ftMACTRUETYPE_DFONT  - Mac TrueType font (generates suitcase with resources in
-                                 data fork)
+        ftFONTLAB
+            FontLab VFB font
+        ftTYPE1
+            PC Type 1 font (binary/PFB)
+        ftTYPE1_MM
+            PC MultipleMaster font (PFB)
+        ftTYPE1ASCII
+            PC Type 1 font (ASCII/PFA)
+        ftTYPE1ASCII_MM
+            PC MultipleMaster font (ASCII/PFA)
+        ftTRUETYPE
+            PC TrueType/TT OpenType font (TTF)
+        ftOPENTYPE
+            PS OpenType (CFF-based) font (OTF)
+        ftMACTYPE1
+            Mac Type 1 font (generates suitcase and LWFN file, optionally AFM)
+        ftMACTRUETYPE
+            Mac TrueType font (generates suitcase)
+        ftMACTRUETYPE_DFONT
+            Mac TrueType font (generates suitcase with resources in data fork)
         """
         try:
             from ufo2ft import compileOTF, compileTTF

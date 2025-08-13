@@ -17,6 +17,8 @@ FL.objects.TTGasp.TTGasp
    .. autosummary::
    
       ~TTGasp.__init__
+      ~TTGasp.fake_deserialize
+      ~TTGasp.fake_serialize
    
    
 

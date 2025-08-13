@@ -1,4 +1,4 @@
-﻿FL.objects.Guide
+FL.objects.Guide
 ================
 
 .. automodule:: FL.objects.Guide

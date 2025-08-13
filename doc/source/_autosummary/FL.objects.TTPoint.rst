@@ -1,4 +1,4 @@
-﻿FL.objects.TTPoint
+FL.objects.TTPoint
 ==================
 
 .. automodule:: FL.objects.TTPoint

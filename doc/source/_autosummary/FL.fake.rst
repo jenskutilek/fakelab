@@ -32,4 +32,5 @@
    Font
    Kerning
    KerningClass
+   mixins
 

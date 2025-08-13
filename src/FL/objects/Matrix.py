@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Point import Point
 
 
+__doc__ = "Class to represent planar transformations"
+
+
 class Matrix(Copyable):
     """
     Matrix - class to represent planar transformations
@@ -27,13 +30,14 @@ class Matrix(Copyable):
         f: float | None = None,
     ) -> None:
         """
-        Matrix()                   - generic constructor, creates a Matrix that makes no
-                                     change to coordinates
-        Matrix(Matrix)             - copy constructor
-        Matrix([a, b, c, d, e, f]) - creates a Matrix and assigns coordinates from the
-                                     list of float numbers
-        Matrix(a, b, c, d, e, f)   - creates a Matrix and assigns coordinates from float
-                                     numbers
+        Matrix()
+            generic constructor, creates a Matrix that makes no change to coordinates
+        Matrix(Matrix)
+            copy constructor
+        Matrix([a, b, c, d, e, f])
+            creates a Matrix and assigns coordinates from the list of float numbers
+        Matrix(a, b, c, d, e, f)
+            creates a Matrix and assigns coordinates from float numbers
 
         Args:
             a (Matrix | list[float] | float | None, optional): xx. Defaults to None.

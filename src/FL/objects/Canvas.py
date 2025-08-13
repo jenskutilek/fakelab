@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from FL.objects.WeightVector import WeightVector
 
 
+__doc__ = "Class to represent screen paint area and operations"
+
+
 class Canvas(Copyable):
     """
     Canvas - class to represent screen paint area and operations

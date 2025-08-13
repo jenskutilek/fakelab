@@ -1,4 +1,4 @@
-﻿FL.objects.Link
+FL.objects.Link
 ===============
 
 .. automodule:: FL.objects.Link

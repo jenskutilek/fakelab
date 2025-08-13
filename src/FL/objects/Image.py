@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from FL.objects.Rect import Rect
 
 
+__doc__ = "Class to represent a background image"
+
+
 class Image:
     __slots__ = [
         "_data",
@@ -33,9 +36,12 @@ class Image:
         """
         Image - class to represent image
 
-        Image() - generic constructor, creates an Image with zero coordinates
-        Image(Image) - copy constructor
-        Image(int width, int height) - creates an Image of given size
+        Image()
+            generic constructor, creates an Image with zero coordinates
+        Image(Image)
+            copy constructor
+        Image(int width, int height)
+            creates an Image of given size
         """
         self._empty = True
         self._data = array.array("H")

@@ -1,4 +1,4 @@
-﻿FL.objects.WeightVector
+FL.objects.WeightVector
 =======================
 
 .. automodule:: FL.objects.WeightVector

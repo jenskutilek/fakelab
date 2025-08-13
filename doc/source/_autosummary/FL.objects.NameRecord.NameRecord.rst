@@ -17,6 +17,7 @@ FL.objects.NameRecord.NameRecord
    .. autosummary::
    
       ~NameRecord.__init__
+      ~NameRecord.fake_serialize
    
    
 

@@ -7,6 +7,9 @@ if TYPE_CHECKING:
     from FL.objects.Rect import Rect
 
 
+__doc__ = "Class to represent a dialog"
+
+
 class Dialog:
     """
     Dialog - class to represent Dialog

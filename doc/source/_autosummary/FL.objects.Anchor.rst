@@ -1,4 +1,4 @@
-﻿FL.objects.Anchor
+FL.objects.Anchor
 =================
 
 .. automodule:: FL.objects.Anchor

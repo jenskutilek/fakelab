@@ -1,4 +1,4 @@
-﻿FL.objects.Uni
+FL.objects.Uni
 ==============
 
 .. automodule:: FL.objects.Uni

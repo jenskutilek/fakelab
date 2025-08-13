@@ -1,4 +1,4 @@
-﻿FL.objects.EncodingRecord
+FL.objects.EncodingRecord
 =========================
 
 .. automodule:: FL.objects.EncodingRecord

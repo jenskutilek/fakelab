@@ -1,4 +1,4 @@
-﻿FL.objects.TTHCommand
+FL.objects.TTHCommand
 =====================
 
 .. automodule:: FL.objects.TTHCommand

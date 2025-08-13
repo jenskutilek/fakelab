@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from FL.fake.Base import Copyable
 
+__doc__ = "Class to represent a vdmx table record"
+
 
 class TTVdmx(Copyable):
     """

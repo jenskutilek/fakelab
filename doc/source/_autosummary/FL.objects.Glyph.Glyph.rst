@@ -84,7 +84,20 @@ FL.objects.Glyph.Glyph
       ~Glyph.__init__
       ~Glyph.clear
       ~Glyph.fake_deserialize
+      ~Glyph.fake_deserialize_anchor_supp
+      ~Glyph.fake_deserialize_anchors_mm
+      ~Glyph.fake_deserialize_gdef
+      ~Glyph.fake_deserialize_guide_properties
+      ~Glyph.fake_deserialize_guides
+      ~Glyph.fake_deserialize_hints
       ~Glyph.fake_serialize
+      ~Glyph.fake_serialize_anchor_supp
+      ~Glyph.fake_serialize_anchors_mm
+      ~Glyph.fake_serialize_gdef
+      ~Glyph.fake_serialize_guide_properties
+      ~Glyph.fake_serialize_guides
+      ~Glyph.fake_serialize_hints
+      ~Glyph.fake_serialize_mask
       ~Glyph.fake_update
       ~Glyph.isAnySelected
       ~Glyph.isContourClockwise
@@ -98,6 +111,21 @@ FL.objects.Glyph.Glyph
 
    .. autosummary::
    
+      ~Glyph.advance_height
+      ~Glyph.advance_width
+      ~Glyph.customdata
+      ~Glyph.end_points
+      ~Glyph.flags
+      ~Glyph.hdmx
+      ~Glyph.instructions
+      ~Glyph.left_side_bearing
+      ~Glyph.mark
+      ~Glyph.name
+      ~Glyph.note
+      ~Glyph.number_of_contours
+      ~Glyph.points
+      ~Glyph.top_side_bearing
+      ~Glyph.y_pels
       ~Glyph.anchors
       ~Glyph.bounding_box
       ~Glyph.components
@@ -105,6 +133,7 @@ FL.objects.Glyph.Glyph
       ~Glyph.hguides
       ~Glyph.hhints
       ~Glyph.hlinks
+      ~Glyph.image
       ~Glyph.index
       ~Glyph.kerning
       ~Glyph.layers_number
@@ -114,6 +143,7 @@ FL.objects.Glyph.Glyph
       ~Glyph.parent
       ~Glyph.replace_table
       ~Glyph.unicode
+      ~Glyph.unicodes
       ~Glyph.vguides
       ~Glyph.vhints
       ~Glyph.vlinks

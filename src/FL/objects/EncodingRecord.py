@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from FL.fake.Base import Copyable
 
+__doc__ = "Class to represent an encoding record"
+
 
 class EncodingRecord(Copyable):
     __slots__ = ["_name", "_unicode"]

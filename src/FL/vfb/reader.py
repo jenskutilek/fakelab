@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     from FL.objects.Font import Font
 
 
+__doc__ = "VFB file reader"
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -113,25 +116,41 @@ class VfbToFontReader:
     know...) object (low-level representation of the binary VFB format)
     """
 
-    def __init__(self, vfb_path: Path, font: Font) -> None:
+    def __init__(self, vfb_path: Path) -> None:
         """
-        Load the VFB file from `vfb_path` and instantiate its data into `font`.
+        Instantiate a reader for the VFB file at `vfb_path`.
 
         Args:
-            vfb_path (Path): The file path from which to load the VFB data
-            font (Font): The target object of the data
+            vfb_path (Path): The file path from which to load the VFB data.
         """
         self.vfb_path = vfb_path
-        self.font = font
         self.nametable = StandardNametable()
-        self.open_vfb()
-        self.read_into_font()
 
-    def open_vfb(self) -> None:
+    def read(self, font: Font) -> None:
+        """
+        Read the data from the VFB into a font.
+
+        Args:
+            font (Font): The target object of the data.
+        """
+        self.font = font
+        self._open_vfb()
+        self._read_into_font()
+
+    def _open_vfb(self) -> None:
+        """
+        Open the VFB from the current `vfb_path` and decompile it.
+        """
         self.vfb = Vfb(self.vfb_path)
         self.vfb.decompile()
 
-    def read_into_font(self) -> None:
+    def _read_into_font(self) -> None:
+        """
+        Read the current `vfb` into the current `font`.
+
+        Raises:
+            AttributeError: When an unknown font attribute is encountered.
+        """
         classes: list[str] = []
         glyph: Glyph | None = None
         gids = {}
@@ -141,7 +160,7 @@ class VfbToFontReader:
 
         for e in self.vfb.entries:
             key = e.id
-            assert isinstance(key, int)
+            # assert isinstance(key, int)
             data = e.data
 
             if key in font_mapping_direct:

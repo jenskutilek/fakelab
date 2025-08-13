@@ -1,4 +1,4 @@
-﻿FL.objects.TTInfo
+FL.objects.TTInfo
 =================
 
 .. automodule:: FL.objects.TTInfo

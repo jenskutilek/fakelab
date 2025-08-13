@@ -16,6 +16,8 @@ FL.objects.Anchor.Anchor
 
    .. autosummary::
    
+      ~Anchor.Layer
+      ~Anchor.SetLayer
       ~Anchor.Transform
       ~Anchor.__init__
    

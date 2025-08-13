@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+__doc__ = "Class to represent a glyph component"
+
+
 class Component(Copyable):
     """
     Component - class to represent glyph component
@@ -31,17 +34,17 @@ class Component(Copyable):
         scale: Point | None = None,
     ) -> None:
         """
-        Component()          - generic constructor, creates an empty Component
-        Component(Component) - copy constructor
-        Component(index)     - creates component referencing
-                               glyph index with zero shift and 100% scale
+        Component()
+            generic constructor, creates an empty Component
+        Component(Component)
+            copy constructor
+        Component(index)
+            creates component referencing glyph index with zero shift and 100% scale
         Component(index, Point(integer) delta)
-                             - creates component referencing
-                               glyph index with delta shift and 100% scale
+            creates component referencing glyph index with delta shift and 100% scale
         Component(index, Point(integer) delta, Point(float) scale)
-                             - creates component referencing
-                               glyph index with delta shift
-                               and scale factor defined by scale
+            creates component referencing glyph index with delta shift and scale factor
+            defined by scale
 
         Args:
             component_or_index (Component | int | None, optional): _description_. Defaults to None.

@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+__doc__ = "Class to represent a link"
+
+
 class Link(Copyable):
     """
     Link - class to represent link

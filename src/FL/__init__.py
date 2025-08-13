@@ -212,7 +212,7 @@ from FL.objects.TTVdmx import TTVdmx
 from FL.objects.Uni import Uni
 from FL.objects.WeightVector import WeightVector
 
-"""
+__doc__ = """
 FakeLab. A FontLab Studio 5 replacement for testing Python code.
 
 Everything is only implemented so far as to make FontLab objects importable

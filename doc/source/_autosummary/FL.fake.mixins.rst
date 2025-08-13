@@ -1,7 +1,7 @@
-FL.objects.TTH
+FL.fake.mixins
 ==============
 
-.. automodule:: FL.objects.TTH
+.. automodule:: FL.fake.mixins
   
    
    
@@ -19,7 +19,8 @@ FL.objects.TTH
       :toctree:
       :template: custom-class-template.rst
    
-      TTH
+      GuideMixin
+      GuidePropertiesMixin
    
    
 

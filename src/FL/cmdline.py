@@ -24,6 +24,12 @@ try:
 except ImportError:
     have_ipython = False
 
+
+__doc__ = """
+The interactive console
+"""
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -36,6 +42,15 @@ class FontLab5Console(InteractiveConsole):
     def __init__(
         self, startup_code: str = "", locals: dict[str, Any] | None = None
     ) -> None:
+        """
+        The interactive console. You usually don't use this class directly; it is
+        started by the `main` function in this module, which is available on the command
+        line via the `fakelab` command.
+
+        Args:
+            startup_code (str, optional): Currently ignored. Defaults to "".
+            locals (dict[str, Any] | None, optional): Additional locals. Defaults to None.
+        """
         namespace = locals or {}
         # code = compile(__startup_code__, "", "exec", 0)
         # exec(code, namespace)
@@ -43,6 +58,23 @@ class FontLab5Console(InteractiveConsole):
 
 
 def main() -> None:
+    """
+    Run the `fakelab` commandline script.
+
+    If one or more Python files are specified in the `---script` argument, those scripts
+    are executed and the program exits.
+
+    If no external script is specified, the program runs as an interactive console.
+
+    Run `fakelab -h` to see a description of all command line arguments.
+
+    When fakelab has been installed with the `repl` extra, or `ptpython` or `ipython` is
+    installed in the environment, it is used to improve the console experience with
+    autocompletion, history, and other niceties. If both are installed, `ptpython` is
+    preferred.
+    See `ptpython <https://github.com/prompt-toolkit/ptpython>`_ or
+    `ipython <https://github.com/ipython/ipython>`_ for details.
+    """
     parser = argparse.ArgumentParser(description="FontLab 5 external scripting")
     parser.add_argument(
         "-o",
@@ -70,7 +102,10 @@ def main() -> None:
         "--script",
         type=str,
         nargs="+",
-        help="Path(s) to Python scripts to run on the VFB file(s)",
+        help=(
+            "Path(s) to Python script(s) to run on the VFB file(s). "
+            "The program exits after running the script(s)"
+        ),
     )
     parser.add_argument(
         "-v",
@@ -107,6 +142,7 @@ def main() -> None:
                 # If we have scripts, run them and exit.
                 for script_path in args.script:
                     exec(Path(script_path).read_text(), locals=environment)
+                # FIXME: Did we plan to autosave the VFBs respecting the -o argument? (#11)
             else:
                 # Run the interactive console.
                 if have_ptpython:

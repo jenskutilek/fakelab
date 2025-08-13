@@ -9,6 +9,11 @@ from FL.objects.Guide import Guide
 logger = logging.getLogger(__name__)
 
 
+__doc__ = """
+Mixins for Guides and Guide Properties
+"""
+
+
 class GuideMixin:
     def fake_deserialize_guides(self, data: MMGuidesDict) -> None:
         for k, target in (("h", self.hguides), ("v", self.vguides)):

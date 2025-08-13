@@ -31,6 +31,7 @@
    FLList
    ListParent
    classList
+   math
    nametables
    registry
    tth
