@@ -70,10 +70,10 @@ class TTH:
         self._bottom_zones: list[Hint] = FLList()
         self._base_top_zones: list[Hint] = FLList()
         self._base_bottom_zones: list[Hint] = FLList()
-        self.hstems: list[int] = FLList()
-        self.vstems: list[int] = FLList()
-        self.base_hstems: list[int] = FLList()
-        self.base_vstems: list[int] = FLList()
+        self._hstems: list[int] = FLList()
+        self._vstems: list[int] = FLList()
+        self._base_hstems: list[int] = FLList()
+        self._base_vstems: list[int] = FLList()
         self.zero_point = Point(0, 0)
         # self.zero_point._parent = self  # Needed?
         self.upm = 1000
