@@ -698,6 +698,13 @@ class FakeLab:
             return None
         return font
 
-    def _setcurrentfon(self) -> None:
-        # What is this for?
-        raise NotImplementedError
+    def _setcurrentfont(self, *args: int) -> None:
+        """
+        This seems to have no effect
+        """
+        if len(args) != 1:
+            raise RuntimeError("Incorrect # of args to: FontLab._setcurrentfont()")
+        if not isinstance(args[0], int):
+            raise RuntimeError(
+                "Number is expected in arg 1: FontLab._setcurrentfont(Font font)"
+            )
