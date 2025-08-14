@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable
 
 from FL import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 from FL.objects.Font import Font
@@ -618,14 +618,18 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def ForSelected(self, function_name: str) -> None:
+    def ForSelected(self, function: Callable[[Font, Glyph, int], None]) -> None:
         """
-        Call 'function_name' for each selected glyph in the current font. The function
-        has the following format:
+        Call `function` for each selected glyph in the current font. The function has
+        the following format:
 
         function(font: Font, glyph: Glyph, glyphindex: int)
         """
-        raise NotImplementedError
+        if self.font is None:
+            return
+
+        for glyphindex, glyph in enumerate(self.font.glyphs):
+            function(self.font, glyph, glyphindex)
 
     def SetUndo(self) -> None:
         """
