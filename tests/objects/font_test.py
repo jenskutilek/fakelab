@@ -160,10 +160,10 @@ class FontTests(unittest.TestCase):
             "_a: a'",
             "_a: a'",
             ".mtrx3: a'",
-            ".mtrx4:",
-            ".mtrx5:",
-            "class6:",
-            "_kern7:",
+            ".mtrx4: ",
+            ".mtrx5: ",
+            "class6: ",
+            "_kern7: ",
             ".mtrx8:",
         ]
         assert f._classes._kerning_flags == {"_a": (1024, 0), "_kern7": (2048, 0)}
