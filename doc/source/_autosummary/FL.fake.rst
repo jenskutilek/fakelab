@@ -30,6 +30,7 @@
 
    Base
    Font
+   FontImporter
    Kerning
    KerningClass
    mixins

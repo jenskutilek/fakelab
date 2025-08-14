@@ -1,4 +1,4 @@
-FL.objects.Options.Options
+﻿FL.objects.Options.Options
 ==========================
 
 .. currentmodule:: FL.objects.Options
@@ -20,7 +20,10 @@ FL.objects.Options.Options
       ~Options.Load
       ~Options.Save
       ~Options.__init__
+      ~Options.as_dict
+      ~Options.fake_load_options
       ~Options.fake_load_regfile
+      ~Options.fake_save_options
       ~Options.fake_save_regfile
    
    
@@ -31,6 +34,167 @@ FL.objects.Options.Options
 
    .. autosummary::
    
+      ~Options.ATMPPM
+      ~Options.ATMScaler
+      ~Options.ATMSmooth
+      ~Options.AutohintingEngine
+      ~Options.ChartAutoActivateCodepage
+      ~Options.ChartCopyKerning
+      ~Options.ChartGenerate
+      ~Options.ChartGenerateRTL
+      ~Options.ColorBackground
+      ~Options.ColorBackgroundMask
+      ~Options.ColorBackgroundMetrics
+      ~Options.ColorForegroundMetrics
+      ~Options.ColorGlobalGuide
+      ~Options.ColorGrid
+      ~Options.ColorGroups
+      ~Options.ColorGuide
+      ~Options.ColorNeighbors
+      ~Options.ColorOutline
+      ~Options.ControlSwitch
+      ~Options.CustomDict
+      ~Options.DSIG_KeyPath
+      ~Options.DSIG_Password
+      ~Options.DSIG_SertPath
+      ~Options.DSIG_TimeStamp
+      ~Options.DSIG_Use
+      ~Options.EditAllSmooth
+      ~Options.EditAutoSelectLayers
+      ~Options.EditBCVOpacity
+      ~Options.EditComponentsByOutline
+      ~Options.EditConnectMasters
+      ~Options.EditDoubleClickMask
+      ~Options.EditKeyboardEditBCP
+      ~Options.EditLayersExpanded
+      ~Options.EditPreviewKey
+      ~Options.EditShowAnchorNames
+      ~Options.EditShowMasterPoints
+      ~Options.EditShowMeasurementLine
+      ~Options.EditShowNodesSelection
+      ~Options.EditSmoothIsSmooth
+      ~Options.EditThickOutline
+      ~Options.EditUndoSelection
+      ~Options.EditZoomMode
+      ~Options.EmbeddingType
+      ~Options.EnableExtPythonEditor
+      ~Options.EnablePython
+      ~Options.EnableStickPanels
+      ~Options.EnableTooltips
+      ~Options.ExpandKernCodepage
+      ~Options.ExpandKernCount
+      ~Options.ExpandKernFlags
+      ~Options.ExtPythonEditor
+      ~Options.FileOpenSample
+      ~Options.FontAuditLive
+      ~Options.FontDialogName
+      ~Options.FontDialogSize
+      ~Options.FontExpanded
+      ~Options.FontFixedName
+      ~Options.FontFixedSize
+      ~Options.FontLabNodes
+      ~Options.FontPanelName
+      ~Options.FontPanelSize
+      ~Options.FontRulerName
+      ~Options.FontRulerSize
+      ~Options.FontSmallName
+      ~Options.FontSmallSize
+      ~Options.FontTableName
+      ~Options.FontTableSize
+      ~Options.GlyphNameSortMode
+      ~Options.GlyphsBarTop
+      ~Options.GroupCenter
+      ~Options.GroupDoubleClick
+      ~Options.GroupFill
+      ~Options.GroupKerning
+      ~Options.GroupMask
+      ~Options.GroupShapeFill
+      ~Options.GroupShapeMask
+      ~Options.GroupShapeOpacity
+      ~Options.GroupShiftX
+      ~Options.GroupShiftY
+      ~Options.GroupUseMetrics
+      ~Options.MacroFontName
+      ~Options.MaskMetrics
+      ~Options.MetricsBarExpanded0
+      ~Options.MetricsBarExpanded1
+      ~Options.MetricsBarExpanded2
+      ~Options.MetricsBarExpanded3
+      ~Options.MetricsBottomBar0
+      ~Options.MetricsBottomBar1
+      ~Options.MetricsBottomBar2
+      ~Options.MetricsBottomBar3
+      ~Options.MetricsShowBar0
+      ~Options.MetricsShowBar1
+      ~Options.MetricsShowBar2
+      ~Options.MetricsShowBar3
+      ~Options.MetricsShowTable0
+      ~Options.MetricsShowTable1
+      ~Options.MetricsShowTable2
+      ~Options.MetricsShowTable3
+      ~Options.MMExtrapolation
+      ~Options.OpenOutput
+      ~Options.OTAddMetricsClasses
+      ~Options.OTCompileFeatures
+      ~Options.OTGenerate
+      ~Options.OTOldContextRule
+      ~Options.OTPreviewSize
+      ~Options.OTSampleSize
+      ~Options.OutputFontName
+      ~Options.PaintJapanese
+      ~Options.PaintReverseBrushAutoColor
+      ~Options.PaintTextFont
+      ~Options.PreviewAlternativeArrows
+      ~Options.PreviewApplyTemplate
+      ~Options.PreviewAutoScroll
+      ~Options.PreviewAutoWrap
+      ~Options.PreviewBlueColor
+      ~Options.PreviewFilterKerning
+      ~Options.PreviewFilterMetrics
+      ~Options.PreviewFocusString
+      ~Options.PreviewHighlightKeyGlyphs
+      ~Options.PreviewKeepExceptions
+      ~Options.PreviewKerningIcons
+      ~Options.PreviewListWidth
+      ~Options.PreviewLockDependences
+      ~Options.PreviewLockStyle
+      ~Options.PreviewMode
+      ~Options.PreviewPaintStyle
+      ~Options.PreviewPanelTop
+      ~Options.PreviewProcessFeatures
+      ~Options.PreviewShowClassMembers
+      ~Options.PreviewShowReferences
+      ~Options.PreviewSize
+      ~Options.PreviewSnapStyle
+      ~Options.QuickZoomScale
+      ~Options.RemoveZeroKerning
+      ~Options.Shift10
+      ~Options.StyleInactiveMetrics
+      ~Options.StyleMetrics
+      ~Options.SyncronizeMasters
+      ~Options.T1ExportCompatibleCyrillic
+      ~Options.T1ExportEncoding
+      ~Options.T1FSType
+      ~Options.T1MatchEncoding
+      ~Options.T1UseOTFamilyName
+      ~Options.T1UseOTStyleName
+      ~Options.T1UseTrademarkName
+      ~Options.Template_BDF
+      ~Options.Template_Path
+      ~Options.Template_Use
+      ~Options.TTEDecompose
+      ~Options.TTESmartFontName
+      ~Options.TTESmartMacNames
+      ~Options.TTEStoreTables
+      ~Options.TTEVersionOS2
+      ~Options.TTEWriteKernTable
+      ~Options.TTFScaler
+      ~Options.TTFSmooth
+      ~Options.TTHPPM
+      ~Options.TTIGenerateNames
+      ~Options.TTIReadBinaryOT
+      ~Options.TTIStoreBinaryOT
+      ~Options.UnicodeKeyboard
       ~Options.AutoAlignVector
       ~Options.AutoMetricsClose
       ~Options.AutoMetricsLeft
@@ -75,12 +239,14 @@ FL.objects.Options.Options
       ~Options.ColorEcho
       ~Options.ColorHintsPen
       ~Options.ColorMaskPen
+      ~Options.ColorMetrics
       ~Options.ColorSeacPen
       ~Options.ColorTemplate
       ~Options.ColorVMetrics
       ~Options.ContourSnapAllPoints
       ~Options.CopyHDMXData
       ~Options.CreateUnexistingCharacters
+      ~Options.CustomMarkColor
       ~Options.DefaultGlyph
       ~Options.DuplicateX
       ~Options.DuplicateY
@@ -156,6 +322,7 @@ FL.objects.Options.Options
       ~Options.T1Decompose
       ~Options.T1Encoding
       ~Options.T1PFM
+      ~Options.T1Sort
       ~Options.T1Terminal
       ~Options.T1Unicode
       ~Options.T1UseOS2
@@ -199,5 +366,6 @@ FL.objects.Options.Options
       ~Options.UnicodeRangePercent
       ~Options.UnicodeStrings
       ~Options.VendorCode
+      ~Options.fake_options_path
    
    
