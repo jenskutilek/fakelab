@@ -459,7 +459,135 @@ class Options:
     # Opening OpenType & TrueType
     # ---------------------------
 
+    @property
+    def TTIScale1000(self) -> int:
+        """
+        Scale the font to 1000 UPM
+        """
+        return self._TTIScale1000
+
+    @TTIScale1000.setter
+    def TTIScale1000(self, value: int) -> None:
+        self._TTIScale1000 = value
+
+    @property
+    def TTIDecompose(self) -> int:
+        """
+        Decompose composites
+        """
+        return self._TTIDecompose
+
+    @TTIDecompose.setter
+    def TTIDecompose(self, value: int) -> None:
+        self._TTIDecompose = value
+
+    @property
+    def TTIStoreTables(self) -> int:
+        """
+        Store custom TrueType/OpenType tables
+        """
+        return self._TTIStoreTables
+
+    @TTIStoreTables.setter
+    def TTIStoreTables(self, value: int) -> None:
+        self._TTIStoreTables = value
+
+    @property
+    def TTIFontNames(self) -> int:
+        """
+        - Read only non-English name records
+        - Do not read OpenType name records
+        - Read all OpenType name records
+        """
+        return self._TTIFontNames
+
+    @TTIFontNames.setter
+    def TTIFontNames(self, value: int) -> None:
+        self._TTIFontNames = value
+
+    # TTIReadBinaryOT = 1  # Read OpenType layout tables (GPOS, GSUB, GDEF)
+    # TTIStoreBinaryOT = 1  # Store binary OpenType layout tables
+
+    @property
+    def TTIReadOT(self) -> int:
+        """
+        Interpret OpenType layout tables
+        """
+        return self._TTIReadOT
+
+    @TTIReadOT.setter
+    def TTIReadOT(self, value: int) -> None:
+        self._TTIReadOT = value
+
+    @property
+    def TTIReadKernFeature(self) -> int:
+        """
+        Import kerning from the "kern" feature
+        """
+        return self._TTIReadKernFeature
+
+    @TTIReadKernFeature.setter
+    def TTIReadKernFeature(self, value: int) -> None:
+        self._TTIReadKernFeature = value
+
+    # TTIGenerateNames = 1  # Generate missing glyph names using layout tables
+
+    @property
+    def OTReadMort(self) -> int:
+        """
+        Interpret GX/AAT mort & morx tables
+        """
+        return self._OTReadMort
+
+    @OTReadMort.setter
+    def OTReadMort(self, value: int) -> None:
+        self._OTReadMort = value
+
     # -    TrueType/OpenType TT(.ttf)
+
+    @property
+    def TTIConvert(self) -> int:
+        """
+        Convert TrueType curves into PostScript curves
+        """
+        return self._TTIConvert
+
+    @TTIConvert.setter
+    def TTIConvert(self, value: int) -> None:
+        self._TTIConvert = value
+
+    @property
+    def TTIKeepHints(self) -> int:
+        """
+        Store TrueType native hinting
+        """
+        return self._TTIKeepHints
+
+    @TTIKeepHints.setter
+    def TTIKeepHints(self, value: int) -> None:
+        self._TTIKeepHints = value
+
+    @property
+    def TTIReadBitmaps(self) -> int:
+        """
+        Import embedded bitmaps
+        """
+        return self._TTIReadBitmaps
+
+    @TTIReadBitmaps.setter
+    def TTIReadBitmaps(self, value: int) -> None:
+        self._TTIReadBitmaps = value
+
+    @property
+    def TTIAutohint(self) -> int:
+        """
+        Autohint font
+        """
+        return self._TTIAutohint
+
+    @TTIAutohint.setter
+    def TTIAutohint(self, value: int) -> None:
+        self._TTIAutohint = value
 
     # -----------------
     # Generating Type 1
@@ -681,7 +809,13 @@ class Options:
     # -    TrueType Autohinting
     # -------------------------
 
-    # ???
+    @property
+    def TTHHintingOptions(self) -> int:
+        return self._TTHHintingOptions
+
+    @TTHHintingOptions.setter
+    def TTHHintingOptions(self, value: int) -> None:
+        self._TTHHintingOptions = value
 
     # ----------------------------------
     # -    OpenType TT/TrueType Encoding
@@ -1846,126 +1980,6 @@ class Options:
         self._TTEheadBBoxSavings = value
 
     @property
-    def TTHHintingOptions(self) -> int:
-        return self._TTHHintingOptions
-
-    @TTHHintingOptions.setter
-    def TTHHintingOptions(self, value: int) -> None:
-        self._TTHHintingOptions = value
-
-    @property
-    def TTIAutohint(self) -> int:
-        """
-        Autohint font
-        """
-        return self._TTIAutohint
-
-    @TTIAutohint.setter
-    def TTIAutohint(self, value: int) -> None:
-        self._TTIAutohint = value
-
-    @property
-    def TTIConvert(self) -> int:
-        """
-        Convert TrueType curves into PostScript curves
-        """
-        return self._TTIConvert
-
-    @TTIConvert.setter
-    def TTIConvert(self, value: int) -> None:
-        self._TTIConvert = value
-
-    @property
-    def TTIDecompose(self) -> int:
-        """
-        Decompose composites
-        """
-        return self._TTIDecompose
-
-    @TTIDecompose.setter
-    def TTIDecompose(self, value: int) -> None:
-        self._TTIDecompose = value
-
-    @property
-    def TTIFontNames(self) -> int:
-        """
-        - Read only non-English name records
-        - Do not read OpenType name records
-        - Read all OpenType name records
-        """
-        return self._TTIFontNames
-
-    @TTIFontNames.setter
-    def TTIFontNames(self, value: int) -> None:
-        self._TTIFontNames = value
-
-    @property
-    def TTIKeepHints(self) -> int:
-        """
-        Store TrueType native hinting
-        """
-        return self._TTIKeepHints
-
-    @TTIKeepHints.setter
-    def TTIKeepHints(self, value: int) -> None:
-        self._TTIKeepHints = value
-
-    @property
-    def TTIReadBitmaps(self) -> int:
-        """
-        Import embedded bitmaps
-        """
-        return self._TTIReadBitmaps
-
-    @TTIReadBitmaps.setter
-    def TTIReadBitmaps(self, value: int) -> None:
-        self._TTIReadBitmaps = value
-
-    @property
-    def TTIReadKernFeature(self) -> int:
-        """
-        Import kerning from the "kern" feature
-        """
-        return self._TTIReadKernFeature
-
-    @TTIReadKernFeature.setter
-    def TTIReadKernFeature(self, value: int) -> None:
-        self._TTIReadKernFeature = value
-
-    @property
-    def TTIReadOT(self) -> int:
-        """
-        Interpret OpenType layout tables
-        """
-        return self._TTIReadOT
-
-    @TTIReadOT.setter
-    def TTIReadOT(self, value: int) -> None:
-        self._TTIReadOT = value
-
-    @property
-    def TTIScale1000(self) -> int:
-        """
-        Scale the font to 1000 UPM
-        """
-        return self._TTIScale1000
-
-    @TTIScale1000.setter
-    def TTIScale1000(self, value: int) -> None:
-        self._TTIScale1000 = value
-
-    @property
-    def TTIStoreTables(self) -> int:
-        """
-        Store custom TrueType/OpenType tables
-        """
-        return self._TTIStoreTables
-
-    @TTIStoreTables.setter
-    def TTIStoreTables(self, value: int) -> None:
-        self._TTIStoreTables = value
-
-    @property
     def TTToolReverseShift(self) -> int:
         """
         Shift key constrains setting of the delta instruction's direction?
@@ -2078,17 +2092,6 @@ class Options:
     @NamesFileName.setter
     def NamesFileName(self, value: str) -> None:
         self._NamesFileName = value
-
-    @property
-    def OTReadMort(self) -> int:
-        """
-        Interpret GX/AAT mort & morx tables
-        """
-        return self._OTReadMort
-
-    @OTReadMort.setter
-    def OTReadMort(self, value: int) -> None:
-        self._OTReadMort = value
 
     @property
     def ShowMeterPanel(self) -> int:
@@ -2456,7 +2459,7 @@ class Options:
         self.TTFScaler = 0x6D737363
         self.TTFSmooth = 0
         self.TTHPPM = 0x00000013
-        self.TTIGenerateNames = 1
+        self.TTIGenerateNames = 1  # Generate missing glyph names using layout tables
         self.TTIReadBinaryOT = 1  # Read OpenType layout tables (GPOS, GSUB, GDEF)
         self.TTIStoreBinaryOT = 1  # Store binary OpenType layout tables
         self.UnicodeKeyboard = 0
