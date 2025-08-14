@@ -7,6 +7,7 @@ from FL.fake.Font import FakeFont
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
+from FL.objects.Options import Options
 from FL.objects.Rect import Rect
 from FL.objects.TTInfo import TTInfo
 from FL.objects.Uni import Uni
@@ -766,6 +767,8 @@ class Font(FakeFont):
     def _set_defaults(self) -> None:
         # Identification
 
+        options = Options()
+
         # full path of the file from which the font was opened/saved
         self._file_name = None
         # font Family Name
@@ -822,7 +825,7 @@ class Font(FakeFont):
         self._xuid = []
         self._xuid_num = 0
         # TrueType vendor code
-        self._vendor: str = ""
+        self._vendor = options.VendorCode
         self.vendor_url: str | None = None
         self.version: str | None = None
 
