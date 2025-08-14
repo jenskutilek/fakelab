@@ -495,6 +495,8 @@ class Options:
     @property
     def TTIFontNames(self) -> int:
         """
+        Read OpenType name records
+
         - Read only non-English name records
         - Do not read OpenType name records
         - Read all OpenType name records
@@ -613,6 +615,8 @@ class Options:
     @property
     def TTEFontNames(self) -> int:
         """
+        Export OpenType name records
+
         - 0 = Append OpenType name records to the names exported by default
         - 1 = Do not export OpenType name records
         - 2 = Export only OpenType name records - ignore default names
