@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+import json
+import logging
+from pathlib import Path
+from typing import Any
 
-from FL.helpers.registry import parse_registry_file
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
+from FL.helpers.registry import FL_REGISTRY_KEY, option_keys, parse_registry_file
 
 __doc__ = "Class to represent the FontLab options interface"
+
+
+logger = logging.getLogger(__name__)
 
 
 class Options:
@@ -19,44 +21,60 @@ class Options:
     # Constructor
 
     def __init__(self) -> None:
-        """
-        # No args
-        >>> op = Options()
-        >>> print(op)
-        <Options>
-        """
-        self.Init()
+        self.Load()
+
+    def __del__(self) -> None:
+        self.fake_save_options()
 
     def __repr__(self) -> str:
         return "<Options>"
 
     # Additions for FakeLab
 
+    @property
+    def fake_options_path(self) -> Path:
+        return Path().home() / ".fakelab"
+
+    def as_dict(self) -> dict[str, str | int]:
+        d = {}
+        for k in option_keys:
+            d[k] = getattr(self, k)
+        return d
+
     def fake_load_regfile(self, file_path: Path) -> None:
         """
         Load options from a registry file
         """
-        # TODO
-        print(f"Loading options from {file_path.name}...")
+        logger.info(f"Loading options from {file_path.name}...")
         reg = parse_registry_file(file_path)
         for k, v in reg.items():
             if hasattr(self, k):
                 setattr(self, k, v)
             else:
-                print(f"Unsupported option: '{k}'")
-        print("...done.")
+                logger.warning(f"Unsupported option while loading registry file: '{k}'")
+        logger.info("...done.")
 
     def fake_save_regfile(self, file_path: Path) -> None:
         """
         Save options to a registry file
         """
         # TODO
-        header = (
-            "Windows Registry Editor Version 5.00\n\n"
-            "[HKEY_CURRENT_USER\\Software\\FontLab\\FontStudio 5\\Options]\n"
-        )
-        print(f"Save options {header} to {file_path}")
+        header = f"Windows Registry Editor Version 5.00\n\n[{FL_REGISTRY_KEY}]\n"
+        logger.info(f"Saving options to {file_path}...")
         raise NotImplementedError
+
+    def fake_load_options(self) -> None:
+        with open(self.fake_options_path, "rb") as f:
+            data = json.load(f)
+        for k, v in data.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+            else:
+                print(f"Ignored unknown attribute while loading options: {k}")
+
+    def fake_save_options(self) -> None:
+        with open(self.fake_options_path, "w", encoding="utf-8") as f:
+            json.dump(self.as_dict(), f, ensure_ascii=False, indent=2)
 
     # Attributes
 
@@ -397,6 +415,14 @@ class Options:
         self._ColorMaskPen = value
 
     @property
+    def ColorMetrics(self) -> int:
+        return self._ColorMetrics
+
+    @ColorMetrics.setter
+    def ColorMetrics(self, value: int) -> None:
+        self._ColorMetrics = value
+
+    @property
     def ColorSeacPen(self) -> int:
         return self._ColorSeacPen
 
@@ -438,6 +464,14 @@ class Options:
     @CreateUnexistingCharacters.setter
     def CreateUnexistingCharacters(self, value: int) -> None:
         self._CreateUnexistingCharacters = value
+
+    @property
+    def CustomMarkColor(self) -> int:
+        return self._CustomMarkColor
+
+    @CustomMarkColor.setter
+    def CustomMarkColor(self, value: int) -> None:
+        self._CustomMarkColor = value
 
     @property
     def DefaultGlyph(self) -> int:
@@ -968,6 +1002,14 @@ class Options:
         self._T1PFM = value
 
     @property
+    def T1Sort(self) -> int:
+        return self._T1Sort
+
+    @T1Sort.setter
+    def T1Sort(self, value: int) -> None:
+        self._T1Sort = value
+
+    @property
     def T1Terminal(self) -> int:
         return self._T1Terminal
 
@@ -1407,11 +1449,11 @@ class Options:
         self._EditEditSelection = value
 
     @property
-    def EditNoToolbars(self):
-        return self._EditNoToolbars
+    def EditNoToolbars(self) -> None:
+        raise AttributeError  # In FLS 5
 
     @EditNoToolbars.setter
-    def EditNoToolbars(self, value) -> None:
+    def EditNoToolbars(self, value: Any) -> None:
         self._EditNoToolbars = value
 
     @property
@@ -1423,11 +1465,11 @@ class Options:
         self._EditShowSelection = value
 
     @property
-    def NamesFileName(self):
+    def NamesFileName(self) -> str:
         return self._NamesFileName
 
     @NamesFileName.setter
-    def NamesFileName(self, value) -> None:
+    def NamesFileName(self, value: str) -> None:
         self._NamesFileName = value
 
     @property
@@ -1660,11 +1702,13 @@ class Options:
         self.ColorGrid = 0xFFE7E7E7
         self.ColorGroups = 0xFFE0E0E0
         self.ColorGuide = 0xFF0000FF
+        self.ColorMetrics = 0x008C8C8C
         self.ColorNeighbors = 0xFF404040
         self.ColorOutline = 0xFF000000
         self.ColorTemplate = 0xFFFFC0C0
         self.ControlSwitch = 0
         self.CustomDict = "*"
+        self.CustomMarkColor = 0x00000028
         self.DSIG_KeyPath = ""
         self.DSIG_Password = ""
         self.DSIG_SertPath = ""
@@ -1788,6 +1832,7 @@ class Options:
         self.T1ExportEncoding = 0
         self.T1FSType = 0
         self.T1MatchEncoding = 0
+        self.T1Sort = 0
         self.T1UseOTFamilyName = 0
         self.T1UseOTStyleName = 0
         self.T1UseTrademarkName = 0
@@ -1814,12 +1859,14 @@ class Options:
         """
         Read FontLab Options from registry
         """
-        # Synonymous to Init()? As long as Init() doesn't actually set the
-        # default values ...
         self.Init()
+        if self.fake_options_path.exists():
+            self.fake_load_options()
+        else:
+            self.fake_save_options()
 
     def Save(self) -> None:
         """
         Save FontLab Options in registry
         """
-        pass
+        self.fake_save_options()
