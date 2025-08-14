@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -340,7 +340,7 @@ option_keys = {
 }
 
 
-def parse_registry_file(file_path: Path) -> Dict[str, Dict[str, str | int | float]]:
+def parse_registry_file(file_path: Path) -> dict[str, dict[str, str | int | float]]:
     with open(file_path, "r") as f:
         data = f.read()
 
@@ -351,11 +351,11 @@ def parse_registry_file(file_path: Path) -> Dict[str, Dict[str, str | int | floa
 
     assert lines[0] == "Windows Registry Editor Version 5.00"
 
-    key = None
-    values = {}
+    key: str | None = None
+    values: dict[str, str] = {}
 
     for line in lines[1:]:
-        if line == "":
+        if line.strip() == "":
             continue
 
         if line.startswith("[") and line.endswith("]"):
@@ -378,7 +378,7 @@ def parse_registry_file(file_path: Path) -> Dict[str, Dict[str, str | int | floa
 
     # We now have a dict where the keys may be unknown, and the values are in raw format
 
-    parsed = {}
+    parsed: dict[str, dict[str, str | int | float]] = {}
 
     reg_options = reg.get(r"HKEY_CURRENT_USER\Software\FontLab\FontStudio 5\Options")
     if reg_options is None:
@@ -392,7 +392,7 @@ def parse_registry_file(file_path: Path) -> Dict[str, Dict[str, str | int | floa
         if val_type == "dword":
             hex_str = reg_options[key].split(":", 1)[1]
             assert len(hex_str) == 8
-            val = int(hex_str, 16)
+            val: str | int = int(hex_str, 16)
 
         elif val_type == "str":
             s = reg_options[key]
