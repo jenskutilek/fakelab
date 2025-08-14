@@ -241,7 +241,7 @@ class FakeLab:
 
     def Close(self, fontindex: int | None = None) -> None:
         """
-        () | (fontindex)      - closes the current or 'fontindex' font
+        Close the current or `fontindex` font
         """
         if fontindex is None:
             del self._fonts[self._ifont]
