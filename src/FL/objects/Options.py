@@ -412,8 +412,388 @@ class Options:
 
     # Attributes
 
+    # Grouped as in the Options dialog
+
+    # ---------------
+    # General Options
+    # ---------------
+
+    # -    Fonts
+    # -    Folders and paths
+    # -    Open and Save
+    # -    EPS and bitmap background
+    # -    Multiple Master
+    # -    Unicode and OpenType
+
+    # -----------
+    # Font window
+    # -----------
+
+    # -    Glyph cell
+    # -    Templates
+
+    # ------------
+    # Glyph window
+    # ------------
+
+    # -    Dimensions
+    # -    Colors
+    # -    Tracking
+    # -    Shape groups and neighbors
+
+    # --------------
+    # Metrics window
+    # --------------
+
+    # -    Metrics window colors
+
+    # ----------
+    # Font Audit
+    # ----------
+
+    # -    Optimize
+
+    # Opening Type 1
+
+    # ---------------------------
+    # Opening OpenType & TrueType
+    # ---------------------------
+
+    # -    TrueType/OpenType TT(.ttf)
+
+    # -----------------
+    # Generating Type 1
+    # -----------------
+
+    # -    Type 1 autohinting
+
+    # ------------------------------
+    # Generating OpenType & TrueType
+    # ------------------------------
+
+    @property
+    def TTENoReorder(self) -> int:
+        """
+        Automatically reorder glyphs
+        """
+        return self._TTENoReorder
+
+    @TTENoReorder.setter
+    def TTENoReorder(self, value: int) -> None:
+        self._TTENoReorder = value
+
+    @property
+    def TTEFontNames(self) -> int:
+        """
+        - 0 = Append OpenType name records to the names exported by default
+        - 1 = Do not export OpenType name records
+        - 2 = Export only OpenType name records - ignore default names
+        """
+        return self._TTEFontNames
+
+    @TTEFontNames.setter
+    def TTEFontNames(self, value: int) -> None:
+        self._TTEFontNames = value
+
+    @property
+    def TTEExportUnicode(self) -> int:
+        """
+        Ignore Unicode indexes in the font
+
+        checked
+            Ignore Unicode indexes in the font
+        option
+            Use following codepage for first 256 glyphs:
+            Do not reencode first 256 glyphs
+        unchecked
+            Export only first 256 glyphs of the selected codepage
+        unchecked
+            Put MS Char Set value into fsSelection field
+        """
+        return self._TTEExportUnicode
+
+    @TTEExportUnicode.setter
+    def TTEExportUnicode(self, value: int) -> None:
+        self._TTEExportUnicode = value
+
+    # TODO: TTESmartMacNames
+    # Use the OpenType names as menu names on Macintosh
+
+    # TODO: TTEStoreTables
+    # Write stored custom TrueType/OpenType tables
+
+    @property
+    def TTEExportOT(self) -> int:
+        """
+        Export OpenType layout tables
+        """
+        return self._TTEExportOT
+
+    @TTEExportOT.setter
+    def TTEExportOT(self, value: int) -> None:
+        self._TTEExportOT = value
+
+    # TODO: OTCompileFeatures
+    # Compile feature definitions
+
+    # TODO: OTOldContextRule
+    # Contextual substitutions in invalid legacy format
+    # Use this option only if you know what you are doing
+
+    @property
+    def OTWriteGDEF(self) -> int:
+        """
+        Generate GDEF table
+        """
+        return self._OTWriteGDEF
+
+    @OTWriteGDEF.setter
+    def OTWriteGDEF(self, value: int) -> None:
+        self._OTWriteGDEF = value
+
+    @property
+    def TTEExportVOLT(self) -> int:
+        """
+        Export VOLT data
+        """
+        return self._TTEExportVOLT
+
+    @TTEExportVOLT.setter
+    def TTEExportVOLT(self, value: int) -> None:
+        self._TTEExportVOLT = value
+
+    # ----------------------
+    # -    Digital signature
+    # ----------------------
+
+    # DSIG_Use = 0  # Generate digital signature (DSIG table)
+    # DSIG_SertPath = ""  # Path to the certificate file (.spc or .cer)
+    # DSIG_KeyPath = ""  # Path to the private key file (.pvk
+    # DSIG_Password = ""  # Use the following password every time
+    # DSIG_TimeStamp = 0  # Generate the time stamp
+
+    # --------------------------------
+    # -    TrueType/OpenType TT (.ttf)
+    # --------------------------------
+
+    @property
+    def TTEHint(self) -> int:
+        """
+        Export hinted TrueType fonts?
+        """
+        return self._TTEHint
+
+    @TTEHint.setter
+    def TTEHint(self, value: int) -> None:
+        self._TTEHint = value
+
+    @property
+    def TTEKeep(self) -> int:
+        """
+        Write stored TrueType native hinting
+        """
+        return self._TTEKeep
+
+    @TTEKeep.setter
+    def TTEKeep(self, value: int) -> None:
+        self._TTEKeep = value
+
+    @property
+    def TTEVisual(self) -> int:
+        """
+        Export visual TrueType hints?
+        """
+        return self._TTEVisual
+
+    @TTEVisual.setter
+    def TTEVisual(self, value: int) -> None:
+        self._TTEVisual = value
+
+    @property
+    def TTEAutohint(self) -> int:
+        """
+        Autohint unhinted glyphs
+        """
+        return self._TTEAutohint
+
+    @TTEAutohint.setter
+    def TTEAutohint(self, value: int) -> None:
+        self._TTEAutohint = value
+
+    @property
+    def TTEWriteBitmaps(self) -> int:
+        """
+        Export embedded bitmaps
+        """
+        return self._TTEWriteBitmaps
+
+    @TTEWriteBitmaps.setter
+    def TTEWriteBitmaps(self, value: int) -> None:
+        self._TTEWriteBitmaps = value
+
+    @property
+    def CopyHDMXData(self) -> int:
+        """
+        Copy HDMX data from base to composite glyph
+        """
+        return self._CopyHDMXData
+
+    @CopyHDMXData.setter
+    def CopyHDMXData(self, value: int) -> None:
+        self._CopyHDMXData = value
+
+    @property
+    def OTWriteMort(self) -> int:
+        """
+        Export "mort" table if possible?
+        """
+        return self._OTWriteMort
+
+    @OTWriteMort.setter
+    def OTWriteMort(self, value: int) -> None:
+        self._OTWriteMort = value
+
+    # TTEVersionOS2 = 3  # OS/2 table version 3
+
+    @property
+    def CacheTTUse(self) -> int:
+        """
+        Use CacheTT program to generate device metrics tables in TT fonts
+        """
+        return self._CacheTTUse
+
+    @CacheTTUse.setter
+    def CacheTTUse(self, value: int) -> None:
+        self._CacheTTUse = value
+
+    @property
+    def CacheTTPath(self) -> str:
+        """
+        Location of the CacheTT.exe
+        """
+        return self._CacheTTPath
+
+    @CacheTTPath.setter
+    def CacheTTPath(self, value: str) -> None:
+        self._CacheTTPath = value
+
+    # -------------------------
+    # -    TrueType Autohinting
+    # -------------------------
+
+    # ???
+
+    # ----------------------------------
+    # -    OpenType TT/TrueType Encoding
+    # ----------------------------------
+
+    # ??? See TTEExportUnicode
+
+    # ----------------------------------
+    # -    Generating OpenType PS (.otf)
+    # ----------------------------------
+
+    # TTEDecompose = 1  # Decompose all composites
+
+    @property
+    def TTESubrize(self) -> int:
+        """
+        Use subroutines to compress outlines in the CFF table
+        """
+        return self._TTESubrize
+
+    @TTESubrize.setter
+    def TTESubrize(self, value: int) -> None:
+        self._TTESubrize = value
+
+    # TTEAutohint? for OTF or TTF?
+    # TTESmartFontName = 0  # Use the PostScript FontName as Full Name on Win?
+
+    # ------------
+    # -    Kerning
+    # ------------
+
+    # TTEWriteKernTable  # Export old-style non-OpenType "kern" table
+    # ExpandKernFlags
+    # ExpandKernCodepage
+    # ExpandKernCount
+
+    @property
+    def TTEWriteKernFeature(self) -> int:
+        """
+        Generate OpenType "kern" feature if it is undefined or outdated?
+        """
+        return self._TTEWriteKernFeature
+
+    @TTEWriteKernFeature.setter
+    def TTEWriteKernFeature(self, value: int) -> None:
+        self._TTEWriteKernFeature = value
+
+    # -------------
+    # Trace Options
+    # -------------
+
+    @property
+    def TracerCurveFit(self) -> float:
+        return self._TracerCurveFit
+
+    @TracerCurveFit.setter
+    def TracerCurveFit(self, value: int) -> None:
+        self._TracerCurveFit = value
+
+    @property
+    def TracerCurves(self) -> int:
+        return self._TracerCurves
+
+    @TracerCurves.setter
+    def TracerCurves(self, value: int) -> None:
+        self._TracerCurves = value
+
+    @property
+    def TracerExtremePoints(self) -> int:
+        return self._TracerExtremePoints
+
+    @TracerExtremePoints.setter
+    def TracerExtremePoints(self, value: int) -> None:
+        self._TracerExtremePoints = value
+
+    @property
+    def TracerPresetMode(self) -> int:
+        return self._TracerPresetMode
+
+    @TracerPresetMode.setter
+    def TracerPresetMode(self, value: int) -> None:
+        self._TracerPresetMode = value
+
+    @property
+    def TracerStraightenAngle(self) -> int:
+        return self._TracerStraightenAngle
+
+    @TracerStraightenAngle.setter
+    def TracerStraightenAngle(self, value: int) -> None:
+        self._TracerStraightenAngle = value
+
+    @property
+    def TracerTolerance(self) -> int:
+        return self._TracerTolerance
+
+    @TracerTolerance.setter
+    def TracerTolerance(self, value: int) -> None:
+        self._TracerTolerance = value
+
+    # Unsorted yet
+
     @property
     def AutoAlignVector(self) -> int:
+        """
+        Optimize - Auto-alignment level:
+
+        - Do not align
+        - Be very precise
+        - Process normally
+        - Align when possible
+        - Extreme
+        """
         return self._AutoAlignVector
 
     @AutoAlignVector.setter
@@ -454,6 +834,9 @@ class Options:
 
     @property
     def AutoSave(self) -> int:
+        """
+        Autosave fonts
+        """
         return self._AutoSave
 
     @AutoSave.setter
@@ -462,6 +845,9 @@ class Options:
 
     @property
     def AutoSaveTick(self) -> int:
+        """
+        Autosave fonts every _ minutes
+        """
         return self._AutoSaveTick
 
     @AutoSaveTick.setter
@@ -542,6 +928,9 @@ class Options:
 
     @property
     def Backup(self) -> int:
+        """
+        Create backup files
+        """
         return self._Backup
 
     @Backup.setter
@@ -550,6 +939,9 @@ class Options:
 
     @property
     def BitmapSize(self) -> int:
+        """
+        Bitmap height for the Create Bitmap command
+        """
         return self._BitmapSize
 
     @BitmapSize.setter
@@ -630,6 +1022,17 @@ class Options:
 
     @property
     def ChartSampleSize(self) -> int:
+        """
+        Glyph cell - Each cell should have dimensions of _ pixels
+
+        - 0: 16 x 16
+        - 1: 24 x 24
+        - 2: 32 x 32
+        - 3: 48 x 48
+        - 4: 64 x 64
+        - 5: 96 x 96
+        - 6: 128 x 128
+        """
         return self._ChartSampleSize
 
     @ChartSampleSize.setter
@@ -638,6 +1041,9 @@ class Options:
 
     @property
     def ChartShowNotes(self) -> int:
+        """
+        Glyph cell - Show note icons
+        """
         return self._ChartShowNotes
 
     @ChartShowNotes.setter
@@ -781,17 +1187,6 @@ class Options:
         self._ColorVMetrics = value
 
     @property
-    def CopyHDMXData(self) -> int:
-        """
-        Copy HDMX data from base to composite glyph?
-        """
-        return self._CopyHDMXData
-
-    @CopyHDMXData.setter
-    def CopyHDMXData(self, value: int) -> None:
-        self._CopyHDMXData = value
-
-    @property
     def CreateUnexistingCharacters(self) -> int:
         return self._CreateUnexistingCharacters
 
@@ -833,6 +1228,9 @@ class Options:
 
     @property
     def EditBCPsFixed(self) -> int:
+        """
+        Advanced - All BCPs are fixed
+        """
         return self._EditBCPsFixed
 
     @EditBCPsFixed.setter
@@ -905,6 +1303,9 @@ class Options:
 
     @property
     def EditLeaveEcho(self) -> int:
+        """
+        Outline drawing - Leave echo while editing
+        """
         return self._EditLeaveEcho
 
     @EditLeaveEcho.setter
@@ -913,6 +1314,9 @@ class Options:
 
     @property
     def EditNotFillOpen(self) -> int:
+        """
+        Outline drawing - Fill open contours
+        """
         return self._EditNotFillOpen
 
     @EditNotFillOpen.setter
@@ -937,6 +1341,9 @@ class Options:
 
     @property
     def EditShowCross(self) -> int:
+        """
+        Editing behaviour - Show crosshair cursor
+        """
         return self._EditShowCross
 
     @EditShowCross.setter
@@ -953,6 +1360,9 @@ class Options:
 
     @property
     def EditSmallNodes(self) -> int:
+        """
+        Appearance - Small nodes
+        """
         return self._EditSmallNodes
 
     @EditSmallNodes.setter
@@ -961,6 +1371,9 @@ class Options:
 
     @property
     def EditSmoothOutline(self) -> int:
+        """
+        Outline drawing - Smooth outline
+        """
         return self._EditSmoothOutline
 
     @EditSmoothOutline.setter
@@ -1033,22 +1446,14 @@ class Options:
 
     @property
     def OTAddClasses(self) -> int:
+        """
+        Add all glyph classes to OpenType feature definition code
+        """
         return self._OTAddClasses
 
     @OTAddClasses.setter
     def OTAddClasses(self, value: int) -> None:
         self._OTAddClasses = value
-
-    @property
-    def OTWriteGDEF(self) -> int:
-        """
-        Generate GDEF table
-        """
-        return self._OTWriteGDEF
-
-    @OTWriteGDEF.setter
-    def OTWriteGDEF(self, value: int) -> None:
-        self._OTWriteGDEF = value
 
     @property
     def OptimizeAlign(self) -> int:
@@ -1304,10 +1709,16 @@ class Options:
 
     @T1AFM.setter
     def T1AFM(self, value: int) -> None:
+        """
+        Make AFM and INF files
+        """
         self._T1AFM = value
 
     @property
     def T1Autohint(self) -> int:
+        """
+        Autohint unhinted glyphs
+        """
         return self._T1Autohint
 
     @T1Autohint.setter
@@ -1328,10 +1739,21 @@ class Options:
 
     @T1Encoding.setter
     def T1Encoding(self, value: int) -> None:
+        """
+        Encoding options:
+
+        - Always write custom encoding
+        - Always write standard encoding
+        - Export Unicode codepage if codepage mode is active
+        - Select encoding automatically
+        """
         self._T1Encoding = value
 
     @property
     def T1PFM(self) -> int:
+        """
+        Make PFM file
+        """
         return self._T1PFM
 
     @T1PFM.setter
@@ -1340,6 +1762,9 @@ class Options:
 
     @property
     def T1Sort(self) -> int:
+        """
+        Automatically sort glyphs
+        """
         return self._T1Sort
 
     @T1Sort.setter
@@ -1348,6 +1773,9 @@ class Options:
 
     @property
     def T1Terminal(self) -> int:
+        """
+        Open Type 1 Export Terminal
+        """
         return self._T1Terminal
 
     @T1Terminal.setter
@@ -1395,17 +1823,6 @@ class Options:
         self._TTEAutoWinAscDesc = value
 
     @property
-    def TTEAutohint(self) -> int:
-        """
-        Autohint unhinted glyphs
-        """
-        return self._TTEAutohint
-
-    @TTEAutohint.setter
-    def TTEAutohint(self, value: int) -> None:
-        self._TTEAutohint = value
-
-    @property
     def TTECmap10(self) -> int:
         """
         option:   - Use following codepage to build cmap(1,0) table:
@@ -1419,143 +1836,6 @@ class Options:
     @TTECmap10.setter
     def TTECmap10(self, value: int) -> None:
         self._TTECmap10 = value
-
-    @property
-    def TTEExportOT(self) -> int:
-        """
-        Export OpenType layout tables?
-        """
-        return self._TTEExportOT
-
-    @TTEExportOT.setter
-    def TTEExportOT(self, value: int) -> None:
-        self._TTEExportOT = value
-
-    @property
-    def TTEExportUnicode(self) -> int:
-        """_summary_
-
-        Returns:
-            int: _description_
-
-        checked
-            Ignore Unicode indexes in the font
-        option
-            Use following codepage for first 256 glyphs:
-            Do not reencode first 256 glyphs
-        unchecked
-            Export only first 256 glyphs of the selected codepage
-        unchecked
-            Put MS Char Set value into fsSelection field
-        """
-        return self._TTEExportUnicode
-
-    @TTEExportUnicode.setter
-    def TTEExportUnicode(self, value: int) -> None:
-        self._TTEExportUnicode = value
-
-    @property
-    def TTEExportVOLT(self) -> int:
-        """
-        Export VOLT data
-        """
-        return self._TTEExportVOLT
-
-    @TTEExportVOLT.setter
-    def TTEExportVOLT(self, value: int) -> None:
-        self._TTEExportVOLT = value
-
-    @property
-    def TTEFontNames(self) -> int:
-        """
-        Do not export OpenType name records
-
-        - 0 = Append OpenType names
-        - 1 = Do not export OpenType names
-        - 2 = Export only OpenType names
-        """
-        return self._TTEFontNames
-
-    @TTEFontNames.setter
-    def TTEFontNames(self, value: int) -> None:
-        self._TTEFontNames = value
-
-    @property
-    def TTEHint(self) -> int:
-        """
-        Export hinted TrueType fonts?
-        """
-        return self._TTEHint
-
-    @TTEHint.setter
-    def TTEHint(self, value: int) -> None:
-        self._TTEHint = value
-
-    @property
-    def TTEKeep(self) -> int:
-        """
-        Write stored TrueType native hinting
-        """
-        return self._TTEKeep
-
-    @TTEKeep.setter
-    def TTEKeep(self, value: int) -> None:
-        self._TTEKeep = value
-
-    @property
-    def TTENoReorder(self) -> int:
-        """
-        Automatically reorder glyphs?
-        """
-        return self._TTENoReorder
-
-    @TTENoReorder.setter
-    def TTENoReorder(self, value: int) -> None:
-        self._TTENoReorder = value
-
-    @property
-    def TTESubrize(self) -> int:
-        """
-        Use subroutines to compress outlines in the CFF table?
-        """
-        return self._TTESubrize
-
-    @TTESubrize.setter
-    def TTESubrize(self, value: int) -> None:
-        self._TTESubrize = value
-
-    @property
-    def TTEVisual(self) -> int:
-        """
-        Export visual TrueType hints?
-        """
-        return self._TTEVisual
-
-    @TTEVisual.setter
-    def TTEVisual(self, value: int) -> None:
-        self._TTEVisual = value
-
-    @property
-    def TTEWriteBitmaps(self) -> int:
-        """
-        Export embedded bitmaps
-        """
-        return self._TTEWriteBitmaps
-
-    @TTEWriteBitmaps.setter
-    def TTEWriteBitmaps(self, value: int) -> None:
-        self._TTEWriteBitmaps = value
-
-    @property
-    def TTEWriteKernFeature(self) -> int:
-        """
-        Generate OpenType "kern" feature if it is undefined or outdated?
-        """
-        return self._TTEWriteKernFeature
-
-    @TTEWriteKernFeature.setter
-    def TTEWriteKernFeature(self, value: int) -> None:
-        self._TTEWriteKernFeature = value
 
     @property
     def TTEheadBBoxSavings(self) -> int:
@@ -1575,6 +1855,9 @@ class Options:
 
     @property
     def TTIAutohint(self) -> int:
+        """
+        Autohint font
+        """
         return self._TTIAutohint
 
     @TTIAutohint.setter
@@ -1583,6 +1866,9 @@ class Options:
 
     @property
     def TTIConvert(self) -> int:
+        """
+        Convert TrueType curves into PostScript curves
+        """
         return self._TTIConvert
 
     @TTIConvert.setter
@@ -1591,6 +1877,9 @@ class Options:
 
     @property
     def TTIDecompose(self) -> int:
+        """
+        Decompose composites
+        """
         return self._TTIDecompose
 
     @TTIDecompose.setter
@@ -1599,6 +1888,11 @@ class Options:
 
     @property
     def TTIFontNames(self) -> int:
+        """
+        - Read only non-English name records
+        - Do not read OpenType name records
+        - Read all OpenType name records
+        """
         return self._TTIFontNames
 
     @TTIFontNames.setter
@@ -1607,6 +1901,9 @@ class Options:
 
     @property
     def TTIKeepHints(self) -> int:
+        """
+        Store TrueType native hinting
+        """
         return self._TTIKeepHints
 
     @TTIKeepHints.setter
@@ -1615,6 +1912,9 @@ class Options:
 
     @property
     def TTIReadBitmaps(self) -> int:
+        """
+        Import embedded bitmaps
+        """
         return self._TTIReadBitmaps
 
     @TTIReadBitmaps.setter
@@ -1623,6 +1923,9 @@ class Options:
 
     @property
     def TTIReadKernFeature(self) -> int:
+        """
+        Import kerning from the "kern" feature
+        """
         return self._TTIReadKernFeature
 
     @TTIReadKernFeature.setter
@@ -1631,6 +1934,9 @@ class Options:
 
     @property
     def TTIReadOT(self) -> int:
+        """
+        Interpret OpenType layout tables
+        """
         return self._TTIReadOT
 
     @TTIReadOT.setter
@@ -1639,6 +1945,9 @@ class Options:
 
     @property
     def TTIScale1000(self) -> int:
+        """
+        Scale the font to 1000 UPM
+        """
         return self._TTIScale1000
 
     @TTIScale1000.setter
@@ -1647,6 +1956,9 @@ class Options:
 
     @property
     def TTIStoreTables(self) -> int:
+        """
+        Store custom TrueType/OpenType tables
+        """
         return self._TTIStoreTables
 
     @TTIStoreTables.setter
@@ -1655,6 +1967,9 @@ class Options:
 
     @property
     def TTToolReverseShift(self) -> int:
+        """
+        Shift key constrains setting of the delta instruction's direction?
+        """
         return self._TTToolReverseShift
 
     @TTToolReverseShift.setter
@@ -1662,55 +1977,12 @@ class Options:
         self._TTToolReverseShift = value
 
     @property
-    def TracerCurveFit(self) -> float:
-        return self._TracerCurveFit
-
-    @TracerCurveFit.setter
-    def TracerCurveFit(self, value: int) -> None:
-        self._TracerCurveFit = value
-
-    @property
-    def TracerCurves(self) -> int:
-        return self._TracerCurves
-
-    @TracerCurves.setter
-    def TracerCurves(self, value: int) -> None:
-        self._TracerCurves = value
-
-    @property
-    def TracerExtremePoints(self) -> int:
-        return self._TracerExtremePoints
-
-    @TracerExtremePoints.setter
-    def TracerExtremePoints(self, value: int) -> None:
-        self._TracerExtremePoints = value
-
-    @property
-    def TracerPresetMode(self) -> int:
-        return self._TracerPresetMode
-
-    @TracerPresetMode.setter
-    def TracerPresetMode(self, value: int) -> None:
-        self._TracerPresetMode = value
-
-    @property
-    def TracerStraightenAngle(self) -> int:
-        return self._TracerStraightenAngle
-
-    @TracerStraightenAngle.setter
-    def TracerStraightenAngle(self, value: int) -> None:
-        self._TracerStraightenAngle = value
-
-    @property
-    def TracerTolerance(self) -> int:
-        return self._TracerTolerance
-
-    @TracerTolerance.setter
-    def TracerTolerance(self, value: int) -> None:
-        self._TracerTolerance = value
-
-    @property
     def TrackingDistance(self) -> int:
+        """
+        Tracking offset: _ % of UPM
+
+        Stored value is 10x that in the UI
+        """
         return self._TrackingDistance
 
     @TrackingDistance.setter
@@ -1742,22 +2014,6 @@ class Options:
         self._VendorCode = value
 
     # Not implemented in FontLab 4.5.2 Win:
-
-    @property
-    def CacheTTPath(self) -> str:  # unconfirmed str
-        return self._CacheTTPath
-
-    @CacheTTPath.setter
-    def CacheTTPath(self, value: str) -> None:
-        self._CacheTTPath = value
-
-    @property
-    def CacheTTUse(self) -> int:
-        return self._CacheTTUse
-
-    @CacheTTUse.setter
-    def CacheTTUse(self, value: int) -> None:
-        self._CacheTTUse = value
 
     @property
     def ContourSnapAllPoints(self) -> int:
@@ -1801,6 +2057,9 @@ class Options:
 
     @property
     def EditShowSelection(self) -> int:
+        """
+        Show selected nodes in inactive masters
+        """
         return self._EditShowSelection
 
     @EditShowSelection.setter
@@ -1809,6 +2068,11 @@ class Options:
 
     @property
     def NamesFileName(self) -> str:
+        """
+        Default Unicode-Name mapping table?
+
+        (Not stored in registry file, or not stored == standard.nam?)
+        """
         return self._NamesFileName
 
     @NamesFileName.setter
@@ -1817,6 +2081,9 @@ class Options:
 
     @property
     def OTReadMort(self) -> int:
+        """
+        Interpret GX/AAT mort & morx tables
+        """
         return self._OTReadMort
 
     @OTReadMort.setter
@@ -1824,18 +2091,10 @@ class Options:
         self._OTReadMort = value
 
     @property
-    def OTWriteMort(self) -> int:
-        """
-        Export "mort" table if possible?
-        """
-        return self._OTWriteMort
-
-    @OTWriteMort.setter
-    def OTWriteMort(self, value: int) -> None:
-        self._OTWriteMort = value
-
-    @property
     def ShowMeterPanel(self) -> int:
+        """
+        Editing behavior - Show meter panel when Meter tool is activated
+        """
         return self._ShowMeterPanel
 
     @ShowMeterPanel.setter
@@ -1844,6 +2103,11 @@ class Options:
 
     @property
     def UnicodeStrings(self) -> int:
+        """
+        Allow to enter Unicode strings in dialogs
+
+        Windows 2000 or Windows XP required ;)
+        """
         return self._UnicodeStrings
 
     @UnicodeStrings.setter
@@ -2032,11 +2296,11 @@ class Options:
         self.ATMPPM = 0x0000002A
         self.ATMScaler = 0x61747375
         self.ATMSmooth = 1
-        self.AutohintingEngine = 0
-        self.ChartAutoActivateCodepage = 1
-        self.ChartCopyKerning = 0
-        self.ChartGenerate = 1
-        self.ChartGenerateRTL = 0
+        self.AutohintingEngine = 0  # Autohinting engine: 0 = FontLab, 1 = Adobe
+        self.ChartAutoActivateCodepage = 1  # Automaticall activate related codepage ...
+        self.ChartCopyKerning = 0  # Kerning information is copied with the glyph
+        self.ChartGenerate = 1  # Create Glyphs command generates them if possible?
+        self.ChartGenerateRTL = 0  # All generated ligatures are right-to-left
         self.ColorBackground = 0xFFFFFFFF
         self.ColorBackgroundMask = 0xFFFFF0FF
         self.ColorBackgroundMetrics = 0xFFFFFFF0
@@ -2052,28 +2316,28 @@ class Options:
         self.ControlSwitch = 0
         self.CustomDict = "*"
         self.CustomMarkColor = 0x00000028
-        self.DSIG_KeyPath = ""
-        self.DSIG_Password = ""
-        self.DSIG_SertPath = ""
-        self.DSIG_TimeStamp = 0
+        self.DSIG_KeyPath = ""  # Path to the private key file (.pvk
+        self.DSIG_Password = ""  # Use the following password every time
+        self.DSIG_SertPath = ""  # Path to the certificate file (.spc or .cer)
+        self.DSIG_TimeStamp = 0  # Generate the time stamp
         self.DSIG_Use = 0  # Generate digital signature (DSIG table)
-        self.EditAllSmooth = 1
+        self.EditAllSmooth = 1  # Mask and inactive masters are smooth too
         self.EditAutoSelectLayers = 1
         self.EditBCVOpacity = 0x00000032
-        self.EditComponentsByOutline = 0
-        self.EditConnectMasters = 0
-        self.EditDoubleClickMask = 1
+        self.EditComponentsByOutline = 0  # Comp. are selected only by click to contour
+        self.EditConnectMasters = 0  # Appear. - Connect selected nodes in all masters
+        self.EditDoubleClickMask = 1  # Double-click on background to change its prop.?
         self.EditInstantRefresh = 0
-        self.EditKeyboardEditBCP = 1
+        self.EditKeyboardEditBCP = 1  # When curve is selected keyboard adjusts BCPs
         self.EditLayersExpanded = 1
         self.EditPreviewKey = 0x000000C0
-        self.EditShowAnchorNames = 1
+        self.EditShowAnchorNames = 1  # Appearance - Show anchor names
         self.EditShowMasterPoints = 1
         self.EditShowMeasurementLine = 1
         self.EditShowNodesSelection = 1
-        self.EditSmoothIsSmooth = 1
-        self.EditThickOutline = 0
-        self.EditUndoSelection = 0
+        self.EditSmoothIsSmooth = 1  # Keep smooth connection smooth at all times
+        self.EditThickOutline = 0  # Outline drawing - Thick outline
+        self.EditUndoSelection = 0  # Editing b. - Sel. in the Glyph window is undoable
         self.EditZoomMode = 0x00000007
         self.EmbeddingType = 0x00000004
         self.EnableExtPythonEditor = 1
@@ -2085,13 +2349,13 @@ class Options:
         self.ExpandKernFlags = 0x00000012
         self.ExtPythonEditor = "/Applications/TextMate.app"
         self.FileOpenSample = "ABRaeg123"
-        self.FontAuditLive = 0
+        self.FontAuditLive = 0  # Live FontAudit checks
         self.FontDialogName = "Lucida Grande"
         self.FontDialogSize = 0x0000005A
         self.FontExpanded = 1
         self.FontFixedName = "Lucida Grande"
         self.FontFixedSize = 0x00000050
-        self.FontLabNodes = 0
+        self.FontLabNodes = 0  # Small nodes?
         self.FontPanelName = "Lucida Grande"
         self.FontPanelSize = 0x0000005A
         self.FontRulerName = "Lucida Grande"
@@ -2131,12 +2395,12 @@ class Options:
         self.MetricsShowTable1 = 1
         self.MetricsShowTable2 = 1
         self.MetricsShowTable3 = 1
-        self.MMExtrapolation = 0
-        self.OpenOutput = 1
-        self.OTAddMetricsClasses = 0
-        self.OTCompileFeatures = 1
-        self.OTGenerate = 0
-        self.OTOldContextRule = 0
+        self.MMExtrapolation = 0  # Enable Multiple Master extrapolation
+        self.OpenOutput = 1  # Automatically open Output panel if message is waiting
+        self.OTAddMetricsClasses = 0  # Do not add metrics classes
+        self.OTCompileFeatures = 1  # Compile feature definitions
+        self.OTGenerate = 0  # Generate basic OpenType features for Type 1 fonts?
+        self.OTOldContextRule = 0  # Contextual substitutions in invalid legacy format
         self.OTPreviewSize = 0x00000080
         self.OTSampleSize = 0x00000060
         self.OutputFontName = "Andale Mono"
@@ -2173,8 +2437,8 @@ class Options:
         self.SyncronizeMasters = 1
         self.T1ExportCompatibleCyrillic = 0
         self.T1ExportEncoding = 0
-        self.T1FSType = 0
-        self.T1MatchEncoding = 0
+        self.T1FSType = 0  # Export /FSType (font embedding) parameter
+        self.T1MatchEncoding = 0  # Find matching encoding table if possible
         self.T1Sort = 0
         self.T1UseOTFamilyName = 0
         self.T1UseOTStyleName = 0
@@ -2182,19 +2446,19 @@ class Options:
         self.Template_BDF = ""
         self.Template_Path = ""
         self.Template_Use = 0
-        self.TTEDecompose = 1
-        self.TTESmartFontName = 0
+        self.TTEDecompose = 1  # Decompose all composites
+        self.TTESmartFontName = 0  # Use the PostScript FontName as Full Name on Win?
         self.TTESmartMacNames = 1  # Use the OpenType names as menu names on Macintosh
-        self.TTEStoreTables = 0  # Export OpenType layout tables
+        self.TTEStoreTables = 0  # Write stored custom TrueType/OpenType tables
         self.TTEVersionOS2 = 3  # OS/2 table version 3
-        self.TTEVisual = 1
+        self.TTEVisual = 1  # Export visual TrueType hints
         self.TTEWriteKernTable = 0  # Export old-style non-OpenType "kern" table
         self.TTFScaler = 0x6D737363
         self.TTFSmooth = 0
         self.TTHPPM = 0x00000013
         self.TTIGenerateNames = 1
-        self.TTIReadBinaryOT = 1
-        self.TTIStoreBinaryOT = 1
+        self.TTIReadBinaryOT = 1  # Read OpenType layout tables (GPOS, GSUB, GDEF)
+        self.TTIStoreBinaryOT = 1  # Store binary OpenType layout tables
         self.UnicodeKeyboard = 0
         self.UnicodeRangePercent = 0
 
