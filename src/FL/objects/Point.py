@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
 from FL.objects.Matrix import Matrix
-from FL.objects.Rect import Rect
+
+if TYPE_CHECKING:
+    from FL.objects.Rect import Rect
 
 __doc__ = "Class to represent a point"
 
