@@ -207,11 +207,11 @@ class Point(Copyable):
 
         """
         Possible errors:
-        
+
         Incorrect # of args to:
         Point.Shift(number x, number y)
         Point.Shift(Point p)
-        
+
         Point is expected in arg 1:
         Point.Shift(Point p)
         """
@@ -229,10 +229,10 @@ class Point(Copyable):
 
         """
         Possible errors:
-        
+
         Incorrect # of args to:
         Point.Add(Point p)
-        
+
         Point is expected in arg 1:
         Point.Add(Point p)
         """
@@ -245,10 +245,10 @@ class Point(Copyable):
 
         """
         Possible errors:
-        
+
         Incorrect # of args to:
         Point.Sub(Point p).
-        
+
         Point is expected in arg 1:
         Point.Sub(Point p)
         """
@@ -265,7 +265,7 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Mul(number n).
-        
+
         Number is expected in arg 1:
         Point.Mul(number n)
         """
@@ -282,7 +282,7 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Transform(Matrix m).
-        
+
         Matrix is expected in arg 1:
         Point.Transform(Matrix m)
         """

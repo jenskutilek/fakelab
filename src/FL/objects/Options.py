@@ -393,7 +393,7 @@ class Options:
         Save options to a registry file
         """
         # TODO
-        header = f"Windows Registry Editor Version 5.00\n\n[{FL_REGISTRY_KEY}]\n"
+        # header = f"Windows Registry Editor Version 5.00\n\n[{FL_REGISTRY_KEY}]\n"
         logger.info(f"Saving options to {file_path}...")
         raise NotImplementedError
 
