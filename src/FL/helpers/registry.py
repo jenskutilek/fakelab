@@ -6,6 +6,8 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
+FL_REGISTRY_KEY = r"HKEY_CURRENT_USER\Software\FontLab\FontStudio 5\Options"
+
 option_keys = {
     "UnicodeKeyboard": "dword",
     "ChartAutoActivateCodepage": "dword",
@@ -380,7 +382,7 @@ def parse_registry_file(file_path: Path) -> dict[str, dict[str, str | int | floa
 
     parsed: dict[str, dict[str, str | int | float]] = {}
 
-    reg_options = reg.get(r"HKEY_CURRENT_USER\Software\FontLab\FontStudio 5\Options")
+    reg_options = reg.get(FL_REGISTRY_KEY)
     if reg_options is None:
         print("Could not find data section in registry file")
         raise ValueError
