@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
 
 from FL import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
+from FL.fake.FontImporter import FontImporter
 from FL.objects.Font import Font
+from FL.objects.Options import Options
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -262,9 +265,22 @@ class FakeLab:
             addtolist (bool, optional): _description_. Defaults to True.
 
         `addtolist` seems to be ignored; the font window is always opened.
+        If the file at the path is already opened, it will not be opened again.
         """
+        open_paths = set([f.file_name for f in self._fonts])
+        if filename in open_paths:
+            return
+
+        # Try to open the font as VFB:
         font = Font()
-        font.Open(filename)
+        result = font.Open(filename)
+        if result == 0:
+            # Was not a VFB, try to import it
+            fi = FontImporter(Path(filename), options=Options())
+            try:
+                font = fi.import_font()
+            except ValueError:
+                return
         self.Add(font)
 
     def Save(

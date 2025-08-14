@@ -361,7 +361,6 @@ class Font(FakeFont):
             reader.read(self)
             self.fake_vfb_object = reader.vfb
         except:  # noqa: E722
-            raise
             return 0
         self._set_file_name(filename)
         return 1
