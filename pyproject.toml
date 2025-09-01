@@ -85,7 +85,7 @@ fakelab = "FL.cmdline:main"
 
 
 [build-system]
-requires = ["setuptools>=78.1.0", "setuptools-scm[toml]>=8.2", "wheel"]
+requires = ["setuptools>=80.9.0", "setuptools-scm[toml]>=9.2.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 
