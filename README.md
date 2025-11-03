@@ -9,11 +9,11 @@ outside of FontLab Studio 5, and run tests.
 
 It is suggested to install FakeLab in a virtual environment so FontLab won't
 accidentally import the fake module when running the scripts in actual FontLab
-Studio 5. If you can live with the incompatibilites between Python 2.7 and 3,
-you can also run FakeLab in Python 3.
+Studio 5. FakeLab will run in Python 3; you have to live with any
+incompatibilites between Python 2.7 and 3 that may occur in your scripts.
 
-Saving VFBs is not supported, as the VFB format is not public, but you can save
-`Font` objects as JSON.
+Loading and saving VFBs is supported when you have the `vfb` extra installed,
+which uses [vfbLib](https://pypi.org/project/vfbLib/) to read and write VFBs.
 
 The implementation of FakeLab is based on the invaluable
 [Unofficial FontLab/Python API Reference](http://www.e-font.de/flpydoc/), and
@@ -44,8 +44,8 @@ fl.Close()
 ```
 
 If your are running in a virtual environment, and need to make your FontLab
-modules importable, add a `.pth` file in your virtual environment's site-packages
-directory:
+modules importable, add a `.pth` file in your virtual environment's
+site-packages directory:
 
 ```
 # fl5modules.pth
@@ -101,6 +101,7 @@ selectComposites(fl.font)
 ```
 
 And the module:
+
 ```python
 # Studio 5/Macros/System/Modules/fakeLabDemo/selection/composites.py
 from __future__ import absolute_import, division, print_function
@@ -232,11 +233,10 @@ def test_selectComposites():
     fl.Close()
 ```
 
-As you see, you can use the objects just as you would inside FontLab. You just
-can not open a font from an existing VFB, which would be much easier. But the
-VFB file format is not public.
+As you see, you can use the objects just as you would inside FontLab.
 
-Instead, you have to construct a test font using the
+You can open a font from an existing VFB if you have the `vfb` extra installed.
+If not, you have to construct a test font using the
 [FL Python API](http://www.e-font.de/flpydoc/).
 
 Invoke the test script in a Terminal window while your virtual environment is
