@@ -240,6 +240,21 @@ class FakeLab:
         """
         return self._layer
 
+    @property
+    def output(self) -> str:
+        """
+        Return the contents of the output panel.
+        """
+        return ""
+
+    @output.setter
+    def output(self, value: str) -> None:
+        """
+        Set the contents of the output panel, e.g. setting it to "" will clear the
+        output panel.
+        """
+        pass
+
     # Methods
 
     def Close(self, fontindex: int | None = None) -> None:
