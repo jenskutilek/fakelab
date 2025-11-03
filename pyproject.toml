@@ -34,7 +34,7 @@ all = [
 
 generate = [
     # Generate actual fonts with ufo2ft
-    "ufo2ft >= 3.6.5",
+    "ufo2ft >= 3.6.8",
     "fakelab[vfb]",
 ]
 
