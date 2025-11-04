@@ -4,9 +4,18 @@ from typing import TYPE_CHECKING
 
 from mutatorMath import Location, Mutator
 from mutatorMath.objects.mutator import buildMutator
+from typing_extensions import TypedDict
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
+
+
+class AxisDict(TypedDict):
+    name: str
+    minimum: float
+    maximum: float
+    default: float
+    map: list[tuple[float, float]]
 
 
 class FontInterpolator:
@@ -19,8 +28,9 @@ class FontInterpolator:
         """
         self._src = src_font
         self._num_axes = len(self._src.axis)
-        self._num_masters = self._num_axes**2
-        self._read_axis_mappings()
+        self._num_masters = 2**self._num_axes
+
+        self._build_axis_dicts()
 
     def interpolate(self, values: tuple[float, ...], tgt_font: Font) -> None:
         """Do the interpolation and return the interpolated font.
@@ -46,14 +56,40 @@ class FontInterpolator:
         self._ip_guides_global()
         self._ip_hinting
 
+    def _build_axis_dicts(self) -> None:
+        # Build axis dicts with mappings that can be used to build a Mutator
+        self._read_axis_mappings()
+        self._master_locations = self._build_master_map()
+        self._axis_dict: dict[str, AxisDict] = {}
+        for a in range(self._num_axes):
+            axis_name = self._src.axis[a][1].lower()
+            mappings = self.axis_mappings.get(a, [(0.0, 0.0), (1000.0, 1.0)])
+            inputs = [m[0] for m in mappings]
+            range_min = min(inputs, default=0.0)
+            range_max = max(inputs, default=1000.0)
+            self._axis_dict[axis_name] = {
+                "name": axis_name,
+                "minimum": range_min,
+                "maximum": range_max,
+                "default": range_min,
+                "map": mappings,
+            }
+
     def _map_location(self, values: tuple[float, ...]) -> Location:
         # Map the input axis values to internal scale (0-1)
 
-        return Location({f"a{i}": v for i, v in enumerate(values)})
+        return Location({self._src.axis[i][1].lower(): v for i, v in enumerate(values)})
 
     def _read_axis_mappings(self) -> None:
         # Convert axis mappings from Font into a format mutatorMath understands
-        pass
+        offset = 0
+        self.axis_mappings: dict[int, list[tuple[float, float]]] = {}
+        for a in range(len(self._src.axis)):
+            self.axis_mappings[a] = []
+            num_mappings = self._src._axis_mappings_count[a]
+            for m in range(num_mappings):
+                self.axis_mappings[a].append(self._src._axis_mappings[offset + m])
+            offset += num_mappings
 
     # Interpolation methods for the different MM parts
 
@@ -73,7 +109,7 @@ class FontInterpolator:
 
     # Lower level
 
-    def _build_axis_map(self) -> list[tuple[int, ...]]:
+    def _build_master_map(self) -> list[tuple[int, ...]]:
         match self._num_axes:
             case 1:
                 return [
@@ -121,18 +157,22 @@ class FontInterpolator:
                 raise ValueError("Only 1 to 4 axes are supported.")
 
     def _build_mutator(self, master_values: list[int]) -> Mutator:
-        locations = self._build_axis_map()
+        # XXX: Do we have to do this for each value, or can we build the Mutator once,
+        # and then reassign the master values?
         items = []
 
         m = 0
-        for location_tuple in locations:
+        for location_tuple in self._master_locations:
             loc_dict: dict[str, int] = {}
             for i in range(len(location_tuple)):
                 loc_dict[self._src.axis[i][1].lower()] = location_tuple[i]
             items.append((Location(loc_dict), master_values[m]))
             m += 1
 
-        _, mb = buildMutator(items)
+        if self._axis_dict:
+            _, mb = buildMutator(items, self._axis_dict)
+        else:
+            _, mb = buildMutator(items)
         return mb
 
     def _ip_value_array(
