@@ -150,7 +150,7 @@ class Font(FakeFont):
     def __init__(
         self,
         font_or_path: Font | str | None = None,
-        instances: tuple[float, float, float, float] | None = None,
+        instances: tuple[float, ...] | None = None,
     ) -> None:
         super().__init__()
         self._set_defaults()
