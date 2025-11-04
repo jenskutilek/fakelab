@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Font import FakeFont
+from FL.fake.FontInterpolator import FontInterpolator
 from FL.helpers.classList import ClassList
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
@@ -163,7 +164,9 @@ class Font(FakeFont):
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM
                 # axes defined in the font
-                raise NotImplementedError
+                fi = FontInterpolator(font_or_path)
+                fi.interpolate(instances, self)
+
         elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
             self.Open(font_or_path)
