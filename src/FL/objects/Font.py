@@ -86,7 +86,7 @@ class Font(FakeFont):
         "blue_scale",
         "blue_shift",
         "blue_values_num",
-        "blue_values",
+        "_blue_values",
         "cap_height",
         "codepages",
         "copyright",
@@ -97,10 +97,10 @@ class Font(FakeFont):
         "designer_url",
         "designer",
         "family_blues_num",
-        "family_blues",
+        "_family_blues",
         "family_name",
         "family_other_blues_num",
-        "family_other_blues",
+        "_family_other_blues",
         "fond_id",
         "font_name",
         "font_style",
@@ -118,7 +118,7 @@ class Font(FakeFont):
         "notice",
         "ot_classes",
         "other_blues_num",
-        "other_blues",
+        "_other_blues",
         "panose",
         "pcl_chars_set",
         "pcl_id",
@@ -207,6 +207,14 @@ class Font(FakeFont):
     def __repr__(self) -> str:
         return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
 
+    # Helpers
+
+    def _get_ps_info_blues(self, key: str) -> list[list[int]]:
+        blues = []
+        for master_ps_info in self._master_ps_infos:
+            blues.append(master_ps_info[key])
+        return blues
+
     # Attributes
 
     @property
@@ -227,6 +235,20 @@ class Font(FakeFont):
         return self._axis
 
     @property
+    def blue_values(self) -> list[list[int]]:
+        """
+        Two-dimensional array of BlueValues. Master index is top-level index.
+
+        Returns:
+            list[list[int]]: The blue values for all masters.
+        """
+        return self._get_ps_info_blues("blue_values")
+
+    @blue_values.setter
+    def blue_values(self) -> None:
+        raise RuntimeError("Class Font has no attribute blue_values or it is read-only")
+
+    @property
     def classes(self) -> list[str]:
         """
         List of glyph classes.
@@ -245,6 +267,38 @@ class Font(FakeFont):
         Current encoding of the font.
         """
         return self._encoding
+
+    @property
+    def family_blues(self) -> list[list[int]]:
+        """
+        Two-dimensional array of FamilyBlues. Master index is top-level index.
+
+        Returns:
+            list[list[int]]: The family blues values for all masters.
+        """
+        return self._get_ps_info_blues("family_blues")
+
+    @family_blues.setter
+    def family_blues(self) -> None:
+        raise RuntimeError(
+            "Class Font has no attribute family_blues or it is read-only"
+        )
+
+    @property
+    def family_other_blues(self) -> list[list[int]]:
+        """
+        Two-dimensional array of FamilyOtherBlues. Master index is top-level index.
+
+        Returns:
+            list[list[int]]: The family other blues values for all masters.
+        """
+        return self._get_ps_info_blues("family_other_blues")
+
+    @family_other_blues.setter
+    def family_other_blues(self) -> None:
+        raise RuntimeError(
+            "Class Font has no attribute family_other_blues or it is read-only"
+        )
 
     @property
     def features(self) -> ListParent[Feature]:
@@ -279,6 +333,20 @@ class Font(FakeFont):
     @glyphs.setter
     def glyphs(self, value: list[Glyph]) -> None:
         raise RuntimeError
+
+    @property
+    def other_blues(self) -> list[list[int]]:
+        """
+        Two-dimensional array of OtherBlues. Master index is top-level index.
+
+        Returns:
+            list[list[int]]: The other blues values for all masters.
+        """
+        return self._get_ps_info_blues("other_blues")
+
+    @other_blues.setter
+    def other_blues(self) -> None:
+        raise RuntimeError("Class Font has no attribute other_blues or it is read-only")
 
     @property
     def truetypetables(self) -> ListParent[TrueTypeTable]:
@@ -899,26 +967,24 @@ class Font(FakeFont):
 
         # up until here the default values have been verified
 
+        # XXX: 2025-11-05: It seems that the lists always contain the full number of
+        # values for all possible masters, i.e. 14/10 zeroes for 16 masters.
+
         # number of defined blue values
         self.blue_values_num: int = 0
-        # two-dimentional array of BlueValues
-        # master index is top-level index
-        self.blue_values: list[list[int]] = [[]]
+        self._blue_values: list[list[int]] = [[]]
+
         # number of defined OtherBlues values
         self.other_blues_num: int = 0
-        # two-dimentional array of OtherBlues
-        # master index is top-level index
-        self.other_blues: list[list[int]] = [[]]
+        self._other_blues: list[list[int]] = [[]]
+
         # number of FamilyBlues records
         self.family_blues_num = 0
-        # two-dimentional array of FamilyBlues
-        # master index is top-level index
-        self.family_blues: list[list[int]] = [[]]
+        self._family_blues: list[list[int]] = [[]]
         # number of FamilyOtherBlues records
         self.family_other_blues_num: int = 0
-        # two-dimentional array of FamilyOtherBlues
-        # master index is top-level index
-        self.family_other_blues: list[list[int]] = [[]]
+        self._family_other_blues: list[list[int]] = [[]]
+
         # list of Force Bold values, one for each master
         self.force_bold: list[int] = [0]
         self.stem_snap_h_num: int = 0
