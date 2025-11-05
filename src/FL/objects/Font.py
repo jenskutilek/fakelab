@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from FL.fake.Font import FakeFont
 from FL.fake.FontInterpolator import FontInterpolator
@@ -26,6 +26,37 @@ if TYPE_CHECKING:
 
 
 __doc__ = "Class to represent a font"
+
+
+class BoundingBox(TypedDict):
+    xMin: int
+    yMin: int
+    xMax: int
+    yMax: int
+
+
+class MasterPSInfo(TypedDict):
+    font_matrix: list[float]
+    force_bold: int
+    blue_values: list[int]
+    other_blues: list[int]
+    family_blues: list[int]
+    family_other_blues: list[int]
+    blue_scale: float
+    blue_shift: int
+    blue_fuzz: int
+    std_hw: int
+    std_vw: int
+    stem_snap_h: list[int]
+    stem_snap_v: list[int]
+    bounding_box: BoundingBox
+    adv_width_min: int
+    adv_width_max: int
+    adv_width_avg: int
+    ascender: int
+    descender: int
+    x_height: int
+    cap_height: int
 
 
 class Font(FakeFont):
@@ -977,7 +1008,7 @@ class Font(FakeFont):
         self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         self._master_names = ["Untitled"]
         self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
-        self._master_ps_infos = [
+        self._master_ps_infos: list[MasterPSInfo] = [
             {
                 "font_matrix": [0.001, 0.0, 0.0, 0.001, 0.0, 0.0],
                 "force_bold": 0,
