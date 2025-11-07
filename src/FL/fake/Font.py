@@ -1,13 +1,18 @@
 from __future__ import annotations
 
+import logging
+from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from vfbLib.parsers.text import OpenTypeStringParser
+from vfbLib.typing import PSInfoDict
 
 from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
+from FL.fake.PSInfo import get_default_ps_info
+from FL.helpers.FLList import adjust_list
 from FL.objects.Feature import Feature
 
 if TYPE_CHECKING:
@@ -17,6 +22,9 @@ if TYPE_CHECKING:
 __doc__ = """
 Base class for Font
 """
+
+
+logger = logging.getLogger(__name__)
 
 
 class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
@@ -156,3 +164,95 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             fea.extend(feature.value.splitlines())
             fea.append("")
         return fea
+
+    def fake_deserialize_master_ps_infos(self) -> None:
+        # Master PS Infos are only stored for existing masters in the VFB, but for all
+        # possible masters in the Font.
+        num_entries = len(self._master_ps_infos)
+        if num_entries < 16:
+            for _ in range(16 - num_entries):
+                self._master_ps_infos.append(get_default_ps_info())
+        for info in self._master_ps_infos:
+            # Trim down the lists to the actual number of values
+            for key, num in (
+                ("blue_values", self.blue_values_num),
+                ("other_blues", self.other_blues_num),
+                ("family_blues", self.family_blues_num),
+                ("family_other_blues", self.family_other_blues_num),
+            ):
+                adjust_list(info[key], new_length=num, value=0)
+
+    def fake_serialize_master_ps_infos(self) -> list[PSInfoDict]:
+        infos = []
+        for i in range(self._masters_count):
+            info = deepcopy(self._master_ps_infos[i])
+            # Adjust blues lists to full length
+            for key, num in (
+                ("blue_values", 14),
+                ("other_blues", 10),
+                ("family_blues", 14),
+                ("family_other_blues", 10),
+            ):
+                adjust_list(info[key], new_length=num, value=0)
+            infos.append(info)
+        return infos
+
+    def _fake_set_master_blues(
+        self, key: str, values: list[int], num: int, master_index: int = 0
+    ) -> None:
+        # Assert that the number of passed values is within the allowed limit
+        num_values = len(values)
+        assert num_values <= num
+
+        master_info = self._master_ps_infos[master_index]
+        target_list = master_info[key]
+        # Adjust to new length in all masters
+        setattr(self, f"{key}_num", num_values)
+        for i, value in enumerate(values):
+            target_list[i] = value
+
+    def fake_set_master_blue_values(
+        self, values: list[int], master_index: int = 0
+    ) -> None:
+        """
+        Set the blue values for a master.
+
+        Args:
+            values (list[int]): The values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self._fake_set_master_blues("blue_values", values, 14, master_index)
+
+    def fake_set_master_other_blues(
+        self, values: list[int], master_index: int = 0
+    ) -> None:
+        """
+        Set the other blues values for a master.
+
+        Args:
+            values (list[int]): The values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self._fake_set_master_blues("other_blues", values, 10, master_index)
+
+    def fake_set_family_blues(self, values: list[int], master_index: int = 0) -> None:
+        """
+        Set the family blues values for a master.
+
+        Args:
+            values (list[int]): The values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self._fake_set_master_blues("family_blues", values, 14, master_index)
+
+    def fake_set_family_other_blues(
+        self, values: list[int], master_index: int = 0
+    ) -> None:
+        """
+        Set the family other blue values for a master.
+
+        Args:
+            values (list[int]): The values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self._fake_set_master_blues("family_other_blues", values, 10, master_index)

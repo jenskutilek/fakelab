@@ -509,3 +509,42 @@ class FontTests(unittest.TestCase):
             "thorn",
             "ydieresis",
         ]
+
+    def test_blue_values_initialization(self) -> None:
+        f = Font()
+        assert f.blue_values_num == 0
+        assert f.blue_values == [[]] * 16
+
+    def test_set_blue_values_for_master(self) -> None:
+        f = Font()
+        # Modify the length of the list
+        f.blue_values_num = 3
+        assert f.blue_values == [[0, 0, 0]] * 16
+        # Has no effect because it operates on a copy of the original list
+        f.blue_values[0] = [1, 2, 3]
+        assert f.blue_values == [[0, 0, 0]] * 16
+        # Setting a value directly works
+        f.blue_values[0][0] = -1
+        assert f.blue_values[0] == [-1, 0, 0]
+
+    def test_set_blue_values_internal(self) -> None:
+        f = Font()
+        f.fake_set_master_blue_values([-10, 1])
+        assert f.blue_values == [
+            [-10, 1],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+        ]

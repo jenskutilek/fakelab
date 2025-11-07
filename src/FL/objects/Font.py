@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, TypedDict
+from typing import TYPE_CHECKING, Any
 
 from FL.fake.Font import FakeFont
 from FL.fake.FontInterpolator import FontInterpolator
+from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.classList import ClassList
+from FL.helpers.FLList import adjust_list
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.Options import Options
@@ -54,8 +56,7 @@ class Font(FakeFont):
         "blue_fuzz",
         "blue_scale",
         "blue_shift",
-        "blue_values_num",
-        "_blue_values",
+        "_blue_values_num",
         "cap_height",
         "codepages",
         "copyright",
@@ -65,11 +66,9 @@ class Font(FakeFont):
         "descender",
         "designer_url",
         "designer",
-        "family_blues_num",
-        "_family_blues",
+        "_family_blues_num",
         "family_name",
-        "family_other_blues_num",
-        "_family_other_blues",
+        "_family_other_blues_num",
         "fond_id",
         "font_name",
         "font_style",
@@ -86,8 +85,7 @@ class Font(FakeFont):
         "note",
         "notice",
         "ot_classes",
-        "other_blues_num",
-        "_other_blues",
+        "_other_blues_num",
         "panose",
         "pcl_chars_set",
         "pcl_id",
@@ -184,6 +182,19 @@ class Font(FakeFont):
             blues.append(master_ps_info[key])
         return blues
 
+    def _set_blues_num_attr(
+        self, value: int, attr: str, key: str, max_num: int
+    ) -> None:
+        if getattr(self, attr) == value:
+            return
+
+        if not 0 <= value <= max_num:
+            raise RuntimeError(f'New "{attr[1:]}" is out of range 0..{max_num}')
+
+        setattr(self, attr, value)
+        for master_info in self._master_ps_infos:
+            adjust_list(master_info[key], new_length=value, value=0)
+
     # Attributes
 
     @property
@@ -202,6 +213,20 @@ class Font(FakeFont):
         Example: [('Weight', 'Wt', 'Weight')]
         """
         return self._axis
+
+    @property
+    def blue_values_num(self) -> int:
+        return self._blue_values_num
+
+    @blue_values_num.setter
+    def blue_values_num(self, value: int) -> None:
+        """
+        Set the number of blue values. The length of the existing lists will be adjusted.
+
+        Args:
+            value (int): The number of blue values, 0 to 14.
+        """
+        self._set_blues_num_attr(value, "_blue_values_num", "blue_values", 14)
 
     @property
     def blue_values(self) -> list[list[int]]:
@@ -238,6 +263,21 @@ class Font(FakeFont):
         return self._encoding
 
     @property
+    def family_blues_num(self) -> int:
+        return self._family_blues_num
+
+    @family_blues_num.setter
+    def family_blues_num(self, value: int) -> None:
+        """
+        Set the number of family blues values. The length of the existing lists will be
+        adjusted.
+
+        Args:
+            value (int): The number of family blues values, 0 to 14.
+        """
+        self._set_blues_num_attr(value, "_family_blues_num", "family_blues_num", 14)
+
+    @property
     def family_blues(self) -> list[list[int]]:
         """
         Two-dimensional array of FamilyBlues. Master index is top-level index.
@@ -251,6 +291,23 @@ class Font(FakeFont):
     def family_blues(self) -> None:
         raise RuntimeError(
             "Class Font has no attribute family_blues or it is read-only"
+        )
+
+    @property
+    def family_other_blues_num(self) -> int:
+        return self._family_other_blues_num
+
+    @family_other_blues_num.setter
+    def family_other_blues_num(self, value: int) -> None:
+        """
+        Set the number of family other blues values. The length of the existing lists
+        will be adjusted.
+
+        Args:
+            value (int): The number of family other blues values, 0 to 10.
+        """
+        self._set_blues_num_attr(
+            value, "_family_other_blues_num", "family_other_blues_num", 10
         )
 
     @property
@@ -302,6 +359,21 @@ class Font(FakeFont):
     @glyphs.setter
     def glyphs(self, value: list[Glyph]) -> None:
         raise RuntimeError
+
+    @property
+    def other_blues_num(self) -> int:
+        return self._other_blues_num
+
+    @other_blues_num.setter
+    def other_blues_num(self, value: int) -> None:
+        """
+        Set the number of other blues values. The length of the existing lists will be
+        adjusted.
+
+        Args:
+            value (int): The number of other blues values, 0 to 10.
+        """
+        self._set_blues_num_attr(value, "_other_blues_num", "other_blues_num", 10)
 
     @property
     def other_blues(self) -> list[list[int]]:
@@ -934,25 +1006,16 @@ class Font(FakeFont):
         self.blue_scale: list[float] = [0.039625] * 16
         self.blue_shift: list[int] = [7] * 16
 
-        # up until here the default values have been verified
-
-        # XXX: 2025-11-05: It seems that the lists always contain the full number of
-        # values for all possible masters, i.e. 14/10 zeroes for 16 masters.
-
         # number of defined blue values
-        self.blue_values_num: int = 0
-        self._blue_values: list[list[int]] = [[]]
-
+        self._blue_values_num = 0
         # number of defined OtherBlues values
-        self.other_blues_num: int = 0
-        self._other_blues: list[list[int]] = [[]]
-
+        self._other_blues_num = 0
         # number of FamilyBlues records
-        self.family_blues_num = 0
-        self._family_blues: list[list[int]] = [[]]
+        self._family_blues_num = 0
         # number of FamilyOtherBlues records
-        self.family_other_blues_num: int = 0
-        self._family_other_blues: list[list[int]] = [[]]
+        self._family_other_blues_num = 0
+
+        # up until here the default values have been verified
 
         # list of Force Bold values, one for each master
         self.force_bold: list[int] = [0]
@@ -1043,37 +1106,10 @@ class Font(FakeFont):
         self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         self._master_names = ["Untitled"]
         self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
+        # The infos are always stored for all possible masters
         self._master_ps_infos: list[PSInfoDict] = [
-            {
-                "font_matrix": (0.001, 0.0, 0.0, 0.001, 0.0, 0.0),
-                "force_bold": 0,
-                "blue_values": [0] * 14,
-                "other_blues": [0] * 10,
-                "family_blues": [0] * 14,
-                "family_other_blues": [0] * 10,
-                "blue_scale": 0.039625,
-                "blue_shift": 7,
-                "blue_fuzz": 1,
-                "std_hw": 100,
-                "std_vw": 50,
-                "stem_snap_h": [0] * 12,
-                "stem_snap_v": [0] * 12,
-                "bounding_box": {
-                    "xMin": 32767,
-                    "yMin": 32767,
-                    "xMax": -32767,
-                    "yMax": -32767,
-                },
-                "adv_width_min": 0,
-                "adv_width_max": 0,
-                "adv_width_avg": 500,
-                "ascender": 750,
-                "descender": -250,
-                "x_height": 500,
-                "cap_height": 700,
-            }
+            get_default_ps_info() for _ in range(16)
         ]
-
         self._mapping_mode = {
             "mapping_mode": "names_or_index",
             "2": 152,

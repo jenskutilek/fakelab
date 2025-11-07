@@ -236,7 +236,7 @@ class FontToVfbWriter:
         if font._primary_instances:
             self.add_entry(F.PrimaryInstances, font._primary_instances)
 
-        for master_ps_info in font._master_ps_infos:
+        for master_ps_info in font.fake_serialize_master_ps_infos():
             self.add_entry(M.PostScriptInfo, master_ps_info)
 
         self.add_entry(527, font._unknown_pleasures[527])

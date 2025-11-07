@@ -336,3 +336,5 @@ class VfbToFontReader:
         if classes:
             # The setter can't append, assign the whole list
             font._classes.fake_set_classes(classes)
+
+        font.fake_deserialize_master_ps_infos()
