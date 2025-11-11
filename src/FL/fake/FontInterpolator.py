@@ -23,22 +23,21 @@ class AxisDict(TypedDict):
 
 
 class FontInterpolator:
-    def __init__(self, src_font: Font) -> None:
+    def __init__(self, font: Font) -> None:
         """Interpolate an instance of a MM font
 
         Args:
-            src_font (Font): The source font, multiple or single master. If the font
+            font (Font): The source font, multiple or single master. If the font
                 contains no axes, a 1:1 copy of the font will be returned.
         """
-        logger.warning(f"Opening font: {src_font}")
-        print(src_font.axis)
-        self._src = src_font
-        self._num_axes = len(self._src.axis)
+        logger.warning(f"Opening font: {font}")
+        self._font = font
+        self._num_axes = len(self._font.axis)
         self._num_masters = 2**self._num_axes
 
         self._build_axis_dicts()
 
-    def interpolate(self, values: tuple[float, ...], tgt_font: Font) -> None:
+    def interpolate(self, values: tuple[float, ...]) -> None:
         """Do the interpolation and return the interpolated font.
 
         Args:
@@ -49,13 +48,8 @@ class FontInterpolator:
                 truncated to int.
             tgt_font (Font): The target font.
         """
-        self._tgt = tgt_font
         if self._num_axes == 0:
-            # Makes a direct copy of the font.
-            logger.warning(
-                "Number of axes is 0, making a copy of the font without interpolation"
-            )
-            self._tgt._copy_constructor(self._src)
+            logger.warning("Number of axes is 0, font is not modified.")
             return
 
         self.location = self._map_location(values)
@@ -70,7 +64,7 @@ class FontInterpolator:
         self._master_locations = self._build_master_map()
         self._axis_dict: dict[str, AxisDict] = {}
         for a in range(self._num_axes):
-            axis_name = self._src.axis[a][1].lower()
+            axis_name = self._font.axis[a][1].lower()
             mappings = self.axis_mappings.get(a, [(0.0, 0.0), (1000.0, 1.0)])
             inputs = [m[0] for m in mappings]
             range_min = min(inputs, default=0.0)
@@ -86,32 +80,33 @@ class FontInterpolator:
     def _map_location(self, values: tuple[float, ...]) -> Location:
         # Map the input axis values to internal scale (0-1)
 
-        return Location({self._src.axis[i][1].lower(): v for i, v in enumerate(values)})
+        return Location(
+            {self._font.axis[i][1].lower(): v for i, v in enumerate(values)}
+        )
 
     def _read_axis_mappings(self) -> None:
         # Convert axis mappings from Font into a format mutatorMath understands
         offset = 0
         self.axis_mappings: dict[int, list[tuple[float, float]]] = {}
-        for a in range(len(self._src.axis)):
+        for a in range(len(self._font.axis)):
             self.axis_mappings[a] = []
-            num_mappings = self._src._axis_mappings_count[a]
+            num_mappings = self._font._axis_mappings_count[a]
             for m in range(num_mappings):
-                self.axis_mappings[a].append(self._src._axis_mappings[offset + m])
+                self.axis_mappings[a].append(self._font._axis_mappings[offset + m])
             offset += num_mappings
 
     # Interpolation methods for the different MM parts
 
     def _ip_fontinfo(self) -> None:
-        s = self._src
-        t = self._tgt
+        f = self._font
 
         # Key dimensions
 
-        t.ascender[0] = self._ip_value(s.ascender)
-        t.descender[0] = self._ip_value(s.descender)
-        t.cap_height[0] = self._ip_value(s.cap_height)
-        t.x_height[0] = self._ip_value(s.x_height)
-        t.default_width[0] = self._ip_value(s.default_width)
+        f.ascender[0] = self._ip_value(f.ascender)
+        f.descender[0] = self._ip_value(f.descender)
+        f.cap_height[0] = self._ip_value(f.cap_height)
+        f.x_height[0] = self._ip_value(f.x_height)
+        f.default_width[0] = self._ip_value(f.default_width)
 
         # Interpolate blue zones
 
@@ -123,17 +118,17 @@ class FontInterpolator:
         logger.warning("stem_snap_h is not interpolated yet")
         logger.warning("stem_snap_v is not interpolated yet")
 
-        t.fake_set_master_blue_values(
-            self._ip_value_array(s.blue_values_num, s.blue_values)[0]
+        f.fake_set_master_blue_values(
+            self._ip_value_array(f.blue_values_num, f.blue_values)[0]
         )
-        t.fake_set_master_other_blues(
-            self._ip_value_array(s.other_blues_num, s.other_blues)[0]
+        f.fake_set_master_other_blues(
+            self._ip_value_array(f.other_blues_num, f.other_blues)[0]
         )
-        t.fake_set_family_blues(
-            self._ip_value_array(s.family_blues_num, s.family_blues)[0]
+        f.fake_set_family_blues(
+            self._ip_value_array(f.family_blues_num, f.family_blues)[0]
         )
-        t.fake_set_family_other_blues(
-            self._ip_value_array(s.family_other_blues_num, s.family_other_blues)[0]
+        f.fake_set_family_other_blues(
+            self._ip_value_array(f.family_other_blues_num, f.family_other_blues)[0]
         )
 
         # Font Matrix?
@@ -204,7 +199,7 @@ class FontInterpolator:
         for location_tuple in self._master_locations:
             loc_dict: dict[str, int] = {}
             for i in range(len(location_tuple)):
-                loc_dict[self._src.axis[i][1].lower()] = location_tuple[i]
+                loc_dict[self._font.axis[i][1].lower()] = location_tuple[i]
             items.append((Location(loc_dict), master_values[m]))
             m += 1
 

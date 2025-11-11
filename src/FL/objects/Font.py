@@ -156,14 +156,16 @@ class Font(FakeFont):
         # Process params
 
         if isinstance(font_or_path, Font):
-            if instances is None:
-                self._copy_constructor(font_or_path)
-            else:
+            vfb_obj = font_or_path.fake_vfb_object
+            font_or_path.fake_vfb_object = None
+            self._copy_constructor(font_or_path)
+            font_or_path.fake_vfb_object = vfb_obj
+            if instances is not None:
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM
                 # axes defined in the font
                 fi = FontInterpolator(font_or_path)
-                fi.interpolate(instances, self)
+                fi.interpolate(instances)
 
         elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
