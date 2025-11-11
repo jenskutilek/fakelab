@@ -237,10 +237,10 @@ class TTInfo(Copyable):
                 {
                     "stem": i,
                     "round": {
-                        "2": ttstem.ppm2,
-                        "3": ttstem.ppm3,
-                        "4": ttstem.ppm4,
-                        "5": ttstem.ppm5,
+                        2: ttstem.ppm2,
+                        3: ttstem.ppm3,
+                        4: ttstem.ppm4,
+                        5: ttstem.ppm5,
                     },
                 }
             )
@@ -249,10 +249,10 @@ class TTInfo(Copyable):
                 {
                     "stem": i,
                     "round": {
-                        "2": ttstem.ppm2,
-                        "3": ttstem.ppm3,
-                        "4": ttstem.ppm4,
-                        "5": ttstem.ppm5,
+                        2: ttstem.ppm2,
+                        3: ttstem.ppm3,
+                        4: ttstem.ppm4,
+                        5: ttstem.ppm5,
                     },
                 }
             )
@@ -261,9 +261,9 @@ class TTInfo(Copyable):
     def fake_serialize_stem_ppems1(self) -> TTStemsDict:
         d: TTStemsDict = {"ttStemsV": [], "ttStemsH": []}
         for i, ttstem in enumerate(self.hstem_data):
-            d["ttStemsV"].append({"stem": i, "round": {"1": ttstem._ppm1}})
+            d["ttStemsV"].append({"stem": i, "round": {1: ttstem._ppm1}})
         for i, ttstem in enumerate(self.vstem_data):
-            d["ttStemsH"].append({"stem": i, "round": {"1": ttstem._ppm1}})
+            d["ttStemsH"].append({"stem": i, "round": {1: ttstem._ppm1}})
         return d
 
     def fake_serialize_stems(self) -> TTStemsDict:
@@ -274,7 +274,7 @@ class TTInfo(Copyable):
                     "value": ttstem.width,
                     "name": ttstem.name,
                     "round": {
-                        "6": ttstem.ppm6,
+                        6: ttstem.ppm6,
                     },
                 }
             )
@@ -284,7 +284,7 @@ class TTInfo(Copyable):
                     "value": ttstem.width,
                     "name": ttstem.name,
                     "round": {
-                        "6": ttstem.ppm6,
+                        6: ttstem.ppm6,
                     },
                 }
             )
