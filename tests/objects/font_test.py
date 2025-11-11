@@ -529,11 +529,14 @@ class FontTests(unittest.TestCase):
 
     def test_set_blue_values_internal(self) -> None:
         f = Font()
+        # Default master (0)
         f.fake_set_master_blue_values([-10, 1])
+        # Some other master (2)
+        f.fake_set_master_blue_values([-15, 3], 2)
         assert f.blue_values == [
             [-10, 1],
             [0, 0],
-            [0, 0],
+            [-15, 3],
             [0, 0],
             [0, 0],
             [0, 0],
