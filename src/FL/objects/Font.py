@@ -444,9 +444,10 @@ class Font(FakeFont):
         """
         Array of font axes. Not reported by docstring nor e-font.
 
-        Example: [('Weight', 'Wt', 'Weight')]
+        Example: [("Weight", "Wt", "Weight")]
         """
-        return self._axis
+        # Returns a copy (append has no effect)
+        return self._axis.copy()
 
     @property
     def blue_values_num(self) -> int:
@@ -973,19 +974,26 @@ class Font(FakeFont):
         Defines a new Multiple Master axis.
 
         Args:
-            name (str): _description_
-            type (str): _description_
-            shortname (str): _description_
+            name (str): The axis name.
+            type (str): The axis type: "OpticalSize", "Serif", "Weight", or "Width".
+            shortname (str): The two-letter abbreviation.
         """
-        raise NotImplementedError
+        if self._axis_count >= 4:
+            # Ignore silently
+            return
+
+        # tuple is reordered vs. args!
+        self._axis.append((name, shortname[:5], type))
+        self._axis_count = len(self._axis)
 
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
-        Removes the axis
+        Removes the axis. Remaining masters will be blended according to the given
+        position.
 
         Args:
-            axisindex (int): _description_
-            position (float): _description_
+            axisindex (int): The index of the axis to remove (0 to 3).
+            position (float): The position of the remaining masters on the removed axis.
         """
         raise NotImplementedError
 
