@@ -52,18 +52,18 @@ class Font(FakeFont):
         "_xuid_num",
         "_xuid",
         "apple_name",
-        "ascender",
+        "_ascender",
         "blue_fuzz",
         "blue_scale",
         "blue_shift",
         "_blue_values_num",
-        "cap_height",
+        "_cap_height",
         "codepages",
         "copyright",
         "customdata",
         "default_character",
-        "default_width",
-        "descender",
+        "_default_width",
+        "_descender",
         "designer_url",
         "designer",
         "_family_blues_num",
@@ -118,7 +118,7 @@ class Font(FakeFont):
         "weight_vector",
         "weight",
         "width",
-        "x_height",
+        "_x_height",
         "year",
         # Non-API:
         "_custom_cmaps",
@@ -264,14 +264,14 @@ class Font(FakeFont):
         #  Dimensions
         self.upm: int = 1000
         # list of ascenders, one for each master
-        self.ascender: list[int] = [750] * 16
+        self._ascender: list[int] = [750] * 16
         # list of descenders, one for each master
-        self.descender: list[int] = [-250] * 16
+        self._descender: list[int] = [-250] * 16
         # list of CapHeight records, one for each master
-        self.cap_height: list[int] = [700] * 16
+        self._cap_height: list[int] = [700] * 16
         # list of xHeight values, one for each master
-        self.x_height: list[int] = [500] * 16
-        self.default_width: list[int] = [500] * 16
+        self._x_height: list[int] = [500] * 16
+        self._default_width: list[int] = [500] * 16
         self.slant_angle: float = 0.0
         self.italic_angle: float = 0.0
         self.is_fixed_pitch: int = 0
@@ -407,6 +407,7 @@ class Font(FakeFont):
             271: "",
             527: "",
         }
+        self.fake_vfb_object = None
 
     # Helpers
 
@@ -438,6 +439,14 @@ class Font(FakeFont):
         """
         # The file path is stored internally as Path, but we return a str
         return str(self._file_name)
+
+    @property
+    def ascender(self) -> list[int]:
+        return self._ascender
+
+    @ascender.setter
+    def ascender(self) -> None:
+        raise RuntimeError("Class Font has no attribute ascender or it is read-only")
 
     @property
     def axis(self) -> list[tuple[str, str, str]]:
@@ -478,6 +487,14 @@ class Font(FakeFont):
         raise RuntimeError("Class Font has no attribute blue_values or it is read-only")
 
     @property
+    def cap_height(self) -> list[int]:
+        return self._cap_height
+
+    @cap_height.setter
+    def cap_height(self) -> None:
+        raise RuntimeError("Class Font has no attribute cap_height or it is read-only")
+
+    @property
     def classes(self) -> list[str]:
         """
         List of glyph classes.
@@ -489,6 +506,24 @@ class Font(FakeFont):
     @classes.setter
     def classes(self, value: list[str]) -> None:
         self._classes.fake_set_classes(value)
+
+    @property
+    def default_width(self) -> list[int]:
+        return self._default_width
+
+    @default_width.setter
+    def default_width(self) -> None:
+        raise RuntimeError(
+            "Class Font has no attribute default_width or it is read-only"
+        )
+
+    @property
+    def descender(self) -> list[int]:
+        return self._descender
+
+    @descender.setter
+    def descender(self) -> None:
+        raise RuntimeError("Class Font has no attribute descender or it is read-only")
 
     @property
     def encoding(self) -> Encoding:
@@ -646,6 +681,14 @@ class Font(FakeFont):
             self._vendor = value[:4]
         else:
             self._vendor = value
+
+    @property
+    def x_height(self) -> list[int]:
+        return self._x_height
+
+    @x_height.setter
+    def x_height(self) -> None:
+        raise RuntimeError("Class Font has no attribute x_height or it is read-only")
 
     @property
     def xuid(self) -> list[int]:
