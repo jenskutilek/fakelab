@@ -135,7 +135,14 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
     def fake_deserialize_axis(self, data: str) -> None:
-        self.axis.append((data, data[:2], data))
+        # VFB stores only the long name of an axis.
+        short_name = {
+            "Weight": "Wt",
+            "Width": "Wd",
+            "Optical Size": "Op",
+            "Serif": "Se",
+        }.get(data, data[:2])
+        self._axis.append((data, short_name, data))
 
     def fake_serialize_axis(self) -> list[str]:
         names = []
