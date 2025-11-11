@@ -76,7 +76,8 @@ class FontInterpolatorTests(unittest.TestCase):
 
     def test_ip_value_array(self) -> None:
         f = Font()
-        f._axis = [("Weight", "Wt", "Weight"), ("Width", "Wd", "Width")]
+        f.DefineAxis("Weight", "Weight", "Wt")
+        f.DefineAxis("Width", "Width", "Wd")
         fi = FontInterpolator(f)
         fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
         values = [
