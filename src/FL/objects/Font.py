@@ -174,6 +174,240 @@ class Font(FakeFont):
     def __repr__(self) -> str:
         return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
 
+        # Defaults
+
+    def fake_clear_defaults(self) -> None:
+        """
+        Clear some lists prior to deserializing a font from a Vfb.
+        """
+        self._master_names.clear()
+        self._master_locations.clear()
+        self._master_ps_infos.clear()
+
+    def _set_defaults(self) -> None:
+        # Identification
+
+        options = Options()
+
+        # full path of the file from which the font was opened/saved
+        self._file_name = None
+        # font Family Name
+        self.family_name: str | None = None
+        # font Style Name
+        self.style_name: str | None = None
+        # font Full Name
+        self.full_name: str | None = None
+        # font Font Name
+        self.font_name: str | None = None
+
+        # Font Style as BitList:
+        # italic       =  1
+        # underscored  =  2
+        # negative     =  4
+        # outlined     =  8
+        # strikethough = 16
+        # bold         = 32
+        self.font_style: int = 64
+
+        self.menu_name: str | None = None
+        # FOND Name
+        self.apple_name: str = ""
+        # FOND ID
+        self.fond_id: int = 128
+        # OpenType-specific font Family Name
+        self.pref_family_name: str | None = None
+        # OpenType-specific font Style Name
+        self.pref_style_name: str | None = None
+        # OpenType-specific font Mac Name
+        self.mac_compatible: str | None = None
+        # glyph name that represents the PFM default
+        self.default_character: str | None = None
+        self.weight = None
+        self.weight_code = -1
+        self.width = "Normal"
+        self.designer: str | None = None
+        self.designer_url: str | None = None
+        # list of font name records
+        self._fontnames: ListParent[NameRecord] = ListParent(parent=self)
+        # Copyright name field
+        self.copyright: str | None = None
+        # Notice field
+        self.notice: str | None = None
+        # Font note
+        self.note: str | None = None
+        # Type 1 Unique ID number
+        self.unique_id: int = -1
+        # TrueType Unique ID record
+        self.tt_u_id: str | None = None
+        # TrueType Version record
+        self.tt_version: str | None = None
+        self.trademark: str | None = None
+        self._xuid: list[int] = []
+        self._xuid_num: int = 0
+        # TrueType vendor code
+        self._vendor = options.VendorCode
+        self.vendor_url: str | None = None
+        self.version: str | None = None
+
+        self.year: int = 0
+        self.version_major: int = 1
+        self.version_minor: int = 0
+
+        self.vp_id: int = -1
+        self.ms_charset: int = 0
+        self.ms_id: int = 0
+        # list of Panose values
+        self.panose: list[int] = [0] * 10
+        self.pcl_chars_set: str = " 9U"
+        self.pcl_id: int = -1
+
+        #  Dimensions
+        self.upm: int = 1000
+        # list of ascenders, one for each master
+        self.ascender: list[int] = [750] * 16
+        # list of descenders, one for each master
+        self.descender: list[int] = [-250] * 16
+        # list of CapHeight records, one for each master
+        self.cap_height: list[int] = [700] * 16
+        # list of xHeight values, one for each master
+        self.x_height: list[int] = [500] * 16
+        self.default_width: list[int] = [500] * 16
+        self.slant_angle: float = 0.0
+        self.italic_angle: float = 0.0
+        self.is_fixed_pitch: int = 0
+        self.underline_position: int = -100
+        self.underline_thickness: int = 50
+
+        #  Alignment
+        self.blue_fuzz: list[int] = [1] * 16
+        self.blue_scale: list[float] = [0.039625] * 16
+        self.blue_shift: list[int] = [7] * 16
+
+        # number of defined blue values
+        self._blue_values_num = 0
+        # number of defined OtherBlues values
+        self._other_blues_num = 0
+        # number of FamilyBlues records
+        self._family_blues_num = 0
+        # number of FamilyOtherBlues records
+        self._family_other_blues_num = 0
+
+        # up until here the default values have been verified
+
+        # list of Force Bold values, one for each master
+        self.force_bold: list[int] = [0]
+        self.stem_snap_h_num: int = 0
+        self.stem_snap_h: list[list[int]] = [[]]
+        self.stem_snap_v_num: int = 0
+        self.stem_snap_v: list[list[int]] = [[]]
+
+        #  Other
+
+        # 0 if unmodified, 1 if modified (to control the
+        # 'save changes' dialog) <font color="red">(this attribute is not
+        # reported by the docstring)</font>
+        self.modified: int = 0
+        # list of glyph classes
+        self._classes = ClassList()
+        # string containing the OT classes defined in the lower
+        # right part of the OpenType panel <font color="red">(this description
+        # is not reported by the docstring)</font>
+        self.ot_classes: str = ""
+        # list of OpenType features
+        self._features: ListParent[Feature] = ListParent(parent=self)
+        # font custom data field
+        self.customdata: str = ""
+        # list of custom TrueType tables
+        self._truetypetables: ListParent[TrueTypeTable] = ListParent(parent=self)
+        # loaded TrueType information
+        # (mostly hinting-related tables)
+        self.ttinfo = TTInfo()
+        # current encoding of the font, read-only
+        self._encoding = Encoding()
+        self._encoding._parent = self
+        self._encoding.load_font_default()
+        # list of codepage-numbers (see OT-specs)
+        # <font color="red">(this attribute is not reported by the docstring
+        # this attribute is linked with the
+        # ttinfo.os2_ul_code_page_range1 and
+        # ttinfo.os2_ul_code_page_range2 values)</font>
+        self.codepages: list[int] = []
+        # list of unicoderange-numbers (see OT-specs)
+        # <font color="red">(this attribute is not reported by the docstring)</font>
+        self.unicoderanges: list[int] = []
+        # the Created By field
+        # <font color="red">(this description is not reported by the docstring)</font>
+        self.source = None
+        # list of MM-settings for generate instance
+        self.weight_vector = WeightVector()
+        self.weight_vector._parent = self
+        # list of horizontal guides
+        # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
+        self.hguides: list[Guide] = []
+        # list of vertical guides
+        # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
+        self.vguides: list[Guide] = []
+
+        self._axis: list[tuple[str, str, str]] = []
+        self._glyphs: ListParent[Glyph] = ListParent(parent=self)
+
+        # Font data that is not accessible via FL5 Python API
+        self._encoding_default: list[EncodingRecord] = []
+        self._masters_count: int = 1
+        self._license: str = ""
+        self._license_url: str = ""
+        self._custom_cmaps: list[CustomCmap] = []
+        self._export_pclt_table: int = 0
+        self._pclt_table: dict[str, Any] = {
+            "font_number": 0,
+            "pitch": 0,
+            "x_height": 0,
+            "style": 0,
+            "type_family": 0,
+            "cap_height": 0,
+            "symbol_set": 0,
+            "typeface": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+            "character_complement": [0] * 8,
+            "file_name": "\u0000\u0000\u0000\u0000\u0000\u0000",
+            "stroke_weight": 0,
+            "width_type": 0,
+            "serif_style": 0,
+        }
+        self._export_options: list[str] = []
+        self._ot_export_options: list[dict[str, int]] = []
+        self._axis_count: int = 0
+        self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
+        self._axis_mappings_count: list[int] = [0, 0, 0, 0]
+        self._axis_mappings: list[tuple[float, float]] = [(0.0, 0.0)] * 40
+        self._kerning_class_flags: dict[str, tuple[int, int]] = {}
+        self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
+        self._master_names = ["Untitled"]
+        self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
+        # The infos are always stored for all possible masters
+        self._master_ps_infos: list[PSInfoDict] = [
+            get_default_ps_info() for _ in range(16)
+        ]
+        self._mapping_mode = {
+            "mapping_mode": "names_or_index",
+            "2": 152,
+            "3": 316,
+            "mapping_id": 1,
+        }
+        self._primary_instance_locations: list[float] = []
+        self._primary_instances: list[dict[str, Any]] = []
+        self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
+        self._unknown_pleasures: dict[int, int | str | list[int]] = {
+            1502: 0,
+            518: "",
+            257: "",
+            1140: "",
+            1068: [],
+            2030: "",
+            513: "",
+            271: "",
+            527: "",
+        }
+
     # Helpers
 
     def _get_ps_info_blues(self, key: str) -> list[list[int]]:
@@ -896,237 +1130,3 @@ class Font(FakeFont):
 
     def GenerateInstance(self) -> None:
         raise NotImplementedError
-
-    # Defaults
-
-    def fake_clear_defaults(self) -> None:
-        """
-        Clear some lists prior to deserializing a font from a Vfb.
-        """
-        self._master_names.clear()
-        self._master_locations.clear()
-        self._master_ps_infos.clear()
-
-    def _set_defaults(self) -> None:
-        # Identification
-
-        options = Options()
-
-        # full path of the file from which the font was opened/saved
-        self._file_name = None
-        # font Family Name
-        self.family_name: str | None = None
-        # font Style Name
-        self.style_name: str | None = None
-        # font Full Name
-        self.full_name: str | None = None
-        # font Font Name
-        self.font_name: str | None = None
-
-        # Font Style as BitList:
-        # italic       =  1
-        # underscored  =  2
-        # negative     =  4
-        # outlined     =  8
-        # strikethough = 16
-        # bold         = 32
-        self.font_style: int = 64
-
-        self.menu_name: str | None = None
-        # FOND Name
-        self.apple_name: str = ""
-        # FOND ID
-        self.fond_id: int = 128
-        # OpenType-specific font Family Name
-        self.pref_family_name: str | None = None
-        # OpenType-specific font Style Name
-        self.pref_style_name: str | None = None
-        # OpenType-specific font Mac Name
-        self.mac_compatible: str | None = None
-        # glyph name that represents the PFM default
-        self.default_character: str | None = None
-        self.weight = None
-        self.weight_code = -1
-        self.width = "Normal"
-        self.designer: str | None = None
-        self.designer_url: str | None = None
-        # list of font name records
-        self._fontnames: ListParent[NameRecord] = ListParent(parent=self)
-        # Copyright name field
-        self.copyright: str | None = None
-        # Notice field
-        self.notice: str | None = None
-        # Font note
-        self.note: str | None = None
-        # Type 1 Unique ID number
-        self.unique_id: int = -1
-        # TrueType Unique ID record
-        self.tt_u_id: str | None = None
-        # TrueType Version record
-        self.tt_version: str | None = None
-        self.trademark: str | None = None
-        self._xuid = []
-        self._xuid_num = 0
-        # TrueType vendor code
-        self._vendor = options.VendorCode
-        self.vendor_url: str | None = None
-        self.version: str | None = None
-
-        self.year: int = 0
-        self.version_major: int = 1
-        self.version_minor: int = 0
-
-        self.vp_id: int = -1
-        self.ms_charset: int = 0
-        self.ms_id: int = 0
-        # list of Panose values
-        self.panose: list[int] = [0] * 10
-        self.pcl_chars_set: str = " 9U"
-        self.pcl_id: int = -1
-
-        #  Dimensions
-        self.upm: int = 1000
-        # list of ascenders, one for each master
-        self.ascender: list[int] = [750] * 16
-        # list of descenders, one for each master
-        self.descender: list[int] = [-250] * 16
-        # list of CapHeight records, one for each master
-        self.cap_height: list[int] = [700] * 16
-        # list of xHeight values, one for each master
-        self.x_height: list[int] = [500] * 16
-        self.default_width: list[int] = [500] * 16
-        self.slant_angle: float = 0.0
-        self.italic_angle: float = 0.0
-        self.is_fixed_pitch: int = 0
-        self.underline_position: int = -100
-        self.underline_thickness: int = 50
-
-        #  Alignment
-        self.blue_fuzz: list[int] = [1] * 16
-        self.blue_scale: list[float] = [0.039625] * 16
-        self.blue_shift: list[int] = [7] * 16
-
-        # number of defined blue values
-        self._blue_values_num = 0
-        # number of defined OtherBlues values
-        self._other_blues_num = 0
-        # number of FamilyBlues records
-        self._family_blues_num = 0
-        # number of FamilyOtherBlues records
-        self._family_other_blues_num = 0
-
-        # up until here the default values have been verified
-
-        # list of Force Bold values, one for each master
-        self.force_bold: list[int] = [0]
-        self.stem_snap_h_num: int = 0
-        self.stem_snap_h: list[list[int]] = [[]]
-        self.stem_snap_v_num: int = 0
-        self.stem_snap_v: list[list[int]] = [[]]
-
-        #  Other
-
-        # 0 if unmodified, 1 if modified (to control the
-        # 'save changes' dialog) <font color="red">(this attribute is not
-        # reported by the docstring)</font>
-        self.modified: int = 0
-        # list of glyph classes
-        self._classes = ClassList()
-        # string containing the OT classes defined in the lower
-        # right part of the OpenType panel <font color="red">(this description
-        # is not reported by the docstring)</font>
-        self.ot_classes: str = ""
-        # list of OpenType features
-        self._features: ListParent[Feature] = ListParent(parent=self)
-        # font custom data field
-        self.customdata: str = ""
-        # list of custom TrueType tables
-        self._truetypetables: ListParent[TrueTypeTable] = ListParent(parent=self)
-        # loaded TrueType information
-        # (mostly hinting-related tables)
-        self.ttinfo = TTInfo()
-        # current encoding of the font, read-only
-        self._encoding = Encoding()
-        self._encoding._parent = self
-        self._encoding.load_font_default()
-        # list of codepage-numbers (see OT-specs)
-        # <font color="red">(this attribute is not reported by the docstring
-        # this attribute is linked with the
-        # ttinfo.os2_ul_code_page_range1 and
-        # ttinfo.os2_ul_code_page_range2 values)</font>
-        self.codepages: list[int] = []
-        # list of unicoderange-numbers (see OT-specs)
-        # <font color="red">(this attribute is not reported by the docstring)</font>
-        self.unicoderanges: list[int] = []
-        # the Created By field
-        # <font color="red">(this description is not reported by the docstring)</font>
-        self.source = None
-        # list of MM-settings for generate instance
-        self.weight_vector = WeightVector()
-        self.weight_vector._parent = self
-        # list of horizontal guides
-        # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.hguides: list[Guide] = []
-        # list of vertical guides
-        # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.vguides: list[Guide] = []
-
-        self._axis: list[tuple[str, str, str]] = []
-        self._glyphs: ListParent[Glyph] = ListParent(parent=self)
-
-        # Font data that is not accessible via FL5 Python API
-        self._encoding_default: list[EncodingRecord] = []
-        self._masters_count: int = 1
-        self._license: str = ""
-        self._license_url: str = ""
-        self._custom_cmaps: list[CustomCmap] = []
-        self._export_pclt_table: int = 0
-        self._pclt_table: dict[str, Any] = {
-            "font_number": 0,
-            "pitch": 0,
-            "x_height": 0,
-            "style": 0,
-            "type_family": 0,
-            "cap_height": 0,
-            "symbol_set": 0,
-            "typeface": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
-            "character_complement": [0] * 8,
-            "file_name": "\u0000\u0000\u0000\u0000\u0000\u0000",
-            "stroke_weight": 0,
-            "width_type": 0,
-            "serif_style": 0,
-        }
-        self._export_options: list[str] = []
-        self._ot_export_options: list[dict[str, int]] = []
-        self._axis_count: int = 0
-        self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
-        self._axis_mappings_count: list[int] = [0, 0, 0, 0]
-        self._axis_mappings: list[tuple[float, float]] = [(0.0, 0.0)] * 40
-        self._kerning_class_flags: dict[str, tuple[int, int]] = {}
-        self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
-        self._master_names = ["Untitled"]
-        self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
-        # The infos are always stored for all possible masters
-        self._master_ps_infos: list[PSInfoDict] = [
-            get_default_ps_info() for _ in range(16)
-        ]
-        self._mapping_mode = {
-            "mapping_mode": "names_or_index",
-            "2": 152,
-            "3": 316,
-            "mapping_id": 1,
-        }
-        self._primary_instance_locations: list[float] = []
-        self._primary_instances: list[dict[str, Any]] = []
-        self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
-        self._unknown_pleasures: dict[int, int | str | list[int]] = {
-            1502: 0,
-            518: "",
-            257: "",
-            1140: "",
-            1068: [],
-            2030: "",
-            513: "",
-            271: "",
-            527: "",
-        }
