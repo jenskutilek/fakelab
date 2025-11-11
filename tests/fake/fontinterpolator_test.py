@@ -91,3 +91,35 @@ class FontInterpolatorTests(unittest.TestCase):
         ]
         result = fi._ip_value_array(4, values)
         assert result == expected
+
+    def test_ip_value_limit(self) -> None:
+        f = Font()
+        f.DefineAxis("Weight", "Weight", "Wt")
+        f.DefineAxis("Width", "Width", "Wd")
+        fi = FontInterpolator(f)
+        fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
+        values = [
+            505,  # wt0 wd0
+            509,  # wt1 wd0
+            506,  # wt0 wd1
+            512,  # wt1 wd1
+        ]
+        expected = 507
+        result = fi._ip_value_limit(4, values)
+        assert result == expected
+
+    def test_ip_value(self) -> None:
+        f = Font()
+        f.DefineAxis("Weight", "Weight", "Wt")
+        f.DefineAxis("Width", "Width", "Wd")
+        fi = FontInterpolator(f)
+        fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
+        values = [
+            505,  # wt0 wd0
+            509,  # wt1 wd0
+            506,  # wt0 wd1
+            512,  # wt1 wd1
+        ]
+        expected = 507
+        result = fi._ip_value(values)
+        assert result == expected
