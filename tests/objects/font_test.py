@@ -551,3 +551,9 @@ class FontTests(unittest.TestCase):
             [0, 0],
             [0, 0],
         ]
+
+    def test_axis_append_define(self) -> None:
+        f = Font()
+        f.DefineAxis("Optik", "OpticalSize", "Op")
+        f.axis.append(("Fettegrad", "Wt", "Weight"))
+        assert f.axis == [("Optik", "Op", "OpticalSize")]
