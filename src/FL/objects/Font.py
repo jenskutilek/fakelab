@@ -678,7 +678,7 @@ class Font(FakeFont):
             self._xuid = self.xuid[:value]
         elif diff > 0:
             self._xuid.extend([0] * diff)
-        self._xuid_num: int = value
+        self._xuid_num = value
 
     # Operations
 
