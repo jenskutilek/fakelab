@@ -111,6 +111,8 @@ class FontInterpolator:
 
     def _build_master_map(self) -> list[tuple[int, ...]]:
         match self._num_axes:
+            case 0:
+                return []
             case 1:
                 return [
                     (0,),
