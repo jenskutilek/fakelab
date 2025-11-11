@@ -547,7 +547,7 @@ class Font(FakeFont):
         Args:
             value (int): The number of family blues values, 0 to 14.
         """
-        self._set_blues_num_attr(value, "_family_blues_num", "family_blues_num", 14)
+        self._set_blues_num_attr(value, "_family_blues_num", "family_blues", 14)
 
     @property
     def family_blues(self) -> list[list[int]]:
@@ -579,7 +579,7 @@ class Font(FakeFont):
             value (int): The number of family other blues values, 0 to 10.
         """
         self._set_blues_num_attr(
-            value, "_family_other_blues_num", "family_other_blues_num", 10
+            value, "_family_other_blues_num", "family_other_blues", 10
         )
 
     @property
@@ -645,7 +645,7 @@ class Font(FakeFont):
         Args:
             value (int): The number of other blues values, 0 to 10.
         """
-        self._set_blues_num_attr(value, "_other_blues_num", "other_blues_num", 10)
+        self._set_blues_num_attr(value, "_other_blues_num", "other_blues", 10)
 
     @property
     def other_blues(self) -> list[list[int]]:
