@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING
 
 from mutatorMath import Location, Mutator
@@ -8,6 +9,9 @@ from typing_extensions import TypedDict
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
+
+
+logger = logging.getLogger(__name__)
 
 
 class AxisDict(TypedDict):
@@ -26,6 +30,8 @@ class FontInterpolator:
             src_font (Font): The source font, multiple or single master. If the font
                 contains no axes, a 1:1 copy of the font will be returned.
         """
+        logger.warning(f"Opening font: {src_font}")
+        print(src_font.axis)
         self._src = src_font
         self._num_axes = len(self._src.axis)
         self._num_masters = 2**self._num_axes
@@ -46,6 +52,9 @@ class FontInterpolator:
         self._tgt = tgt_font
         if self._num_axes == 0:
             # Makes a direct copy of the font.
+            logger.warning(
+                "Number of axes is 0, making a copy of the font without interpolation"
+            )
             self._tgt._copy_constructor(self._src)
             return
 
@@ -54,7 +63,6 @@ class FontInterpolator:
         self._ip_fontinfo()
         self._ip_glyphs()
         self._ip_guides_global()
-        self._ip_hinting
 
     def _build_axis_dicts(self) -> None:
         # Build axis dicts with mappings that can be used to build a Mutator
@@ -94,17 +102,46 @@ class FontInterpolator:
     # Interpolation methods for the different MM parts
 
     def _ip_fontinfo(self) -> None:
-        self._tgt.blue_values = self._ip_value_array(
-            self._src.blue_values_num, self._src.blue_values
+        s = self._src
+        t = self._tgt
+
+        # Key dimensions
+
+        t.ascender[0] = self._ip_value(s.ascender)
+        t.descender[0] = self._ip_value(s.descender)
+        t.cap_height[0] = self._ip_value(s.cap_height)
+        t.x_height[0] = self._ip_value(s.x_height)
+        t.default_width[0] = self._ip_value(s.default_width)
+
+        # Interpolate blue zones
+
+        logger.warning("blue_scale is not interpolated yet")
+        logger.warning("blue_shift is not interpolated yet")
+        logger.warning("blue_fuzz is not interpolated yet")
+        logger.warning("std_hw is not interpolated yet")
+        logger.warning("std_vw is not interpolated yet")
+        logger.warning("stem_snap_h is not interpolated yet")
+        logger.warning("stem_snap_v is not interpolated yet")
+
+        t.fake_set_master_blue_values(
+            self._ip_value_array(s.blue_values_num, s.blue_values)[0]
         )
+        t.fake_set_master_other_blues(
+            self._ip_value_array(s.other_blues_num, s.other_blues)[0]
+        )
+        t.fake_set_family_blues(
+            self._ip_value_array(s.family_blues_num, s.family_blues)[0]
+        )
+        t.fake_set_family_other_blues(
+            self._ip_value_array(s.family_other_blues_num, s.family_other_blues)[0]
+        )
+
+        # Font Matrix?
 
     def _ip_glyphs(self) -> None:
         pass
 
     def _ip_guides_global(self) -> None:
-        pass
-
-    def _ip_hinting(self) -> None:
         pass
 
     # Lower level
@@ -184,12 +221,24 @@ class FontInterpolator:
         # one array per master, master index is the top-level index
 
         result: list[int] = []
-        print(
-            f"Interpolating {self._num_masters} masters with location {self.location} ..."
-        )
+        # print(
+        #     f"Interpolating {self._num_masters} masters with location {self.location} ..."
+        # )
         for i in range(num_values):
             master_values = [values[m][i] for m in range(self._num_masters)]
             mutator = self._build_mutator(master_values)
             result.append(round(mutator.makeInstance(self.location)))
 
         return [result]
+
+    def _ip_value_limit(self, num_values: int, master_values: list[int]) -> int:
+        # Interpolate a list of values, 1 value per master
+
+        mutator = self._build_mutator(master_values[:num_values])
+        return round(mutator.makeInstance(self.location))
+
+    def _ip_value(self, master_values: list[int]) -> int:
+        # Interpolate a list of values, 1 value per master
+
+        mutator = self._build_mutator(master_values)
+        return round(mutator.makeInstance(self.location))
