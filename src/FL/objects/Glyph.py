@@ -16,14 +16,8 @@ from vfbLib.typing import (
 
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
-from FL.helpers.interpolation import (
-    add_axis_to_list,
-    add_axis_to_master_list,
-    remove_axis_from_list,
-    remove_axis_from_master_list,
-    remove_axis_from_master_point_list,
-    remove_axis_from_point_list,
-)
+from FL.helpers.FLList import adjust_list
+from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_point_list
 from FL.helpers.ListParent import ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
@@ -537,15 +531,12 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             kerning_pair.fake_remove_axis(position)
 
         # Direct MM properties
-
-        remove_axis_from_point_list(self._metrics)
+        remove_axis_from_point_list(self._metrics, position)
         if self._mask is not None:
             self._mask.fake_remove_axis(position)
         if self._mask_metrics_mm is not None:
             mm_metrics = [self._mask_metrics, *self._mask_metrics_mm]
-            print(mm_metrics)
-            remove_axis_from_point_list(mm_metrics)
-            print(f"Result: {mm_metrics}")
+            remove_axis_from_point_list(mm_metrics, position)
             self._mask_metrics = mm_metrics[0]
             if self._layers_number > 1:
                 self._mask_metrics_mm = mm_metrics[1:]
@@ -553,6 +544,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._mask_metrics_mm = None
 
         self._layers_number //= 2
+
+        if ml := self._unknown_pleasures.get(2023):
+            adjust_list(ml, self._layers_number)
 
     # Attributes
 
