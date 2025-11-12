@@ -199,6 +199,8 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
                 ("other_blues", self.other_blues_num),
                 ("family_blues", self.family_blues_num),
                 ("family_other_blues", self.family_other_blues_num),
+                ("stem_snap_h", self.stem_snap_h_num),
+                ("stem_snap_v", self.stem_snap_v_num),
             ):
                 adjust_list(info[key], new_length=num, value=0)
 
@@ -212,6 +214,8 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
                 ("other_blues", 10),
                 ("family_blues", 14),
                 ("family_other_blues", 10),
+                ("stem_snap_h", 12),
+                ("stem_snap_v", 12),
             ):
                 adjust_list(info[key], new_length=num, value=0)
             infos.append(info)
