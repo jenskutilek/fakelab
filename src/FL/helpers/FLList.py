@@ -29,6 +29,8 @@ def adjust_list(seq: list[Any], new_length: int, value: Any = None) -> None:
         elif value is Point:
             for _ in range(diff):
                 seq.append(Point())
+        else:
+            seq.extend([value] * diff)
     else:
         # Take away elements
         for _ in range(abs(diff)):
