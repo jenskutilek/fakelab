@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 font_mapping_direct = {
     F.font_name,
-    F.weight_vector,
+    # F.weight_vector,  # is a special class
     F.unique_id,
     F.version,
     F.notice,
@@ -226,6 +226,8 @@ class VfbToFontReader:
                     font._encoding_default.append(e)
                 case F.MasterCount:
                     font._masters_count = data
+                case F.weight_vector:
+                    font.weight_vector._weights = data
                 case F.License:
                     font._license = data
                 case F.LicenseURL:
