@@ -3,13 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from vfbLib.typing import MaskData
-
 from FL.fake.Font import FakeFont
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.classList import ClassList
 from FL.helpers.FLList import adjust_list
-from FL.helpers.interpolation import remove_axis_from_list
+from FL.helpers.interpolation import remove_axis_from_factor_list, remove_axis_from_list
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.Options import Options
@@ -1096,14 +1094,39 @@ class Font(FakeFont):
             # full length again.
             adjust_list(attr, 16)
 
-        # Remove from font
+        # Remove axis from font
         self._axis.pop()
         self._axis_count = len(self._axis)
+
         self._masters_count //= 2
-        # TODO: weight_vector
-        # from 4 to 1 master:
-        # (0.25, 0.25, 0.25, 0.25) -> ... -> (1.0)
+
+        remove_axis_from_factor_list(self.weight_vector._weights)
         adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
+
+        # Primary instances
+        if self._axis_count > 0:
+            # FIXME: This seems a bit more complicated. Locations that are still inside
+            # the design space must be recalculated, others zeroed.
+            # remove_axis_from_list(self._primary_instance_locations, position)
+            for p in self._primary_instances:
+                values = list(p["values"])
+                remove_axis_from_list(values, position)
+                adjust_list(values, 4, 0.0)
+                p["values"] = tuple(values)
+        else:
+            self._primary_instance_locations = []
+            self._primary_instances = []
+
+        # Remove master names, recalculate if there are any axes left
+        self._master_names = []
+        if self._axis_count > 0:
+            base = ""
+            for _, short_name, _ in self.axis:
+                base += f"{short_name}%s "
+            for loc in self.fake_master_map():
+                self._master_names.append(base % loc)
+        else:
+            self._master_names = ["Untitled"]
 
     def GenerateUnicode(self) -> None:
         """
