@@ -276,3 +276,9 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             master_index (int, optional): The master index. Defaults to 0.
         """
         self._fake_set_master_blues("family_other_blues", values, 10, master_index)
+
+    def fake_map_axis_location(
+        self, axis_index: int = -1, user_value: float = 0
+    ) -> float:
+        # FIXME
+        return user_value / 1000
