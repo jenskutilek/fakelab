@@ -166,7 +166,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             return
 
         match key:
-            case 2001:
+            case G.Glyph:
                 self._layers_number = data["num_masters"]
                 # 0x01
                 self.name: str = data.get("name")
