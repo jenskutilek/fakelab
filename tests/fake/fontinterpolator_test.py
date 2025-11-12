@@ -79,7 +79,7 @@ class FontInterpolatorTests(unittest.TestCase):
         f.DefineAxis("Weight", "Weight", "Wt")
         f.DefineAxis("Width", "Width", "Wd")
         fi = FontInterpolator(f)
-        fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
+        fi.location = Location(wt=0.289, wd=0.472)  # TheSans SCd Plain
         values = [
             [-8, 0, 497, 505],  # wt0 wd0
             [-12, 0, 497, 509],  # wt1 wd0
@@ -97,7 +97,7 @@ class FontInterpolatorTests(unittest.TestCase):
         f.DefineAxis("Weight", "Weight", "Wt")
         f.DefineAxis("Width", "Width", "Wd")
         fi = FontInterpolator(f)
-        fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
+        fi.location = Location(wt=0.289, wd=0.472)  # TheSans SCd Plain
         values = [
             505,  # wt0 wd0
             509,  # wt1 wd0
@@ -113,7 +113,7 @@ class FontInterpolatorTests(unittest.TestCase):
         f.DefineAxis("Weight", "Weight", "Wt")
         f.DefineAxis("Width", "Width", "Wd")
         fi = FontInterpolator(f)
-        fi.location = Location(wt=0.289, wd=0.479)  # TheSans SCd Plain
+        fi.location = Location(wt=0.289, wd=0.472)  # TheSans SCd Plain
         values = [
             505,  # wt0 wd0
             509,  # wt1 wd0
