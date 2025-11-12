@@ -65,13 +65,13 @@ class TTStem(Copyable):
             # the actual stems entry, with value, name, ppm6
             self.width = data["value"]
             self.name = data["name"]
-        ppms: dict[str, int] = data["round"]
+        ppms: dict[int, int] = data["round"]
         for ppm in range(2, 7):
-            if str(ppm) in ppms:
-                setattr(self, f"ppm{ppm}", ppms[str(ppm)])
-        if "1" in ppms:
+            if ppm in ppms:
+                setattr(self, f"ppm{ppm}", ppms[ppm])
+        if 1 in ppms:
             # "TrueType Stem PPEMs 1" has no public API
-            self._ppm1 = ppms["1"]
+            self._ppm1 = ppms[1]
 
     def fake_recalc_ppms(self, width: int, upm: int) -> None:
         """
