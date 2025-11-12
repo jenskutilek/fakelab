@@ -18,7 +18,10 @@ from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.interpolation import (
     add_axis_to_list,
+    add_axis_to_master_list,
     remove_axis_from_list,
+    remove_axis_from_master_list,
+    remove_axis_from_master_point_list,
     remove_axis_from_point_list,
 )
 from FL.helpers.ListParent import ListParent
@@ -479,6 +482,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         return anchors
 
     def fake_add_axis(self) -> None:
+        # Delegate to sub-objects
+
         for node in self._nodes:
             node.fake_add_axis()
         for anchor in self._anchors:
@@ -495,7 +500,13 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             component.fake_add_axis()
         for kerning_pair in self._kerning:
             kerning_pair.fake_add_axis()
+
+        # Direct MM properties
+
         add_axis_to_list(self._metrics)
+        if self._mask_metrics_mm is not None:
+            add_axis_to_list(self._mask_metrics_mm)
+
         self._layers_number *= 2
 
     def fake_remove_axis(self, position: float) -> None:
@@ -506,6 +517,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         Args:
             position (float): The position in normalized space (0.0 to 1.0).
         """
+        # Delegate to sub-objects
+
         for node in self._nodes:
             node.fake_remove_axis(position)
         for anchor in self._anchors:
@@ -522,7 +535,23 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             component.fake_remove_axis(position)
         for kerning_pair in self._kerning:
             kerning_pair.fake_remove_axis(position)
-        add_axis_to_list(self._metrics)
+
+        # Direct MM properties
+
+        remove_axis_from_point_list(self._metrics)
+        if self._mask is not None:
+            self._mask.fake_remove_axis(position)
+        if self._mask_metrics_mm is not None:
+            mm_metrics = [self._mask_metrics, *self._mask_metrics_mm]
+            print(mm_metrics)
+            remove_axis_from_point_list(mm_metrics)
+            print(f"Result: {mm_metrics}")
+            self._mask_metrics = mm_metrics[0]
+            if self._layers_number > 1:
+                self._mask_metrics_mm = mm_metrics[1:]
+            else:
+                self._mask_metrics_mm = None
+
         self._layers_number //= 2
 
     # Attributes

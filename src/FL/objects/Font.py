@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING, Any
 from vfbLib.typing import MaskData
 
 from FL.fake.Font import FakeFont
-from FL.fake.FontInterpolator import FontInterpolator
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.classList import ClassList
 from FL.helpers.FLList import adjust_list
+from FL.helpers.interpolation import remove_axis_from_list
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.Options import Options
@@ -167,8 +167,11 @@ class Font(FakeFont):
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM
                 # axes defined in the font
-                fi = FontInterpolator(font_or_path)
-                fi.interpolate(instances)
+                # TODO: Map to normalized location
+                for axis_location in reversed(instances):
+                    axis_index = self._axis_count - 1
+                    normalized = self.fake_map_axis_location(axis_index, axis_location)
+                    self.DeleteAxis(axis_index, normalized)
 
         elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
@@ -1035,9 +1038,14 @@ class Font(FakeFont):
         self._axis.append((name, shortname[:5], type))
         self._axis_count = len(self._axis)
 
+        if self._global_mask is not None:
+            self._global_mask.fake_add_axis()
+
         # Adjust glyphs
         for glyph in self.glyphs:
             glyph.fake_add_axis()
+
+        # Adjust font info
 
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
@@ -1056,15 +1064,46 @@ class Font(FakeFont):
             "Can only remove the last axis for now"
         )
 
+        if self._global_mask is not None:
+            self._global_mask.fake_remove_axis(position)
+
         # Remove axis from glyphs
         for glyph in self.glyphs:
             glyph.fake_remove_axis(position)
 
+        for guide in self.hguides:
+            guide.fake_remove_axis(position)
+        for guide in self.vguides:
+            guide.fake_remove_axis(position)
+
         # TODO: Remove axis from fontinfo (interpolate values)
+
+        for attr in (
+            self._ascender,
+            self._descender,
+            self._cap_height,
+            self._x_height,
+            self._default_width,
+            # self.blue_fuzz,
+            # self.blue_scale,
+            # self.blue_shift,
+            # self.force_bold,
+            # self.stem_snap_h,
+            # self.stem_snap_v,
+        ):
+            remove_axis_from_list(attr, position)
+            # These always store all possible 16 masters, so we must extend them to the
+            # full length again.
+            adjust_list(attr, 16)
 
         # Remove from font
         self._axis.pop()
         self._axis_count = len(self._axis)
+        self._masters_count //= 2
+        # TODO: weight_vector
+        # from 4 to 1 master:
+        # (0.25, 0.25, 0.25, 0.25) -> ... -> (1.0)
+        adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
 
     def GenerateUnicode(self) -> None:
         """
