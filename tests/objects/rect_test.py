@@ -5,7 +5,7 @@ from FL.objects.Rect import Rect
 
 
 class RectTests(unittest.TestCase):
-    def test_instantiation(self):
+    def test_instantiation(self) -> None:
         # No args
         r = Rect()
         assert r.x == 0
@@ -15,7 +15,7 @@ class RectTests(unittest.TestCase):
         assert r.ll == Point(0, 0)
         assert r.ur == Point(0, 0)
 
-    def test_instantiation_point(self):
+    def test_instantiation_point(self) -> None:
         # Documentation for Rect from Point is wrong: It says the rect will be from
         # (0, 0) to the point, but it is at the point with width = 0 and height = 0.
         r = Rect(Point(100, 100))
@@ -24,7 +24,7 @@ class RectTests(unittest.TestCase):
         assert r.width == 0
         assert r.height == 0
 
-    def test_instantiation_coords(self):
+    def test_instantiation_coords(self) -> None:
         # Floats are preserved
         r = Rect(0.0, 0.0, 10.5, 10.5)
         assert r.x == 0
@@ -32,7 +32,7 @@ class RectTests(unittest.TestCase):
         assert r.width == 10.5
         assert r.height == 10.5
 
-    def test_instantiation_normalization(self):
+    def test_instantiation_normalization(self) -> None:
         # Points are not normalized
         r = Rect(10.5, 10.5, 0.0, 0.0)
         assert r.x == 10.5
@@ -40,7 +40,7 @@ class RectTests(unittest.TestCase):
         assert r.width == -10.5
         assert r.height == -10.5
 
-    def test_various(self):
+    def test_various(self) -> None:
         # Directly from FL5, wtf is happening here?
         # FIXME
         r = Rect(1, 2, 3, 4)
@@ -54,7 +54,7 @@ class RectTests(unittest.TestCase):
 
     # Addition
 
-    def test_add(self):
+    def test_add(self) -> None:
         r = Rect(0.0, 0.0, 10.5, 10.5)
         r2 = r + Point(-1, -1)
         assert r.ll == Point(-1, -1)
@@ -68,7 +68,7 @@ class RectTests(unittest.TestCase):
         assert r.ll == Point(-1, -1)
         assert r.ur == Point(0, 0)
 
-    def test_iadd_point(self):
+    def test_iadd_point(self) -> None:
         r = Rect(0.0, 0.0, 10.5, 10.5)
         r += Point(-1, -1)
         assert r.x == -1
@@ -95,7 +95,7 @@ class RectTests(unittest.TestCase):
         assert r.width == 510
         assert r.height == 98
 
-    def test_Validate(self):
+    def test_Validate(self) -> None:
         r = Rect(105, 2, 3, 4)
         r.Validate()
         assert r.ll == Point(3, 2)

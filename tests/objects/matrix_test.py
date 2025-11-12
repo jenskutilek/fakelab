@@ -5,7 +5,7 @@ from FL.objects.Point import Point
 
 
 class MatrixTests(unittest.TestCase):
-    def test_instantiation(self):
+    def test_instantiation(self) -> None:
         m = Matrix()
         assert m.a == 1
         assert m.b == 0
@@ -16,7 +16,7 @@ class MatrixTests(unittest.TestCase):
 
     # Addition
 
-    def test_add(self):
+    def test_add(self) -> None:
         m1 = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         mr = m1 + m2
@@ -27,7 +27,7 @@ class MatrixTests(unittest.TestCase):
         assert mr.e == 43
         assert mr.f == 77
 
-    def test_iadd(self):
+    def test_iadd(self) -> None:
         m = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         m += m2
@@ -38,7 +38,7 @@ class MatrixTests(unittest.TestCase):
         assert m.e == 43
         assert m.f == 77
 
-    def test_Add(self):
+    def test_Add(self) -> None:
         m = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         m.Add(m2)
@@ -51,7 +51,7 @@ class MatrixTests(unittest.TestCase):
 
     # Subtraction
 
-    def test_sub(self):
+    def test_sub(self) -> None:
         m1 = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         mr = m1 - m2
@@ -62,7 +62,7 @@ class MatrixTests(unittest.TestCase):
         assert mr.e == 21
         assert mr.f == 51
 
-    def test_isub(self):
+    def test_isub(self) -> None:
         m = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         m -= m2
@@ -73,7 +73,7 @@ class MatrixTests(unittest.TestCase):
         assert m.e == 21
         assert m.f == 51
 
-    def test_Sub(self):
+    def test_Sub(self) -> None:
         m = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         m.Sub(m2)
@@ -86,7 +86,7 @@ class MatrixTests(unittest.TestCase):
 
     # Multiplication
 
-    def test_mul_float(self):
+    def test_mul_float(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m1 = m1 * 3
         assert m1.a == 6
@@ -96,7 +96,7 @@ class MatrixTests(unittest.TestCase):
         assert m1.e == 6
         assert m1.f == 6
 
-    def test_mul_matrix(self):
+    def test_mul_matrix(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m2 = Matrix(3, 3, 3, 3, 3, 3)
         m1 = m1 * m2
@@ -107,7 +107,7 @@ class MatrixTests(unittest.TestCase):
         assert m1.e == 15
         assert m1.f == 15
 
-    def test_imul_float(self):
+    def test_imul_float(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m1 *= 3
         assert m1.a == 6
@@ -117,7 +117,7 @@ class MatrixTests(unittest.TestCase):
         assert m1.e == 6
         assert m1.f == 6
 
-    def test_imul_matrix(self):
+    def test_imul_matrix(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m2 = Matrix(3, 3, 3, 3, 3, 3)
         m1 *= m2
@@ -128,7 +128,7 @@ class MatrixTests(unittest.TestCase):
         assert m1.e == 15
         assert m1.f == 15
 
-    def test_Mul_float(self):
+    def test_Mul_float(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m1.Mul(3)
         assert m1.a == 6
@@ -140,7 +140,7 @@ class MatrixTests(unittest.TestCase):
 
     # Transform
 
-    def test_Transform(self):
+    def test_Transform(self) -> None:
         m1 = Matrix(2, 2, 2, 2, 2, 2)
         m2 = Matrix(3, 3, 3, 3, 3, 3)
         m1 = m1 * m2
@@ -151,7 +151,7 @@ class MatrixTests(unittest.TestCase):
         assert m1.e == 15
         assert m1.f == 15
 
-    def test_Transform_2(self):
+    def test_Transform_2(self) -> None:
         m1 = Matrix(2, 4, 8, 16, 32, 64)
         m2 = Matrix(3, 5, 7, 9, 11, 13)
         m1 = m1 * m2
@@ -164,13 +164,13 @@ class MatrixTests(unittest.TestCase):
 
     # FakeLab addition
 
-    def test_Transform_Point(self):
+    def test_Transform_Point(self) -> None:
         m1 = Matrix(2, 4, 8, 16, 32, 64)
         p = Point(44, 55)
         p.Transform(m1)
         assert (p.x, p.y) == (340, 1296)
 
-    def test_Transform_Point_float(self):
+    def test_Transform_Point_float(self) -> None:
         m1 = Matrix(2, 4, 8, 16, 32, 64)
         p = Point(44.2, 55.5)
         p.Transform(m1)
