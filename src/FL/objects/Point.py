@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import floor
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
@@ -168,7 +169,7 @@ class Point(Copyable):
 
     def __round__(self) -> Point:
         # Added for FakeLab. Rounding a Point truncates in FL.
-        return Point(int(self.x), int(self.y))
+        return Point(floor(self.x), floor(self.y))
 
     # Methods
 
