@@ -557,3 +557,66 @@ class FontTests(unittest.TestCase):
         f.DefineAxis("Optik", "OpticalSize", "Op")
         f.axis.append(("Fettegrad", "Wt", "Weight"))
         assert f.axis == [("Optik", "Op", "OpticalSize")]
+
+    def test_build_axis_map_1(self) -> None:
+        f = Font()
+        f._axis = [("Weight", "Wt", "Weight")]
+        f._axis_count = 1
+        result = f.fake_master_map()
+        assert result == [(0,), (1,)]
+
+    def test_build_axis_map_2(self) -> None:
+        f = Font()
+        f._axis = [("Weight", "Wt", "Weight"), ("Width", "Wd", "Width")]
+        f._axis_count = 2
+        result = f.fake_master_map()
+        assert result == [(0, 0), (1, 0), (0, 1), (1, 1)]
+
+    def test_build_axis_map_3(self) -> None:
+        f = Font()
+        f._axis = [
+            ("Weight", "Wt", "Weight"),
+            ("Width", "Wd", "Width"),
+            ("Optical Size", "Op", "Optical Size"),
+        ]
+        f._axis_count = 3
+        result = f.fake_master_map()
+        assert result == [
+            (0, 0, 0),
+            (1, 0, 0),
+            (0, 1, 0),
+            (1, 1, 0),
+            (0, 0, 1),
+            (1, 0, 1),
+            (0, 1, 1),
+            (1, 1, 1),
+        ]
+
+    def test_build_axis_map_4(self) -> None:
+        f = Font()
+        f._axis = [
+            ("Weight", "Wt", "Weight"),
+            ("Width", "Wd", "Width"),
+            ("Optical Size", "Op", "Optical Size"),
+            ("Serif", "Se", "Serif"),
+        ]
+        f._axis_count = 4
+        result = f.fake_master_map()
+        assert result == [
+            (0, 0, 0, 0),
+            (1, 0, 0, 0),
+            (0, 1, 0, 0),
+            (1, 1, 0, 0),
+            (0, 0, 1, 0),
+            (1, 0, 1, 0),
+            (0, 1, 1, 0),
+            (1, 1, 1, 0),
+            (0, 0, 0, 1),
+            (1, 0, 0, 1),
+            (0, 1, 0, 1),
+            (1, 1, 0, 1),
+            (0, 0, 1, 1),
+            (1, 0, 1, 1),
+            (0, 1, 1, 1),
+            (1, 1, 1, 1),
+        ]

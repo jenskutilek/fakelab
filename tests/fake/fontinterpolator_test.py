@@ -11,69 +11,6 @@ class FontInterpolatorTests(unittest.TestCase):
         f = Font()
         FontInterpolator(f)
 
-    def test_build_axis_map_1(self) -> None:
-        f = Font()
-        f._axis = [("Weight", "Wt", "Weight")]
-        fi = FontInterpolator(f)
-        result = fi._build_master_map()
-        assert result == [(0,), (1,)]
-
-    def test_build_axis_map_2(self) -> None:
-        f = Font()
-        f._axis = [("Weight", "Wt", "Weight"), ("Width", "Wd", "Width")]
-        fi = FontInterpolator(f)
-        result = fi._build_master_map()
-        assert result == [(0, 0), (1, 0), (0, 1), (1, 1)]
-
-    def test_build_axis_map_3(self) -> None:
-        f = Font()
-        f._axis = [
-            ("Weight", "Wt", "Weight"),
-            ("Width", "Wd", "Width"),
-            ("Optical Size", "Op", "Optical Size"),
-        ]
-        fi = FontInterpolator(f)
-        result = fi._build_master_map()
-        assert result == [
-            (0, 0, 0),
-            (1, 0, 0),
-            (0, 1, 0),
-            (1, 1, 0),
-            (0, 0, 1),
-            (1, 0, 1),
-            (0, 1, 1),
-            (1, 1, 1),
-        ]
-
-    def test_build_axis_map_4(self) -> None:
-        f = Font()
-        f._axis = [
-            ("Weight", "Wt", "Weight"),
-            ("Width", "Wd", "Width"),
-            ("Optical Size", "Op", "Optical Size"),
-            ("Serif", "Se", "Serif"),
-        ]
-        fi = FontInterpolator(f)
-        result = fi._build_master_map()
-        assert result == [
-            (0, 0, 0, 0),
-            (1, 0, 0, 0),
-            (0, 1, 0, 0),
-            (1, 1, 0, 0),
-            (0, 0, 1, 0),
-            (1, 0, 1, 0),
-            (0, 1, 1, 0),
-            (1, 1, 1, 0),
-            (0, 0, 0, 1),
-            (1, 0, 0, 1),
-            (0, 1, 0, 1),
-            (1, 1, 0, 1),
-            (0, 0, 1, 1),
-            (1, 0, 1, 1),
-            (0, 1, 1, 1),
-            (1, 1, 1, 1),
-        ]
-
     def test_ip_value_array(self) -> None:
         f = Font()
         f.DefineAxis("Weight", "Weight", "Wt")
