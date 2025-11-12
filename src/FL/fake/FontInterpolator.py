@@ -141,55 +141,6 @@ class FontInterpolator:
 
     # Lower level
 
-    def _build_master_map(self) -> list[tuple[int, ...]]:
-        match self._num_axes:
-            case 0:
-                return []
-            case 1:
-                return [
-                    (0,),
-                    (1,),
-                ]
-            case 2:
-                return [
-                    (0, 0),
-                    (1, 0),
-                    (0, 1),
-                    (1, 1),
-                ]
-            case 3:
-                return [
-                    (0, 0, 0),
-                    (1, 0, 0),
-                    (0, 1, 0),
-                    (1, 1, 0),
-                    (0, 0, 1),
-                    (1, 0, 1),
-                    (0, 1, 1),
-                    (1, 1, 1),
-                ]
-            case 4:
-                return [
-                    (0, 0, 0, 0),
-                    (1, 0, 0, 0),
-                    (0, 1, 0, 0),
-                    (1, 1, 0, 0),
-                    (0, 0, 1, 0),
-                    (1, 0, 1, 0),
-                    (0, 1, 1, 0),
-                    (1, 1, 1, 0),
-                    (0, 0, 0, 1),
-                    (1, 0, 0, 1),
-                    (0, 1, 0, 1),
-                    (1, 1, 0, 1),
-                    (0, 0, 1, 1),
-                    (1, 0, 1, 1),
-                    (0, 1, 1, 1),
-                    (1, 1, 1, 1),
-                ]
-            case _:
-                raise ValueError("Only 1 to 4 axes are supported.")
-
     def _build_mutator(self, master_values: list[int]) -> Mutator:
         # XXX: Do we have to do this for each value, or can we build the Mutator once,
         # and then reassign the master values?
