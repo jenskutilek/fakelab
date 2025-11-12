@@ -45,7 +45,7 @@ def add_axis_to_master_list(seq: list[list[Any]]) -> None:
     seq.extend(new_values)
 
 
-def remove_axis_from_list(seq: list[int], interpolation: float = 0.0) -> None:
+def remove_axis_from_list(seq: list[int], interpolation: float) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
     The interpolation factor will be used to interpolate the remaining values.
@@ -69,9 +69,7 @@ def remove_axis_from_list(seq: list[int], interpolation: float = 0.0) -> None:
         seq.pop()
 
 
-def remove_axis_from_master_list(
-    seq: list[list[int]], interpolation: float = 0.0
-) -> None:
+def remove_axis_from_master_list(seq: list[list[int]], interpolation: float) -> None:
     """
     Remove an axis from a 2d list of values per master. Top level index is the master
     index. The interpolation factor will be used to interpolate the remaining values.
@@ -105,7 +103,7 @@ def remove_axis_from_master_list(
         seq.pop()
 
 
-def remove_axis_from_point_list(seq: list[Point], interpolation: float = 0.0) -> None:
+def remove_axis_from_point_list(seq: list[Point], interpolation: float) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
     The interpolation factor will be used to interpolate the remaining points.
@@ -130,7 +128,7 @@ def remove_axis_from_point_list(seq: list[Point], interpolation: float = 0.0) ->
 
 
 def remove_axis_from_master_point_list(
-    seq: list[list[Point]], interpolation: float = 0.0
+    seq: list[list[Point]], interpolation: float
 ) -> None:
     """
     Remove an axis from a 2d list of points per master. Top level index is the master
@@ -165,10 +163,14 @@ def remove_axis_from_master_point_list(
         seq.pop()
 
 
-def interpolate(v0: float, v1: float, factor: float = 0.0) -> int:
-    return int(round(Decimal(str(v0 + (v1 - v0) * factor)), 0))
+def interpolate(v0: float, v1: float, factor: float) -> int:
+    return int(round(Decimal(str(interpolate_float(v0, v1, factor))), 0))
 
 
-def interpolate_point(p0: Point, p1: Point, factor: float = 0.0) -> Point:
+def interpolate_float(v0: float, v1: float, factor: float) -> float:
+    return v0 + (v1 - v0) * factor
+
+
     # TODO: Do we need to round at all?
+def interpolate_point(p0: Point, p1: Point, factor: float) -> Point:
     return round(p0 + (p1 - p0) * factor)
