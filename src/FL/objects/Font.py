@@ -358,7 +358,7 @@ class Font(FakeFont):
 
         # Font data that is not accessible via FL5 Python API
         self._encoding_default: list[EncodingRecord] = []
-        self._global_mask: MaskData | None = None
+        self._global_mask: Glyph | None = None
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
