@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from vfbLib.typing import MaskData
+
 from FL.fake.Font import FakeFont
 from FL.fake.FontInterpolator import FontInterpolator
 from FL.fake.PSInfo import get_default_ps_info
@@ -125,6 +127,7 @@ class Font(FakeFont):
         "_encoding_default",
         "_export_pclt_table",
         "_export_options",
+        "_global_mask",
         "_ot_export_options",
         "_pclt_table",
         "_axis_count",
@@ -355,6 +358,7 @@ class Font(FakeFont):
 
         # Font data that is not accessible via FL5 Python API
         self._encoding_default: list[EncodingRecord] = []
+        self._global_mask: MaskData | None = None
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""

@@ -247,6 +247,9 @@ class FontToVfbWriter:
                 F.GlobalGuideProperties, font.fake_serialize_guide_properties()
             )
 
+        if font._global_mask:
+            self.add_entry(F.GlobalMask, font.fake_serialize_global_mask())
+
         if font.default_character:
             self.add_entry(F.default_character, font.default_character)
 

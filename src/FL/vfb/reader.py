@@ -295,7 +295,7 @@ class VfbToFontReader:
                 case F.GlobalGuideProperties:
                     font.fake_deserialize_guide_properties(data)
                 case F.GlobalMask:
-                    pass
+                    font.fake_deserialize_global_mask(data)
                 case G.Glyph:
                     # Append the current glyph
                     if glyph is not None:

@@ -5,8 +5,9 @@ from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser
-from vfbLib.typing import PSInfoDict
+from vfbLib.typing import GlyphData, PSInfoDict
 
 from FL.fake.Base import Copyable
 from FL.fake.Kerning import FakeKerning
@@ -14,6 +15,7 @@ from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.FLList import adjust_list
 from FL.objects.Feature import Feature
+from FL.objects.Glyph import Glyph
 
 if TYPE_CHECKING:
     from FL.objects.Uni import Uni
@@ -150,6 +152,17 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             long, _, _ = axis
             names.append(long)
         return names
+
+    def fake_deserialize_global_mask(self, data: GlyphData) -> None:
+        self._global_mask = Glyph(self._masters_count)
+        self._global_mask.fake_deserialize(G.Glyph, data)
+
+    def fake_serialize_global_mask(self) -> GlyphData:
+        gm = self._global_mask
+        return GlyphData(
+            num_masters=gm.layers_number,
+            nodes=[node.fake_serialize(gm.layers_number) for node in gm.nodes],
+        )
 
     def fake_deserialize_features(self, features: list[str]) -> None:
         self._features.clean()
