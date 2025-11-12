@@ -19,8 +19,8 @@ def get_default_ps_info() -> PSInfoDict:
         "blue_fuzz": 1,
         "std_hw": 100,
         "std_vw": 50,
-        "stem_snap_h": [0] * 12,
-        "stem_snap_v": [0] * 12,
+        "stem_snap_h": [],  # max 12
+        "stem_snap_v": [],  # max 12
         "bounding_box": {
             "xMin": 32767,
             "yMin": 32767,
