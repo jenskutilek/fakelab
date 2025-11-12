@@ -69,6 +69,28 @@ def remove_axis_from_list(seq: list[int], interpolation: float) -> None:
         seq.pop()
 
 
+def remove_axis_from_factor_list(seq: list[float]) -> None:
+    """
+    Like `remove_axis_from_list`, but adds the values instead of interpolating them.
+    Used for reducing the `Font.weight_vector` list.
+
+    Args:
+        seq (list[float]): The list to be adjusted.
+
+    Raises:
+        ValueError: If the list has an odd number of elements.
+    """
+    num_values = len(seq)
+    if num_values % 2:
+        raise ValueError(f"List must have an even number of elements: {seq}")
+
+    half = num_values // 2
+    for i in range(half):
+        seq[i] = seq[i] + seq[half + i]
+    for i in range(half):
+        seq.pop()
+
+
 def remove_axis_from_master_list(seq: list[list[int]], interpolation: float) -> None:
     """
     Remove an axis from a 2d list of values per master. Top level index is the master
