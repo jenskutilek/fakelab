@@ -4,6 +4,7 @@ from math import atan2, degrees, radians, tan
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
+from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_list
 
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
@@ -67,6 +68,14 @@ class Guide(Copyable):
     @staticmethod
     def fake_width_to_angle(width: float) -> float:
         return degrees(atan2(width, 10000))
+
+    def fake_add_axis(self) -> None:
+        add_axis_to_list(self._positions)
+        add_axis_to_list(self._widths)
+
+    def fake_remove_axis(self, interpolation: float) -> None:
+        remove_axis_from_list(self._positions, interpolation)
+        remove_axis_from_list(self._widths, interpolation)
 
     @property
     def angle(self) -> float:

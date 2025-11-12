@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
 from FL.helpers.FLList import adjust_list
+from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_list
 
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
@@ -64,7 +65,13 @@ class KerningPair(Copyable):
             adjust_list(self._values, 16, 0)  # TODO: Check if the default is 0
         else:
             # Adjust list length to new layers number
-            adjust_list(self._values, self._parent.layers_number)
+            adjust_list(self._values, self._parent.layers_number, 0)
+
+    def fake_add_axis(self) -> None:
+        add_axis_to_list(self._values)
+
+    def fake_remove_axis(self, interpolation: float) -> None:
+        remove_axis_from_list(self._values, interpolation)
 
     # Attributes
 

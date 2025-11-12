@@ -166,6 +166,10 @@ class Point(Copyable):
             "Point, Matrix or Number is expected as right operand of Point.operator*"
         )
 
+    def __round__(self) -> Point:
+        # Added for FakeLab. Rounding a Point truncates in FL.
+        return Point(int(self.x), int(self.y))
+
     # Methods
 
     def Assign(self, p_or_x: Point | float, y: float | None = None) -> None:

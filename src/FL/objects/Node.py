@@ -3,6 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
+from FL.helpers.interpolation import (
+    add_axis_to_master_list,
+    remove_axis_from_master_point_list,
+)
 from FL.helpers.ListParent import ListParent
 from FL.objects.Point import Point
 
@@ -132,6 +136,17 @@ class Node(Copyable):
         self._parent: Glyph | None = glyph
         for p in self.points:
             p.fake_update(self)
+
+    def fake_add_axis(self) -> None:
+        add_axis_to_master_list(self._points)
+        self._masters_count *= 2
+
+    def fake_remove_axis(self, interpolation: float) -> None:
+        if len(self) == 0:
+            return
+
+        remove_axis_from_master_point_list(self._points, interpolation)
+        self._masters_count //= 2
 
     # Attributes
 

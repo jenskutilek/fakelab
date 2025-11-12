@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
+from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_point_list
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
-    from FL.objects import Glyph
+    from FL.objects.Glyph import Glyph
     from FL.objects.Matrix import Matrix
 
 
@@ -58,6 +59,12 @@ class Anchor(Copyable):
         self._mark = 1
         self._reserved = 0
         self._points = [Point() for _ in range(16)]
+
+    def fake_add_axis(self) -> None:
+        add_axis_to_list(self._points)
+
+    def fake_remove_axis(self, interpolation: float) -> None:
+        remove_axis_from_point_list(self._points, interpolation)
 
     # Attributes
 

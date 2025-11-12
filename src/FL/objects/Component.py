@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
+from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_point_list
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -90,6 +91,14 @@ class Component(Copyable):
             "scaleY": [p.y for p in self.scales],
         }
         return d
+
+    def fake_add_axis(self) -> None:
+        add_axis_to_list(self._deltas)
+        add_axis_to_list(self._scales)
+
+    def fake_remove_axis(self, interpolation: float) -> None:
+        remove_axis_from_point_list(self._deltas, interpolation)
+        remove_axis_from_point_list(self._scales, interpolation)
 
     # Attributes
 

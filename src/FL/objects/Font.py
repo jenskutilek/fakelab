@@ -1031,6 +1031,10 @@ class Font(FakeFont):
         self._axis.append((name, shortname[:5], type))
         self._axis_count = len(self._axis)
 
+        # Adjust glyphs
+        for glyph in self.glyphs:
+            glyph.fake_add_axis()
+
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """
         Removes the axis. Remaining masters will be blended according to the given
@@ -1040,7 +1044,23 @@ class Font(FakeFont):
             axisindex (int): The index of the axis to remove (0 to 3).
             position (float): The position of the remaining masters on the removed axis.
         """
-        raise NotImplementedError
+        if self._axis_count == 0:
+            # Ignore silently
+            return
+
+        assert axisindex == self._axis_count - 1, (
+            "Can only remove the last axis for now"
+        )
+
+        # Remove axis from glyphs
+        for glyph in self.glyphs:
+            glyph.fake_remove_axis(position)
+
+        # TODO: Remove axis from fontinfo (interpolate values)
+
+        # Remove from font
+        self._axis.pop()
+        self._axis_count = len(self._axis)
 
     def GenerateUnicode(self) -> None:
         """

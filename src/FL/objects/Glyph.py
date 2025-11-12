@@ -16,6 +16,11 @@ from vfbLib.typing import (
 
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
+from FL.helpers.interpolation import (
+    add_axis_to_list,
+    remove_axis_from_list,
+    remove_axis_from_point_list,
+)
 from FL.helpers.ListParent import ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
@@ -472,6 +477,53 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 anchor_dict["y"].append(int(p.y))
             anchors.append(anchor_dict)
         return anchors
+
+    def fake_add_axis(self) -> None:
+        for node in self._nodes:
+            node.fake_add_axis()
+        for anchor in self._anchors:
+            anchor.fake_add_axis()
+        for hint in self._hhints:
+            hint.fake_add_axis()
+        for hint in self._vhints:
+            hint.fake_add_axis()
+        for guide in self._hguides:
+            guide.fake_add_axis()
+        for guide in self._vguides:
+            guide.fake_add_axis()
+        for component in self._components:
+            component.fake_add_axis()
+        for kerning_pair in self._kerning:
+            kerning_pair.fake_add_axis()
+        add_axis_to_list(self._metrics)
+        self._layers_number *= 2
+
+    def fake_remove_axis(self, position: float) -> None:
+        """
+        Remove the last axis from the glyph, interpolating all values to the normalized
+        position given.
+
+        Args:
+            position (float): The position in normalized space (0.0 to 1.0).
+        """
+        for node in self._nodes:
+            node.fake_remove_axis(position)
+        for anchor in self._anchors:
+            anchor.fake_remove_axis(position)
+        for hint in self._hhints:
+            hint.fake_remove_axis(position)
+        for hint in self._vhints:
+            hint.fake_remove_axis(position)
+        for guide in self._hguides:
+            guide.fake_remove_axis(position)
+        for guide in self._vguides:
+            guide.fake_remove_axis(position)
+        for component in self._components:
+            component.fake_remove_axis(position)
+        for kerning_pair in self._kerning:
+            kerning_pair.fake_remove_axis(position)
+        add_axis_to_list(self._metrics)
+        self._layers_number //= 2
 
     # Attributes
 
