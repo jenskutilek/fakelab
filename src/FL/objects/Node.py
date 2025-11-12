@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
+from FL.helpers.ListParent import ListParent
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -72,7 +73,15 @@ class Node(Copyable):
             self.type = node_or_type
             p = Point(int(p.x), int(p.y))
             p._parent = self
-            self._points = [[p] for _ in range(self._masters_count)]
+            if self.type == nCURVE:
+                self._points = [
+                    ListParent([Point(p), Point(), Point()])
+                    for _ in range(self._masters_count)
+                ]
+            else:
+                self._points = [
+                    ListParent([Point(p)]) for _ in range(self._masters_count)
+                ]
         # else: Empty node
 
     def __repr__(self) -> str:
@@ -84,7 +93,7 @@ class Node(Copyable):
         self._masters_count = num_masters
         self.type = vfb2json_node_types[data["type"]]
         self.alignment = vfb2json_node_conns[data["flags"]]
-        self._points = [[] for _ in range(self._masters_count)]
+        self._points = [ListParent() for _ in range(self._masters_count)]
         points = data.get("points", [])
         for master_index in range(num_masters):
             master_points = points[master_index]
@@ -142,10 +151,10 @@ class Node(Copyable):
         """
         position of the final point of the first master
         """
-        return self._points[0][-1]
+        return self._points[0][0]
 
     @property
-    def points(self) -> list[Point]:
+    def points(self) -> ListParent[Point]:
         """
         positions of all points of the first master
         """
@@ -239,4 +248,6 @@ class Node(Copyable):
 
         # True if node is selected
         self.selected = 0
-        self._points = [[Point()] for _ in range(self._masters_count)]
+        self._points = [ListParent() for _ in range(self._masters_count)]
+        for master_index in range(self._masters_count):
+            self._points[master_index].append(Point())
