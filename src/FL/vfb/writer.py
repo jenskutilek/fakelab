@@ -4,6 +4,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from vfbLib.enum import F, G, M, T
+from vfbLib.parsers.header import FL30_APP, FL30_FILE, FL30_SIGNATURE
+from vfbLib.typing import FLVersionDict, VfbHeaderDict
 from vfbLib.vfb.entry import VfbEntry
 from vfbLib.vfb.header import VfbHeader
 from vfbLib.vfb.vfb import Vfb
@@ -52,37 +54,50 @@ class FontToVfbWriter:
             attr = enum(key).name
             self.add_entry(key, getattr(parent, attr))
 
-    def add_entry(self, eid: int, data: Any) -> None:
+    def add_entry(self, eid: int, data: Any = "") -> None:
         e = VfbEntry(self.vfb, eid=eid)
         e.data = data
         self.vfb.entries.append(e)
 
     def compile(self) -> None:
         self.compile_header()
+        self.add_entry(F.BlockFileDataStart)
+        self.add_entry(F.BlockFontStart)
+        self.compile_fl_version()
+        self.add_entry(F.BlockNamesStart)
         self.compile_encoding()
+        self.add_entry(F.BlockNamesEnd, "")
+        self.add_entry(F.BlockFontInfoStart, "")
         self.compile_font_info()
+        self.add_entry(F.BlockFontInfoEnd, "")
+        self.add_entry(F.BlockMMFontInfoStart, "")
+        self.compile_mm_font_info()
+        self.add_entry(F.BlockMMFontInfoEnd, "")
+        self.compile_global_properties()
         self.compile_glyphs()
         self.compile_options()
+        # We ignored the FL3 MM Kerning
+        # self.add_entry(F.BlockMMKerningStart, "")
+        # self.add_entry(F.BlockMMKerningEnd, "")
+        self.add_entry(F.BlockFontEnd, "")
+        self.add_entry(F.BlockFileDataEnd, "")
         # That's all, folks
 
     def compile_header(self) -> None:
-        header = self.vfb.header = VfbHeader()
-        # fmt: off
-        header.data = {
-            "header0": 26,
-            "filetype": "WLF10",
-            "header1": 3,
-            "chunk1": [
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 10, 0
-            ],
-            "creator": {1: 1, 2: [5, 2, 2, 128], 3: 0},
-            "end0": 6,
-            "end1": 1,
-            "end2": 0,
-        }
-        # fmt: on
+        self.vfb.header = VfbHeader()
+        self.vfb.header.data = VfbHeaderDict(
+            signature=FL30_SIGNATURE,
+            app_version=FL30_APP,
+            file_version=FL30_FILE,
+            version_major=3,
+            version_minor=0,
+        )
+
+    def compile_fl_version(self) -> None:
+        self.add_entry(
+            F.FLVersion,
+            FLVersionDict(platform="macos", version=(5, 2, 2, 128), owner=0),
+        )
 
     def compile_encoding(self) -> None:
         for i in range(len(self.font._encoding_default)):
@@ -90,12 +105,8 @@ class FontToVfbWriter:
         for i in range(len(self.font.encoding)):
             self.add_entry(F.Encoding, [i, self.font.encoding[i].name])
 
-        # We don't know what these do exactly:
-        # Sometimes 0, sometimes 1, sometimes 42694?
-        self.add_entry(F.E1502, self.font._unknown_pleasures[1502])
-        # Apparently always empty:
-        self.add_entry(F.E518, self.font._unknown_pleasures[518])
-        self.add_entry(F.E257, self.font._unknown_pleasures[257])
+        # We don't know what this is exactly:
+        self.add_entry(F.MMEncType, self.font._unknown_pleasures[F.MMEncType])
 
     def compile_font_info(self) -> None:
         font = self.font
@@ -144,7 +155,7 @@ class FontToVfbWriter:
             ),
             font,
         )
-        self.add_entry(1140, font._unknown_pleasures[1140])
+        self.add_entry(F.SampleText, font._unknown_pleasures[F.SampleText])
         self.add_direct_entries(
             (
                 F.vendor,
@@ -159,7 +170,7 @@ class FontToVfbWriter:
             font,
         )
         self.add_entry(F.PostScriptHintingOptions, font._postscript_hinting_options)
-        self.add_entry(1068, font._unknown_pleasures[1068])
+        self.add_entry(F.Collection, font._unknown_pleasures[F.Collection])
         self.add_direct_entries(
             (
                 F.blue_values_num,
@@ -194,7 +205,7 @@ class FontToVfbWriter:
         self.add_entry(F.ExportPCLTTable, font._export_pclt_table)
         if font.note:
             self.add_entry(F.note, font.note)
-        self.add_entry(2030, font._unknown_pleasures[2030])
+        self.add_entry(F.FontFlags, font._unknown_pleasures[F.FontFlags])
         if font.customdata:
             self.add_entry(F.customdata, font.customdata)
 
@@ -213,9 +224,8 @@ class FontToVfbWriter:
         for ot_class in font._classes:
             self.add_entry(F.GlyphClass, ot_class)
 
-        self.add_entry(513, font._unknown_pleasures[513])
-        self.add_entry(271, font._unknown_pleasures[271])
-
+    def compile_mm_font_info(self) -> None:
+        font = self.font
         self.add_entry(F.AxisCount, len(font.axis))
 
         for axis_name in font.fake_serialize_axis():
@@ -239,8 +249,8 @@ class FontToVfbWriter:
         for master_ps_info in font.fake_serialize_master_ps_infos():
             self.add_entry(M.PostScriptInfo, master_ps_info)
 
-        self.add_entry(527, font._unknown_pleasures[527])
-
+    def compile_global_properties(self) -> None:
+        font = self.font
         if font.hguides or font.vguides:
             self.add_entry(F.GlobalGuides, font.fake_serialize_guides())
             self.add_entry(
@@ -282,8 +292,10 @@ class FontToVfbWriter:
         self.add_entry(T.zoneppm, self.font.ttinfo._zoneppm)
         self.add_entry(T.codeppm, self.font.ttinfo._codeppm)
 
-        self.add_entry(1604, self.font.ttinfo._unknown_pleasures[1604])
-        self.add_entry(2032, self.font.ttinfo._unknown_pleasures[2032])
+        self.add_entry(T.dropoutppm, self.font.ttinfo._unknown_pleasures[T.dropoutppm])
+        self.add_entry(
+            T.MeasurementLine, self.font.ttinfo._unknown_pleasures[T.MeasurementLine]
+        )
 
         self.add_entry(
             T.TrueTypeZoneDeltas, self.font.ttinfo.fake_serialize_zone_deltas()
@@ -298,7 +310,7 @@ class FontToVfbWriter:
                 G.Links,
                 G.image,  # FIXME
                 G.Bitmaps,  # FIXME
-                G.E2023,
+                G.VSB,
                 G.Sketch,  # FIXME
                 G.HintingOptions,
                 G.mask,
@@ -306,7 +318,7 @@ class FontToVfbWriter:
                 G.MaskMetricsMM,
                 G.Origin,
                 G.unicodes,
-                G.E2034,
+                G.CustomDict,
                 G.UnicodesNonBMP,
                 G.mark,
                 G.customdata,
@@ -321,7 +333,7 @@ class FontToVfbWriter:
 
     def compile_options(self) -> None:
         if ot_export_options := self.font._ot_export_options:
-            self.add_entry(F.OpenTypeExportOptions, ot_export_options)
+            self.add_entry(F.FontOptions, ot_export_options)
         if export_options := self.font._export_options:
             self.add_entry(F.ExportOptions, export_options)
 

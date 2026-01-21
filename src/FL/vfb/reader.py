@@ -85,7 +85,7 @@ glyph_mapping = {
     G.Links,
     G.image,
     G.Bitmaps,
-    G.E2023,
+    G.VSB,
     G.Sketch,
     G.HintingOptions,
     G.mask,
@@ -190,16 +190,10 @@ class VfbToFontReader:
                 continue
 
             if key in (
-                F.E257,
-                F.E271,
-                F.E513,
-                F.E518,
-                F.E527,
-                F.E1068,
-                F.E1140,
-                F.E1502,
-                F.E2030,
-                F.E2030,
+                F.Collection,
+                F.SampleText,
+                F.MMEncType,
+                F.FontFlags,
             ):
                 font._unknown_pleasures[key] = data
                 continue
@@ -208,7 +202,7 @@ class VfbToFontReader:
                 setattr(font.ttinfo, T(key).name, data)
                 continue
 
-            if key in (T.E1604, T.E2032):
+            if key in (T.dropoutppm, T.MeasurementLine):
                 font.ttinfo._unknown_pleasures[key] = data
                 continue
 
@@ -307,14 +301,15 @@ class VfbToFontReader:
                     glyph = Glyph()
                     # Add the data
                     glyph.fake_deserialize(2001, data)
-                case F.OpenTypeExportOptions:
+                case F.FontOptions:
                     font._ot_export_options = data
                 case F.ExportOptions:
                     font._export_options = data
                 case F.MappingMode:
                     font._mapping_mode = data
-                case F.E1410:
-                    pass
+                case F.MMKernPair:
+                    # FL3 MM kern pair
+                    logger.warning(f"Dropping FL3 MM kerning pair: {data}")
                 case _:
                     logger.error(f"Unhandled VFB entry: {key}")
 
