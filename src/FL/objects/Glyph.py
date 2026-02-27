@@ -66,7 +66,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_mask",
         "_nodes",
         "_replace_table",
-        "_unknown_pleasures",
         "_vguides",
         "_vhints",
         "_vlinks",
@@ -91,9 +90,11 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "y_pels",
         # Non-API
         "_glyph_bitmaps",
+        "_vsb",
         "_glyph_hinting_options",
         "_glyph_origin",
         "_glyph_sketch",
+        "_custom_dict",
         "_mask_weight_vector",
         "_mask_metrics_mm",
         "_mask_metrics",
@@ -123,7 +124,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         elif isinstance(glyph_or_masterscount, int):
             self._layers_number: int = glyph_or_masterscount
-            self._unknown_pleasures[2023] = [0 for _ in range(self._layers_number)]
+            self._vsb = [0 for _ in range(self._layers_number)]
             if nodes is not None:
                 # Assign nodes
                 for node in nodes:
@@ -158,10 +159,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             name (str): The name of the entry.
             data (_type_): The entry data.
         """
-        if key in (2023, 2034):
-            self._unknown_pleasures[key] = data
-            return
-
         match key:
             case G.Glyph:
                 self._layers_number = data["num_masters"]
@@ -209,6 +206,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._image.fake_deserialize(data)
             case G.Bitmaps:
                 self._glyph_bitmaps = data
+            case G.VSB:
+                self._vsb = data
             case G.Sketch:
                 self._glyph_sketch = data
             case G.HintingOptions:
@@ -229,6 +228,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._glyph_origin = data
             case G.unicodes:
                 self._unicodes.extend(data)
+            case G.CustomDict:
+                self._custom_dict = data
             case G.UnicodesNonBMP:
                 self._unicodes.extend(data)
             case G.mark:
@@ -274,7 +275,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 ],
                 "components": [comp.fake_serialize() for comp in self.components],
             },
-            2023: self._unknown_pleasures[2023],
+            G.VSB: self._vsb,
             G.HintingOptions: self._glyph_hinting_options,
         }
 
@@ -327,8 +328,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if unicodes:
             s[G.unicodes] = unicodes
 
-        if 2034 in self._unknown_pleasures:
-            s[2034] = self._unknown_pleasures[2034]
+        if self._custom_dict:
+            s[G.CustomDict] = self._custom_dict
 
         unicodes_non_bmp = [u for u in self.unicodes if u > 0xFFFF]
         if unicodes_non_bmp:
@@ -541,8 +542,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self._layers_number //= 2
 
-        if ml := self._unknown_pleasures.get(2023):
-            adjust_list(ml, self._layers_number)
+        if self._vsb:
+            adjust_list(self._vsb, self._layers_number)
 
     # Attributes
 
@@ -1606,6 +1607,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # list of Unicode indexes
         self._unicodes: list[int] = []
 
+        self._custom_dict = {}
+
         # glyph name
         self.name = ""
 
@@ -1638,10 +1641,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._glyph_origin = {"x": 0, "y": 0}
         self._glyph_sketch = None
         self._tth: list[Instruction] = []
-
-        self._unknown_pleasures: dict[int, Any] = {
-            2023: [0 for _ in range(self.layers_number)]
-        }
 
         # For binary compatibility with FL-written files:
 
