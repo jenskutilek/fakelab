@@ -146,18 +146,6 @@ class FontInterpolator:
         logger.warning("blue_scale is not interpolated yet")
         logger.warning("blue_shift is not interpolated yet")
         logger.warning("blue_fuzz is not interpolated yet")
-        f._master_ps_infos[0]["std_hw"] = self._ip_value_limit(
-            self._num_masters, [psinfo["std_hw"] for psinfo in f._master_ps_infos]
-        )
-        f._master_ps_infos[0]["std_vw"] = self._ip_value_limit(
-            self._num_masters, [psinfo["std_vw"] for psinfo in f._master_ps_infos]
-        )
-        f._master_ps_infos[0]["stem_snap_h"] = self._ip_value_array(
-            f.stem_snap_h_num, f.stem_snap_h
-        )[0]
-        f._master_ps_infos[0]["stem_snap_v"] = self._ip_value_array(
-            f.stem_snap_v_num, f.stem_snap_v
-        )[0]
         f.fake_set_master_blue_values(
             self._ip_value_array(f.blue_values_num, f.blue_values)[0]
         )
@@ -170,6 +158,23 @@ class FontInterpolator:
         f.fake_set_family_other_blues(
             self._ip_value_array(f.family_other_blues_num, f.family_other_blues)[0]
         )
+
+        # Interpolate stems
+
+        # We don't need to reduce the number of _master_ps_infos, there are alway 16.
+
+        f._master_ps_infos[0]["std_hw"] = self._ip_value_limit(
+            self._num_masters, [psinfo["std_hw"] for psinfo in f._master_ps_infos]
+        )
+        f._master_ps_infos[0]["std_vw"] = self._ip_value_limit(
+            self._num_masters, [psinfo["std_vw"] for psinfo in f._master_ps_infos]
+        )
+        f._master_ps_infos[0]["stem_snap_h"] = self._ip_value_array(
+            f.stem_snap_h_num, f.stem_snap_h
+        )[0]
+        f._master_ps_infos[0]["stem_snap_v"] = self._ip_value_array(
+            f.stem_snap_v_num, f.stem_snap_v
+        )[0]
 
         # Font Matrix?
 
