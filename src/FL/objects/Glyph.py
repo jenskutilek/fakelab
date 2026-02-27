@@ -193,7 +193,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                     self.nodes.append(node)
                 # 0x09
                 if imported := data.get("imported"):
-                    self._imported = imported
+                    self._imported: dict | None = imported
                 # 0x0a
                 if tth := data.get("tth"):
                     self._tth = tth
@@ -775,7 +775,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if not isinstance(value, Image):
             raise TypeError
 
-        self._image = value
+        self._image: Image = value
 
     @property
     def index(self) -> int:
@@ -1610,7 +1610,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.name = ""
 
         # [Image]           - background image (new in FL 4.53 Win)
-        self._image: Image = Image(24, 24)
+        self._image = Image(24, 24)
 
         # glyph index, -1 if orphan glyph (not reported by docstring)
         self._index = -1
@@ -1627,7 +1627,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.end_points: list[int] = []
         self.points: list[TTPoint] = []
         self.instructions: list[int] = []
-        self._imported: dict | None = None
+        self._imported = None
         self.hdmx: list[int] = []
 
         self._carets: list[tuple[int, int]] = []
