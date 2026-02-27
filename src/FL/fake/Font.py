@@ -10,6 +10,7 @@ from vfbLib.parsers.text import OpenTypeStringParser
 from vfbLib.typing import GlyphData, PSInfoDict
 
 from FL.fake.Base import Copyable
+from FL.fake.FontInterpolator import FontInterpolator
 from FL.fake.Kerning import FakeKerning
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.fake.PSInfo import get_default_ps_info
@@ -135,6 +136,16 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
             return
 
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
+
+    def fake_generate_primary_instances(self) -> list[FakeFont]:
+        instances: list[FakeFont] = []
+        for inst_dict in self._primary_instances:
+            print(inst_dict)
+            interpolator = FontInterpolator(self)
+            interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
+            instances.append(interpolator._font)
+            del interpolator
+        return instances
 
     def fake_deserialize_axis(self, data: str) -> None:
         # VFB stores only the long name of an axis.

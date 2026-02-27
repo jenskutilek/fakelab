@@ -45,6 +45,27 @@ def add_axis_to_master_list(seq: list[list[Any]]) -> None:
     seq.extend(new_values)
 
 
+# from fontTools.varLib.models import piecewiseLinearMap
+def piecewise_linear_map(v: float, mapping: dict[float, float]) -> float:
+    keys = mapping.keys()
+    if not keys:
+        return v
+    if v in keys:
+        return mapping[v]
+    k = min(keys)
+    if v < k:
+        return v + mapping[k] - k
+    k = max(keys)
+    if v > k:
+        return v + mapping[k] - k
+    # Interpolate
+    a = max(k for k in keys if k < v)
+    b = min(k for k in keys if k > v)
+    va = mapping[a]
+    vb = mapping[b]
+    return va + (vb - va) * (v - a) / (b - a)
+
+
 def remove_axis_from_list(seq: list[int], interpolation: float) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).

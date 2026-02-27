@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import logging
+from copy import deepcopy
 from typing import TYPE_CHECKING
 
 from mutatorMath import Location, Mutator
 from mutatorMath.objects.mutator import buildMutator
 from typing_extensions import TypedDict
+
+from FL.helpers.interpolation import piecewise_linear_map
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
@@ -19,7 +22,7 @@ class AxisDict(TypedDict):
     minimum: float
     maximum: float
     default: float
-    map: list[tuple[float, float]]
+    map: dict[float, float]
 
 
 class FontInterpolator:
@@ -31,13 +34,25 @@ class FontInterpolator:
                 contains no axes, a 1:1 copy of the font will be returned.
         """
         logger.warning(f"Opening font: {font}")
-        self._font = font
+        # FIXME: We need to get rid of the vfb object in the font.
+        # Right now, we need to temporarily null it so deepcopy can make a copy of the
+        # font.
+        vfb_obj = font.fake_vfb_object
+        font.fake_vfb_object = None
+        self._font = deepcopy(font)
+        font.fake_vfb_object = vfb_obj
+
         self._num_axes = len(self._font.axis)
         self._num_masters = 2**self._num_axes
 
         self._build_axis_dicts()
 
-    def interpolate(self, values: tuple[float, ...]) -> None:
+    def interpolate(
+        self,
+        values: tuple[float, ...],
+        family_name: str | None = None,
+        style_name: str | None = None,
+    ) -> None:
         """Do the interpolation and return the interpolated font.
 
         Args:
@@ -52,11 +67,17 @@ class FontInterpolator:
             logger.warning("Number of axes is 0, font is not modified.")
             return
 
-        self.location = self._map_location(values)
+        self.location = self._map_location(values[: self._num_axes])
 
         self._ip_fontinfo()
         self._ip_glyphs()
         self._ip_guides_global()
+        self._font._masters_count = 1
+
+        if family_name:
+            self._font.pref_family_name = family_name
+        if style_name:
+            self._font.pref_style_name = style_name
 
     def _build_axis_dicts(self) -> None:
         # Build axis dicts with mappings that can be used to build a Mutator
@@ -65,8 +86,8 @@ class FontInterpolator:
         self._axis_dict: dict[str, AxisDict] = {}
         for a in range(self._num_axes):
             axis_name = self._font.axis[a][1].lower()
-            mappings = self.axis_mappings.get(a, [(0.0, 0.0), (1000.0, 1.0)])
-            inputs = [m[0] for m in mappings]
+            mappings = self.axis_mappings.get(a, {})
+            inputs = mappings.keys()
             range_min = min(inputs, default=0.0)
             range_max = max(inputs, default=1000.0)
             self._axis_dict[axis_name] = {
@@ -77,23 +98,35 @@ class FontInterpolator:
                 "map": mappings,
             }
 
+    def _map_user_to_internal(self, user_value: float, axis_tag: str) -> float:
+        mapping = self._axis_dict[axis_tag].get("map")
+        if not mapping:
+            return user_value / 1000
+        return piecewise_linear_map(user_value, mapping)
+
     def _map_location(self, values: tuple[float, ...]) -> Location:
-        # Map the input axis values to internal scale (0-1)
+        # Map the input axis values, one per axis, to internal scale (0-1)
 
         return Location(
-            {self._font.axis[i][1].lower(): v for i, v in enumerate(values)}
+            {
+                self._font.axis[i][1].lower(): self._map_user_to_internal(
+                    v, self._font.axis[i][1].lower()
+                )
+                for i, v in enumerate(values)
+            }
         )
 
     def _read_axis_mappings(self) -> None:
         # Convert axis mappings from Font into a format mutatorMath understands
         offset = 0
-        self.axis_mappings: dict[int, list[tuple[float, float]]] = {}
+        self.axis_mappings: dict[int, dict[float, float]] = {}
         for a in range(len(self._font.axis)):
-            self.axis_mappings[a] = []
+            self.axis_mappings[a] = {}
             num_mappings = self._font._axis_mappings_count[a]
             for m in range(num_mappings):
-                self.axis_mappings[a].append(self._font._axis_mappings[offset + m])
-            offset += num_mappings
+                user, internal = self._font._axis_mappings[offset + m]
+                self.axis_mappings[a][user] = internal
+            offset += 10  # There are always 10 mappings stored
 
     # Interpolation methods for the different MM parts
 
@@ -113,11 +146,18 @@ class FontInterpolator:
         logger.warning("blue_scale is not interpolated yet")
         logger.warning("blue_shift is not interpolated yet")
         logger.warning("blue_fuzz is not interpolated yet")
-        logger.warning("std_hw is not interpolated yet")
-        logger.warning("std_vw is not interpolated yet")
-        logger.warning("stem_snap_h is not interpolated yet")
-        logger.warning("stem_snap_v is not interpolated yet")
-
+        f._master_ps_infos[0]["std_hw"] = self._ip_value_limit(
+            self._num_masters, [psinfo["std_hw"] for psinfo in f._master_ps_infos]
+        )
+        f._master_ps_infos[0]["std_vw"] = self._ip_value_limit(
+            self._num_masters, [psinfo["std_vw"] for psinfo in f._master_ps_infos]
+        )
+        f._master_ps_infos[0]["stem_snap_h"] = self._ip_value_array(
+            f.stem_snap_h_num, f.stem_snap_h
+        )[0]
+        f._master_ps_infos[0]["stem_snap_v"] = self._ip_value_array(
+            f.stem_snap_v_num, f.stem_snap_v
+        )[0]
         f.fake_set_master_blue_values(
             self._ip_value_array(f.blue_values_num, f.blue_values)[0]
         )
@@ -163,9 +203,18 @@ class FontInterpolator:
     def _ip_value_array(
         self, num_values: int, values: list[list[int]]
     ) -> list[list[int]]:
-        # Interpolate a 2d array, e.g. blue values
-        # one array per master, master index is the top-level index
+        """
+        Interpolate a 2d array, e.g. blue values. One array per master, master index
+        is the top-level index.
 
+        Args:
+            num_values (int): The number of values from the array that will be
+                considered. The resulting inner list will have this amount of members.
+            values (list[list[int]]): The 2d array of values.
+
+        Returns:
+            list[list[int]]: The interpolated array.
+        """
         result: list[int] = []
         # print(
         #     f"Interpolating {self._num_masters} masters with location {self.location} ..."
@@ -178,13 +227,30 @@ class FontInterpolator:
         return [result]
 
     def _ip_value_limit(self, num_values: int, master_values: list[int]) -> int:
-        # Interpolate a list of values, 1 value per master
+        """
+        Interpolate a list of values, 1 value per master. The processing is limited to
+        the first `num_values` values.
 
+        Args:
+            num_values (int): The number of values from the array that will be
+                considered.
+            master_values (list[int]): The array of values.
+
+        Returns:
+            int: The interpolated value.
+        """
         mutator = self._build_mutator(master_values[:num_values])
         return round(mutator.makeInstance(self.location))
 
     def _ip_value(self, master_values: list[int]) -> int:
-        # Interpolate a list of values, 1 value per master
+        """
+        Interpolate a list of values, 1 value per master.
 
+        Args:
+            master_values (list[int]): The array of values.
+
+        Returns:
+            int: The interpolated value.
+        """
         mutator = self._build_mutator(master_values)
         return round(mutator.makeInstance(self.location))
