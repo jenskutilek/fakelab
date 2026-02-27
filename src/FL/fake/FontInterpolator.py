@@ -93,10 +93,9 @@ class FontInterpolator:
         if style_name:
             self._font.pref_style_name = "Regular"  # TODO: Always?
             self._font.style_name = style_name
-            if self._font.font_name is not None:
-                self._font.font_name += f"-{style_name.replace(' ', '')}"
-            if self._font.full_name is not None:
-                self._font.full_name += f" {style_name}"
+            if self._font.family_name is not None:
+                self._font.font_name = f"{self._font.family_name.replace(' ', '')}-{style_name.replace(' ', '')}"
+                self._font.full_name = f"{self._font.family_name} {style_name}"
             if self._font.apple_name is not None:
                 self._font.apple_name += f" {style_name}"
         self._font._master_names = ["Untitled"]
