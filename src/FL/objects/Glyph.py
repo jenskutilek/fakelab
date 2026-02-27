@@ -94,7 +94,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         "_glyph_hinting_options",
         "_glyph_origin",
         "_glyph_sketch",
-        "_mask_additional",
+        "_mask_weight_vector",
         "_mask_metrics_mm",
         "_mask_metrics",
         "_metrics",
@@ -216,10 +216,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             case G.mask:
                 mask = Glyph()
                 mask.fake_deserialize(G.Glyph, data)
-                num = data["num"]
-                self._mask_additional["num"] = num
-                for i in range(num):
-                    self._mask_additional[f"reserved{i}"] = data[f"reserved{i}"]
+                self._mask_weight_vector: list[float] = data["weight_vector"]
                 self._mask: Glyph | None = mask
             case G.MaskMetrics:
                 self._mask_metrics: Point | None = Point(*data)
@@ -409,10 +406,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         return hints_dict
 
     def fake_serialize_mask(self) -> MaskData:
-        num = self._mask_additional["num"]
-        mask = MaskData(num_masters=self.layers_number, num=num)
-        for i in range(num):
-            mask[f"reserved{i}"] = self._mask_additional[f"reserved{i}"]
+        mask = MaskData(
+            num_masters=self.layers_number, weight_vector=self._mask_weight_vector
+        )
         if self.mask is None:
             return mask
 
@@ -1600,7 +1596,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._kerning: ListParent[KerningPair] = ListParent([], self)
         self._layers_number = 1
         self._mask = None
-        self._mask_additional: dict[str, int] = {}
+        self._mask_weight_vector = [1.0]
         self._mask_metrics = None
         self._mask_metrics_mm = None
 
