@@ -72,7 +72,6 @@ class Font(FakeFont):
         "fond_id",
         "font_name",
         "font_style",
-        "force_bold",
         "full_name",
         "hguides",
         "is_fixed_pitch",
@@ -93,10 +92,8 @@ class Font(FakeFont):
         "pref_style_name",
         "slant_angle",
         "source",
-        "stem_snap_h_num",
-        "stem_snap_h",
-        "stem_snap_v_num",
-        "stem_snap_v",
+        "_stem_snap_h_num",
+        "_stem_snap_v_num",
         "style_name",
         "trademark",
         "tt_u_id",
@@ -303,14 +300,12 @@ class Font(FakeFont):
         # number of FamilyOtherBlues records
         self._family_other_blues_num = 0
 
-        # up until here the default values have been verified
+        # The number of stem snap values is stored here, the values themselves are taken
+        # from self._master_ps_infos
+        self._stem_snap_h_num: int = 0
+        self._stem_snap_v_num: int = 0
 
-        # list of Force Bold values, one for each master
-        self.force_bold: list[int] = [0]
-        self.stem_snap_h_num: int = 0
-        self.stem_snap_h: list[list[int]] = [[]]
-        self.stem_snap_v_num: int = 0
-        self.stem_snap_v: list[list[int]] = [[]]
+        # up until here the default values have been verified
 
         #  Other
 
@@ -625,6 +620,20 @@ class Font(FakeFont):
         raise RuntimeError
 
     @property
+    def force_bold(self) -> list[int]:
+        """
+        List of Force Bold values, one for each master.
+
+        Returns:
+            list[int]: The Force Bold values.
+        """
+        return [self._master_ps_infos[i]["force_bold"] for i in range(16)]
+
+    @force_bold.setter
+    def force_bold(self) -> None:
+        raise RuntimeError("Class Font has no attribute force_bold or it is read-only")
+
+    @property
     def glyphs(self) -> ListParent[Glyph]:
         """
         Return the array of glyphs.
@@ -664,6 +673,58 @@ class Font(FakeFont):
     @other_blues.setter
     def other_blues(self) -> None:
         raise RuntimeError("Class Font has no attribute other_blues or it is read-only")
+
+    @property
+    def stem_snap_h(self) -> list[list[int]]:
+        return [
+            [
+                self._master_ps_infos[i]["stem_snap_h"][j]
+                for j in range(self.stem_snap_h_num)
+            ]
+            for i in range(16)
+        ]
+
+    @stem_snap_h.setter
+    def stem_snap_h(self) -> None:
+        raise RuntimeError("Class Font has no attribute stem_snap_h or it is read-only")
+
+    @property
+    def stem_snap_h_num(self) -> int:
+        return self._stem_snap_h_num
+
+    @stem_snap_h_num.setter
+    def stem_snap_h_num(self, value: int) -> None:
+        if not 0 <= value <= 12:
+            raise RuntimeError('New "stem_snap_h_num" is out of range 0..12')
+        self._stem_snap_h_num = value
+        for i in range(len(self._master_ps_infos)):
+            adjust_list(self._master_ps_infos[i]["stem_snap_h"], value)
+
+    @property
+    def stem_snap_v(self) -> list[list[int]]:
+        return [
+            [
+                self._master_ps_infos[i]["stem_snap_v"][j]
+                for j in range(self.stem_snap_v_num)
+            ]
+            for i in range(16)
+        ]
+
+    @stem_snap_v.setter
+    def stem_snap_v(self) -> None:
+        raise RuntimeError("Class Font has no attribute stem_snap_v or it is read-only")
+
+    @property
+    def stem_snap_v_num(self) -> int:
+        return self._stem_snap_v_num
+
+    @stem_snap_v_num.setter
+    def stem_snap_v_num(self, value: int) -> None:
+        if not 0 <= value <= 12:
+            raise RuntimeError('New "stem_snap_v_num" is out of range 0..12')
+        self._stem_snap_v_num = value
+        for i in range(len(self._master_ps_infos)):
+            adjust_list(self._master_ps_infos[i]["stem_snap_v"], value)
 
     @property
     def truetypetables(self) -> ListParent[TrueTypeTable]:
