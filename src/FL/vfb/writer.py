@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from vfbLib.enum import F, G, M, T
+from vfbLib.json import write_vfb_json
 from vfbLib.parsers.header import FL30_APP, FL30_FILE, FL30_SIGNATURE
 from vfbLib.typing import FLVersionDict, VfbHeaderDict
 from vfbLib.vfb.entry import VfbEntry
@@ -46,6 +47,15 @@ class FontToVfbWriter:
             vfb_path (Path): The file path to which to write the VFB data.
         """
         self.vfb.write(vfb_path)
+
+    def write_json(self, vfb_json_path: Path) -> None:
+        """
+        Write the VFB as JSON to `vfb_json_path`.
+
+        Args:
+            vfb_json_path (Path): The file path to which to write the JSON data.
+        """
+        write_vfb_json(self.vfb, vfb_json_path)
 
     def add_direct_entries(
         self, keys: tuple[int, ...], parent: Font | TTInfo, enum: type[IntEnum] = F
