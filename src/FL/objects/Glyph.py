@@ -8,6 +8,7 @@ from vfbLib.enum import G
 from vfbLib.typing import (
     AnchorDict,
     GdefDict,
+    GlyphHintingOptionsDict,
     HintDict,
     MaskData,
     MMAnchorDict,
@@ -134,6 +135,86 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     def __repr__(self) -> str:
         return "<Glyph: '%s', %i nodes, orphan>" % (self.name, len(self))
 
+    # FakeLab Defaults
+
+    def set_defaults(self) -> None:
+        self._parent = None
+        self._nodes: ListParent[Node] = ListParent([], self)
+
+        # custom data defined for this glyph
+        self.customdata: str | None = None
+
+        # note defined for this glyph
+        self.note: str | None = None
+
+        self.mark: int = 0
+        self._anchors: list[Anchor] = []
+        self._hhints: ListParent[Hint] = ListParent([], self)
+        self._vhints: ListParent[Hint] = ListParent([], self)
+        self._hlinks: ListParent[Link] = ListParent([], self)
+        self._vlinks: ListParent[Link] = ListParent([], self)
+        self._hguides: ListParent[Guide] = ListParent([], self)
+        self._vguides: ListParent[Guide] = ListParent([], self)
+        self._components: ListParent[Component] = ListParent([], self)
+        self._replace_table: list[Replace] = []
+        self._kerning: ListParent[KerningPair] = ListParent([], self)
+        self._layers_number = 1
+        self._mask: Glyph | None = None
+        self._mask_weight_vector: list[float] = [1.0]
+        self._mask_metrics: Point | None = None
+        self._mask_metrics_mm: list[Point] | None = None
+
+        # flags set for this glyph
+        self.flags: int = 0
+
+        # list of Unicode indexes
+        self._unicodes: list[int] = []
+
+        self._custom_dict: dict[Any, Any] = {}
+
+        # glyph name
+        self.name = ""
+
+        # [Image]           - background image (new in FL 4.53 Win)
+        self._image = Image(24, 24)
+
+        # glyph index, -1 if orphan glyph (not reported by docstring)
+        self._index = -1
+
+        # TrueType data
+        # probably all are only present for imported TTFs
+
+        self.advance_width: int = 0
+        self.advance_height: int = 0
+        self.left_side_bearing: int = 0
+        self.top_side_bearing: int = 0
+        self.y_pels: int = 1
+        self.number_of_contours: int = 0
+        self.end_points: list[int] = []
+        self.points: list[TTPoint] = []
+        self.instructions: list[int] = []
+        self._imported = None
+        self.hdmx: list[int] = []
+
+        self._carets: list[tuple[int, int]] = []
+        self._gdef_class = None
+        self._gdef_ot_classes: list[int] = []
+        self._glyph_bitmaps = None
+        self._glyph_hinting_options: GlyphHintingOptionsDict = {}
+        self._glyph_origin = {"x": 0, "y": 0}
+        self._glyph_sketch = None
+        self._tth: list[Instruction] = []
+
+        # For binary compatibility with FL-written files:
+
+        self._write_empty_anchors_mm = False
+        self._write_empty_anchor_supp = False
+        self._write_empty_gdef = False
+        self._write_empty_guides = False
+        self._write_empty_guide_props = False
+        self._write_empty_links = False
+        self._write_empty_origin = False
+
     # Additions for FakeLab
 
     @property
@@ -215,14 +296,12 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             case G.mask:
                 mask = Glyph()
                 mask.fake_deserialize(G.Glyph, data)
-                self._mask_weight_vector: list[float] = data["weight_vector"]
-                self._mask: Glyph | None = mask
+                self._mask_weight_vector = data["weight_vector"]
+                self._mask = mask
             case G.MaskMetrics:
-                self._mask_metrics: Point | None = Point(*data)
+                self._mask_metrics = Point(*data)
             case G.MaskMetricsMM:
-                self._mask_metrics_mm: list[Point] | None = [
-                    Point(*coords) for coords in data
-                ]
+                self._mask_metrics_mm = [Point(*coords) for coords in data]
             case G.Origin:
                 self._write_empty_origin = True
                 self._glyph_origin = data
@@ -233,11 +312,11 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             case G.UnicodesNonBMP:
                 self._unicodes.extend(data)
             case G.mark:
-                self.mark: int = data
+                self.mark = data
             case G.customdata:
-                self.customdata: str | None = data
+                self.customdata = data
             case G.note:
-                self.note: str | None = data
+                self.note = data
             case G.GDEFData:
                 self._write_empty_gdef = True
                 self.fake_deserialize_gdef(data)
@@ -289,9 +368,8 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         if self.kerning:
             s[G.Glyph]["kerning"] = {pair.key: pair.values for pair in self.kerning}
-        imported = self._imported
-        if imported:
-            s[G.Glyph]["imported"] = imported
+        if self._imported:
+            s[G.Glyph]["imported"] = self._imported
 
         tth = self._tth
         if tth:
@@ -346,10 +424,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         gdef = self.fake_serialize_gdef()
         if self._write_empty_gdef or (
-            gdef["anchors"]
-            or gdef["carets"]
-            or gdef["ot_classes"]
-            or gdef["glyph_class"] not in (None, "unassigned")
+            gdef.get("anchors")
+            or gdef.get("carets")
+            or gdef.get("ot_classes")
+            or gdef.get("glyph_class") not in (None, "unassigned")
         ):
             s[G.GDEFData] = gdef
 
@@ -433,9 +511,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     def fake_serialize_gdef(self) -> GdefDict:
         gdef = GdefDict(anchors=[], carets=[], glyph_class="unassigned", ot_classes=[])
         for anchor in self.anchors:
-            gdef["anchors"].append(
-                AnchorDict(name=anchor.name, x=anchor.x, x1=-1, y=anchor.y, y1=-1)
-            )
+            gdef["anchors"].append(AnchorDict(name=anchor.name, x=anchor.x, y=anchor.y))
         gdef["carets"] = self._carets
         gdef["glyph_class"] = self._gdef_class
         gdef["ot_classes"].extend(self._gdef_ot_classes)
@@ -1571,83 +1647,3 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     def clear(self) -> None:
         raise NotImplementedError
-
-    # FakeLab Defaults
-
-    def set_defaults(self) -> None:
-        self._parent = None
-        self._nodes: ListParent[Node] = ListParent([], self)
-
-        # custom data defined for this glyph
-        self.customdata = None
-
-        # note defined for this glyph
-        self.note = None
-
-        self.mark = 0
-        self._anchors: list[Anchor] = []
-        self._hhints: ListParent[Hint] = ListParent([], self)
-        self._vhints: ListParent[Hint] = ListParent([], self)
-        self._hlinks: ListParent[Link] = ListParent([], self)
-        self._vlinks: ListParent[Link] = ListParent([], self)
-        self._hguides: ListParent[Guide] = ListParent([], self)
-        self._vguides: ListParent[Guide] = ListParent([], self)
-        self._components: ListParent[Component] = ListParent([], self)
-        self._replace_table: list[Replace] = []
-        self._kerning: ListParent[KerningPair] = ListParent([], self)
-        self._layers_number = 1
-        self._mask = None
-        self._mask_weight_vector = [1.0]
-        self._mask_metrics = None
-        self._mask_metrics_mm = None
-
-        # flags set for this glyph
-        self.flags: int = 0
-
-        # list of Unicode indexes
-        self._unicodes: list[int] = []
-
-        self._custom_dict = {}
-
-        # glyph name
-        self.name = ""
-
-        # [Image]           - background image (new in FL 4.53 Win)
-        self._image = Image(24, 24)
-
-        # glyph index, -1 if orphan glyph (not reported by docstring)
-        self._index = -1
-
-        # TrueType data
-        # probably all are only present for imported TTFs
-
-        self.advance_width: int = 0
-        self.advance_height: int = 0
-        self.left_side_bearing: int = 0
-        self.top_side_bearing: int = 0
-        self.y_pels: int = 1
-        self.number_of_contours: int = 0
-        self.end_points: list[int] = []
-        self.points: list[TTPoint] = []
-        self.instructions: list[int] = []
-        self._imported = None
-        self.hdmx: list[int] = []
-
-        self._carets: list[tuple[int, int]] = []
-        self._gdef_class = None
-        self._gdef_ot_classes: list[int] = []
-        self._glyph_bitmaps = None
-        self._glyph_hinting_options = {}
-        self._glyph_origin = {"x": 0, "y": 0}
-        self._glyph_sketch = None
-        self._tth: list[Instruction] = []
-
-        # For binary compatibility with FL-written files:
-
-        self._write_empty_anchors_mm = False
-        self._write_empty_anchor_supp = False
-        self._write_empty_gdef = False
-        self._write_empty_guides = False
-        self._write_empty_guide_props = False
-        self._write_empty_links = False
-        self._write_empty_origin = False
