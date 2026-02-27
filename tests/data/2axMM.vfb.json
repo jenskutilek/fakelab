@@ -3632,7 +3632,7 @@
     },
     {
       "key": "font_name",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis-Regular"
     },
     {
       "key": "Master Count",
@@ -3661,23 +3661,23 @@
     },
     {
       "key": "full_name",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis Regular"
     },
     {
       "key": "family_name",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis"
     },
     {
       "key": "pref_family_name",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis"
     },
     {
       "key": "menu_name",
-      "decompiled": "TSM2MM2"
+      "decompiled": "TwoAxis Regular"
     },
     {
       "key": "apple_name",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis"
     },
     {
       "key": "weight",
@@ -3780,7 +3780,7 @@
     },
     {
       "key": "mac_compatible",
-      "decompiled": "TheSansMono2axMM20"
+      "decompiled": "TwoAxis Regular"
     },
     {
       "key": "Sample Text",
@@ -5045,10 +5045,10 @@
           0
         ],
         "bounding_box": {
-          "xMin": -67,
-          "yMin": -320,
-          "xMax": 2042,
-          "yMax": 980
+          "xMin": 58,
+          "yMin": -260,
+          "xMax": 461,
+          "yMax": 590
         },
         "adv_width_min": 500,
         "adv_width_max": 905,
@@ -6597,7 +6597,30 @@
             600,
             0
           ]
-        ]
+        ],
+        "hints": {
+          "v": [],
+          "h": [
+            [
+              {
+                "pos": -260,
+                "width": 44
+              },
+              {
+                "pos": -245,
+                "width": 139
+              },
+              {
+                "pos": -260,
+                "width": 49
+              },
+              {
+                "pos": -241,
+                "width": 153
+              }
+            ]
+          ]
+        }
       }
     },
     {
@@ -6614,10 +6637,6 @@
           ]
         ],
         "y": [
-          [
-            1,
-            11
-          ],
           [
             6,
             14
@@ -7646,6 +7665,172 @@
       "decompiled": {
         "x": 0,
         "y": 0
+      }
+    },
+    {
+      "key": "Glyph",
+      "decompiled": {
+        "name": "g",
+        "num_masters": 4,
+        "nodes": [],
+        "metrics": [
+          [
+            500,
+            0
+          ],
+          [
+            500,
+            0
+          ],
+          [
+            600,
+            0
+          ],
+          [
+            600,
+            829
+          ]
+        ],
+        "guides": {
+          "h": [
+            [
+              {
+                "pos": 576,
+                "angle": 0.0
+              },
+              {
+                "pos": 537,
+                "angle": 0.0
+              },
+              {
+                "pos": 392,
+                "angle": 0.0
+              },
+              {
+                "pos": 623,
+                "angle": 0.0
+              }
+            ]
+          ],
+          "v": []
+        },
+        "components": [
+          {
+            "gid": 0,
+            "offsetX": [
+              39,
+              -93,
+              0,
+              41
+            ],
+            "offsetY": [
+              89,
+              57,
+              -109,
+              199
+            ],
+            "scaleX": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "scaleY": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "kerning": {
+          "1": [
+            -20,
+            85,
+            0,
+            43
+          ]
+        }
+      }
+    },
+    {
+      "key": "VSB",
+      "decompiled": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "key": "Glyph Hinting Options",
+      "decompiled": {
+        "horizontal_3_stem": 1,
+        "vertical_3_stem": 1,
+        "other": [
+          2
+        ]
+      }
+    },
+    {
+      "key": "Glyph Origin",
+      "decompiled": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "key": "unicodes",
+      "decompiled": [
+        103
+      ]
+    },
+    {
+      "key": "Glyph GDEF Data",
+      "decompiled": {
+        "anchors": [
+          {
+            "x": 159,
+            "y": 613,
+            "name": "a1"
+          }
+        ],
+        "ot_classes": []
+      }
+    },
+    {
+      "key": "Glyph Anchors Supplemental",
+      "decompiled": [
+        {
+          "hue": 1,
+          "reserved": 0
+        }
+      ]
+    },
+    {
+      "key": "Glyph Anchors MM",
+      "decompiled": [
+        {
+          "x": [
+            159,
+            267,
+            378,
+            267
+          ],
+          "y": [
+            613,
+            645,
+            571,
+            497
+          ]
+        }
+      ]
+    },
+    {
+      "key": "Glyph Guide Properties",
+      "decompiled": {
+        "h": [],
+        "v": []
       }
     },
     {
