@@ -794,7 +794,7 @@ class Font(FakeFont):
         self._set_file_name(filename)
         return 1
 
-    def Save(self, filename: str) -> None:
+    def Save(self, filename: str, save_json: bool = True) -> None:
         """
         Save the font in VFB format.
 
@@ -805,6 +805,8 @@ class Font(FakeFont):
 
         self._set_file_name(filename)
         writer = FontToVfbWriter(self)
+        if save_json:
+            writer.write_json(Path(filename).with_suffix(".vfb.json"))
         writer.write(Path(filename))
 
     def OpenAFM(self, filename: str, mode: int, layer: int) -> None:
