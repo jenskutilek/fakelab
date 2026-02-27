@@ -15,4 +15,4 @@ instances = f.fake_generate_primary_instances()
 for i in instances:
     filename = f"{i.pref_family_name}-{i.pref_style_name}.vfb"
     print(filename)
-    i.Save(str(base_path / filename), save_json=True)
+    i.Save(str(base_path / filename.replace(" ", "")), save_json=True)
