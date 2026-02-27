@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import traceback
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -789,7 +790,8 @@ class Font(FakeFont):
             reader = VfbToFontReader(Path(filename))
             reader.read(self)
             self.fake_vfb_object = reader.vfb
-        except:  # noqa: E722
+        except Exception:
+            print(traceback.format_exc())
             return 0
         self._set_file_name(filename)
         return 1
