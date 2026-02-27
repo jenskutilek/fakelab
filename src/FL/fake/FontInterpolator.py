@@ -228,21 +228,27 @@ class FontInterpolator:
             g._layers_number = 1
 
     def _ip_guides_global(self) -> None:
-        pass
+        for g in self._font.hguides:
+            self._ip_guide(g)
+        for g in self._font.vguides:
+            self._ip_guide(g)
 
     # Shared
 
     def _ip_guide(self, g: Guide) -> None:
-        pass
+        g._positions = [self._ip_value(g.positions)]
+        g._widths = [self._ip_value(g._widths)]
 
     # Glyph
 
     def _ip_anchors(self, g: Glyph) -> None:
         for a in g.anchors:
-            a.p = self._ip_point(a._points)[0]
+            a._points = self._ip_point(a._points)
 
     def _ip_components(self, g: Glyph) -> None:
-        pass
+        for c in g.components:
+            c._deltas = self._ip_point(c._deltas)
+            c._scales = self._ip_point(c._scales)
 
     def _ip_guides(self, g: Glyph) -> None:
         for guide in g._hguides:
@@ -251,7 +257,9 @@ class FontInterpolator:
             self._ip_guide(guide)
 
     def _ip_hint(self, h: Hint) -> None:
-        pass
+        # Same as guides!?
+        h._positions = [self._ip_value(h.positions)]
+        h._widths = [self._ip_value(h._widths)]
 
     def _ip_hints(self, g: Glyph) -> None:
         for h in g._hhints:
@@ -260,7 +268,8 @@ class FontInterpolator:
             self._ip_hint(h)
 
     def _ip_kerning(self, g: Glyph) -> None:
-        pass
+        for pair in g.kerning:
+            pair._values = [self._ip_value(pair._values)]
 
     def _ip_mask(self, g: Glyph) -> None:
         if g._mask is None:
