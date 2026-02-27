@@ -200,15 +200,15 @@ class VfbToFontReader:
             match key:
                 case F.xuid:
                     font._xuid = data
-                case F.Encoding:
-                    gid, glyph_name = data
-                    gids[gid] = glyph_name
                 case F.EncodingDefault:
                     # Where is this used?
                     gid, glyph_name = data
                     e = EncodingRecord()
                     e.name = glyph_name
                     font._encoding_default.append(e)
+                case F.Encoding:
+                    gid, glyph_name = data
+                    gids[gid] = glyph_name
                 case F.MMEncType:
                     font._mm_enc_type = data
                 case F.MasterCount:
