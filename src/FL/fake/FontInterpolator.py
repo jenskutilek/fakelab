@@ -238,7 +238,8 @@ class FontInterpolator:
     # Glyph
 
     def _ip_anchors(self, g: Glyph) -> None:
-        pass
+        for a in g.anchors:
+            a.p = self._ip_point(a._points)[0]
 
     def _ip_components(self, g: Glyph) -> None:
         pass
