@@ -829,6 +829,6 @@ class TTInfo(Copyable):
         self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
         self._dropoutppm: int = 255
 
-        self._measurement_line = 250
+        self._measurement_line = 300
 
         self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
