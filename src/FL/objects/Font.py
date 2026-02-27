@@ -1269,5 +1269,5 @@ class Font(FakeFont):
 
     # Additional methods reported by dir(fl.font)
 
-    def GenerateInstance(self) -> None:
+    def GenerateInstance(self, weight_vector: WeightVector) -> None:
         raise NotImplementedError
