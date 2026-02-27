@@ -189,15 +189,6 @@ class VfbToFontReader:
                 font.ttinfo.fake_deserialize_stems(data)
                 continue
 
-            if key in (
-                F.Collection,
-                F.SampleText,
-                F.MMEncType,
-                F.FontFlags,
-            ):
-                font._unknown_pleasures[key] = data
-                continue
-
             if key in ttinfo_mapping_direct:
                 setattr(font.ttinfo, T(key).name, data)
                 continue
@@ -218,6 +209,8 @@ class VfbToFontReader:
                     e = EncodingRecord()
                     e.name = glyph_name
                     font._encoding_default.append(e)
+                case F.MMEncType:
+                    font._mm_enc_type = data
                 case F.MasterCount:
                     font._masters_count = data
                 case F.weight_vector:
@@ -228,6 +221,8 @@ class VfbToFontReader:
                     font._license_url = data
                 case F.PostScriptHintingOptions:
                     font._postscript_hinting_options = data
+                case F.Collection:
+                    font._collection = data
                 case T.gasp:
                     font.ttinfo.fake_deserialize_gasp(data)
                 case F.ttinfo:
@@ -246,6 +241,8 @@ class VfbToFontReader:
                     font.ttinfo._codeppm = data
                 case T.TrueTypeZoneDeltas:
                     font.ttinfo.fake_deserialize_zone_deltas(data)
+                case F.SampleText:
+                    font._sample_text = data
                 case F.fontnames:
                     assert isinstance(data, list)
                     for nr in data:
@@ -256,6 +253,8 @@ class VfbToFontReader:
                     font._pclt_table = data
                 case F.ExportPCLTTable:
                     font._export_pclt_table = data
+                case F.FontFlags:
+                    font._font_flags = data
                 case F.TrueTypeTable:
                     font.truetypetables.append(data)
                 case F.MetricsClassFlags:

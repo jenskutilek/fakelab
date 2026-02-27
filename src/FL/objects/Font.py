@@ -49,7 +49,6 @@ class Font(FakeFont):
         "_masters_count",
         "_postscript_hinting_options",
         "_truetypetables",
-        "_unknown_pleasures",
         "_xuid_num",
         "_xuid",
         "apple_name",
@@ -123,6 +122,7 @@ class Font(FakeFont):
         "year",
         # Non-API:
         "_custom_cmaps",
+        "_custom_dict",
         "_encoding_default",
         "_export_pclt_table",
         "_export_options",
@@ -133,14 +133,18 @@ class Font(FakeFont):
         "_anisotropic_interpolation_mappings",
         "_axis_mappings_count",
         "_axis_mappings",
+        "_collection",
+        "_font_flags",  # 2030
         "_kerning_class_flags",
         "_master_names",
         "_master_locations",
         "_master_ps_infos",
         "_mapping_mode",
         "_metrics_class_flags",
+        "_mm_enc_type",  # 1502
         "_primary_instance_locations",
         "_primary_instances",
+        "_sample_text",  # 1140
         # Internal:
         "fake_vfb_object",
     ]
@@ -359,12 +363,15 @@ class Font(FakeFont):
         self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
         # Font data that is not accessible via FL5 Python API
+        self._collection = []
         self._encoding_default: list[EncodingRecord] = []
+        self._font_flags = ""
         self._global_mask: Glyph | None = None
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
         self._custom_cmaps: list[CustomCmap] = []
+        self._custom_dict = {}
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {
             "font_number": 0,
@@ -401,20 +408,11 @@ class Font(FakeFont):
             "3": 316,
             "mapping_id": 1,
         }
+        self._mm_enc_type = 0
         self._primary_instance_locations: list[float] = []
         self._primary_instances: list[dict[str, Any]] = []
         self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
-        self._unknown_pleasures: dict[int, int | str | list[int]] = {
-            1502: 0,
-            518: "",
-            257: "",
-            1140: "",
-            1068: [],
-            2030: "",
-            513: "",
-            271: "",
-            527: "",
-        }
+        self._sample_text = ""
         self.fake_vfb_object = None
 
     # Helpers
