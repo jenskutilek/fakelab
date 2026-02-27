@@ -61,7 +61,7 @@ class FontInterpolator:
     def _build_axis_dicts(self) -> None:
         # Build axis dicts with mappings that can be used to build a Mutator
         self._read_axis_mappings()
-        self._master_locations = self._build_master_map()
+        self._master_locations = self._font.fake_master_map()
         self._axis_dict: dict[str, AxisDict] = {}
         for a in range(self._num_axes):
             axis_name = self._font.axis[a][1].lower()
