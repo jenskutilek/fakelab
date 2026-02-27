@@ -77,8 +77,9 @@ class TTInfo(Copyable):
         "_stemsnaplimit",
         "_zoneppm",
         "_codeppm",
+        "_dropoutppm",
+        "_measurement_line",
         "_zones",
-        "_unknown_pleasures",
     ]
 
     # Constructor
@@ -826,10 +827,8 @@ class TTInfo(Copyable):
         self._stemsnaplimit: int = 68  # 68/64 pixel
         self._zoneppm: int = 48  # Zones active until ppm
         self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
+        self._dropoutppm: int = 255
+
+        self._measurement_line = 250
 
         self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
-
-        self._unknown_pleasures = {
-            1604: 255,
-            2032: 0,
-        }

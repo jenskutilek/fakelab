@@ -193,10 +193,6 @@ class VfbToFontReader:
                 setattr(font.ttinfo, T(key).name, data)
                 continue
 
-            if key in (T.dropoutppm, T.MeasurementLine):
-                font.ttinfo._unknown_pleasures[key] = data
-                continue
-
             if key in (
                 F.BlockFileDataStart,
                 F.BlockFontStart,
@@ -256,6 +252,10 @@ class VfbToFontReader:
                     font.ttinfo._zoneppm = data
                 case T.codeppm:
                     font.ttinfo._codeppm = data
+                case T.dropoutppm:
+                    font.ttinfo._dropoutppm = data
+                case T.MeasurementLine:
+                    font.ttinfo._measurement_line = data
                 case T.TrueTypeZoneDeltas:
                     font.ttinfo.fake_deserialize_zone_deltas(data)
                 case F.SampleText:
