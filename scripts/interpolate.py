@@ -13,6 +13,6 @@ base_path = Path(f.file_name).parent
 
 instances = f.fake_generate_primary_instances()
 for i in instances:
-    filename = f"{i.pref_family_name}-{i.pref_style_name}.vfb"
+    filename = f"{i.family_name}-{i.style_name.replace(' ', '')}.vfb"
     print(filename)
-    i.Save(str(base_path / filename.replace(" ", "")), save_json=True)
+    i.Save(str(base_path / filename), save_json=True)
