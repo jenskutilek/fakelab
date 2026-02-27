@@ -514,7 +514,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     def fake_serialize_gdef(self) -> GdefDict:
         gdef = GdefDict(anchors=[], carets=[], glyph_class="unassigned", ot_classes=[])
         for anchor in self.anchors:
-            gdef["anchors"].append(AnchorDict(name=anchor.name, x=anchor.x, y=anchor.y))
+            gdef["anchors"].append(AnchorDict(x=anchor.x, y=anchor.y, name=anchor.name))
         gdef["carets"] = self._carets
         gdef["glyph_class"] = self._gdef_class
         gdef["ot_classes"].extend(self._gdef_ot_classes)
