@@ -91,7 +91,15 @@ class FontInterpolator:
         if family_name:
             self._font.pref_family_name = family_name
         if style_name:
-            self._font.pref_style_name = style_name
+            self._font.pref_style_name = "Regular"  # TODO: Always?
+            self._font.style_name = style_name
+            if self._font.font_name is not None:
+                self._font.font_name += f"-{style_name.replace(' ', '')}"
+            if self._font.full_name is not None:
+                self._font.full_name += f" {style_name}"
+            if self._font.apple_name is not None:
+                self._font.apple_name += f" {style_name}"
+        self._font._master_names = ["Untitled"]
 
     def _build_axis_dicts(self) -> None:
         # Build axis dicts with mappings that can be used to build a Mutator
