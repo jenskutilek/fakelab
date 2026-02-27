@@ -292,10 +292,8 @@ class FontToVfbWriter:
         self.add_entry(T.zoneppm, self.font.ttinfo._zoneppm)
         self.add_entry(T.codeppm, self.font.ttinfo._codeppm)
 
-        self.add_entry(T.dropoutppm, self.font.ttinfo._unknown_pleasures[T.dropoutppm])
-        self.add_entry(
-            T.MeasurementLine, self.font.ttinfo._unknown_pleasures[T.MeasurementLine]
-        )
+        self.add_entry(T.dropoutppm, self.font.ttinfo._dropoutppm)
+        self.add_entry(T.MeasurementLine, self.font.ttinfo._measurement_line)
 
         self.add_entry(
             T.TrueTypeZoneDeltas, self.font.ttinfo.fake_serialize_zone_deltas()
