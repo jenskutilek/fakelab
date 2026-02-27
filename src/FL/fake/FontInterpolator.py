@@ -179,10 +179,79 @@ class FontInterpolator:
         # Font Matrix?
 
     def _ip_glyphs(self) -> None:
-        pass
+        for g in self._font.glyphs:
+            self._ip_nodes(g)
+            self._ip_anchors(g)
+            self._ip_hints(g)
+            self._ip_guides(g)
+            self._ip_components(g)
+            self._ip_kerning(g)
+            # self._ip_value_array(len(g._metrics), g._metrics)
+            self._ip_mask(g)
+            self._ip_vsb(g)
+            g._layers_number = 1
 
     def _ip_guides_global(self) -> None:
         pass
+
+    # Shared
+
+    def _ip_guide(self, g: Guide) -> None:
+        pass
+
+    # Glyph
+
+    def _ip_anchors(self, g: Glyph) -> None:
+        pass
+
+    def _ip_components(self, g: Glyph) -> None:
+        pass
+
+    def _ip_guides(self, g: Glyph) -> None:
+        for guide in g._hguides:
+            self._ip_guide(guide)
+        for guide in g._vguides:
+            self._ip_guide(guide)
+
+    def _ip_hint(self, h: Hint) -> None:
+        pass
+
+    def _ip_hints(self, g: Glyph) -> None:
+        for h in g._hhints:
+            self._ip_hint(h)
+        for h in g._vhints:
+            self._ip_hint(h)
+
+    def _ip_kerning(self, g: Glyph) -> None:
+        pass
+
+    def _ip_mask(self, g: Glyph) -> None:
+        if g._mask is None:
+            return
+        g._mask_weight_vector = [g._mask_weight_vector[0]]
+        self._ip_nodes(g._mask)
+
+    def _ip_nodes(self, g: Glyph) -> None:
+        for n in g.nodes:
+            num_points = len(n._points[0])
+
+            px = []
+            py = []
+            for master_index in range(g.layers_number):
+                px.append([p.x for p in n._points[master_index]])
+                py.append([p.y for p in n._points[master_index]])
+                # TODO: Anisotropic interpolation
+            rx = self._ip_value_array(num_points, px)
+            ry = self._ip_value_array(num_points, py)
+            for i in range(len(rx[0])):
+                n._points[0][i].x = rx[0][i]
+                n._points[0][i].y = ry[0][i]
+            n._points = [n._points[0]]  # Shorten the list to 1 master
+
+    def _ip_vsb(self, g: Glyph) -> None:
+        if g._vsb is None:
+            return
+        g._vsb = [self._ip_value(g._vsb)]
 
     # Lower level
 
