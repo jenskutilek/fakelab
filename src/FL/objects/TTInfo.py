@@ -3,7 +3,7 @@ from __future__ import annotations
 from vfbLib.compilers.truetype import convert_flags_options_to_int
 from vfbLib.helpers import deHexStr, hexStr
 from vfbLib.parsers.truetype import convert_int_to_flags_options
-from vfbLib.typing import TTStemsDict, TTZonesDict
+from vfbLib.typing import FlagsOptionsDict, TTStemsDict, TTZonesDict
 
 from FL.fake.Base import Copyable
 from FL.helpers.math import int32_to_unsigned, uint32_to_signed
@@ -98,6 +98,74 @@ class TTInfo(Copyable):
         else:
             self._copy_constructor(ttinfo)
 
+    # Internal
+
+    def _set_defaults(self) -> None:
+        # Defaults for an empty TTInfo
+        self.hstem_data = []
+        self.vstem_data = []
+        self.prep = []
+        self.fpgm = []
+        self.cvt = []
+        self.gasp = []
+        self.vdmx = []
+        self.max_zones = 0
+        self.max_twilight_points = 0
+        self.max_storage = 0
+        self.max_function_defs = 0
+        self.max_instruction_defs = 0
+        self.max_stack_elements = 0
+        self._head_creation: list[int] = [-467938523, 0]
+        self.head_flags = 131072
+        self.head_font_direction_hint = 2
+        self.head_lowest_rec_ppem = 9
+        self.head_mac_style = 0
+        self.head_units_per_em = 2048
+        self.hhea_ascender = 1536
+        self.hhea_descender = -512
+        self.hhea_line_gap = 18
+        self.os2_us_weight_class = 400
+        self.os2_us_width_class = 5
+        self.os2_fs_type = 4
+        self.os2_y_subscript_x_size = 1433
+        self.os2_y_subscript_y_size = 1331
+        self.os2_y_subscript_x_offset = 0
+        self.os2_y_subscript_y_offset = 286
+        self.os2_y_superscript_x_size = 1433
+        self.os2_y_superscript_y_size = 1331
+        self.os2_y_superscript_x_offset = 0
+        self.os2_y_superscript_y_offset = 976
+        self.os2_y_strikeout_size = 102
+        self.os2_y_strikeout_position = 512
+        self.os2_s_family_class = 0
+        self.os2_ul_code_page_range1 = 0
+        self.os2_ul_code_page_range2 = 0
+        self.os2_s_typo_ascender = 1536
+        self.os2_s_typo_descender = -512
+        self.os2_s_typo_line_gap = 0
+        self.os2_fs_selection = 0
+        self.os2_us_win_ascent = 0
+        self.os2_us_win_descent = 0
+
+        # Not in API:
+        self._average_width = 0
+        self._codepages: dict[str, int] = {
+            "os2_ul_code_page_range1": 0,
+            "os2_ul_code_page_range2": 0,
+        }
+        self._hdmx_ppms_1: list[int] = []
+        self._hdmx_ppms_2: list[int] = []
+        self._panose: list[int] = [0] * 10
+        # TT-related non-API:
+        self._stemsnaplimit: int = 68  # 68/64 pixel
+        self._zoneppm: int = 48  # Zones active until ppm
+        self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
+        self._dropoutppm: int = 255
+
+        self._measurement_line = 300
+
+        self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
+
     # Additions for FakeLab
 
     def fake_deserialize(
@@ -156,7 +224,9 @@ class TTInfo(Copyable):
         if "head_flags" in data:
             self.head_flags = convert_flags_options_to_int(data)
 
-    def fake_serialize(self) -> dict[str | int, int | list[int] | dict[str, int]]:
+    def fake_serialize(
+        self,
+    ) -> dict[str, int | list[int] | dict[str, int] | FlagsOptionsDict]:
         return {
             "max_zones": self.max_zones,
             "max_twilight_points": self.max_twilight_points,
@@ -764,71 +834,3 @@ class TTInfo(Copyable):
     @os2_us_win_descent.setter
     def os2_us_win_descent(self, value: int) -> None:
         self._os2_us_win_descent = value
-
-    # Internal
-
-    def _set_defaults(self) -> None:
-        # Defaults for an empty TTInfo
-        self.hstem_data = []
-        self.vstem_data = []
-        self.prep = []
-        self.fpgm = []
-        self.cvt = []
-        self.gasp = []
-        self.vdmx = []
-        self.max_zones = 0
-        self.max_twilight_points = 0
-        self.max_storage = 0
-        self.max_function_defs = 0
-        self.max_instruction_defs = 0
-        self.max_stack_elements = 0
-        self._head_creation: list[int] = [-467938523, 0]
-        self.head_flags = 131072
-        self.head_font_direction_hint = 2
-        self.head_lowest_rec_ppem = 9
-        self.head_mac_style = 0
-        self.head_units_per_em = 2048
-        self.hhea_ascender = 1536
-        self.hhea_descender = -512
-        self.hhea_line_gap = 18
-        self.os2_us_weight_class = 400
-        self.os2_us_width_class = 5
-        self.os2_fs_type = 4
-        self.os2_y_subscript_x_size = 1433
-        self.os2_y_subscript_y_size = 1331
-        self.os2_y_subscript_x_offset = 0
-        self.os2_y_subscript_y_offset = 286
-        self.os2_y_superscript_x_size = 1433
-        self.os2_y_superscript_y_size = 1331
-        self.os2_y_superscript_x_offset = 0
-        self.os2_y_superscript_y_offset = 976
-        self.os2_y_strikeout_size = 102
-        self.os2_y_strikeout_position = 512
-        self.os2_s_family_class = 0
-        self.os2_ul_code_page_range1 = 0
-        self.os2_ul_code_page_range2 = 0
-        self.os2_s_typo_ascender = 1536
-        self.os2_s_typo_descender = -512
-        self.os2_s_typo_line_gap = 0
-        self.os2_fs_selection = 0
-        self.os2_us_win_ascent = 0
-        self.os2_us_win_descent = 0
-
-        # Not in API:
-        self._average_width = 0
-        self._codepages: dict[str, int] = {
-            "os2_ul_code_page_range1": 0,
-            "os2_ul_code_page_range2": 0,
-        }
-        self._hdmx_ppms_1: list[int] = []
-        self._hdmx_ppms_2: list[int] = []
-        self._panose: list[int] = [0] * 10
-        # TT-related non-API:
-        self._stemsnaplimit: int = 68  # 68/64 pixel
-        self._zoneppm: int = 48  # Zones active until ppm
-        self._codeppm: int = 0  # Gridfitting active until ppm (0 = no limit)
-        self._dropoutppm: int = 255
-
-        self._measurement_line = 300
-
-        self._zones: TTZonesDict = {"ttZonesT": [], "ttZonesB": []}
