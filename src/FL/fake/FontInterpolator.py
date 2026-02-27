@@ -272,20 +272,7 @@ class FontInterpolator:
 
     def _ip_nodes(self, g: Glyph) -> None:
         for n in g.nodes:
-            num_points = len(n._points[0])
-
-            px = []
-            py = []
-            for master_index in range(g.layers_number):
-                px.append([p.x for p in n._points[master_index]])
-                py.append([p.y for p in n._points[master_index]])
-                # TODO: Anisotropic interpolation
-            rx = self._ip_value_array(num_points, px)
-            ry = self._ip_value_array(num_points, py)
-            for i in range(len(rx[0])):
-                n._points[0][i].x = rx[0][i]
-                n._points[0][i].y = ry[0][i]
-            n._points = [n._points[0]]  # Shorten the list to 1 master
+            n._points = self._ip_point_array(n._points)
 
     def _ip_vsb(self, g: Glyph) -> None:
         if not g._vsb:
