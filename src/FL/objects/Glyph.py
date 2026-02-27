@@ -348,7 +348,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if self._write_empty_gdef or (
             gdef["anchors"]
             or gdef["carets"]
-            or gdef["unknown"]
+            or gdef["ot_classes"]
             or gdef["glyph_class"] not in (None, "unassigned")
         ):
             s[G.GDEFData] = gdef
@@ -428,17 +428,17 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         glyph_class = data.get("glyph_class")
         if glyph_class:
             self._gdef_class: str | None = glyph_class
-        self._gdef_unknown.extend(data.get("unknown", []))
+        self._gdef_ot_classes.extend(data.get("ot_classes", []))
 
     def fake_serialize_gdef(self) -> GdefDict:
-        gdef = GdefDict(anchors=[], carets=[], glyph_class="unassigned", unknown=[])
+        gdef = GdefDict(anchors=[], carets=[], glyph_class="unassigned", ot_classes=[])
         for anchor in self.anchors:
             gdef["anchors"].append(
                 AnchorDict(name=anchor.name, x=anchor.x, x1=-1, y=anchor.y, y1=-1)
             )
         gdef["carets"] = self._carets
         gdef["glyph_class"] = self._gdef_class
-        gdef["unknown"].extend(self._gdef_unknown)
+        gdef["ot_classes"].extend(self._gdef_ot_classes)
         return gdef
 
     def fake_deserialize_anchor_supp(self, data: list[dict[str, int]]) -> None:
@@ -1635,7 +1635,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self._carets: list[tuple[int, int]] = []
         self._gdef_class = None
-        self._gdef_unknown: list[int] = []
+        self._gdef_ot_classes: list[int] = []
         self._glyph_bitmaps = None
         self._glyph_hinting_options = {}
         self._glyph_origin = {"x": 0, "y": 0}
