@@ -352,11 +352,14 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                     [int(p.x), int(p.y)]
                     for p in [self.GetMetrics(i) for i in range(self.layers_number)]
                 ],
-                "components": [comp.fake_serialize() for comp in self.components],
             },
             G.VSB: self._vsb,
             G.HintingOptions: self._glyph_hinting_options,
         }
+        if self.components:
+            s[G.Glyph]["components"] = [
+                comp.fake_serialize() for comp in self.components
+            ]
 
         # Additions for Glyph
 
@@ -486,7 +489,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     def fake_serialize_mask(self) -> MaskData:
         mask = MaskData(
-            num_masters=self.layers_number, weight_vector=self._mask_weight_vector
+            weight_vector=self._mask_weight_vector, num_masters=self.layers_number
         )
         if self.mask is None:
             return mask
