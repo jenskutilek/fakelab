@@ -316,7 +316,7 @@ class VfbToFontReader:
                     logger.info(f"Adding Glyph: '{data.get('name')}', {key}")
                     glyph = Glyph()
                     # Add the data
-                    glyph.fake_deserialize(2001, data)
+                    glyph.fake_deserialize(G.Glyph, data)
                 case F.FontOptions:
                     font._ot_export_options = data
                 case F.ExportOptions:
