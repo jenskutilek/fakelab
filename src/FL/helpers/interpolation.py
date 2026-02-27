@@ -192,7 +192,8 @@ def interpolate(v0: float, v1: float, factor: float) -> int:
 def interpolate_float(v0: float, v1: float, factor: float) -> float:
     return v0 + (v1 - v0) * factor
 
-
     # TODO: Do we need to round at all?
+
+
 def interpolate_point(p0: Point, p1: Point, factor: float) -> Point:
     return round(p0 + (p1 - p0) * factor)
