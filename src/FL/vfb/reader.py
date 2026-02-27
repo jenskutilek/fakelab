@@ -197,6 +197,23 @@ class VfbToFontReader:
                 font.ttinfo._unknown_pleasures[key] = data
                 continue
 
+            if key in (
+                F.BlockFileDataStart,
+                F.BlockFontStart,
+                F.FLVersion,
+                F.BlockNamesStart,
+                F.BlockNamesEnd,
+                F.BlockFontInfoStart,
+                F.BlockFontInfoEnd,
+                F.BlockMMFontInfoStart,
+                F.BlockMMFontInfoEnd,
+                F.BlockMMKerningStart,
+                F.BlockMMKerningEnd,
+                F.BlockFontEnd,
+                F.BlockFileDataEnd,
+            ):
+                continue
+
             match key:
                 case F.xuid:
                     font._xuid = data
