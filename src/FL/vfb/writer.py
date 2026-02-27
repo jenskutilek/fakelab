@@ -106,7 +106,7 @@ class FontToVfbWriter:
             self.add_entry(F.Encoding, [i, self.font.encoding[i].name])
 
         # We don't know what this is exactly:
-        self.add_entry(F.MMEncType, self.font._unknown_pleasures[F.MMEncType])
+        self.add_entry(F.MMEncType, self.font._mm_enc_type)
 
     def compile_font_info(self) -> None:
         font = self.font
@@ -155,7 +155,7 @@ class FontToVfbWriter:
             ),
             font,
         )
-        self.add_entry(F.SampleText, font._unknown_pleasures[F.SampleText])
+        self.add_entry(F.SampleText, font._sample_text)
         self.add_direct_entries(
             (
                 F.vendor,
@@ -170,7 +170,7 @@ class FontToVfbWriter:
             font,
         )
         self.add_entry(F.PostScriptHintingOptions, font._postscript_hinting_options)
-        self.add_entry(F.Collection, font._unknown_pleasures[F.Collection])
+        self.add_entry(F.Collection, font._collection)
         self.add_direct_entries(
             (
                 F.blue_values_num,
@@ -205,7 +205,7 @@ class FontToVfbWriter:
         self.add_entry(F.ExportPCLTTable, font._export_pclt_table)
         if font.note:
             self.add_entry(F.note, font.note)
-        self.add_entry(F.FontFlags, font._unknown_pleasures[F.FontFlags])
+        self.add_entry(F.FontFlags, font._font_flags)
         if font.customdata:
             self.add_entry(F.customdata, font.customdata)
 
