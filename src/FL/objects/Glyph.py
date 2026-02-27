@@ -355,18 +355,17 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             G.VSB: self._vsb,
             G.HintingOptions: self._glyph_hinting_options,
         }
+
+        if self._write_empty_guides or self.hguides or self.vguides:
+            s[G.Glyph]["guides"] = self.fake_serialize_guides()
+
         if self.components:
             s[G.Glyph]["components"] = [
                 comp.fake_serialize() for comp in self.components
             ]
 
-        # Additions for Glyph
-
         if self.vhints or self.hhints:
             s[G.Glyph]["hints"] = self.fake_serialize_hints()
-
-        if self._write_empty_guides or self.hguides or self.vguides:
-            s[G.Glyph]["guides"] = self.fake_serialize_guides()
 
         if self.kerning:
             s[G.Glyph]["kerning"] = {pair.key: pair.values for pair in self.kerning}
@@ -517,6 +516,14 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         gdef["carets"] = self._carets
         gdef["glyph_class"] = self._gdef_class
         gdef["ot_classes"].extend(self._gdef_ot_classes)
+
+        # Clean up
+        if "anchors" in gdef and not gdef["anchors"]:
+            del gdef["anchors"]
+        if not gdef["carets"]:
+            del gdef["carets"]
+        if not gdef["glyph_class"]:
+            del gdef["glyph_class"]
         return gdef
 
     def fake_deserialize_anchor_supp(self, data: list[dict[str, int]]) -> None:
