@@ -12,6 +12,10 @@ from FL.helpers.interpolation import piecewise_linear_map
 
 if TYPE_CHECKING:
     from FL.objects.Font import Font
+    from FL.objects.Glyph import Glyph
+    from FL.objects.Guide import Guide
+    from FL.objects.Hint import Hint
+    from FL.objects.Point import Point
 
 
 logger = logging.getLogger(__name__)
@@ -66,12 +70,22 @@ class FontInterpolator:
         if self._num_axes == 0:
             logger.warning("Number of axes is 0, font is not modified.")
             return
-
-        self.location = self._map_location(values[: self._num_axes])
+        significant_values = values[: self._num_axes]
+        self.location_user = self._map_location_user(significant_values)
+        self.location = self._map_location(significant_values)
 
         self._ip_fontinfo()
         self._ip_glyphs()
         self._ip_guides_global()
+
+        self._font._anisotropic_interpolation_mappings.clear()
+        self._font._primary_instance_locations.clear()
+        self._font._primary_instances.clear()
+        self._font.weight_vector[0] = 1.0
+        self._font.weight_code = int(self.location_user["wt"])
+        self._font._axis.clear()
+        self._font._axis_mappings_count = [0, 0, 0, 0]
+        self._font._axis_mappings = [(0.0, 0.0)] * 40
         self._font._masters_count = 1
 
         if family_name:
@@ -113,6 +127,16 @@ class FontInterpolator:
                     v, self._font.axis[i][1].lower()
                 )
                 for i, v in enumerate(values)
+            }
+        )
+
+    def _map_location_user(self, values: tuple[float, ...]) -> Location:
+        # The location in user coordinates
+
+        return Location(
+            {
+                self._font.axis[i][1].lower(): v
+                for i, v in enumerate(values[: self._num_axes])
             }
         )
 
@@ -176,7 +200,12 @@ class FontInterpolator:
             f.stem_snap_v_num, f.stem_snap_v
         )[0]
 
-        # Font Matrix?
+        # TODO: TrueType stems
+
+        # TODO: Font Matrix?
+
+        # TODO:
+        # recalculate bounding box, adv_width_min, adv_width_max
 
     def _ip_glyphs(self) -> None:
         for g in self._font.glyphs:
@@ -186,7 +215,7 @@ class FontInterpolator:
             self._ip_guides(g)
             self._ip_components(g)
             self._ip_kerning(g)
-            # self._ip_value_array(len(g._metrics), g._metrics)
+            g._metrics = self._ip_point(g._metrics)
             self._ip_mask(g)
             self._ip_vsb(g)
             g._layers_number = 1
@@ -228,8 +257,18 @@ class FontInterpolator:
     def _ip_mask(self, g: Glyph) -> None:
         if g._mask is None:
             return
+
         g._mask_weight_vector = [g._mask_weight_vector[0]]
         self._ip_nodes(g._mask)
+        if g._mask_metrics is None or g._mask_metrics_mm is None:
+            return
+
+        mask_metrics = [[g._mask_metrics]]
+        for pt in g._mask_metrics_mm:
+            mask_metrics.append([pt])
+
+        g._mask_metrics = self._ip_point_array(mask_metrics)[0][0]
+        g._mask_metrics_mm = None
 
     def _ip_nodes(self, g: Glyph) -> None:
         for n in g.nodes:
@@ -249,8 +288,9 @@ class FontInterpolator:
             n._points = [n._points[0]]  # Shorten the list to 1 master
 
     def _ip_vsb(self, g: Glyph) -> None:
-        if g._vsb is None:
+        if not g._vsb:
             return
+
         g._vsb = [self._ip_value(g._vsb)]
 
     # Lower level
@@ -273,6 +313,54 @@ class FontInterpolator:
         else:
             _, mb = buildMutator(items)
         return mb
+
+    def _ip_point(self, points: list[Point]) -> list[Point]:
+        """
+        Interpolate a Point array, e.g. metrics.
+
+        Args:
+            points (list[Point]): The 2d array of Points.
+
+        Returns:
+            list[Point]: The interpolated Point in a list.
+        """
+        px = []
+        py = []
+        for master_index in range(len(points)):
+            px.append(points[master_index].x)
+            py.append(points[master_index].y)
+            # TODO: Anisotropic interpolation
+        rx = self._ip_value(px)
+        ry = self._ip_value(py)
+        points[0].x = rx
+        points[0].y = ry
+        return [points[0]]
+
+    def _ip_point_array(self, points: list[list[Point]]) -> list[list[Point]]:
+        """
+        Interpolate a 2d Point array, e.g. a node. One array per master, master index
+        is the top-level index.
+
+        Args:
+            points (list[list[Point]]): The 2d array of Points.
+
+        Returns:
+            list[list[Point]]: The interpolated Points.
+        """
+        num_points = len(points[0])
+
+        px = []
+        py = []
+        for master_index in range(len(points)):
+            px.append([p.x for p in points[master_index]])
+            py.append([p.y for p in points[master_index]])
+            # TODO: Anisotropic interpolation
+        rx = self._ip_value_array(num_points, px)
+        ry = self._ip_value_array(num_points, py)
+        for i in range(len(rx[0])):
+            points[0][i].x = rx[0][i]
+            points[0][i].y = ry[0][i]
+        return [points[0]]  # Shorten the list to 1 master
 
     def _ip_value_array(
         self, num_values: int, values: list[list[int]]

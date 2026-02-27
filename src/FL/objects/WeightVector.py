@@ -53,3 +53,6 @@ class WeightVector(Copyable):
 
     def __getitem__(self, index: int) -> float:
         return self._weights[index]
+
+    def __setitem__(self, key: int, value: float) -> None:
+        self._weights[key] = value
