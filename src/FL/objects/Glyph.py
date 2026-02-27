@@ -324,7 +324,6 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 self._write_empty_anchor_supp = True
                 self.fake_deserialize_anchor_supp(data)
             case G.AnchorsMM:
-                self._write_empty_anchors_mm = True
                 self.fake_deserialize_anchors_mm(data)
             case G.GuideProperties:
                 self._write_empty_guide_props = True
