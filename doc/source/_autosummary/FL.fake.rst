@@ -31,7 +31,9 @@
    Base
    Font
    FontImporter
+   FontInterpolator
    Kerning
    KerningClass
+   PSInfo
    mixins
 

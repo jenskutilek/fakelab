@@ -1,4 +1,4 @@
-FL.objects.FontLab.FakeLab
+﻿FL.objects.FontLab.FakeLab
 ==========================
 
 .. currentmodule:: FL.objects.FontLab
@@ -72,6 +72,7 @@ FL.objects.FontLab.FakeLab
       ~FakeLab.iobject
       ~FakeLab.layer
       ~FakeLab.mainwindow
+      ~FakeLab.output
       ~FakeLab.path
       ~FakeLab.productnumber
       ~FakeLab.serialnumber

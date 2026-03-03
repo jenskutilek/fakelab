@@ -1,4 +1,4 @@
-FL.objects.KerningPair.KerningPair
+﻿FL.objects.KerningPair.KerningPair
 ==================================
 
 .. currentmodule:: FL.objects.KerningPair
@@ -17,6 +17,8 @@ FL.objects.KerningPair.KerningPair
    .. autosummary::
    
       ~KerningPair.__init__
+      ~KerningPair.fake_add_axis
+      ~KerningPair.fake_remove_axis
    
    
 

@@ -1,4 +1,4 @@
-FL.objects.Font.Font
+﻿FL.objects.Font.Font
 ====================
 
 .. currentmodule:: FL.objects.Font
@@ -44,18 +44,29 @@ FL.objects.Font.Font
       ~Font.fake_deselect_all
       ~Font.fake_deserialize_axis
       ~Font.fake_deserialize_features
+      ~Font.fake_deserialize_global_mask
       ~Font.fake_deserialize_guide_properties
       ~Font.fake_deserialize_guides
+      ~Font.fake_deserialize_master_ps_infos
+      ~Font.fake_generate_primary_instances
       ~Font.fake_get_afm
       ~Font.fake_get_afm_kerning
       ~Font.fake_get_inf
+      ~Font.fake_map_axis_location
+      ~Font.fake_master_map
       ~Font.fake_save_afm_expanded
       ~Font.fake_select
       ~Font.fake_serialize_axis
       ~Font.fake_serialize_features
+      ~Font.fake_serialize_global_mask
       ~Font.fake_serialize_guide_properties
       ~Font.fake_serialize_guides
+      ~Font.fake_serialize_master_ps_infos
       ~Font.fake_set_class_flags
+      ~Font.fake_set_family_blues
+      ~Font.fake_set_family_other_blues
+      ~Font.fake_set_master_blue_values
+      ~Font.fake_set_master_other_blues
       ~Font.fake_sort_glyphs
       ~Font.fake_sort_kerning
       ~Font.fake_update
@@ -70,30 +81,19 @@ FL.objects.Font.Font
    .. autosummary::
    
       ~Font.apple_name
-      ~Font.ascender
       ~Font.blue_fuzz
       ~Font.blue_scale
       ~Font.blue_shift
-      ~Font.blue_values_num
-      ~Font.blue_values
-      ~Font.cap_height
       ~Font.codepages
       ~Font.copyright
       ~Font.customdata
       ~Font.default_character
-      ~Font.default_width
-      ~Font.descender
       ~Font.designer_url
       ~Font.designer
-      ~Font.family_blues_num
-      ~Font.family_blues
       ~Font.family_name
-      ~Font.family_other_blues_num
-      ~Font.family_other_blues
       ~Font.fond_id
       ~Font.font_name
       ~Font.font_style
-      ~Font.force_bold
       ~Font.full_name
       ~Font.hguides
       ~Font.is_fixed_pitch
@@ -106,8 +106,6 @@ FL.objects.Font.Font
       ~Font.note
       ~Font.notice
       ~Font.ot_classes
-      ~Font.other_blues_num
-      ~Font.other_blues
       ~Font.panose
       ~Font.pcl_chars_set
       ~Font.pcl_id
@@ -115,10 +113,6 @@ FL.objects.Font.Font
       ~Font.pref_style_name
       ~Font.slant_angle
       ~Font.source
-      ~Font.stem_snap_h_num
-      ~Font.stem_snap_h
-      ~Font.stem_snap_v_num
-      ~Font.stem_snap_v
       ~Font.style_name
       ~Font.trademark
       ~Font.tt_u_id
@@ -139,20 +133,37 @@ FL.objects.Font.Font
       ~Font.weight_vector
       ~Font.weight
       ~Font.width
-      ~Font.x_height
       ~Font.year
       ~Font.fake_vfb_object
+      ~Font.ascender
       ~Font.axis
+      ~Font.blue_values
+      ~Font.blue_values_num
+      ~Font.cap_height
       ~Font.classes
+      ~Font.default_width
+      ~Font.descender
       ~Font.encoding
       ~Font.fake_kerning
       ~Font.fake_sparse_json
+      ~Font.family_blues
+      ~Font.family_blues_num
+      ~Font.family_other_blues
+      ~Font.family_other_blues_num
       ~Font.features
       ~Font.file_name
       ~Font.fontnames
+      ~Font.force_bold
       ~Font.glyphs
+      ~Font.other_blues
+      ~Font.other_blues_num
+      ~Font.stem_snap_h
+      ~Font.stem_snap_h_num
+      ~Font.stem_snap_v
+      ~Font.stem_snap_v_num
       ~Font.truetypetables
       ~Font.vendor
+      ~Font.x_height
       ~Font.xuid
       ~Font.xuid_num
    

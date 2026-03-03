@@ -1,4 +1,4 @@
-FL.objects.Hint.Hint
+﻿FL.objects.Hint.Hint
 ====================
 
 .. currentmodule:: FL.objects.Hint
@@ -20,7 +20,9 @@ FL.objects.Hint.Hint
       ~Hint.Transform
       ~Hint.TransformLayer
       ~Hint.__init__
+      ~Hint.fake_add_axis
       ~Hint.fake_deserialize
+      ~Hint.fake_remove_axis
       ~Hint.fake_serialize
    
    

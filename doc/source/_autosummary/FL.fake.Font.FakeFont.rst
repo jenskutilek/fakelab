@@ -1,4 +1,4 @@
-FL.fake.Font.FakeFont
+﻿FL.fake.Font.FakeFont
 =====================
 
 .. currentmodule:: FL.fake.Font
@@ -22,14 +22,25 @@ FL.fake.Font.FakeFont
       ~FakeFont.fake_deselect_all
       ~FakeFont.fake_deserialize_axis
       ~FakeFont.fake_deserialize_features
+      ~FakeFont.fake_deserialize_global_mask
       ~FakeFont.fake_deserialize_guide_properties
       ~FakeFont.fake_deserialize_guides
+      ~FakeFont.fake_deserialize_master_ps_infos
+      ~FakeFont.fake_generate_primary_instances
+      ~FakeFont.fake_map_axis_location
+      ~FakeFont.fake_master_map
       ~FakeFont.fake_select
       ~FakeFont.fake_serialize_axis
       ~FakeFont.fake_serialize_features
+      ~FakeFont.fake_serialize_global_mask
       ~FakeFont.fake_serialize_guide_properties
       ~FakeFont.fake_serialize_guides
+      ~FakeFont.fake_serialize_master_ps_infos
       ~FakeFont.fake_set_class_flags
+      ~FakeFont.fake_set_family_blues
+      ~FakeFont.fake_set_family_other_blues
+      ~FakeFont.fake_set_master_blue_values
+      ~FakeFont.fake_set_master_other_blues
       ~FakeFont.fake_update
    
    

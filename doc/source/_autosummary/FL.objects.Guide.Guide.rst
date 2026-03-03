@@ -1,4 +1,4 @@
-FL.objects.Guide.Guide
+﻿FL.objects.Guide.Guide
 ======================
 
 .. currentmodule:: FL.objects.Guide
@@ -19,7 +19,9 @@ FL.objects.Guide.Guide
       ~Guide.Transform
       ~Guide.TransformLayer
       ~Guide.__init__
+      ~Guide.fake_add_axis
       ~Guide.fake_angle_to_width
+      ~Guide.fake_remove_axis
       ~Guide.fake_width_to_angle
    
    

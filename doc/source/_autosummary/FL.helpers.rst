@@ -31,6 +31,7 @@
    FLList
    ListParent
    classList
+   interpolation
    math
    nametables
    registry

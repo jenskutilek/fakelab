@@ -1,4 +1,4 @@
-FL.objects.Glyph.Glyph
+﻿FL.objects.Glyph.Glyph
 ======================
 
 .. currentmodule:: FL.objects.Glyph
@@ -83,6 +83,7 @@ FL.objects.Glyph.Glyph
       ~Glyph.Warp
       ~Glyph.__init__
       ~Glyph.clear
+      ~Glyph.fake_add_axis
       ~Glyph.fake_deserialize
       ~Glyph.fake_deserialize_anchor_supp
       ~Glyph.fake_deserialize_anchors_mm
@@ -90,6 +91,7 @@ FL.objects.Glyph.Glyph
       ~Glyph.fake_deserialize_guide_properties
       ~Glyph.fake_deserialize_guides
       ~Glyph.fake_deserialize_hints
+      ~Glyph.fake_remove_axis
       ~Glyph.fake_serialize
       ~Glyph.fake_serialize_anchor_supp
       ~Glyph.fake_serialize_anchors_mm
