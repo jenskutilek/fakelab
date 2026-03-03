@@ -52,6 +52,15 @@ site-packages directory:
 /Users/<yourname>/Code/FLMacros/System/Modules
 ```
 
+### uv
+
+To use tox with uv for testing, install and run like this:
+
+```sh
+uv sync --group test
+uv run tox
+```
+
 ## A word of caution
 
 FakeLab is a work in progress, and only implemented as far as I needed it in my

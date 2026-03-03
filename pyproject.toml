@@ -13,62 +13,75 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     # "pyyaml >= 6.0.2",
     # "vfbLib >= 0.10.4",  # Could be made optional for a lean test framework
 ]
 
-[project.optional-dependencies]
-all = [
-    "fakelab[generate]",
-    "fakelab[repl]",
-    "fakelab[vfb]",
+[dependency-groups]
+extras = [
+    "mutatormath",
+    "ptpython",
+    "ufo2ft",
+    "vfblib >= 0.11.0, < 0.12.0",
+]
+dev = [
+    { include-group = "extras"},
+    "flake8",
+    "mypy",
+    "ruff",
+]
+test = [
+    { include-group = "dev"},
+    "pytest",
+    "pytest-cov",
+    "tox",
+    "tox-gh",
+    "tox-uv",
 ]
 
+[project.optional-dependencies]
 generate = [
     # Generate actual fonts with ufo2ft
     "ufo2ft >= 3.6.8",
     "mutatormath >= 3.0.1",
     "fakelab[vfb]",
 ]
-
 repl = [
     # Better interactive prompt
     "ptpython >= 3.0.30"
 ]
-
 vfb = [
     # Optional for a lean test framework
     # Load and save VFB files
     "vfbLib >= 0.11.0, < 0.12.0",
 ]
+# all = [
+#     { include-group = "generate"},
+#     { include-group = "vfb"},
+# ]
 
-test = [
-    "mypy",                 # type hinting verifier
-    "pytest",               # pytest testing framework
-    "pytest-black-ng",      # code formatter (--black)
-    "pytest-cov",           # code coverage (--cov)
-    "pytest-isort",         # imports sorter (--isort)
-    "pytest-mock",          # mocker fixtures for monkey patching
-    "pytest-mypy",          # type hinting verifier (--mypy)
-    "pytest-pylint",        # static code analysis (--pylint)
-    "ruff",
-]
+# test = [
+#     "pytest-black-ng",      # code formatter (--black)
+#     "pytest-isort",         # imports sorter (--isort)
+#     "pytest-mock",          # mocker fixtures for monkey patching
+#     "pytest-mypy",          # type hinting verifier (--mypy)
+#     "pytest-pylint",        # static code analysis (--pylint)
+# ]
 
-dev = [
-    "build",                # packaging build frontend
-    "flake8",
-    "wheel",                # build system (also downloaded during build)
-    "ruff",
-    "setuptools-scm[toml]"  # git tags-based versioning (also downloaded during build)
-]
+# dev = [
+#     "build",                # packaging build frontend
+#     "flake8",
+#     "wheel",                # build system (also downloaded during build)
+#     "ruff",
+#     "setuptools-scm[toml]"  # git tags-based versioning (also downloaded during build)
+# ]
 
 doc = [
     "sphinx >= 8.2.3",      # documentation generator
@@ -86,7 +99,7 @@ fakelab = "FL.cmdline:main"
 
 
 [build-system]
-requires = ["setuptools>=80.9.0", "setuptools-scm[toml]>=9.2.0", "wheel"]
+requires = ["setuptools>=82.0.0", "setuptools-scm[toml]>=9.2.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 
@@ -157,7 +170,7 @@ warn_return_any = true
 [tool.black]
 exclude = '[\\/]_version\.py$'
 line-length = 88
-target-version = ["py311"]
+target-version = ["py312"]
 
 [tool.ruff]
 extend-exclude =  ["examples"]
