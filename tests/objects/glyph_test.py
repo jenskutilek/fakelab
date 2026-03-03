@@ -17,7 +17,6 @@ glyph_a = {
     ],
     "metrics": [[556, 0]],
     "kerning": {4: [-100]},
-    "components": [],
 }
 
 
