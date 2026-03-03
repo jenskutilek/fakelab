@@ -139,12 +139,18 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
 
     def fake_generate_primary_instances(self) -> list[FakeFont]:
         instances: list[FakeFont] = []
-        for inst_dict in self._primary_instances:
-            print(inst_dict)
-            interpolator = FontInterpolator(self)
-            interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
-            instances.append(interpolator._font)
-            del interpolator
+        # for inst_dict in self._primary_instances:
+        #     print(inst_dict)
+        #     interpolator = FontInterpolator(self)
+        #     interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
+        #     instances.append(interpolator._font)
+        #     del interpolator
+        inst_dict = self._primary_instances[11]
+        print(inst_dict)
+        interpolator = FontInterpolator(self)
+        interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
+        instances.append(interpolator._font)
+        del interpolator
         return instances
 
     def fake_deserialize_axis(self, data: str) -> None:
