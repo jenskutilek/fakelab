@@ -110,11 +110,11 @@ class ClassList(UserList[str]):
         # WTF ... append does not work on the classes list
         pass
 
-    def extend(self, iterable: Iterable) -> None:
+    def extend(self, other: Iterable[str]) -> None:
         # extend does not work either
         pass
 
-    def insert(self, index: int, item: Any) -> None:
+    def insert(self, i: int, item: Any) -> None:
         # You guessed it
         pass
 
@@ -142,7 +142,7 @@ class ClassList(UserList[str]):
 
         return int(bool(flags & 2048))
 
-    def GetClassMetricsFlags(self, class_index: int) -> tuple | None:
+    def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
         if class_index >= len(self.data) or class_index < 0:
             return None
 

@@ -1,9 +1,9 @@
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 
 class TTCommandDict(TypedDict):
-    name: str
-    params: list[str]
+    name: NotRequired[str]
+    params: NotRequired[list[str]]
 
 
 TT_COMMANDS: dict[int, TTCommandDict] = {

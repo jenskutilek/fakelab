@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from FL.helpers.tth import TT_COMMANDS
+from FL.helpers.tth import TT_COMMANDS, TTCommandDict
 
 __doc__ = "Class to represent a visual TrueType instruction"
 
@@ -53,7 +53,7 @@ class TTHCommand:
             self._params = [1632632832]
 
     def __repr__(self) -> str:
-        cmd = TT_COMMANDS.get(self.code, {}).get("name", "NOTHING").upper()
+        cmd = TT_COMMANDS.get(self.code, TTCommandDict()).get("name", "NOTHING").upper()
         return f"<TTHCommand: {cmd}{tuple(self.params)}>"
 
     # Attributes

@@ -215,9 +215,13 @@ class TTInfo(Copyable):
             if k in data:
                 setattr(self, attr, data[k])
         if "head_creation" in data:
-            self._head_creation[0] = uint32_to_signed(data["head_creation"])
+            hc0 = data["head_creation"]
+            assert isinstance(hc0, int)
+            self._head_creation[0] = uint32_to_signed(hc0)
         if "head_creation2" in data:
-            self._head_creation[1] = uint32_to_signed(data["head_creation2"])
+            hc1 = data["head_creation2"]
+            assert isinstance(hc1, int)
+            self._head_creation[1] = uint32_to_signed(hc1)
 
         # I tried to make this value more self-explanatory in vfbLib, but FL
         # only shows us an int. So we have to convert it back ...

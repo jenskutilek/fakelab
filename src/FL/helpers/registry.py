@@ -404,7 +404,7 @@ def parse_registry_file(file_path: Path) -> dict[str, str | int | float]:
 
         elif val_type == "float":
             # float in a string
-            s: str = reg_options[key]
+            s = reg_options[key]
             assert s.startswith('"')
             assert s.endswith('"')
             val = float(reg_options[key][1:-1])
