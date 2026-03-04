@@ -8,6 +8,7 @@ from vfbLib.enum import G
 from vfbLib.typing import (
     AnchorDict,
     GdefDict,
+    GlyphBitmapDict,
     GlyphHintingOptionsDict,
     HintDict,
     MaskData,
@@ -193,16 +194,16 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.end_points: list[int] = []
         self.points: list[TTPoint] = []
         self.instructions: list[int] = []
-        self._imported = None
+        self._imported: dict[str, Any] = {}
         self.hdmx: list[int] = []
 
         self._carets: list[tuple[int, int]] = []
-        self._gdef_class = None
+        self._gdef_class: str = "unassigned"
         self._gdef_ot_classes: list[int] = []
-        self._glyph_bitmaps = None
+        self._glyph_bitmaps: list[GlyphBitmapDict] = []
         self._glyph_hinting_options: GlyphHintingOptionsDict = {}
         self._glyph_origin = {"x": 0, "y": 0}
-        self._glyph_sketch = None
+        self._glyph_sketch: list[tuple[int, int, int]] = []
         self._tth: list[Instruction] = []
 
         # For binary compatibility with FL-written files:
@@ -244,7 +245,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             case G.Glyph:
                 self._layers_number = data["num_masters"]
                 # 0x01
-                self.name: str = data.get("name")
+                self.name = data.get("name")
                 # 0x02
                 self._metrics = [Point(x, y) for x, y in data.get("metrics", [])]
                 # 0x03
@@ -271,7 +272,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                     self.nodes.append(node)
                 # 0x09
                 if imported := data.get("imported"):
-                    self._imported: dict | None = imported
+                    self._imported = imported
                 # 0x0a
                 if tth := data.get("tth"):
                     self._tth = tth
@@ -506,7 +507,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             self._carets.append(caret)
         glyph_class = data.get("glyph_class")
         if glyph_class:
-            self._gdef_class: str | None = glyph_class
+            self._gdef_class = glyph_class
         self._gdef_ot_classes.extend(data.get("ot_classes", []))
 
     def fake_serialize_gdef(self) -> GdefDict:

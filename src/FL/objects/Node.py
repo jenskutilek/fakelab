@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from vfbLib.typing import MMNode
+
 from FL.fake.Base import Copyable
 from FL.helpers.interpolation import (
     add_axis_to_master_list,
@@ -116,12 +118,12 @@ class Node(Copyable):
         else:
             raise ValueError(f"Unknown Node type: {self.type}")
 
-    def fake_serialize(self, num_masters: int) -> dict[str, Any]:
-        d = {
-            "type": json2vfb_node_types[self.type],
-            "flags": json2vfb_node_conns[self.alignment],
-            "points": [],
-        }
+    def fake_serialize(self, num_masters: int) -> MMNode:
+        d = MMNode(
+            type=json2vfb_node_types[self.type],
+            flags=json2vfb_node_conns[self.alignment],
+            points=[],
+        )
         points: list[list[tuple[int, int]]] = [[] for _ in range(num_masters)]
         for master_index, master_points in enumerate(self._points):
             for p in master_points:
