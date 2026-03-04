@@ -322,13 +322,15 @@ wheels = [
 name = "fakelab"
 version = "0.1.3.dev0"
 source = { editable = "." }
+dependencies = [
+    { name = "vfblib" },
+]
 
 [package.optional-dependencies]
 all = [
     { name = "mutatormath" },
     { name = "ptpython" },
     { name = "ufo2ft" },
-    { name = "vfblib" },
 ]
 doc = [
     { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
@@ -338,13 +340,9 @@ doc = [
 generate = [
     { name = "mutatormath" },
     { name = "ufo2ft" },
-    { name = "vfblib" },
 ]
 repl = [
     { name = "ptpython" },
-]
-vfb = [
-    { name = "vfblib" },
 ]
 
 [package.dev-dependencies]
@@ -368,16 +366,14 @@ test = [
 requires-dist = [
     { name = "fakelab", extras = ["generate"], marker = "extra == 'all'" },
     { name = "fakelab", extras = ["repl"], marker = "extra == 'all'" },
-    { name = "fakelab", extras = ["vfb"], marker = "extra == 'all'" },
-    { name = "fakelab", extras = ["vfb"], marker = "extra == 'generate'" },
     { name = "mutatormath", marker = "extra == 'generate'", specifier = ">=3.0.1" },
     { name = "ptpython", marker = "extra == 'repl'", specifier = ">=3.0.30" },
     { name = "sphinx", marker = "extra == 'doc'", specifier = ">=8.2.3" },
     { name = "sphinx-rtd-theme", marker = "extra == 'doc'" },
     { name = "ufo2ft", marker = "extra == 'generate'", specifier = ">=3.6.8" },
-    { name = "vfblib", marker = "extra == 'vfb'", specifier = ">=0.11.0,<0.12.0" },
+    { name = "vfblib", specifier = ">=0.11.0,<0.12.0" },
 ]
-provides-extras = ["generate", "repl", "vfb", "all", "doc"]
+provides-extras = ["generate", "repl", "all", "doc"]
 
 [package.metadata.requires-dev]
 dev = [
