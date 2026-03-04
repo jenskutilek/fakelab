@@ -14,7 +14,7 @@ option_keys = {
     "ATMSmooth": "dword",
     "AutoAlignVector": "dword",
     "AutohintingEngine": "dword",
-    "AutohintingHRatio": "str",
+    "AutohintingHRatio": "float",
     "AutohintingMaxHWidth": "dword",
     "AutohintingMaxVWidth": "dword",
     "AutohintingMinHLen": "dword",
@@ -22,7 +22,7 @@ option_keys = {
     "AutohintingMinVLen": "dword",
     "AutohintingMinVWidth": "dword",
     "AutohintingRemoveHints": "dword",
-    "AutohintingVRatio": "str",
+    "AutohintingVRatio": "float",
     "AutoMetricsClose": "dword",
     "AutoMetricsLeft": "dword",
     "AutoMetricsRight": "dword",
@@ -342,11 +342,11 @@ option_keys = {
 }
 
 
-def parse_registry_file(file_path: Path) -> dict[str, dict[str, str | int | float]]:
+def parse_registry_file(file_path: Path) -> dict[str, str | int | float]:
     with open(file_path, "r") as f:
         data = f.read()
 
-    reg = {}
+    reg: dict[str, dict[str, str]] = {}
     lines = data.splitlines()
     if not lines:
         raise EOFError
@@ -380,7 +380,7 @@ def parse_registry_file(file_path: Path) -> dict[str, dict[str, str | int | floa
 
     # We now have a dict where the keys may be unknown, and the values are in raw format
 
-    parsed: dict[str, dict[str, str | int | float]] = {}
+    parsed: dict[str, str | int | float] = {}
 
     reg_options = reg.get(FL_REGISTRY_KEY)
     if reg_options is None:
@@ -394,13 +394,20 @@ def parse_registry_file(file_path: Path) -> dict[str, dict[str, str | int | floa
         if val_type == "dword":
             hex_str = reg_options[key].split(":", 1)[1]
             assert len(hex_str) == 8
-            val: str | int = int(hex_str, 16)
+            val: str | int | float = int(hex_str, 16)
 
         elif val_type == "str":
-            s = reg_options[key]
+            s: str = reg_options[key]
             assert s.startswith('"')
             assert s.endswith('"')
             val = reg_options[key][1:-1]
+
+        elif val_type == "float":
+            # float in a string
+            s: str = reg_options[key]
+            assert s.startswith('"')
+            assert s.endswith('"')
+            val = float(reg_options[key][1:-1])
 
         else:
             print(f"Unhandled registry value type {val_type}")
