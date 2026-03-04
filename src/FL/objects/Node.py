@@ -1,55 +1,21 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
-from vfbLib.typing import MMNode
-
-from FL.fake.Base import Copyable
-from FL.helpers.interpolation import (
-    add_axis_to_master_list,
-    remove_axis_from_master_point_list,
-)
+from FL.constants import nCURVE
+from FL.fake.copy import copy_fl_object
+from FL.fake.Node import FakeNode
 from FL.helpers.ListParent import ListParent
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
-    from FL.objects.Glyph import Glyph
     from FL.objects.Matrix import Matrix
-
-# Node type
-nLINE = 1
-nMOVE = 17
-nCURVE = 35
-nOFF = 65
-
-# Alignment
-nSHARP = 0
-nSMOOTH = 4096  # tangent
-nCLOSEPATH = 8192  # ? Undocumented: Closepath follows after node
-nFIXED = 12288  # curve to curve smooth
-
-vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
-json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcurve"}
-
-vfb2json_node_conns = {0: nSHARP, 1: nSMOOTH, 2: nCLOSEPATH, 3: nFIXED}
-json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
 
 
 __doc__ = "Class to represent a node"
 
 
-class Node(Copyable):
-    __slots__ = [
-        "alignment",
-        "selected",
-        "type",
-        "_masters_count",
-        "_parent",
-        "_points",
-    ]
-
-    # Constructor
-
+class Node(FakeNode):
     def __init__(
         self, node_or_type: Node | int | None = None, p: Point | None = None
     ) -> None:
@@ -65,14 +31,10 @@ class Node(Copyable):
             node_or_type (Node | int | None, optional): _description_. Defaults to None.
             p (Point | None, optional): _description_. Defaults to None.
         """
-        # Remove float when setting coords
-        self._set_defaults()
-
-        # Process params
-
+        super(FakeNode, self).__init__()
         if isinstance(node_or_type, Node):
             assert p is None
-            self._copy_constructor(node_or_type)
+            copy_fl_object(node_or_type, self)
         elif isinstance(node_or_type, int):
             assert isinstance(p, Point)
 
@@ -88,119 +50,6 @@ class Node(Copyable):
                 self._points = [
                     ListParent([Point(p)]) for _ in range(self._masters_count)
                 ]
-        # else: Empty node
-
-    def __repr__(self) -> str:
-        return f"<Node: type=0x{self.type:x}, x={self.x:g}, y={self.y:g}>"
-
-    # Additions for FakeLab
-
-    def fake_deserialize(self, num_masters: int, data: dict[str, Any]) -> None:
-        self._masters_count = num_masters
-        self.type = vfb2json_node_types[data["type"]]
-        self.alignment = vfb2json_node_conns[data["flags"]]
-        self._points = [ListParent() for _ in range(self._masters_count)]
-        points = data.get("points", [])
-        for master_index in range(num_masters):
-            master_points = points[master_index]
-            if self.type in (nMOVE, nLINE, nOFF):
-                assert len(master_points) == 1
-            elif self.type == nCURVE:
-                assert len(master_points) == 3
-            else:
-                raise ValueError(f"Unknown Node type: {self.type}")
-            for x, y in master_points:
-                self._points[master_index].append(Point(x, y))
-        if self.type in (nMOVE, nLINE, nOFF):
-            assert len(self.points) == 1
-        elif self.type == nCURVE:
-            assert len(self.points) == 3
-        else:
-            raise ValueError(f"Unknown Node type: {self.type}")
-
-    def fake_serialize(self, num_masters: int) -> MMNode:
-        d = MMNode(
-            type=json2vfb_node_types[self.type],
-            flags=json2vfb_node_conns[self.alignment],
-            points=[],
-        )
-        points: list[list[tuple[int, int]]] = [[] for _ in range(num_masters)]
-        for master_index, master_points in enumerate(self._points):
-            for p in master_points:
-                points[master_index].append((int(p.x), int(p.y)))
-        d["points"] = points
-        return d
-
-    def fake_update(self, glyph: Glyph | None = None) -> None:
-        """
-        Is called from FontLab.UpdateFont()
-        """
-        self._parent: Glyph | None = glyph
-        for p in self.points:
-            p.fake_update(self)
-
-    def fake_add_axis(self) -> None:
-        add_axis_to_master_list(self._points)
-        self._masters_count *= 2
-
-    def fake_remove_axis(self, interpolation: float) -> None:
-        if len(self) == 0:
-            return
-
-        remove_axis_from_master_point_list(self._points, interpolation)
-        self._masters_count //= 2
-
-    # Attributes
-
-    @property
-    def parent(self) -> Glyph | None:
-        """
-        Nodes's parent object, Glyph
-        """
-        return self._parent
-
-    @property
-    def count(self) -> int:
-        return len(self)
-
-    @property
-    def point(self) -> Point:
-        """
-        position of the final point of the first master
-        """
-        return self._points[0][0]
-
-    @property
-    def points(self) -> ListParent[Point]:
-        """
-        positions of all points of the first master
-        """
-        return self._points[0]
-
-    @property
-    def x(self) -> int:
-        return int(self.point.x)
-
-    @property
-    def y(self) -> int:
-        return int(self.point.y)
-
-    # Operations
-
-    def __len__(self) -> int:
-        """
-        Return the number of points.
-        """
-        return len(self._points[0])
-
-    def __getitem__(self, index: int) -> Point:
-        """
-        Accesses points array of the first master
-        """
-        return self._points[0][index]
-
-    def __mul__(self, matrix: Matrix) -> Node:
-        raise NotImplementedError
 
     # Methods
 
@@ -220,7 +69,7 @@ class Node(Copyable):
         """
         raise NotImplementedError
 
-    def Layer(self, masterindex: int) -> list[Point]:
+    def Layer(self, masterindex: int) -> ListParent[Point]:
         """
         Returns list of points for the master 'masterindex'
         """
@@ -244,27 +93,8 @@ class Node(Copyable):
         """
         raise NotImplementedError
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         """
         Applies Matrix transformation to the Node
         """
         raise NotImplementedError
-
-    # Defaults
-
-    def _set_defaults(self) -> None:
-        self._parent = None
-        self._masters_count = 1
-
-        # type of the node, values are: nMOVE, nLINE, nCURVE or nOFF
-        self.type = nLINE
-
-        # type of primitive connection, possible values are:
-        # nSHARP, nSMOOTH, nFIXED
-        self.alignment = nSHARP
-
-        # True if node is selected
-        self.selected = 0
-        self._points = [ListParent() for _ in range(self._masters_count)]
-        for master_index in range(self._masters_count):
-            self._points[master_index].append(Point())

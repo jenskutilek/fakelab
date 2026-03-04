@@ -12,6 +12,13 @@ from FL.constants import (
     ftTYPE1_MM,
     ftTYPE1ASCII,
     ftTYPE1ASCII_MM,
+    nCURVE,
+    nFIXED,
+    nLINE,
+    nMOVE,
+    nOFF,
+    nSHARP,
+    nSMOOTH,
 )
 from FL.FLdict import (
     BUTTONCONTROL,
@@ -194,7 +201,7 @@ from FL.objects.KerningPair import KerningPair
 from FL.objects.Link import Link
 from FL.objects.Matrix import Matrix
 from FL.objects.NameRecord import NameRecord
-from FL.objects.Node import Node, nCURVE, nFIXED, nLINE, nMOVE, nOFF, nSHARP, nSMOOTH
+from FL.objects.Node import Node
 from FL.objects.Options import Options
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect

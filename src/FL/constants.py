@@ -33,3 +33,22 @@ ftMACTRUETYPE = 30
 
 # Mac TrueType font (generates suitcase with resources in data fork)
 ftMACTRUETYPE_DFONT = 31
+
+
+# Node type
+nLINE = 1
+nMOVE = 17
+nCURVE = 35
+nOFF = 65
+
+# Alignment
+nSHARP = 0
+nSMOOTH = 4096  # tangent
+nCLOSEPATH = 8192  # ? Undocumented: Closepath follows after node
+nFIXED = 12288  # curve to curve smooth
+
+vfb2json_node_types = {"line": 1, "move": 17, "curve": 35, "qcurve": 65}
+json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcurve"}
+
+vfb2json_node_conns = {0: nSHARP, 1: nSMOOTH, 2: nCLOSEPATH, 3: nFIXED}
+json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
