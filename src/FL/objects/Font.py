@@ -358,7 +358,7 @@ class Font(FakeFont):
         self._glyphs: ListParent[Glyph] = ListParent(parent=self)
 
         # Font data that is not accessible via FL5 Python API
-        self._collection = []
+        self._collection: list[Any] = []
         self._encoding_default: list[EncodingRecord] = []
         self._font_flags = ""
         self._global_mask: Glyph | None = None
@@ -446,7 +446,7 @@ class Font(FakeFont):
         return self._ascender
 
     @ascender.setter
-    def ascender(self) -> None:
+    def ascender(self, value: list[int]) -> None:
         raise RuntimeError("Class Font has no attribute ascender or it is read-only")
 
     @property
@@ -484,7 +484,7 @@ class Font(FakeFont):
         return self._get_ps_info_blues("blue_values")
 
     @blue_values.setter
-    def blue_values(self) -> None:
+    def blue_values(self, value: list[list[int]]) -> None:
         raise RuntimeError("Class Font has no attribute blue_values or it is read-only")
 
     @property
@@ -492,7 +492,7 @@ class Font(FakeFont):
         return self._cap_height
 
     @cap_height.setter
-    def cap_height(self) -> None:
+    def cap_height(self, value: list[int]) -> None:
         raise RuntimeError("Class Font has no attribute cap_height or it is read-only")
 
     @property
@@ -513,7 +513,7 @@ class Font(FakeFont):
         return self._default_width
 
     @default_width.setter
-    def default_width(self) -> None:
+    def default_width(self, value: list[int]) -> None:
         raise RuntimeError(
             "Class Font has no attribute default_width or it is read-only"
         )
@@ -523,7 +523,7 @@ class Font(FakeFont):
         return self._descender
 
     @descender.setter
-    def descender(self) -> None:
+    def descender(self, value: list[int]) -> None:
         raise RuntimeError("Class Font has no attribute descender or it is read-only")
 
     @property
@@ -559,7 +559,7 @@ class Font(FakeFont):
         return self._get_ps_info_blues("family_blues")
 
     @family_blues.setter
-    def family_blues(self) -> None:
+    def family_blues(self, value: list[list[int]]) -> None:
         raise RuntimeError(
             "Class Font has no attribute family_blues or it is read-only"
         )
@@ -592,7 +592,7 @@ class Font(FakeFont):
         return self._get_ps_info_blues("family_other_blues")
 
     @family_other_blues.setter
-    def family_other_blues(self) -> None:
+    def family_other_blues(self, value: list[list[int]]) -> None:
         raise RuntimeError(
             "Class Font has no attribute family_other_blues or it is read-only"
         )
@@ -630,7 +630,7 @@ class Font(FakeFont):
         return [self._master_ps_infos[i]["force_bold"] for i in range(16)]
 
     @force_bold.setter
-    def force_bold(self) -> None:
+    def force_bold(self, value: list[int]) -> None:
         raise RuntimeError("Class Font has no attribute force_bold or it is read-only")
 
     @property
@@ -671,7 +671,7 @@ class Font(FakeFont):
         return self._get_ps_info_blues("other_blues")
 
     @other_blues.setter
-    def other_blues(self) -> None:
+    def other_blues(self, value: list[list[int]]) -> None:
         raise RuntimeError("Class Font has no attribute other_blues or it is read-only")
 
     @property
@@ -685,7 +685,7 @@ class Font(FakeFont):
         ]
 
     @stem_snap_h.setter
-    def stem_snap_h(self) -> None:
+    def stem_snap_h(self, value: list[list[int]]) -> None:
         raise RuntimeError("Class Font has no attribute stem_snap_h or it is read-only")
 
     @property
@@ -711,7 +711,7 @@ class Font(FakeFont):
         ]
 
     @stem_snap_v.setter
-    def stem_snap_v(self) -> None:
+    def stem_snap_v(self, value: list[list[int]]) -> None:
         raise RuntimeError("Class Font has no attribute stem_snap_v or it is read-only")
 
     @property
@@ -754,7 +754,7 @@ class Font(FakeFont):
         return self._x_height
 
     @x_height.setter
-    def x_height(self) -> None:
+    def x_height(self, value: list[int]) -> None:
         raise RuntimeError("Class Font has no attribute x_height or it is read-only")
 
     @property
@@ -1320,7 +1320,7 @@ class Font(FakeFont):
         """
         return self._classes.GetClassRight(class_index)
 
-    def GetClassMetricsFlags(self, class_index: int) -> tuple | None:
+    def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
         """
         (int class_index)
         - returns the tuple containing LSB, RSB and Width flags of the metrics

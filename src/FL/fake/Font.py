@@ -171,7 +171,7 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
         return names
 
     def fake_deserialize_global_mask(self, data: GlyphData) -> None:
-        self._global_mask = Glyph(self._masters_count)
+        self._global_mask: Glyph | None = Glyph(self._masters_count)
         self._global_mask.fake_deserialize(G.Glyph, data)
 
     def fake_serialize_global_mask(self) -> GlyphData:

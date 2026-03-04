@@ -288,7 +288,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def Convert(self, p: Point):
+    def Convert(self, p: Point) -> Point:
         """
         Converts coordinates from the source coordinate space
 
@@ -297,7 +297,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def UnConvert(self, p: Point):
+    def UnConvert(self, p: Point) -> Point:
         """
         Converts screen coordinates to the currently defined coordinate space
 
