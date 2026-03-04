@@ -170,7 +170,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # list of Unicode indexes
         self._unicodes: list[int] = []
 
-        self._custom_dict: dict[Any, Any] = {}
+        self._custom_dict: str = ""
 
         # glyph name
         self.name = ""

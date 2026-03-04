@@ -366,7 +366,7 @@ class Font(FakeFont):
         self._license: str = ""
         self._license_url: str = ""
         self._custom_cmaps: list[CustomCmap] = []
-        self._custom_dict = {}
+        self._custom_dict: str = ""
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {
             "font_number": 0,
