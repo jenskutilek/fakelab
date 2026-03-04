@@ -20,7 +20,7 @@ classifiers = [
 
 requires-python = ">=3.11"
 dependencies = [
-    # "vfblib >= 0.11.0, < 0.12.0",  # Could be made optional for a lean test framework
+    "vfblib >= 0.11.0, < 0.12.0",  # Could be made optional for a leaner test framework
 ]
 
 
@@ -44,21 +44,14 @@ generate = [
     # Generate actual fonts with ufo2ft
     "ufo2ft >= 3.6.8",
     "mutatormath >= 3.0.1",
-    "fakelab[vfb]",
 ]
 repl = [
     # Better interactive prompt
     "ptpython >= 3.0.30"
 ]
-vfb = [
-    # Optional for a lean test framework
-    # Load and save VFB files
-    "vfbLib >= 0.11.0, < 0.12.0",
-]
 all = [
     "fakelab[generate]",
     "fakelab[repl]",
-    "fakelab[vfb]",
 ]
 doc = [
     "sphinx >= 8.2.3",
