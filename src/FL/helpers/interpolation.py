@@ -206,15 +206,26 @@ def remove_axis_from_master_point_list(
         seq.pop()
 
 
-def interpolate(v0: float, v1: float, factor: float) -> int:
-    return int(round(Decimal(str(interpolate_float(v0, v1, factor))), 0))
-
-
-def interpolate_float(v0: float, v1: float, factor: float) -> float:
+def interpolate(v0: float, v1: float, factor: float) -> float:
     return v0 + (v1 - v0) * factor
-
-    # TODO: Do we need to round at all?
 
 
 def interpolate_point(p0: Point, p1: Point, factor: float) -> Point:
-    return round(p0 + (p1 - p0) * factor)
+    return p0 + (p1 - p0) * factor
+
+
+def round_points(points: list[Point]) -> None:
+    # Round a list of points in place
+    for point in points:
+        point.x = round_float(point.x)
+        point.y = round_float(point.y)
+
+
+def round_float(value: float) -> int:
+    return int(round(Decimal(str(value)), 0))
+
+
+def round_floats(values: list[float]) -> None:
+    # Round a list of floats in place
+    for i, value in enumerate(values):
+        values[i] = round_float(value)
