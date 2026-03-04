@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import UserList
 from copy import copy
-from typing import Any, Iterable, TypeVar
+from typing import Any, Iterable, SupportsIndex, TypeVar
 
 T = TypeVar("T")
 
@@ -16,12 +16,12 @@ class ListParent(UserList[T]):
         super().__init__(copy(iterable))
         self._parent = parent
 
-    def __add__(self, item: Any) -> ListParent:
+    def __add__(self, item: Any) -> ListParent[T]:
         # Makes scripting unresponsive in FL5
         # We raise an error that is not used otherwise
         raise ReferenceError
 
-    def __iadd__(self, item: Any) -> ListParent:
+    def __iadd__(self, item: Any) -> ListParent[T]:
         # Makes scripting unresponsive in FL5
         # We raise an error that is not used otherwise
         raise ReferenceError
@@ -30,8 +30,11 @@ class ListParent(UserList[T]):
     #     item._parent = self._parent
     #     self.data.__radd__(item)
 
-    def __setitem__(self, index: int, item: Any) -> None:
-        item._parent = self._parent
+    def __setitem__(
+        self, index: SupportsIndex | slice[Any, Any, Any], item: Any
+    ) -> None:
+        if hasattr(item, "_parent"):
+            item._parent = self._parent
         self.data[index] = item
 
     def append(self, item: Any) -> None:
@@ -43,14 +46,14 @@ class ListParent(UserList[T]):
         # Raise AttributeError as in FL5
         raise AttributeError
 
-    def extend(self, iterable: Iterable) -> None:
+    def extend(self, other: Iterable[T]) -> None:
         # Not implemented
         # Raise AttributeError as in FL5
         raise AttributeError
 
-    def insert(self, index: int, item: Any) -> None:
+    def insert(self, i: int, item: Any) -> None:
         item._parent = self._parent
-        self.data.insert(index, item)
+        self.data.insert(i, item)
 
     # FontLab-specific
 
