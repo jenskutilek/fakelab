@@ -19,7 +19,7 @@ class Anchor(Copyable):
     Anchor - class to represent Anchor point
     """
 
-    __slots__ = ["_mark", "_name", "_parent", "_points", "_reserved"]
+    __slots__ = ["_mark", "_name", "_parent", "_points", "_data"]
 
     # Constructor
 
@@ -57,7 +57,7 @@ class Anchor(Copyable):
         self._name = ""
 
         self._mark = 1
-        self._reserved = 0
+        self._data = 0
         self._points = [Point() for _ in range(16)]
 
     def fake_add_axis(self) -> None:

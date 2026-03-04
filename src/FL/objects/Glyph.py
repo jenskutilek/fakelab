@@ -531,12 +531,12 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         for i, d in enumerate(data):
             anchor = self.anchors[i]
             anchor.mark = d["hue"]
-            anchor._reserved = d["reserved"]
+            anchor._data = d["data"]
 
     def fake_serialize_anchor_supp(self) -> list[dict[str, int]]:
         data = []
         for anchor in self.anchors:
-            data.append({"hue": anchor.mark, "reserved": anchor._reserved})
+            data.append({"hue": anchor.mark, "data": anchor._data})
         return data
 
     def fake_deserialize_anchors_mm(self, data: MMAnchorDict) -> None:
