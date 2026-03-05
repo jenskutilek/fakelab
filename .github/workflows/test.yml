@@ -26,7 +26,7 @@ jobs:
         run: uv tool install tox --with tox-uv --with tox-gh
 
       - name: Run test suite
-        run: tox --skip-pkg-install
+        run: uv run tox --skip-pkg-install
         env:
           TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
 
