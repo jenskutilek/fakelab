@@ -388,7 +388,6 @@ class FakeLab:
         if not can_generate:
             return -1
 
-        from ufo2ft import compileOTF, compileTTF
         from vfbLib.ufo.builder import VfbToUfoBuilder
 
         # At the moment, we jump through some hoops. The font must have been opened
