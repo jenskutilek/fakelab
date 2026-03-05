@@ -17,7 +17,7 @@ jobs:
       - name: Install uv and set the Python version
         uses: astral-sh/setup-uv@v7
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python }}
 
       - name: Install the project with test dependencies
         run: uv sync --locked --group test
@@ -25,9 +25,9 @@ jobs:
       - name: Set up test suite
         run: uv run tox -vv --notest --skip-missing-interpreters false
         env:
-          TOX_GH_MAJOR_MINOR: ${{ matrix.python-version }}
+          TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
 
       - name: Run test suite
         run: uv run tox --skip-pkg-install
         env:
-          TOX_GH_MAJOR_MINOR: ${{ matrix.python-version }}
+          TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
