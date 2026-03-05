@@ -1,26 +1,21 @@
-from __future__ import annotations
-
 import logging
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser
 from vfbLib.typing import GlyphData, PSInfoDict
 
-from FL.fake.Base import Copyable
 from FL.fake.FontInterpolator import FontInterpolator
 from FL.fake.Kerning import FakeKerning
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.FLList import adjust_list
+from FL.objects.base.Font import BaseFont
 from FL.objects.Feature import Feature
 from FL.objects.Glyph import Glyph
-
-if TYPE_CHECKING:
-    from FL.objects.Uni import Uni
-
+from FL.objects.Rect import Rect
+from FL.objects.Uni import Uni
 
 __doc__ = """
 Base class for Font
@@ -30,25 +25,25 @@ Base class for Font
 logger = logging.getLogger(__name__)
 
 
-class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
-    __slots__ = [
-        "_fake_binaries",
-        "_fake_kerning",
-        "_file_name",
-        "_selection",
-        "fake_sparse_json",
-        "fake_vfb_object",
-    ]
-
+class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
     def __init__(self) -> None:
         # Additions for FakeLab
 
+        super().__init__()
         self._fake_binaries: dict[str, str] = {}
         self._fake_kerning = FakeKerning(self)
         self.fake_sparse_json = True
         self.fake_deselect_all()
 
     # Additional properties for FakeLab
+
+    def fake_clear_defaults(self) -> None:
+        """
+        Clear some lists prior to deserializing a font from a Vfb.
+        """
+        self._master_names.clear()
+        self._master_locations.clear()
+        self._master_ps_infos.clear()
 
     @property
     def fake_kerning(self) -> FakeKerning:
@@ -58,7 +53,135 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         return self._fake_kerning
 
-    # Additions for FakeLab
+    def _normalize_upm(self, value: float) -> int:
+        # TODO: truncate value before scaling?
+        return int(value * 1000 / self.upm)
+
+    def fake_bounding_rect(self, for_afm: bool = False) -> Rect:
+        if for_afm:
+            x0 = 0
+            y0 = self.descender[0] - (100 * self.upm / 1000)
+            y1 = self.ascender[0] + (100 * self.upm / 1000)
+        else:
+            x0 = 32767
+            y0 = 32767
+            y1 = -32767
+        rect = Rect(x0, y0, -32767, y1)
+        for g in self.glyphs:
+            gr = g.GetBoundingRect()
+            # print(g.name, gr)
+            rect += gr
+        return rect
+
+    def fake_save_afm_expanded(self, filename: str) -> None:
+        afm = self.fake_get_afm(expand_kerning=True)
+        afm_path = Path(filename).with_suffix(".afm")
+        with open(afm_path, "w") as f:
+            f.write(afm)
+
+    def fake_get_afm(self, expand_kerning: bool = False) -> str:
+        afm = ["StartFontMetrics 2.0"]
+        r = self.fake_bounding_rect(for_afm=True)
+        bbox = (
+            f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
+            f"{self._normalize_upm(r.ur.x)} {self._normalize_upm(r.ur.y)}"
+        )
+        if bbox == "32767 32767 -32767 -32767":
+            bbox = "0 0 0 0"
+        afm.extend(
+            [
+                f"Comment Copyright {self.notice}",
+                f"Comment Panose {' '.join([str(p) for p in self.panose])}",
+                f"FullName {self.full_name}",
+                f"FontName {self.font_name}",
+                f"FamilyName {self.family_name}",
+                f"Weight {self.weight}",
+                f"Notice {self.copyright}",
+                f"Version {self.version_major}.{self.version_minor:03d}",
+                f"IsFixedPitch {('false', 'true')[self.is_fixed_pitch]}",
+                f"ItalicAngle {self.italic_angle:0.2f}",
+                f"FontBBox {bbox}",
+                f"Ascender {self._normalize_upm(self.ascender[0])}",
+                f"Descender {self._normalize_upm(self.descender[0])}",
+                f"XHeight {self._normalize_upm(self.x_height[0])}",
+                f"CapHeight {self._normalize_upm(self.cap_height[0])}",
+                f"UnderlinePosition {self._normalize_upm(self.underline_position)}",
+                f"UnderlineThickness {self._normalize_upm(self.underline_thickness)}",
+                "EncodingScheme FontSpecific",
+                f"StartCharMetrics {len(self.glyphs)}",
+            ]
+        )
+        glyphs = self.fake_sort_glyphs(self.glyphs.data)
+        for g in glyphs:
+            r = g.bounding_box
+            bbox = (
+                f"{self._normalize_upm(r.ll.x)} {self._normalize_upm(r.ll.y)} "
+                f"{self._normalize_upm(r.ur.x)} {self._normalize_upm(r.ur.y)}"
+            )
+            if bbox == "32767 32767 -32767 -32767":
+                bbox = "0 0 0 0"
+            afm.append(
+                f"C {g.unicode or -1} ; WX {self._normalize_upm(g.width)} ; "
+                f"N {g.name} ; B {bbox} ;"
+            )
+        afm.append("EndCharMetrics")
+
+        kerning = self.fake_get_afm_kerning(expand_kerning)
+        if kerning:
+            kerning = self.fake_sort_kerning(kerning)
+            afm.append("StartKernData")
+            afm.append(f"StartKernPairs {len(kerning)}")
+            prev_L = ""
+            for L, R, value in kerning:
+                if prev_L != "" and prev_L != L:
+                    afm.append("")
+                afm.append(f"KPX {L} {R} {self._normalize_upm(value)}")
+                prev_L = L
+
+            afm.append("")
+            afm.append("EndKernPairs")
+            afm.append("EndKernData")
+        afm.append("EndFontMetrics\n")
+
+        return "\n".join(afm)
+
+    def fake_get_afm_kerning(
+        self, expand_kerning: bool = False
+    ) -> list[tuple[str, str, int]]:
+        if expand_kerning:
+            self.fake_kerning.expand()
+            return self.fake_kerning.flat_kerning
+
+        kerning = []
+        for g in self.glyphs:
+            L = g.name
+            for pair in g.kerning:
+                R = self.glyphs[pair.key].name
+                value = pair.value
+                kerning.append((L, R, value))
+        return kerning
+
+    def fake_get_inf(self) -> str:
+        inf = ""
+        return inf
+
+    def fake_sort_glyphs(self, glyphs: list[Glyph]) -> list[Glyph]:
+        glyph_order = tuple([rec.name for rec in self.encoding])
+        sortable = [(glyph_order.index(glyph.name), glyph) for glyph in glyphs]
+        sortable.sort()
+        # print(sortable)
+        return [glyph for _, glyph in sortable]
+
+    def fake_sort_kerning(
+        self, kerning: list[tuple[str, str, int]]
+    ) -> list[tuple[str, str, int]]:
+        glyph_order = tuple([rec.name for rec in self.glyphs])
+        sortable = [
+            (glyph_order.index(L), glyph_order.index(R), L, R, value)
+            for L, R, value in kerning
+        ]
+        sortable.sort()
+        return [(L, R, value) for _, _, L, R, value in sortable]
 
     def fake_binary_get(self, fontType: int) -> bytes:
         binary_path = self._fake_binaries[str(fontType)]
@@ -87,7 +210,7 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         self._selection: set[int] = set()
 
-    def fake_select(self, gid: str | Uni | int, value: bool | None = None) -> None:
+    def fake_select(self, gid: "str | Uni | int", value: bool | None = None) -> None:
         """
         Change selection status for glyph_index.
         >>> f = Font()
@@ -137,8 +260,8 @@ class FakeFont(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
-    def fake_generate_primary_instances(self) -> list[FakeFont]:
-        instances: list[FakeFont] = []
+    def fake_generate_primary_instances(self) -> "list[FakeFont]":
+        instances: "list[FakeFont]" = []
         # for inst_dict in self._primary_instances:
         #     print(inst_dict)
         #     interpolator = FontInterpolator(self)
