@@ -29,13 +29,3 @@ jobs:
         run: uv run tox --skip-pkg-install
         env:
           TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
-
-      # - name: Set up test suite
-      #   run: uv run tox -vv --notest --skip-missing-interpreters false
-      #   env:
-      #     TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
-
-      # - name: Run test suite
-      #   run: uv run tox --skip-pkg-install
-      #   env:
-      #     TOX_GH_MAJOR_MINOR: ${{ matrix.python }}
