@@ -633,7 +633,14 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             self._primary_instance_locations = []
             self._primary_instances = []
 
+        # TODO: TrueType stems?
+        # FontLab seems to derive TrueType stem values when interpolating, even though
+        # the stem values are not MM
+
+        # TODO: Font Matrix?
+
         # Remove master names, recalculate if there are any axes left
+
         self._master_names = []
         if self._axis_count > 0:
             base = ""
@@ -643,3 +650,5 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 self._master_names.append(base % loc)
         else:
             self._master_names = ["Untitled"]
+
+        # TODO: Recalculate bounding box, adv_width_min, adv_width_max
