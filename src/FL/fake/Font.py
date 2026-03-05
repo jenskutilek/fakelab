@@ -260,7 +260,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         #     instances.append(interpolator._font)
         #     del interpolator
         inst_dict = self._primary_instances[11]
-        print(inst_dict)
+        logger.info(inst_dict)
         instance = self.ip(inst_dict["values"], style_name=inst_dict["name"])
         instances.append(instance)
         return instances
@@ -493,13 +493,13 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             for i, v in enumerate(significant_values)
         ]
         axis_index = self._axis_count - 1
-        print(significant_values)
-        print(internal_values)
+        logger.info(significant_values)
+        logger.info(internal_values)
 
         # Do the interpolation
 
         for factor in reversed(internal_values):
-            print(f"Interpolating axis {axis_index} with factor {factor:.3f}")
+            logger.info(f"Interpolating axis {axis_index} with factor {factor:.3f}")
             self.fake_remove_axis(axis_index, factor, round_values=axis_index == 0)
             axis_index -= 1
 
