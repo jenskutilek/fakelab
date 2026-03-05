@@ -321,8 +321,9 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             # FIXME: Do we need empty lines as separator?
             fea.append("\n")
         for feature in self.features:
-            fea.extend(feature.value.splitlines())
-            fea.append("")
+            if feature.value is not None:
+                fea.extend(feature.value.splitlines())
+                fea.append("")
         return fea
 
     def fake_deserialize_master_ps_infos(self) -> None:
