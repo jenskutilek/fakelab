@@ -1,12 +1,21 @@
-from __future__ import annotations
-
 from decimal import ROUND_HALF_UP, Decimal, DefaultContext, setcontext
-from typing import Any
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from FL.objects.Point import Point
 
+if TYPE_CHECKING:
+    from FL.objects.Font import Font
+
 DefaultContext.rounding = ROUND_HALF_UP
 setcontext(DefaultContext)
+
+
+class AxisDict(TypedDict):
+    name: str
+    minimum: float
+    maximum: float
+    default: float
+    map: dict[float, float]
 
 
 def add_axis_to_list(seq: list[Any]) -> None:
@@ -66,8 +75,54 @@ def piecewise_linear_map(v: float, mapping: dict[float, float]) -> float:
     return va + (vb - va) * (v - a) / (b - a)
 
 
+def build_axis_dict(font: "Font") -> dict[str, AxisDict]:
+    # Build axis dicts with mappings that can be used to build a Mutator
+    axis_mappings = read_axis_mappings(font)
+    # _master_locations = font.fake_master_map()
+    axis_dict: dict[str, AxisDict] = {}
+    for a in range(font._axis_count):
+        axis_name = font.axis[a][1].lower()
+        mappings = axis_mappings.get(a, {})
+        inputs = mappings.keys()
+        range_min = min(inputs, default=0.0)
+        range_max = max(inputs, default=1000.0)
+        axis_dict[axis_name] = {
+            "name": axis_name,
+            "minimum": range_min,
+            "maximum": range_max,
+            "default": range_min,
+            "map": mappings,
+        }
+    return axis_dict
+
+
+def map_user_to_internal(user_value: float, axis_tag: str, axis_dict: dict) -> float:
+    mapping = axis_dict[axis_tag].get("map")
+    if not mapping:
+        return user_value / 1000
+    return piecewise_linear_map(user_value, mapping)
+
+
+def read_axis_mappings(font: "Font") -> dict[int, dict[float, float]]:
+    # Convert axis mappings from Font into a format mutatorMath understands
+    offset = 0
+    axis_mappings: dict[int, dict[float, float]] = {}
+    for a in range(len(font.axis)):
+        axis_mappings[a] = {}
+        num_mappings = font._axis_mappings_count[a]
+        for m in range(num_mappings):
+            user, internal = font._axis_mappings[offset + m]
+            axis_mappings[a][user] = internal
+        offset += 10  # There are always 10 mappings stored
+    return axis_mappings
+
+
 def remove_axis_from_list(
-    seq: list[int] | list[float], index: int, interpolation: float, round_values: float
+    seq: list[int] | list[float],
+    index: int,
+    interpolation: float,
+    round_values: float,
+    num_masters: int = -1,
 ) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
@@ -80,7 +135,11 @@ def remove_axis_from_list(
     Raises:
         ValueError: If the list has an odd number of elements.
     """
-    num_values = len(seq)
+    if num_masters < 0:
+        num_values = len(seq)
+    else:
+        num_values = num_masters
+
     if num_values % 2:
         raise ValueError(f"List must have an even number of elements: {seq}")
 
@@ -121,6 +180,7 @@ def remove_axis_from_master_list(
     index: int,
     interpolation: float,
     round_values: bool,
+    num_masters: int = -1,
 ) -> None:
     """
     Remove an axis from a 2d list of values per master. Top level index is the master
@@ -133,7 +193,9 @@ def remove_axis_from_master_list(
     Raises:
         ValueError: If the list has an odd number of elements.
     """
-    num_masters = len(seq)
+    if num_masters < 0:
+        num_masters = len(seq)
+
     if num_masters % 2:
         raise ValueError(f"List must have an even number of elements: {seq}")
 
@@ -158,7 +220,11 @@ def remove_axis_from_master_list(
 
 
 def remove_axis_from_point_list(
-    seq: list[Point], index: int, interpolation: float, round_values: bool
+    seq: list[Point],
+    index: int,
+    interpolation: float,
+    round_values: bool,
+    num_masters: int = -1,
 ) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
@@ -171,7 +237,11 @@ def remove_axis_from_point_list(
     Raises:
         ValueError: If the list has an odd number of elements.
     """
-    num_values = len(seq)
+    if num_masters < 0:
+        num_values = len(seq)
+    else:
+        num_values = num_masters
+
     if num_values % 2:
         raise ValueError(f"List must have an even number of elements: {seq}")
 
@@ -186,7 +256,11 @@ def remove_axis_from_point_list(
 
 
 def remove_axis_from_master_point_list(
-    seq: list[list[Point]], index: int, interpolation: float, round_values: bool
+    seq: list[list[Point]],
+    index: int,
+    interpolation: float,
+    round_values: bool,
+    num_masters: int = -1,
 ) -> None:
     """
     Remove an axis from a 2d list of points per master. Top level index is the master
@@ -199,7 +273,9 @@ def remove_axis_from_master_point_list(
     Raises:
         ValueError: If the list has an odd number of elements.
     """
-    num_masters = len(seq)
+    if num_masters < 0:
+        num_masters = len(seq)
+
     if num_masters % 2:
         raise ValueError(f"List must have an even number of elements: {seq}")
 
@@ -255,8 +331,8 @@ def round_master_point_list(points: list[list[Point]]) -> None:
 
 def round_point(point: Point) -> None:
     # Truncates
-    point.x = int(point.x)
-    point.y = int(point.y)
+    point.x = round_float(point.x)
+    point.y = round_float(point.y)
 
 
 def round_point_list(points: list[Point]) -> None:

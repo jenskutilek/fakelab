@@ -63,8 +63,16 @@ class Anchor(Copyable):
     def fake_add_axis(self) -> None:
         add_axis_to_list(self._points)
 
-    def fake_remove_axis(self, interpolation: float) -> None:
-        remove_axis_from_point_list(self._points, interpolation)
+    def fake_remove_axis(
+        self,
+        index: int,
+        interpolation: float,
+        round_values: bool,
+        num_masters: int = -1,
+    ) -> None:
+        remove_axis_from_point_list(
+            self._points, index, interpolation, round_values, num_masters
+        )
 
     # Attributes
 

@@ -5,8 +5,6 @@ from pathlib import Path
 
 from FL.fake.copy import copy_fl_object
 from FL.fake.Font import FakeFont
-from FL.helpers.FLList import adjust_list
-from FL.helpers.interpolation import remove_axis_from_factor_list, remove_axis_from_list
 from FL.objects.Encoding import Encoding
 from FL.objects.Glyph import Glyph
 from FL.objects.Uni import Uni
@@ -37,17 +35,23 @@ class Font(FakeFont):
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM
                 # axes defined in the font
-                # TODO: Map to normalized location
-                for axis_location in reversed(instances):
-                    axis_index = self._axis_count - 1
-                    normalized = self.fake_map_axis_location(axis_index, axis_location)
-                    self.DeleteAxis(axis_index, normalized)
+                self.ip(instances)
 
         elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
             self.Open(font_or_path)
 
         # else: Empty font
+
+    def ip(
+        self,
+        instances: tuple[float, ...],
+        family_name: str | None = None,
+        style_name: str | None = None,
+    ) -> Font:
+        f = Font(self)
+        f.fake_interpolate(instances, family_name, style_name)
+        return f
 
     def __repr__(self) -> str:
         return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
@@ -215,79 +219,7 @@ class Font(FakeFont):
             axisindex (int): The index of the axis to remove (0 to 3).
             position (float): The position of the remaining masters on the removed axis.
         """
-        if self._axis_count == 0:
-            # Ignore silently
-            return
-
-        assert axisindex == self._axis_count - 1, (
-            "Can only remove the last axis for now"
-        )
-
-        if self._global_mask is not None:
-            self._global_mask.fake_remove_axis(position)
-
-        # Remove axis from glyphs
-        for glyph in self.glyphs:
-            glyph.fake_remove_axis(position)
-
-        for guide in self.hguides:
-            guide.fake_remove_axis(position)
-        for guide in self.vguides:
-            guide.fake_remove_axis(position)
-
-        # TODO: Remove axis from fontinfo (interpolate values)
-
-        for attr in (
-            self._ascender,
-            self._descender,
-            self._cap_height,
-            self._x_height,
-            self._default_width,
-            # self.blue_fuzz,
-            # self.blue_scale,
-            # self.blue_shift,
-            # self.force_bold,
-            # self.stem_snap_h,
-            # self.stem_snap_v,
-        ):
-            remove_axis_from_list(attr, position)
-            # These always store all possible 16 masters, so we must extend them to the
-            # full length again.
-            adjust_list(attr, 16)
-
-        # Remove axis from font
-        self._axis.pop()
-        self._axis_count = len(self._axis)
-
-        self._masters_count //= 2
-
-        remove_axis_from_factor_list(self.weight_vector._weights)
-        adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
-
-        # Primary instances
-        if self._axis_count > 0:
-            # FIXME: This seems a bit more complicated. Locations that are still inside
-            # the design space must be recalculated, others zeroed.
-            # remove_axis_from_list(self._primary_instance_locations, position)
-            for p in self._primary_instances:
-                values = list(p["values"])
-                remove_axis_from_list(values, position)
-                adjust_list(values, 4, 0.0)
-                p["values"] = tuple(values)
-        else:
-            self._primary_instance_locations = []
-            self._primary_instances = []
-
-        # Remove master names, recalculate if there are any axes left
-        self._master_names = []
-        if self._axis_count > 0:
-            base = ""
-            for _, short_name, _ in self.axis:
-                base += f"{short_name}%s "
-            for loc in self.fake_master_map():
-                self._master_names.append(base % loc)
-        else:
-            self._master_names = ["Untitled"]
+        self.fake_remove_axis(axisindex, position, round_values=True)
 
     def GenerateUnicode(self) -> None:
         """
@@ -429,4 +361,19 @@ class Font(FakeFont):
     # Additional methods reported by dir(fl.font)
 
     def GenerateInstance(self, weight_vector: WeightVector) -> None:
-        raise NotImplementedError
+        """
+        Generate an instance of the font. This method was undocumented, and I couldn't
+        figure it out.
+
+        Args:
+            weight_vector (WeightVector): _description_
+        """
+        if not isinstance(weight_vector, WeightVector):
+            raise RuntimeError(
+                "RuntimeError: Incorrect parameters passed to:\n"
+                "  Font.GenerateInstance(WeightVector vector)"
+            )
+        raise RuntimeError(
+            "RuntimeError: Incorrect # of args to:\n"
+            "  Font.GenerateInstance(WeightVector vector)"
+        )

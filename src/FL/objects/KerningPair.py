@@ -70,8 +70,16 @@ class KerningPair(Copyable):
     def fake_add_axis(self) -> None:
         add_axis_to_list(self._values)
 
-    def fake_remove_axis(self, interpolation: float) -> None:
-        remove_axis_from_list(self._values, interpolation)
+    def fake_remove_axis(
+        self,
+        index: int,
+        interpolation: float,
+        round_values: bool,
+        num_masters: int = -1,
+    ) -> None:
+        remove_axis_from_list(
+            self._values, index, interpolation, round_values, num_masters
+        )
 
     # Attributes
 

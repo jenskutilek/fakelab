@@ -15,7 +15,7 @@ from FL.constants import (
 from FL.helpers.interpolation import (
     add_axis_to_master_list,
     remove_axis_from_master_point_list,
-    round_points,
+    round_master_point_list,
 )
 from FL.helpers.ListParent import ListParent
 from FL.objects.base.Node import BaseNode
@@ -74,11 +74,24 @@ class FakeNode(BaseNode):
         add_axis_to_master_list(self._points)
         self._masters_count *= 2
 
-    def fake_remove_axis(self, interpolation: float, round_values: bool = True) -> None:
+    def fake_remove_axis(
+        self,
+        axisindex: int,
+        interpolation: float,
+        round_values: bool = True,
+        num_masters: int = -1,
+    ) -> None:
         if len(self) == 0:
             return
 
-        remove_axis_from_master_point_list(self._points, interpolation)
+        # print(
+        #     f"Node.fake_remove_axis {axisindex} for type {self.type}: {self._points} ({interpolation})"
+        # )
+
+        remove_axis_from_master_point_list(
+            self._points, axisindex, interpolation, round_values
+        )
         self._masters_count //= 2
         if round_values:
-            round_points(self._points)
+            round_master_point_list(self._points)
+        # print(f"                             Result: {self._points}")

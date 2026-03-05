@@ -6,11 +6,17 @@ from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser
 from vfbLib.typing import GlyphData, PSInfoDict
 
-from FL.fake.FontInterpolator import FontInterpolator
 from FL.fake.Kerning import FakeKerning
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.FLList import adjust_list
+from FL.helpers.interpolation import (
+    build_axis_dict,
+    map_user_to_internal,
+    remove_axis_from_factor_list,
+    remove_axis_from_list,
+    remove_axis_from_master_list,
+)
 from FL.objects.base.Font import BaseFont
 from FL.objects.Feature import Feature
 from FL.objects.Glyph import Glyph
@@ -254,11 +260,9 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         #     instances.append(interpolator._font)
         #     del interpolator
         inst_dict = self._primary_instances[11]
-        # print(inst_dict)
-        interpolator = FontInterpolator(self)
-        interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
-        instances.append(interpolator._font)
-        del interpolator
+        print(inst_dict)
+        instance = self.ip(inst_dict["values"], style_name=inst_dict["name"])
+        instances.append(instance)
         return instances
 
     def fake_deserialize_axis(self, data: str) -> None:
@@ -361,6 +365,11 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         for i, value in enumerate(values):
             target_list[i] = value
 
+    def _fake_set_stem_snap(self, key: str, values: list[list[int]]) -> None:
+        for master_index, master_values in enumerate(values):
+            master_info = self._master_ps_infos[master_index]
+            master_info[key] = master_values
+
     def fake_set_master_blue_values(
         self, values: list[int], master_index: int = 0
     ) -> None:
@@ -410,8 +419,9 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
     def fake_map_axis_location(
         self, axis_index: int = -1, user_value: float = 0
     ) -> float:
+        raise NotImplementedError
         # FIXME
-        return user_value / 1000
+        # return user_value / 1000
 
     def fake_master_map(self) -> list[tuple[int, ...]]:
         match self._axis_count:
@@ -462,26 +472,88 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             case _:
                 raise ValueError("Only 1 to 4 axes are supported.")
 
+    def fake_interpolate(
+        self,
+        user_values: tuple[float, ...],
+        family_name: str | None = None,
+        style_name: str | None = None,
+    ) -> None:
+        if self._axis_count == 0:
+            logger.warning("Number of axes is 0, font is not modified.")
+            return
+
+        significant_values = user_values[: self._axis_count]
+
+        # Map user values to internal values
+        # TODO: Simplify
+
+        axis_dict = build_axis_dict(self)
+        internal_values = [
+            map_user_to_internal(v, self.axis[i][1].lower(), axis_dict)
+            for i, v in enumerate(significant_values)
+        ]
+        axis_index = self._axis_count - 1
+        print(significant_values)
+        print(internal_values)
+
+        # Do the interpolation
+
+        for factor in reversed(internal_values):
+            print(f"Interpolating axis {axis_index} with factor {factor:.3f}")
+            self.fake_remove_axis(axis_index, factor, round_values=axis_index == 0)
+            axis_index -= 1
+
+        # Assign new font info
+
+        if family_name:
+            self.pref_family_name = family_name
+
+        if style_name:
+            self.pref_style_name = "Regular"  # TODO: Always?
+            self.style_name = style_name
+            if self.family_name is not None:
+                self.font_name = (
+                    f"{self.family_name.replace(' ', '')}-{style_name.replace(' ', '')}"
+                )
+                self.full_name = f"{self.family_name} {style_name}"
+            if self.apple_name is not None:
+                self.apple_name += f" {style_name}"
+
+        wt_axis_index = list(axis_dict.keys()).index("wt")
+        self.weight_code = int(significant_values[wt_axis_index])
+
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
     ) -> None:
+        """
+        Remove an axis from the font, interpolating the remaining masters.
+
+        Args:
+            index (int): The index of the axis to remove.
+            position (float): The interpolation factor in internal coordinates (0.0-1.0).
+            round_values (bool, optional): Whether to round the results. Defaults to True.
+        """
         if self._axis_count == 0:
             # Ignore silently
             return
 
+        # FIXME: Support removing arbitrary axes
         assert index == self._axis_count - 1, "Can only remove the last axis for now"
 
+        r = round_values
+        m = self._masters_count
+
         if self._global_mask is not None:
-            self._global_mask.fake_remove_axis(index, position, round_values)
+            self._global_mask.fake_remove_axis(index, position, round_values, m)
 
         # Remove axis from glyphs
         for glyph in self.glyphs:
-            glyph.fake_remove_axis(index, position, round_values)
+            glyph.fake_remove_axis(index, position, round_values, m)
 
         for guide in self.hguides:
-            guide.fake_remove_axis(index, position, round_values)
+            guide.fake_remove_axis(index, position, round_values, m)
         for guide in self.vguides:
-            guide.fake_remove_axis(index, position, round_values)
+            guide.fake_remove_axis(index, position, round_values, m)
 
         # TODO: Remove axis from fontinfo (interpolate values)
 
@@ -491,17 +563,47 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             self._cap_height,
             self._x_height,
             self._default_width,
-            # self.blue_fuzz,
-            # self.blue_scale,
-            # self.blue_shift,
+            self.blue_fuzz,
+            self.blue_scale,
+            self.blue_shift,
             # self.force_bold,
-            # self.stem_snap_h,
-            # self.stem_snap_v,
         ):
-            remove_axis_from_list(attr, index, position, round_values)
+            remove_axis_from_list(attr, index, position, round_values, m)
             # These always store all possible 16 masters, so we must extend them to the
             # full length again.
             adjust_list(attr, 16)
+
+        # Blue values
+
+        blue_values = self.blue_values[: self._masters_count]
+        remove_axis_from_master_list(blue_values, index, position, r, m)
+        for master_index, values in enumerate(blue_values):
+            self.fake_set_master_blue_values(values, master_index)
+
+        other_blues = self.other_blues[: self._masters_count]
+        remove_axis_from_master_list(other_blues, index, position, r, m)
+        for master_index, values in enumerate(other_blues):
+            self.fake_set_master_other_blues(values, master_index)
+
+        family_blues = self.family_blues[: self._masters_count]
+        remove_axis_from_master_list(family_blues, index, position, r, m)
+        for master_index, values in enumerate(family_blues):
+            self.fake_set_family_blues(values, master_index)
+
+        family_other_blues = self.family_other_blues[: self._masters_count]
+        remove_axis_from_master_list(family_other_blues, index, position, r, m)
+        for master_index, values in enumerate(family_other_blues):
+            self.fake_set_family_other_blues(values, master_index)
+
+        # Stems
+
+        stem_snap_h = self.stem_snap_h[: self._masters_count]
+        remove_axis_from_master_list(stem_snap_h, index, position, r, m)
+        self._fake_set_stem_snap("stem_snap_h", stem_snap_h)
+
+        stem_snap_v = self.stem_snap_v[: self._masters_count]
+        remove_axis_from_master_list(stem_snap_v, index, position, r, m)
+        self._fake_set_stem_snap("stem_snap_v", stem_snap_v)
 
         # Remove axis from font
         self._axis.pop()
@@ -522,7 +624,12 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 remove_axis_from_list(values, index, position, round_values=False)
                 adjust_list(values, 4, 0.0)
                 p["values"] = tuple(values)
+            # TODO: Reduce axis mappings
+            # self._axis_mappings_count = [0, 0, 0, 0]
+            # self._axis_mappings = [(0.0, 0.0)] * 40
         else:
+            self._axis_mappings_count = [0, 0, 0, 0]
+            self._axis_mappings = [(0.0, 0.0)] * 40
             self._primary_instance_locations = []
             self._primary_instances = []
 

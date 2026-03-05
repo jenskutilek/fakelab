@@ -19,7 +19,11 @@ from vfbLib.typing import (
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.FLList import adjust_list
-from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_point_list
+from FL.helpers.interpolation import (
+    add_axis_to_list,
+    remove_axis_from_factor_list,
+    remove_axis_from_point_list,
+)
 from FL.helpers.ListParent import ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
@@ -586,7 +590,13 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self._layers_number *= 2
 
-    def fake_remove_axis(self, position: float) -> None:
+    def fake_remove_axis(
+        self,
+        index: int,
+        position: float,
+        round_values: bool = True,
+        num_masters: int = -1,
+    ) -> None:
         """
         Remove the last axis from the glyph, interpolating all values to the normalized
         position given.
@@ -597,36 +607,43 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # Delegate to sub-objects
 
         for node in self._nodes:
-            node.fake_remove_axis(position)
+            node.fake_remove_axis(index, position, round_values, num_masters)
         for anchor in self._anchors:
-            anchor.fake_remove_axis(position)
+            anchor.fake_remove_axis(index, position, round_values, num_masters)
         for hint in self._hhints:
-            hint.fake_remove_axis(position)
+            hint.fake_remove_axis(index, position, round_values, num_masters)
         for hint in self._vhints:
-            hint.fake_remove_axis(position)
+            hint.fake_remove_axis(index, position, round_values, num_masters)
         for guide in self._hguides:
-            guide.fake_remove_axis(position)
+            guide.fake_remove_axis(index, position, round_values, num_masters)
         for guide in self._vguides:
-            guide.fake_remove_axis(position)
+            guide.fake_remove_axis(index, position, round_values, num_masters)
         for component in self._components:
-            component.fake_remove_axis(position)
+            component.fake_remove_axis(index, position, round_values, num_masters)
         for kerning_pair in self._kerning:
-            kerning_pair.fake_remove_axis(position)
+            kerning_pair.fake_remove_axis(index, position, round_values, num_masters)
+
+        self._layers_number //= 2
 
         # Direct MM properties
-        remove_axis_from_point_list(self._metrics, position)
+        remove_axis_from_point_list(self._metrics, index, position, round_values)
+
         if self._mask is not None:
-            self._mask.fake_remove_axis(position)
+            self._mask.fake_remove_axis(index, position, round_values)
+            # FIXME: The length of the mask weight vector seems to be variable, i.e. not
+            # determined by the number of layers
+            # remove_axis_from_factor_list(self._mask_weight_vector, index)
+            # if len(self._mask_weight_vector) == 0:
+            #     self._mask_weight_vector = [1.0]
+
         if self._mask_metrics_mm is not None:
             mm_metrics = [self._mask_metrics, *self._mask_metrics_mm]
-            remove_axis_from_point_list(mm_metrics, position)
+            remove_axis_from_point_list(mm_metrics, index, position, round_values)
             self._mask_metrics = mm_metrics[0]
             if self._layers_number > 1:
                 self._mask_metrics_mm = mm_metrics[1:]
             else:
                 self._mask_metrics_mm = None
-
-        self._layers_number //= 2
 
         if self._vsb:
             adjust_list(self._vsb, self._layers_number)
