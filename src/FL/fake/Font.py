@@ -30,7 +30,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # Additions for FakeLab
 
         super().__init__()
-        self._fake_binaries: dict[str, str] = {}
         self._fake_kerning = FakeKerning(self)
         self.fake_sparse_json = True
         self.fake_deselect_all()
@@ -183,20 +182,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         sortable.sort()
         return [(L, R, value) for _, _, L, R, value in sortable]
 
-    def fake_binary_get(self, fontType: int) -> bytes:
-        binary_path = self._fake_binaries[str(fontType)]
-        with open(binary_path, "rb") as f:
-            binary = f.read()
-        return binary
-
-    def fake_binary_from_path(self, fontType: int, file_path: str) -> None:
-        """
-        Assign a binary file from a path. This will be used to fake the
-        FakeLab.GenerateFont() method.
-        """
-        # Convert key to str because JSON needs it
-        self._fake_binaries[str(fontType)] = file_path
-
     def fake_update(self) -> None:
         """
         Is called from FontLab.UpdateFont()
@@ -269,7 +254,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         #     instances.append(interpolator._font)
         #     del interpolator
         inst_dict = self._primary_instances[11]
-        print(inst_dict)
+        # print(inst_dict)
         interpolator = FontInterpolator(self)
         interpolator.interpolate(inst_dict["values"], style_name=inst_dict["name"])
         instances.append(interpolator._font)
@@ -476,3 +461,78 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 ]
             case _:
                 raise ValueError("Only 1 to 4 axes are supported.")
+
+    def fake_remove_axis(
+        self, index: int, position: float, round_values: bool = True
+    ) -> None:
+        if self._axis_count == 0:
+            # Ignore silently
+            return
+
+        assert index == self._axis_count - 1, "Can only remove the last axis for now"
+
+        if self._global_mask is not None:
+            self._global_mask.fake_remove_axis(index, position, round_values)
+
+        # Remove axis from glyphs
+        for glyph in self.glyphs:
+            glyph.fake_remove_axis(index, position, round_values)
+
+        for guide in self.hguides:
+            guide.fake_remove_axis(index, position, round_values)
+        for guide in self.vguides:
+            guide.fake_remove_axis(index, position, round_values)
+
+        # TODO: Remove axis from fontinfo (interpolate values)
+
+        for attr in (
+            self._ascender,
+            self._descender,
+            self._cap_height,
+            self._x_height,
+            self._default_width,
+            # self.blue_fuzz,
+            # self.blue_scale,
+            # self.blue_shift,
+            # self.force_bold,
+            # self.stem_snap_h,
+            # self.stem_snap_v,
+        ):
+            remove_axis_from_list(attr, index, position, round_values)
+            # These always store all possible 16 masters, so we must extend them to the
+            # full length again.
+            adjust_list(attr, 16)
+
+        # Remove axis from font
+        self._axis.pop()
+        self._axis_count = len(self._axis)
+
+        self._masters_count //= 2
+
+        remove_axis_from_factor_list(self.weight_vector._weights, index)
+        adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
+
+        # Primary instances
+        if self._axis_count > 0:
+            # FIXME: This seems a bit more complicated. Locations that are still inside
+            # the design space must be recalculated, others zeroed.
+            # remove_axis_from_list(self._primary_instance_locations, position)
+            for p in self._primary_instances:
+                values = list(p["values"])
+                remove_axis_from_list(values, index, position, round_values=False)
+                adjust_list(values, 4, 0.0)
+                p["values"] = tuple(values)
+        else:
+            self._primary_instance_locations = []
+            self._primary_instances = []
+
+        # Remove master names, recalculate if there are any axes left
+        self._master_names = []
+        if self._axis_count > 0:
+            base = ""
+            for _, short_name, _ in self.axis:
+                base += f"{short_name}%s "
+            for loc in self.fake_master_map():
+                self._master_names.append(base % loc)
+        else:
+            self._master_names = ["Untitled"]

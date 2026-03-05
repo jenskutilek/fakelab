@@ -135,7 +135,6 @@ class BaseFont:
         "_primary_instances",
         "_sample_text",  # 1140
         # Internal:
-        "_fake_binaries",
         "_fake_kerning",
         "_file_name",
         "_selection",
