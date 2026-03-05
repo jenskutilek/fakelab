@@ -32,10 +32,10 @@ class Font(FakeFont):
         if isinstance(font_or_path, Font):
             copy_fl_object(font_or_path, self)
             if instances is not None:
-                # Generate an instance
-                # instances is a tuple containing instance values for all MM
-                # axes defined in the font
-                self.ip(instances)
+                # Generate an instance. `instances` is a tuple containing instance
+                # values for all MM axes defined in the font (in user coordinates)
+                instance = self.ip(instances)
+                copy_fl_object(instance, self)
 
         elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
             # Instantiate with path
@@ -49,8 +49,25 @@ class Font(FakeFont):
         family_name: str | None = None,
         style_name: str | None = None,
     ) -> Font:
+        """
+        Return an interpolated instance of the font. The original font is not modified.
+
+        Args:
+            instances (tuple[float, ...]): A tuple containing interpolation values for
+                all MM axes defined in the MM font. The values are in user coordinates
+                and refer to the axis mappings defined in Font._axis_mappings. If there
+                are more values than axes, the additional values are silently ignored.
+                Float values are truncated to int.
+            family_name (str | None, optional): A family name to assign to the instance.
+                Defaults to None.
+            style_name (str | None, optional): A style name to assign to the instance.
+                Defaults to None.
+
+        Returns:
+            Font: The interpolated font.
+        """
         f = Font(self)
-        f.fake_interpolate(instances, family_name, style_name)
+        f.fake_interpolate(tuple([int(v) for v in instances]), family_name, style_name)
         return f
 
     def __repr__(self) -> str:
