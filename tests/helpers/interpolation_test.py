@@ -72,7 +72,8 @@ class FLListTests(unittest.TestCase):
     def test_remove_axis_from_point_list_1_r(self) -> None:
         seq = [Point(1, 0), Point(10, 2)]
         remove_axis_from_point_list(seq, index=1, interpolation=0.5, round_values=True)
-        assert seq == [Point(5, 1)]  # 5.5 is truncated, not rounded
+        # In interpolation, points are rounded, not truncated.
+        assert seq == [Point(6, 1)]
 
     def test_remove_axis_from_master_point_list_1(self) -> None:
         seq = [[Point(1, 0), Point(0, 100)], [Point(10, 2), Point(10, 200)]]
@@ -86,7 +87,8 @@ class FLListTests(unittest.TestCase):
         remove_axis_from_master_point_list(
             seq, index=1, interpolation=0.5, round_values=True
         )
-        assert seq == [[Point(5, 1), Point(5, 150)]]  # 5.5 is truncated, not rounded
+        # In interpolation, points are rounded, not truncated.
+        assert seq == [[Point(6, 1), Point(5, 150)]]
 
     def test_interpolate_zero(self) -> None:
         result = interpolate(0, 1, 0.0)
@@ -108,10 +110,10 @@ class FLListTests(unittest.TestCase):
 
     def test_interpolate_points(self) -> None:
         p = interpolate_point(Point(0, 16), Point(1, 10), 0.5)
-        round_point(p)
+        p = round(p)
         assert (p.x, p.y) == (0.0, 13.0)
 
     def test_interpolate_points_half(self) -> None:
         p = interpolate_point(Point(0, 16), Point(1, 10), 0.999)
-        round_point(p)
+        p = round(p)
         assert (p.x, p.y) == (0.0, 10.0)
