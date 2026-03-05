@@ -1,6 +1,7 @@
 import unittest
 
-from FL.objects.Node import Node, nCURVE, nLINE
+from FL.constants import nCURVE, nLINE
+from FL.objects.Node import Node
 from FL.objects.Point import Point
 
 
