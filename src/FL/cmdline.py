@@ -141,6 +141,7 @@ def main() -> None:
             if args.script:
                 # If we have scripts, run them and exit.
                 for script_path in args.script:
+                    print(f"Executing {script_path}...")
                     exec(Path(script_path).read_text(), locals=environment)
                 # FIXME: Did we plan to autosave the VFBs respecting the -o argument? (#11)
             else:
