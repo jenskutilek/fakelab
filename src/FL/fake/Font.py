@@ -485,7 +485,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         significant_values = user_values[: self._axis_count]
 
         # Map user values to internal values
-        # TODO: Simplify
+        # TODO: Simplify, test what happens if no axis mappings are present
 
         axis_dict = build_axis_dict(self)
         internal_values = [
