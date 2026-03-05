@@ -66,7 +66,9 @@ def piecewise_linear_map(v: float, mapping: dict[float, float]) -> float:
     return va + (vb - va) * (v - a) / (b - a)
 
 
-def remove_axis_from_list(seq: list[int], interpolation: float) -> None:
+def remove_axis_from_list(
+    seq: list[int] | list[float], index: int, interpolation: float, round_values: float
+) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
     The interpolation factor will be used to interpolate the remaining values.
@@ -88,9 +90,11 @@ def remove_axis_from_list(seq: list[int], interpolation: float) -> None:
         seq[i] = interpolate(seq[i], seq[half + i], interpolation)
     for i in range(half):
         seq.pop()
+    if round_values:
+        round_float_list(seq)
 
 
-def remove_axis_from_factor_list(seq: list[float]) -> None:
+def remove_axis_from_factor_list(seq: list[float], index: int) -> None:
     """
     Like `remove_axis_from_list`, but adds the values instead of interpolating them.
     Used for reducing the `Font.weight_vector` list.
@@ -112,7 +116,12 @@ def remove_axis_from_factor_list(seq: list[float]) -> None:
         seq.pop()
 
 
-def remove_axis_from_master_list(seq: list[list[int]], interpolation: float) -> None:
+def remove_axis_from_master_list(
+    seq: list[list[int] | list[float]],
+    index: int,
+    interpolation: float,
+    round_values: bool,
+) -> None:
     """
     Remove an axis from a 2d list of values per master. Top level index is the master
     index. The interpolation factor will be used to interpolate the remaining values.
@@ -130,12 +139,12 @@ def remove_axis_from_master_list(seq: list[list[int]], interpolation: float) -> 
 
     half = num_masters // 2
     num_values = len(seq[0])
-    new_values: list[list[int]] = [[] for _ in range(half)]
+    new_values: list[list[int | float]] = [[] for _ in range(half)]
     for v in range(num_values):
         master_values = []
         for m in range(num_masters):
             master_values.append(seq[m][v])
-        remove_axis_from_list(master_values, interpolation)
+        remove_axis_from_list(master_values, index, interpolation, round_values)
         for m, value in enumerate(master_values):
             new_values[m].append(value)
 
@@ -144,9 +153,13 @@ def remove_axis_from_master_list(seq: list[list[int]], interpolation: float) -> 
             seq[m][v] = new_values[m][v]
     for _ in range(half):
         seq.pop()
+    if round_values:
+        round_master_float_list(seq)
 
 
-def remove_axis_from_point_list(seq: list[Point], interpolation: float) -> None:
+def remove_axis_from_point_list(
+    seq: list[Point], index: int, interpolation: float, round_values: bool
+) -> None:
     """
     Adjust the length of a list in place by halving it (= removing an MM axis).
     The interpolation factor will be used to interpolate the remaining points.
@@ -168,10 +181,12 @@ def remove_axis_from_point_list(seq: list[Point], interpolation: float) -> None:
         seq[i] = interpolate_point(seq[i], seq[half + i], interpolation)
     for i in range(half):
         seq.pop()
+    if round_values:
+        round_point_list(seq)
 
 
 def remove_axis_from_master_point_list(
-    seq: list[list[Point]], interpolation: float
+    seq: list[list[Point]], index: int, interpolation: float, round_values: bool
 ) -> None:
     """
     Remove an axis from a 2d list of points per master. Top level index is the master
@@ -195,7 +210,7 @@ def remove_axis_from_master_point_list(
         master_points = []
         for m in range(num_masters):
             master_points.append(seq[m][v])
-        remove_axis_from_point_list(master_points, interpolation)
+        remove_axis_from_point_list(master_points, index, interpolation, round_values)
         for m, point in enumerate(master_points):
             new_points[m].append(point)
 
@@ -204,6 +219,8 @@ def remove_axis_from_master_point_list(
             seq[m][v].Assign(new_points[m][v])
     for _ in range(half):
         seq.pop()
+    if round_values:
+        round_master_point_list(seq)
 
 
 def interpolate(v0: float, v1: float, factor: float) -> float:
@@ -214,18 +231,35 @@ def interpolate_point(p0: Point, p1: Point, factor: float) -> Point:
     return p0 + (p1 - p0) * factor
 
 
-def round_points(points: list[Point]) -> None:
-    # Round a list of points in place
-    for point in points:
-        point.x = round_float(point.x)
-        point.y = round_float(point.y)
-
-
 def round_float(value: float) -> int:
     return int(round(Decimal(str(value)), 0))
 
 
-def round_floats(values: list[float]) -> None:
+def round_float_list(values: list[float]) -> None:
     # Round a list of floats in place
     for i, value in enumerate(values):
         values[i] = round_float(value)
+
+
+def round_master_float_list(floats: list[list[float]]) -> None:
+    # Round a list of floats in place
+    for sublist in floats:
+        round_float_list(sublist)
+
+
+def round_master_point_list(points: list[list[Point]]) -> None:
+    # Round a list of points in place
+    for sublist in points:
+        round_point_list(sublist)
+
+
+def round_point(point: Point) -> None:
+    # Truncates
+    point.x = int(point.x)
+    point.y = int(point.y)
+
+
+def round_point_list(points: list[Point]) -> None:
+    # Round a list of points in place
+    for point in points:
+        round_point(point)
