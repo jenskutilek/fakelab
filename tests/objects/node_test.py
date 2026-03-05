@@ -44,6 +44,6 @@ class NodeTests(unittest.TestCase):
         n.fake_add_axis()
         assert n._points == [[Point()], [Point()]]
         assert n._masters_count == 2
-        n.fake_remove_axis(0.5)
+        n.fake_remove_axis(1, 0.5, True)
         assert n._points == [[Point()]]
         assert n._masters_count == 1
