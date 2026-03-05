@@ -140,7 +140,6 @@ class BaseFont:
         "_file_name",
         "_selection",
         "fake_sparse_json",
-        "fake_vfb_object",
     ]
 
     def __getitem__(self, index: int | str) -> "Glyph | None":
@@ -378,7 +377,6 @@ class BaseFont:
         self._primary_instances: list[dict[str, Any]] = []
         self._postscript_hinting_options: dict[str, list[int] | int] = {"other": []}
         self._sample_text = ""
-        self.fake_vfb_object = None
 
     def __len__(self) -> int:
         """

@@ -38,13 +38,7 @@ class FontInterpolator:
                 contains no axes, a 1:1 copy of the font will be returned.
         """
         logger.warning(f"Opening font: {font}")
-        # FIXME: We need to get rid of the vfb object in the font.
-        # Right now, we need to temporarily null it so deepcopy can make a copy of the
-        # font.
-        vfb_obj = font.fake_vfb_object
-        font.fake_vfb_object = None
         self._font = deepcopy(font)
-        font.fake_vfb_object = vfb_obj
 
         self._num_axes = len(self._font.axis)
         self._num_masters = 2**self._num_axes

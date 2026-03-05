@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -8,6 +9,7 @@ from FL.fake.FontImporter import FontImporter
 from FL.objects.Font import Font
 from FL.objects.Options import Options
 from FL.objects.Point import Point
+from FL.vfb.writer import FontToVfbWriter
 
 if TYPE_CHECKING:
     from FL.objects.Canvas import Canvas
@@ -17,6 +19,9 @@ if TYPE_CHECKING:
 
 
 __doc__ = "Class to represent the FontLab program interface"
+
+
+logger = logging.getLogger(__name__)
 
 
 class FakeLab:
@@ -358,7 +363,6 @@ class FakeLab:
         """
         try:
             from ufo2ft import compileOTF, compileTTF
-            from vfbLib.ufo.builder import VfbToUfoBuilder
 
             can_generate = True
         except ImportError:
@@ -381,55 +385,53 @@ class FakeLab:
 
         font = self._fonts[fontindex]
 
-        if can_generate:
-            # At the moment, we jump through some hoops. The font must have been opened
-            # from a VFB file, and we need to build an UFO in memory to generate.
-            builder = VfbToUfoBuilder(
-                font.fake_vfb_object, add_kerning_groups=True, move_groups=True
-            )
-            # TODO: What if it is MM? Probably intepolate the default instance.
-            ufo = builder.get_ufo_masters()[0]
-            if fonttype == ftOPENTYPE:
-                font = compileOTF(
-                    ufo,
-                    cffVersion=1,
-                    inplace=True,
-                    # layerName=,
-                    optimizeCFF=2,
-                    skipExportGlyphs=False,
-                )
-                font.save(filename)
-                return 0
-            elif fonttype == ftTRUETYPE:
-                # TODO: For TTF, compile UFO hinting
-                font = compileTTF(
-                    ufo,
-                    removeOverlaps=False,
-                    flattenComponents=False,  # FL only has one level of components
-                    # convertCubics=,
-                    # cubicConversionError=,
-                    # layerName=,
-                    skipExportGlyphs=False,
-                    dropImpliedOnCurves=False,
-                    allQuadratic=True,
-                )
-                font.save(filename)
-                return 0
-            elif fonttype == ftFONTLAB:
-                # What's the difference to just saving the VFB? Probably interpolating
-                # the default instance?
-                # TODO: Verify and interpolate
-                font.Save(filename)
-                return 0
+        if not can_generate:
+            return -1
 
+        from ufo2ft import compileOTF, compileTTF
+        from vfbLib.ufo.builder import VfbToUfoBuilder
+
+        # At the moment, we jump through some hoops. The font must have been opened
+        # from a VFB file, and we need to build an UFO in memory to generate.
+        vfb = FontToVfbWriter(font).vfb
+        builder = VfbToUfoBuilder(vfb, add_kerning_groups=True, move_groups=True)
+        # TODO: What if it is MM? Probably intepolate the default instance.
+        ufos = builder.get_ufo_masters()
+        ufo = ufos[0]
+        if fonttype == ftOPENTYPE:
+            font = compileOTF(
+                ufo,
+                cffVersion=1,
+                inplace=True,
+                # layerName=,
+                optimizeCFF=2,
+                skipExportGlyphs=False,
+            )
+            font.save(filename)
+            return 0
+        elif fonttype == ftTRUETYPE:
+            # TODO: For TTF, compile UFO hinting
+            font = compileTTF(
+                ufo,
+                removeOverlaps=False,
+                flattenComponents=False,  # FL only has one level of components
+                # convertCubics=,
+                # cubicConversionError=,
+                # layerName=,
+                skipExportGlyphs=False,
+                dropImpliedOnCurves=False,
+                allQuadratic=True,
+            )
+            font.save(filename)
+            return 0
+        elif fonttype == ftFONTLAB:
+            # What's the difference to just saving the VFB? Probably interpolating
+            # the default instance?
+            # TODO: Verify and interpolate
+            font.Save(filename)
+            return 0
         else:
-            # We cannot generate a font at the moment, let's fake it.
-            # Check if the current font has a fake_binary.
-            binary = font.fake_binary_get(fonttype)
-            if binary:
-                with open(filename, "wb") as f:
-                    f.write(binary)
-                return 0
+            logger.error(f"Unsupported font type: {fonttype}")
 
         return -1
 

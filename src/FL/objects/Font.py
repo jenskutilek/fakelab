@@ -32,10 +32,7 @@ class Font(FakeFont):
         # Process params
 
         if isinstance(font_or_path, Font):
-            vfb_obj = font_or_path.fake_vfb_object
-            font_or_path.fake_vfb_object = None
             copy_fl_object(font_or_path, self)
-            font_or_path.fake_vfb_object = vfb_obj
             if instances is not None:
                 # Generate an instance
                 # instances is a tuple containing instance values for all MM
@@ -80,7 +77,6 @@ class Font(FakeFont):
         try:
             reader = VfbToFontReader(Path(filename))
             reader.read(self)
-            self.fake_vfb_object = reader.vfb
         except Exception:
             print(traceback.format_exc())
             return 0
