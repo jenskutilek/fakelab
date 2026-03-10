@@ -144,6 +144,7 @@ class FakeKerning:
 
             # Override the sides deduced from the class name
             sides = ""
+            # FIXME: Doesn't set any sides at all
             if font.GetClassLeft(i):
                 sides += "L"
             if font.GetClassRight(i):
