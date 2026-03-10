@@ -40,14 +40,15 @@ class RectTests(unittest.TestCase):
         assert r.width == -10.5
         assert r.height == -10.5
 
-    def test_various(self) -> None:
-        # Directly from FL5, wtf is happening here?
-        # FIXME
+    def test_width_setter(self) -> None:
         r = Rect(1, 2, 3, 4)
+        assert r.ll == Point(1, 2)
+        assert r.ur == Point(3, 4)
         r.x = 5
         assert r.x == 5
         assert r.width == -2
         r.width = 100
+        # Setting the width should affects x1, but in FLS5, it affects x0:
         assert r.x == 105
         assert r.ll == Point(105, 2)
         assert r.width == -102

@@ -98,7 +98,10 @@ class Rect(Copyable):
 
     @width.setter
     def width(self, value: float) -> None:
-        self._x1 = self._x0 + value
+        # BUG: This should be:
+        # self._x1 = self._x0 + value
+        # ... but in FLS5, it is:
+        self._x0 = self._x0 + value
 
     @property
     def height(self) -> float:
