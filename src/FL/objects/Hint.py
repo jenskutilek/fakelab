@@ -47,24 +47,21 @@ class Hint(Copyable):
         self._widths: list[int] = [21] * 16
 
         arg1 = hint_or_position
-
-        # FIXME:
-        # If the second argument is present, it determines what is expected as the
-        # first argument:
-        # h = Hint()
-        # b = Hint(h, 1)
-        # TypeError: int() argument must be a string or a number, not 'Hint'
-        #
-        # We have it backwards at the moment: If the first argument is a Hint, the
-        # second argument is ignored.
+        arg2 = width
 
         if arg1 is not None:
             if isinstance(arg1, Hint):
-                self._copy_constructor(arg1)
+                if arg2 is None:
+                    self._copy_constructor(arg1)
+                else:
+                    raise TypeError(
+                        "TypeError: int() argument must be a string or a number, "
+                        "not 'Hint'"
+                    )
             elif isinstance(arg1, int):
                 self.position = arg1
-                if width is not None:
-                    self.width = width
+                if arg2 is not None:
+                    self.width = arg2
             else:
                 raise RuntimeError("Hint type is expected in arg 1: Hint(Hint)")
 
