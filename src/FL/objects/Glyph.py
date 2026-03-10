@@ -626,7 +626,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._layers_number //= 2
 
         # Direct MM properties
-        remove_axis_from_point_list(self._metrics, index, position, round_values)
+        remove_axis_from_point_list(
+            self._metrics, index, position, round_values, num_masters
+        )
 
         if self._mask is not None:
             self._mask.fake_remove_axis(index, position, round_values)
@@ -638,7 +640,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         if self._mask_metrics_mm is not None:
             mm_metrics = [self._mask_metrics, *self._mask_metrics_mm]
-            remove_axis_from_point_list(mm_metrics, index, position, round_values)
+            remove_axis_from_point_list(
+                mm_metrics, index, position, round_values, num_masters
+            )
             self._mask_metrics = mm_metrics[0]
             if self._layers_number > 1:
                 self._mask_metrics_mm = mm_metrics[1:]
