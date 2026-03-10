@@ -22,7 +22,7 @@ class ClassListTests(unittest.TestCase):
         assert c._flags == [3072]
 
         # When we pass the old list to __init__, the flags should persist
-        c = ClassList(["_A: A'", "_B: B'"], old_list=c)
+        c = ClassList(["_A: A'", "_B: B'"])
         assert c._flags == [3072, 0]
         c.SetClassFlags(1, True, False)
         assert c._flags == [3072, 1024]
@@ -30,7 +30,7 @@ class ClassListTests(unittest.TestCase):
         # When passing a longer or shorter list, the length of the flags list should be
         # adapted and the existing classes should keep their flags even though the index
         # changes
-        c = ClassList(["_B: B'"], old_list=c)
+        c = ClassList(["_B: B'"])
         assert c._flags == [1024]
 
     def test_add(self) -> None:
