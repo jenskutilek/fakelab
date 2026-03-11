@@ -242,6 +242,10 @@ def remove_axis_from_point_list(
     else:
         num_values = num_masters
 
+    if not seq:
+        # Empty point list, e.g. closepath?
+        return
+
     if num_values % 2:
         raise ValueError(f"List must have an even number of elements: {seq}")
 
