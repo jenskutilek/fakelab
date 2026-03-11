@@ -29,7 +29,8 @@ class FakeNode(BaseNode):
     def fake_deserialize(self, num_masters: int, data: dict[str, Any]) -> None:
         self._masters_count = num_masters
         self.type = vfb2json_node_types[data["type"]]
-        self.alignment = vfb2json_node_conns[data["flags"]]
+        flags = data["flags"]
+        self.alignment = vfb2json_node_conns[flags & ~8]
         self._points = [ListParent() for _ in range(self._masters_count)]
         points = data.get("points", [])
         for master_index in range(num_masters):
@@ -48,11 +49,18 @@ class FakeNode(BaseNode):
             assert len(self.points) == 3
         else:
             raise ValueError(f"Unknown Node type: {self.type}")
+        if flags & 8:  # open path
+            self.type += 0x8000
 
     def fake_serialize(self, num_masters: int) -> "MMNode":
+        flags = 0
+        if self.type & 0x8000:
+            # Handle "open path" flag separately
+            flags = 8
+            self.type = self.type & ~0x8000
         d = MMNode(
             type=json2vfb_node_types[self.type],
-            flags=json2vfb_node_conns[self.alignment],
+            flags=flags + json2vfb_node_conns[self.alignment],
             points=[],
         )
         points: list[list[tuple[int, int]]] = [[] for _ in range(num_masters)]
