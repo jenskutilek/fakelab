@@ -24,7 +24,6 @@ class Image:
         "_height",
         "_width",
         # Non-API
-        "_flag",
         "_origin",
         "_preview",
         "_size_units",
@@ -51,7 +50,6 @@ class Image:
         self._traceenabled = True
 
         # Non-API
-        self._flag = 0
         self._origin = Point()
         self._size_units = Point()
 
@@ -84,13 +82,20 @@ class Image:
         x, y = data["size_pixels"]
         self._width = x
         self._height = y
-        self._flag = data["bitmap"]["flag"]
-        self._data = array.array("H", data["bitmap"]["data"])
+        rows = data["bitmap"]["data"]
+        self._data = array.array("H", [value for row in rows for value in row])
         self._empty = False
 
     def fake_serialize(self) -> BackgroundImageDict | None:
         if self._empty:
             return None
+
+        # From vfbLib.parsers.bitmap.BaseBitmapParser._parse_bitmap_data
+        bytes_per_row = ((self._width + 15) // 16) * 2
+        data_rows = [
+            list(self._data[j : j + bytes_per_row])
+            for j in range(0, len(self._data), bytes_per_row)
+        ]
 
         d = BackgroundImageDict(
             origin=(
@@ -102,7 +107,7 @@ class Image:
                 int(self._size_units.y),
             ),
             size_pixels=(self.width, self.height),
-            bitmap=BitmapDataDict(flag=self._flag, data=self.data),
+            bitmap=BitmapDataDict(data=data_rows),
         )
         return d
 
