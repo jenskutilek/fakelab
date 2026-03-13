@@ -41,6 +41,10 @@ class ClassList(UserList[str]):
 
     def _update_flags(self) -> None:
         # Match classes from the old list so they can keep their flags
+        # FIXME: Classes don't keep their flags in FLS5 when reassigned with a script.
+        # It just seems this way if the Classes Panel is open while the script is run,
+        # because the flags persist in the UI and are reapplied when the panel is
+        # closed.
 
         # Reset flags
         self._flags = [0] * len(self.data)
