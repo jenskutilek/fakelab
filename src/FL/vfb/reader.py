@@ -141,7 +141,7 @@ class VfbToFontReader:
         """
         Open the VFB from the current `vfb_path` and decompile it.
         """
-        self.vfb = Vfb(self.vfb_path)
+        self.vfb = Vfb(self.vfb_path, timing=False)
         self.vfb.decompile()
 
     def _read_into_font(self) -> None:
