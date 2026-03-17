@@ -104,7 +104,7 @@ class Font(FakeFont):
         self._set_file_name(filename)
         return 1
 
-    def Save(self, filename: str, save_json: bool = True) -> None:
+    def Save(self, filename: str, save_json: bool = False) -> None:
         """
         Save the font in VFB format.
 
