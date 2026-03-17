@@ -132,6 +132,8 @@ class ClassList(UserList[str]):
         if class_index >= len(self.data) or class_index < 0:
             return None
 
+        # FIXME
+
         value = 0
 
         if left_lsb:
