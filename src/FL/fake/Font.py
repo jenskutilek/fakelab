@@ -483,16 +483,28 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # TODO: Simplify, test what happens if no axis mappings are present
 
         axis_dict = build_axis_dict(self)
-        internal_values = [
-            map_user_to_internal(v, self.axis[i][1].lower(), axis_dict)
-            for i, v in enumerate(significant_values)
-        ]
-        axis_index = self._axis_count - 1
+        internal_values = tuple(
+            [
+                map_user_to_internal(v, self.axis[i][1].lower(), axis_dict)
+                for i, v in enumerate(significant_values)
+            ]
+        )
         logger.info(significant_values)
         logger.info(internal_values)
+        self.fake_interpolate_internal(internal_values, family_name, style_name)
+        wt_axis_index = list(axis_dict.keys()).index("wt")
+        self.weight_code = int(significant_values[wt_axis_index])
+
+    def fake_interpolate_internal(
+        self,
+        internal_values: tuple[float, ...],
+        family_name: str | None = None,
+        style_name: str | None = None,
+    ) -> None:
 
         # Do the interpolation
 
+        axis_index = self._axis_count - 1
         for factor in reversed(internal_values):
             logger.info(f"Interpolating axis {axis_index} with factor {factor:.3f}")
             self.fake_remove_axis(axis_index, factor, round_values=axis_index == 0)
@@ -513,9 +525,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 self.full_name = f"{self.family_name} {style_name}"
             if self.apple_name is not None:
                 self.apple_name += f" {style_name}"
-
-        wt_axis_index = list(axis_dict.keys()).index("wt")
-        self.weight_code = int(significant_values[wt_axis_index])
 
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
