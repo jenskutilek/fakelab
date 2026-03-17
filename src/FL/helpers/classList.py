@@ -10,15 +10,12 @@ class ClassList(UserList[str]):
     A list of OpenType classes as strings. It keeps track of the class flags.
     """
 
-    __slots__ = ["_flags", "_kerning_flags", "_metrics_flags", "_names"]
+    __slots__ = ["_kerning_flags", "_metrics_flags"]
 
     def __init__(self, iterable: Iterable[str] | None = None) -> None:
         super().__init__(iterable)
-        self._flags = [0 for _ in iterable or []]
         self._kerning_flags: dict[str, list[int]] = {}
         self._metrics_flags: dict[str, list[int]] = {}
-        self._names: tuple[str, ...] = tuple()
-        self._update_flags()
 
     # Internal
 
@@ -27,41 +24,6 @@ class ClassList(UserList[str]):
             raise ValueError
         name, _contents = class_string.split(":", 1)
         return name.strip()
-
-    def _update_names(self) -> None:
-        # Mapping from name to class index?
-        self._names = tuple(
-            [
-                name
-                for name in [
-                    self._get_class_name(class_string) for class_string in self.data
-                ]
-            ]
-        )
-
-    def _update_flags(self) -> None:
-        # Match classes from the old list so they can keep their flags
-
-        # Reset flags
-        self._flags = [0] * len(self.data)
-
-        if not self._flags:
-            return
-
-        # Make a list of all class types
-        self._update_names()
-
-        # Set kerning flags
-        for name, flags in self._kerning_flags.items():
-            if name in self._names:
-                class_index = self._names.index(name)
-                self._flags[class_index] = flags[0]
-
-        # Set metrics flags
-        for name, flags in self._metrics_flags.items():
-            if name in self._names:
-                class_index = self._names.index(name)
-                self._flags[class_index] = flags[1]
 
     def fake_deserialize_class(self, data: str) -> None:
         # Deserialize a class without minding the flags.
@@ -73,21 +35,25 @@ class ClassList(UserList[str]):
         self._kerning_flags = data
 
     def fake_serialize_kerning_class_flags(self) -> dict[str, list[int]]:
+        # Called from FL.vfb.writer
+        # TODO: Use _kerning_flags directly
+        # Omit entries of classes that are not present in the font.
         pass
 
     def fake_deserialize_metrics_class_flags(self, data: dict[str, list[int]]) -> None:
+        # Deserialize a class without minding the flags.
         # Called from FL.vfb.reader
         self._metrics_flags = data
 
     def fake_serialize_metrics_class_flags(self) -> dict[str, list[int]]:
         # Called from FL.vfb.writer
+        # TODO: Use _metrics_flags directly
+        # Omit entries of classes that are not present in the font.
         pass
 
     def fake_set_classes(self, classes: list[str]) -> None:
         # Called from Font.classes = [...]
-        # Carries over the flags when setting the value
         self.data = classes
-        self._update_flags()
 
     # Operations
 
@@ -99,7 +65,6 @@ class ClassList(UserList[str]):
         return result
 
     def __iadd__(self, item: Any) -> ClassList:
-        self._flags.append(0)
         self.data.__iadd__(item)
         return self
 
@@ -109,11 +74,9 @@ class ClassList(UserList[str]):
 
     def append(self, item: str) -> None:
         self.data.append(item)
-        self._update_flags()
 
     def extend(self, other: Iterable[str]) -> None:
         self.data.extend(other)
-        self._update_flags()
 
     def insert(self, i: int, item: str) -> None:
         # Does nothing
@@ -127,13 +90,9 @@ class ClassList(UserList[str]):
 
         contents = self.data[class_index]
         name = self._get_class_name(contents)
-        if not name.startswith("_"):
-            # Metrics class or OpenType class
-            return 0
-
         if name in self._kerning_flags:
-            flags = self._kerning_flags[name]
-            return int(bool(flags[0] & 2**10))
+            flags = self._kerning_flags[name][0]
+            return int(bool(flags & 2**10))
         return 0
 
     def GetClassRight(self, class_index: int) -> int | None:
@@ -142,27 +101,26 @@ class ClassList(UserList[str]):
 
         contents = self.data[class_index]
         name = self._get_class_name(contents)
-        if not name.startswith("_"):
-            # Metrics class or OpenType class
-            return 0
-
         if name in self._kerning_flags:
-            flags = self._kerning_flags[name]
-            return int(bool(flags[0] & 2**11))
+            flags = self._kerning_flags[name][0]
+            return int(bool(flags & 2**11))
         return 0
 
     def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
+        # TODO: Use _metrics_class_flags directly
         if class_index >= len(self.data) or class_index < 0:
             return None
 
-        flags = self._flags[class_index]
-        if not flags & 1:
-            return (0, 0, 0)
-        return (
-            int(bool(flags & 2**10)),  # L
-            int(bool(flags & 2**11)),  # R
-            int(bool(flags & 2**12)),  # W
-        )
+        contents = self.data[class_index]
+        name = self._get_class_name(contents)
+        if name in self._metrics_flags:
+            flags = self._metrics_flags[name][1]
+            return (
+                int(bool(flags & 2**10)),  # L
+                int(bool(flags & 2**11)),  # R
+                int(bool(flags & 2**12)),  # W
+            )
+        return (0, 0, 0)
 
     def SetClassFlags(
         self,
