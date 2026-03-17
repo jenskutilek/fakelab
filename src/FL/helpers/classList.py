@@ -63,29 +63,28 @@ class ClassList(UserList[str]):
                 class_index = self._names.index(name)
                 self._flags[class_index] = flags[1]
 
-    @property
-    def fake_metrics_flags(self) -> dict[str, list[int]]:
-        # Called from FL.vfb.writer
-        # Serialize
+    def fake_deserialize_class(self, data: str) -> None:
+        # Deserialize a class without minding the flags.
+        # Called from FL.vfb.reader
+        self.data.append(data)
+
+    def fake_deserialize_kerning_class_flags(self, data: dict[str, list[int]]) -> None:
+        # Called from FL.vfb.reader
+        self._kerning_flags = data
+
+    def fake_serialize_kerning_class_flags(self) -> dict[str, list[int]]:
         pass
 
-    @fake_metrics_flags.setter
-    def fake_metrics_flags(self, value: dict[str, list[int]]) -> None:
+    def fake_deserialize_metrics_class_flags(self, data: dict[str, list[int]]) -> None:
         # Called from FL.vfb.reader
-        self._metrics_flags = value
+        self._metrics_flags = data
 
-    @property
-    def fake_kerning_flags(self) -> dict[str, list[int]]:
+    def fake_serialize_metrics_class_flags(self) -> dict[str, list[int]]:
         # Called from FL.vfb.writer
         pass
-
-    @fake_kerning_flags.setter
-    def fake_kerning_flags(self, value: dict[str, list[int]]) -> None:
-        # Called from FL.vfb.reader
-        self._kerning_flags = value
 
     def fake_set_classes(self, classes: list[str]) -> None:
-        # Called from FL.vfb.reader and Font.classes = [...]
+        # Called from Font.classes = [...]
         # Carries over the flags when setting the value
         self.data = classes
         self._update_flags()

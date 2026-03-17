@@ -151,7 +151,6 @@ class VfbToFontReader:
         Raises:
             AttributeError: When an unknown font attribute is encountered.
         """
-        classes: list[str] = []
         glyph: Glyph | None = None
         gids = {}
 
@@ -275,13 +274,13 @@ class VfbToFontReader:
                 case F.TrueTypeTable:
                     font.truetypetables.append(data)
                 case F.MetricsClassFlags:
-                    font._metrics_class_flags = data
+                    font._classes.fake_deserialize_metrics_class_flags(data)
                 case F.KerningClassFlags:
-                    font._kerning_class_flags = data
+                    font._classes.fake_deserialize_kerning_class_flags(data)
                 case F.features:
                     font.fake_deserialize_features(data)
                 case F.GlyphClass:
-                    classes.append(data)
+                    font._classes.fake_deserialize_class(data)
                 case F.AxisCount:
                     font._axis_count = data
                 case F.AxisName:
@@ -345,9 +344,5 @@ class VfbToFontReader:
                 else:
                     er.name = f"_{i:04d}"
                 enc.append(er)
-
-        if classes:
-            # The setter can't append, assign the whole list
-            font._classes.fake_set_classes(classes)
 
         font.fake_deserialize_master_ps_infos()
