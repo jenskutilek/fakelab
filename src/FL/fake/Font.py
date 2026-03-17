@@ -500,7 +500,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             ]
         )
         logger.info(significant_values)
-        logger.info(internal_values)
         self.fake_interpolate_internal(internal_values, family_name, style_name)
         wt_axis_index = list(axis_dict.keys()).index("wt")
         self.weight_code = int(significant_values[wt_axis_index])
@@ -526,6 +525,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # Do the interpolation
 
         axis_index = self._axis_count - 1
+        logger.info(f"Internal values: {internal_values}")
         for factor in reversed(internal_values):
             logger.info(f"Interpolating axis {axis_index} with factor {factor:.3f}")
             self.fake_remove_axis(axis_index, factor, round_values=axis_index == 0)
