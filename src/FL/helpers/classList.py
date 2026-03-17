@@ -125,23 +125,31 @@ class ClassList(UserList[str]):
         if class_index >= len(self.data) or class_index < 0:
             return None
 
-        flags = self._flags[class_index]
-        if flags & 1:
-            # Metrics class
+        contents = self.data[class_index]
+        name = self._get_class_name(contents)
+        if not name.startswith("_"):
+            # Metrics class or OpenType class
             return 0
 
-        return int(bool(flags & 2**10))
+        if name in self._kerning_flags:
+            flags = self._kerning_flags[name]
+            return int(bool(flags[0] & 2**10))
+        return 0
 
     def GetClassRight(self, class_index: int) -> int | None:
         if class_index >= len(self.data) or class_index < 0:
             return None
 
-        flags = self._flags[class_index]
-        if flags & 1:
-            # Metrics class
+        contents = self.data[class_index]
+        name = self._get_class_name(contents)
+        if not name.startswith("_"):
+            # Metrics class or OpenType class
             return 0
 
-        return int(bool(flags & 2**11))
+        if name in self._kerning_flags:
+            flags = self._kerning_flags[name]
+            return int(bool(flags[0] & 2**11))
+        return 0
 
     def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
         if class_index >= len(self.data) or class_index < 0:
