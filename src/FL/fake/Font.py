@@ -473,6 +473,16 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         family_name: str | None = None,
         style_name: str | None = None,
     ) -> None:
+        """
+        Interpolate an instance of an MM font using user axis locations.
+
+        Args:
+            user_values (tuple[float, ...]): One axis location per axis.
+            family_name (str | None, optional): The family name for the instance.
+                Defaults to None.
+            style_name (str | None, optional): The style name for the instance. Defaults
+                to None.
+        """
         if self._axis_count == 0:
             logger.warning("Number of axes is 0, font is not modified.")
             return
@@ -501,6 +511,17 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         family_name: str | None = None,
         style_name: str | None = None,
     ) -> None:
+        """
+        Interpolate an instance of an MM font using internal axis locations.
+
+        Args:
+            internal_values (tuple[float, ...]): One axis location between 0.0 and 1.0
+                per axis.
+            family_name (str | None, optional): The family name for the instance.
+                Defaults to None.
+            style_name (str | None, optional): The style name for the instance. Defaults
+                to None.
+        """
 
         # Do the interpolation
 
