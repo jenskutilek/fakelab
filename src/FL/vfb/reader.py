@@ -312,7 +312,7 @@ class VfbToFontReader:
                     if glyph is not None:
                         font.glyphs.append(glyph)
                     # Make a new glyph
-                    logger.info(f"Adding Glyph: '{data.get('name')}', {key}")
+                    logger.debug(f"Adding Glyph: '{data.get('name')}', {key}")
                     glyph = Glyph()
                     # Add the data
                     glyph.fake_deserialize(G.Glyph, data)
