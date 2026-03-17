@@ -17,12 +17,21 @@ class ClassListTests(unittest.TestCase):
 
     def test_instantiation_flags(self) -> None:
         c = ClassList(["_A: A'"])
+        assert c._flags == [0]
         c.SetClassFlags(0, True, True)
         assert c == ["_A: A'"]
         assert c._flags == [3072]
 
-        # When we pass the old list to __init__, the flags should persist
-        c = ClassList(["_A: A'", "_B: B'"])
+    def test_set(self) -> None:
+        c = ClassList(["_A: A'"])
+        c.SetClassFlags(0, True, True)
+        assert c == ["_A: A'"]
+        assert c._flags == [3072]
+
+        # Simulate setting the full list to a new value by calling fake_set_classes
+        # (This is usually called from the font, Font.classes = [...])
+
+        c.fake_set_classes(["_A: A'", "_B: B'"])
         assert c._flags == [3072, 0]
         c.SetClassFlags(1, True, False)
         assert c._flags == [3072, 1024]
@@ -30,7 +39,7 @@ class ClassListTests(unittest.TestCase):
         # When passing a longer or shorter list, the length of the flags list should be
         # adapted and the existing classes should keep their flags even though the index
         # changes
-        c = ClassList(["_B: B'"])
+        c.fake_set_classes(["_B: B'"])
         assert c._flags == [1024]
 
     def test_add(self) -> None:

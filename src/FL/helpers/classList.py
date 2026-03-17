@@ -41,10 +41,6 @@ class ClassList(UserList[str]):
 
     def _update_flags(self) -> None:
         # Match classes from the old list so they can keep their flags
-        # FIXME: Classes don't keep their flags in FLS5 when reassigned with a script.
-        # It just seems this way if the Classes Panel is open while the script is run,
-        # because the flags persist in the UI and are reapplied when the panel is
-        # closed.
 
         # Reset flags
         self._flags = [0] * len(self.data)
@@ -57,13 +53,15 @@ class ClassList(UserList[str]):
 
         # Set kerning flags
         for name, flags in self._kerning_flags.items():
-            class_index = self._names.index(name)
-            self._flags[class_index] = flags[0]
+            if name in self._names:
+                class_index = self._names.index(name)
+                self._flags[class_index] = flags[0]
 
         # Set metrics flags
         for name, flags in self._metrics_flags.items():
-            class_index = self._names.index(name)
-            self._flags[class_index] = flags[1]
+            if name in self._names:
+                class_index = self._names.index(name)
+                self._flags[class_index] = flags[1]
 
     @property
     def fake_metrics_flags(self) -> dict[str, list[int]]:
@@ -87,7 +85,7 @@ class ClassList(UserList[str]):
         self._kerning_flags = value
 
     def fake_set_classes(self, classes: list[str]) -> None:
-        # Called from FL.vfb.reader
+        # Called from FL.vfb.reader and Font.classes = [...]
         # Carries over the flags when setting the value
         self.data = classes
         self._update_flags()
@@ -102,24 +100,24 @@ class ClassList(UserList[str]):
         return result
 
     def __iadd__(self, item: Any) -> ClassList:
-        # self._flags.append(0)
+        self._flags.append(0)
         self.data.__iadd__(item)
         return self
 
     def __setitem__(self, index: SupportsIndex | int | Any, item: Any) -> None:
-        # Not implemented, it does nothing
+        # Does nothing
         pass
 
-    def append(self, item: Any) -> None:
-        # WTF ... append does not work on the classes list
-        pass
+    def append(self, item: str) -> None:
+        self.data.append(item)
+        self._update_flags()
 
     def extend(self, other: Iterable[str]) -> None:
-        # extend does not work either
-        pass
+        self.data.extend(other)
+        self._update_flags()
 
-    def insert(self, i: int, item: Any) -> None:
-        # You guessed it
+    def insert(self, i: int, item: str) -> None:
+        # Does nothing
         pass
 
     # Methods called by the Font
@@ -133,7 +131,7 @@ class ClassList(UserList[str]):
             # Metrics class
             return 0
 
-        return int(bool(flags & 1024))
+        return int(bool(flags & 2**10))
 
     def GetClassRight(self, class_index: int) -> int | None:
         if class_index >= len(self.data) or class_index < 0:
@@ -144,7 +142,7 @@ class ClassList(UserList[str]):
             # Metrics class
             return 0
 
-        return int(bool(flags & 2048))
+        return int(bool(flags & 2**11))
 
     def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
         if class_index >= len(self.data) or class_index < 0:
@@ -154,9 +152,9 @@ class ClassList(UserList[str]):
         if not flags & 1:
             return (0, 0, 0)
         return (
-            int(bool(flags & 1024)),  # L
-            int(bool(flags & 2048)),  # R
-            int(bool(flags & 4096)),  # W
+            int(bool(flags & 2**10)),  # L
+            int(bool(flags & 2**11)),  # R
+            int(bool(flags & 2**12)),  # W
         )
 
     def SetClassFlags(
@@ -172,11 +170,11 @@ class ClassList(UserList[str]):
         value = 0
 
         if left_lsb:
-            value += 1024
+            value += 2**10
         if right_rsb:
-            value += 2048
+            value += 2**11
         if width:
-            value += 4096
+            value += 2**12
 
         class_name = self._names[class_index]
         if width is None:
