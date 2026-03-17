@@ -530,6 +530,8 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             logger.info(f"Interpolating axis {axis_index} with factor {factor:.3f}")
             self.fake_remove_axis(axis_index, factor, round_values=axis_index == 0)
             axis_index -= 1
+            if axis_index < 0:
+                break
 
         # Assign new font info
 
