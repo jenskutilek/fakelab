@@ -14,8 +14,8 @@ class ClassList(UserList[str]):
 
     def __init__(self, iterable: Iterable[str] | None = None) -> None:
         super().__init__(iterable)
-        self._kerning_flags: dict[str, list[int]] = {}
-        self._metrics_flags: dict[str, list[int]] = {}
+        self._kerning_flags: dict[str, tuple[int, int]] = {}
+        self._metrics_flags: dict[str, tuple[int, int, int]] = {}
 
     # Internal
 
@@ -132,7 +132,8 @@ class ClassList(UserList[str]):
         if class_index >= len(self.data) or class_index < 0:
             return None
 
-        # FIXME
+        contents = self.data[class_index]
+        name = self._get_class_name(contents)
 
         value = 0
 
@@ -143,13 +144,7 @@ class ClassList(UserList[str]):
         if width:
             value += 2**12
 
-        class_name = self._names[class_index]
-        if width is None:
-            # Kerning class
-            self._kerning_flags[class_name] = [value, 0]
-        else:
-            # Must be a metrics class
-            value += 1
-            self._metrics_flags[class_name] = [0, value, 0]
-
-        self._flags[class_index] = value
+        if name in self._metrics_flags:
+            self._metrics_flags[name] = (0, value + 1, 0)
+        if name in self._kerning_flags:
+            self._kerning_flags[name] = (value, 0)
