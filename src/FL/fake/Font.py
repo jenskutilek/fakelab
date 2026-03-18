@@ -63,19 +63,13 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         return int(value * 1000 / self.upm)
 
     def fake_bounding_rect(self, for_afm: bool = False) -> Rect:
-        if for_afm:
-            x0 = 0
-            y0 = self.descender[0] - (100 * self.upm / 1000)
-            y1 = self.ascender[0] + (100 * self.upm / 1000)
-        else:
-            x0 = 32767
-            y0 = 32767
-            y1 = -32767
-        rect = Rect(x0, y0, -32767, y1)
+        rect = Rect(32767, 32767, -32767, -32767)
         for g in self.glyphs:
             gr = g.GetBoundingRect()
-            # print(g.name, gr)
             rect += gr
+        if for_afm:
+            if rect._x0 > 0:
+                rect._x0 = 0
         return rect
 
     def fake_save_afm_expanded(self, filename: str) -> None:
@@ -180,9 +174,10 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
     def fake_sort_kerning(
         self, kerning: list[tuple[str, str, int]]
     ) -> list[tuple[str, str, int]]:
+        encoding_order = tuple([rec.name for rec in self.encoding])
         glyph_order = tuple([rec.name for rec in self.glyphs])
         sortable = [
-            (glyph_order.index(L), glyph_order.index(R), L, R, value)
+            (encoding_order.index(L), glyph_order.index(R), L, R, value)
             for L, R, value in kerning
         ]
         sortable.sort()
