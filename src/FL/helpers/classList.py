@@ -145,7 +145,8 @@ class ClassList(UserList[str]):
         if width:
             value += 2**12
 
-        if name in self._metrics_flags:
+        if name.startswith("."):
             self._metrics_flags[name] = (0, value + 1, 0)
-        if name in self._kerning_flags:
+
+        if name.startswith("_"):
             self._kerning_flags[name] = (value, 0)
