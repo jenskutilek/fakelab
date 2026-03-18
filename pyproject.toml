@@ -2,7 +2,7 @@
 name = "fakelab"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
-version = "0.1.3-dev"
+version = "0.1.3"
 
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -13,13 +13,12 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "vfblib >= 0.11.1, < 0.12.0",  # Could be made optional for a leaner test framework
 ]
@@ -75,62 +74,9 @@ fakelab = "FL.cmdline:main"
 requires = ["uv_build>=0.10.8,<0.11.0"]
 build-backend = "uv_build"
 
-[tool.uv.build-backend]
-module-name = "FL"
-# module-root = "src"
 
-
-[tool.pytest.ini_options]
-# addopts = "--mypy --pylint --black --isort --cov --cov-report=term --cov-report=html --cov-report=xml"
-testpaths = ["tests", "src"]    # "src" required for pylint and mypy (whereas cov considers imported files)
-cache_dir = "build/tests/pytest_cache"
-
-
-[tool.pylint.main]
-py-version = "3.11"
-ignore-paths = ["src/FL/_version.py"]
-# extension-pkg-allow-list = ["pycurl"]
-
-
-[tool.pylint.format]
-expected-line-ending-format = "LF"
-max-line-length = 88
-
-
-[tool.pylint.basic]
-good-names-rgxs = "^(dl)$"
-
-[tool.pylint.design]
-min-public-methods = 1
-max-args = 15
-max-positional-arguments = 10
-max-attributes = 15
-max-locals = 20
-
-
-[tool.pylint.miscellaneous]
-notes = ["FIXME", "XXX"]
-
-
-[tool.mypy]
-warn_unused_configs = true
-cache_dir = "build/tests/mypy_cache"
-allow_redefinition = true
-warn_unreachable = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-disallow_untyped_decorators = true
-warn_incomplete_stub = true
-# disallow_any_explicit = true
-disallow_any_generics = true
-disallow_subclassing_any = true
-warn_return_any = true
-
-
-[tool.black]
-exclude = '[\\/]_version\.py$'
-line-length = 88
-target-version = ["py312"]
+[tool.coverage.paths]
+source = ["src", ".tox/py*/**/site-packages"]
 
 
 [tool.ruff]
@@ -141,28 +87,6 @@ extend-exclude =  ["examples"]
 known-first-party = ["FL"]
 
 
-[tool.coverage.run]
-data_file = "build/tests/coverage.sqlite"
-omit = ["/etc/*"]
-branch = true
-dynamic_context = "test_function"
-
-
-[tool.coverage.report]
-fail_under = 100
-show_missing = true
-skip_covered = true
-
-
-[tool.coverage.html]
-directory = "build/tests/coverage"
-show_contexts = true
-skip_covered = false
-
-
-[tool.coverage.xml]
-output = "build/tests/coverage/coverage.xml"
-
-
-[tool.bandit]
-skips = ["B101"]
+[tool.uv.build-backend]
+module-name = "FL"
+# module-root = "src"
