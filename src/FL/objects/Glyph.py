@@ -521,6 +521,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         gdef["carets"] = self._carets
         gdef["glyph_class"] = self._gdef_class
         gdef["ot_classes"].extend(self._gdef_ot_classes)
+        # Clean up
+        if not gdef["ot_classes"]:
+            del gdef["ot_classes"]
 
         # Clean up
         if "anchors" in gdef and not gdef["anchors"]:
