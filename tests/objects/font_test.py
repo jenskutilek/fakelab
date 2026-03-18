@@ -232,16 +232,16 @@ class FontTests(unittest.TestCase):
         # Class flags should persist in the font when the class list is replaced
         f = Font()
         f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'"]
-        f.SetClassFlags(2, 1, 0)  # 3rd class is left
-        assert (f.GetClassLeft(0), f.GetClassRight(0)) == (0, 0)
-        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (0, 0)
-        assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)
+        f.SetClassFlags(2, 1, 0)  # class "_kern3" is left
+        assert (f.GetClassLeft(0), f.GetClassRight(0)) == (0, 0)  # caps
+        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (0, 0)  # .mtrx1
+        assert (f.GetClassLeft(2), f.GetClassRight(2)) == (1, 0)  # _kern3
         assert (f.GetClassLeft(3), f.GetClassRight(3)) == (None, None)
 
         f.classes = ["caps: O", "_kern3: O'", ".mtrx1: O", "_A: A' Aacute"]
         # Class "_kern3" should still have the left flag, but it is #1 now
-        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (1, 0)
-        assert (f.GetClassLeft(3), f.GetClassRight(3)) == (0, 0)
+        assert (f.GetClassLeft(1), f.GetClassRight(1)) == (1, 0)  # _kern3
+        assert (f.GetClassLeft(3), f.GetClassRight(3)) == (0, 0)  # _A
         assert (f.GetClassLeft(4), f.GetClassRight(4)) == (None, None)
 
         f.classes = ["caps: O", ".mtrx1: O", "_kern3: O'"]
