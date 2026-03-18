@@ -8,59 +8,70 @@ class ClassListTests(unittest.TestCase):
     def test_instantiation_empty(self) -> None:
         c = ClassList()
         assert isinstance(c, ClassList)
-        assert c._flags == []
+        assert c._kerning_flags == {}
+        assert c._metrics_flags == {}
 
     def test_instantiation(self) -> None:
         c = ClassList(["_A: A'"])
         assert c == ["_A: A'"]
-        assert c._flags == [0]
+        assert c._kerning_flags == {}
+        assert c._metrics_flags == {}
 
     def test_instantiation_flags(self) -> None:
         c = ClassList(["_A: A'"])
-        assert c._flags == [0]
         c.SetClassFlags(0, True, True)
         assert c == ["_A: A'"]
-        assert c._flags == [3072]
+        assert c._kerning_flags == {"_A": (3072, 0)}
+        assert c._metrics_flags == {}
 
     def test_set(self) -> None:
         c = ClassList(["_A: A'"])
         c.SetClassFlags(0, True, True)
         assert c == ["_A: A'"]
-        assert c._flags == [3072]
+        assert c._kerning_flags == {"_A": (3072, 0)}
+        assert c._metrics_flags == {}
 
         # Simulate setting the full list to a new value by calling fake_set_classes
         # (This is usually called from the font, Font.classes = [...])
 
         c.fake_set_classes(["_A: A'", "_B: B'"])
-        assert c._flags == [3072, 0]
+        assert c._kerning_flags == {"_A": (3072, 0)}
+        assert c._metrics_flags == {}
         c.SetClassFlags(1, True, False)
-        assert c._flags == [3072, 1024]
+        assert c._kerning_flags == {"_A": (3072, 0), "_B": (1024, 0)}
+        assert c._metrics_flags == {}
 
-        # When passing a longer or shorter list, the length of the flags list should be
-        # adapted and the existing classes should keep their flags even though the index
-        # changes
+        # When passing a longer or shorter list, the flags stay the same, even for
+        # classes that are not present anymore
         c.fake_set_classes(["_B: B'"])
-        assert c._flags == [1024]
+        assert c._kerning_flags == {"_A": (3072, 0), "_B": (1024, 0)}
+        assert c._metrics_flags == {}
 
     def test_add(self) -> None:
         c1 = ClassList(["_A: A'"])
+        c1.SetClassFlags(0, True, False)
         c2 = ["_O: O'"]
         assert c1 == ["_A: A'"]
-        assert c1._flags == [0]
+        assert c1._kerning_flags == {"_A": (1024, 0)}
+        assert c1._metrics_flags == {}
         c3 = c1 + c2
         assert c3 == ["_A: A'", "_O: O'"]
-        assert c3._flags == [0, 0]
+        assert c3._kerning_flags == {"_A": (1024, 0)}
+        assert c3._metrics_flags == {}
         assert id(c1) != id(c3)
 
     def test_iadd(self) -> None:
         c1 = ClassList(["_A: A'"])
+        c1.SetClassFlags(0, True, False)
         id1 = id(c1)
         c2 = ["_O: O'"]
         assert c1 == ["_A: A'"]
-        assert c1._flags == [0]
+        assert c1._kerning_flags == {"_A": (1024, 0)}
+        assert c1._metrics_flags == {}
         c1 += c2
         assert c1 == ["_A: A'", "_O: O'"]
-        assert c1._flags == [0, 0]
+        assert c1._kerning_flags == {"_A": (1024, 0)}
+        assert c1._metrics_flags == {}
         assert id1 == id(c1)
 
     def test_font(self) -> None:
@@ -68,7 +79,8 @@ class ClassListTests(unittest.TestCase):
         f.classes = ["a: a"]
         assert isinstance(f.classes, list)
         assert isinstance(f._classes, ClassList)
-        assert f._classes._flags == [0]
+        assert f._classes._kerning_flags == {}
+        assert f._classes._metrics_flags == {}
 
     def test_font_add(self) -> None:
         f = Font()
