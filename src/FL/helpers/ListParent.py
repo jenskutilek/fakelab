@@ -12,9 +12,15 @@ class ListParent(UserList[T]):
     Like a list, but set the _parent attribute for each item.
     """
 
-    def __init__(self, iterable: Iterable[T] = [], parent: Any | None = None) -> None:
+    def __init__(
+        self,
+        iterable: Iterable[T] = [],
+        parent: Any | None = None,
+        only_type: Any = None,
+    ) -> None:
         super().__init__(copy(iterable))
         self._parent = parent
+        self._type = only_type
 
     def __add__(self, item: Any) -> ListParent[T]:
         # Makes scripting unresponsive in FL5
@@ -33,11 +39,17 @@ class ListParent(UserList[T]):
     def __setitem__(
         self, index: SupportsIndex | slice[Any, Any, Any], item: Any
     ) -> None:
+        if not isinstance(item, self._type):
+            raise RuntimeError("Element being assigned has inappropriate type")
+
         if hasattr(item, "_parent"):
             item._parent = self._parent
         self.data[index] = item
 
     def append(self, item: Any) -> None:
+        if not isinstance(item, self._type):
+            raise RuntimeError("Element being assigned has inappropriate type")
+
         item._parent = self._parent
         self.data.append(item)
 
@@ -52,6 +64,9 @@ class ListParent(UserList[T]):
         raise AttributeError
 
     def insert(self, i: int, item: Any) -> None:
+        if not isinstance(item, self._type):
+            raise RuntimeError("Element being assigned has inappropriate type")
+
         item._parent = self._parent
         self.data.insert(i, item)
 

@@ -27,6 +27,7 @@ from FL.helpers.interpolation import (
 from FL.helpers.ListParent import ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
+from FL.objects.Guide import Guide
 from FL.objects.Hint import Hint
 from FL.objects.Image import Image
 from FL.objects.KerningPair import KerningPair
@@ -43,7 +44,6 @@ if TYPE_CHECKING:
 
     from FL.objects.AuditRecord import AuditRecord
     from FL.objects.Font import Font
-    from FL.objects.Guide import Guide
     from FL.objects.Matrix import Matrix
     from FL.objects.TTPoint import TTPoint
 
@@ -144,7 +144,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     def set_defaults(self) -> None:
         self._parent = None
-        self._nodes: ListParent[Node] = ListParent([], self)
+        self._nodes: ListParent[Node] = ListParent([], self, Node)
 
         # custom data defined for this glyph
         self.customdata: str | None = None
@@ -154,15 +154,15 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self.mark: int = 0
         self._anchors: list[Anchor] = []
-        self._hhints: ListParent[Hint] = ListParent([], self)
-        self._vhints: ListParent[Hint] = ListParent([], self)
-        self._hlinks: ListParent[Link] = ListParent([], self)
-        self._vlinks: ListParent[Link] = ListParent([], self)
-        self._hguides: ListParent[Guide] = ListParent([], self)
-        self._vguides: ListParent[Guide] = ListParent([], self)
-        self._components: ListParent[Component] = ListParent([], self)
+        self._hhints: ListParent[Hint] = ListParent([], self, Hint)
+        self._vhints: ListParent[Hint] = ListParent([], self, Hint)
+        self._hlinks: ListParent[Link] = ListParent([], self, Link)
+        self._vlinks: ListParent[Link] = ListParent([], self, Link)
+        self._hguides: ListParent[Guide] = ListParent([], self, Guide)
+        self._vguides: ListParent[Guide] = ListParent([], self, Guide)
+        self._components: ListParent[Component] = ListParent([], self, Component)
         self._replace_table: list[Replace] = []
-        self._kerning: ListParent[KerningPair] = ListParent([], self)
+        self._kerning: ListParent[KerningPair] = ListParent([], self, KerningPair)
         self._layers_number = 1
         self._mask: Glyph | None = None
         self._mask_weight_vector: list[float] = [1.0]

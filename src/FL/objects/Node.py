@@ -43,12 +43,13 @@ class Node(FakeNode):
             p._parent = self
             if self.type == nCURVE:
                 self._points = [
-                    ListParent([Point(p), Point(), Point()])
+                    ListParent([Point(p), Point(), Point()], only_type=Point)
                     for _ in range(self._masters_count)
                 ]
             else:
                 self._points = [
-                    ListParent([Point(p)]) for _ in range(self._masters_count)
+                    ListParent([Point(p)], only_type=Point)
+                    for _ in range(self._masters_count)
                 ]
 
     # Methods

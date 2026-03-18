@@ -31,7 +31,7 @@ class FakeNode(BaseNode):
         self.type = vfb2json_node_types[data["type"]]
         flags = data["flags"]
         self.alignment = vfb2json_node_conns[flags & ~8]
-        self._points = [ListParent() for _ in range(self._masters_count)]
+        self._points = [ListParent(only_type=Point) for _ in range(self._masters_count)]
         points = data.get("points", [])
         for master_index in range(num_masters):
             master_points = points[master_index]

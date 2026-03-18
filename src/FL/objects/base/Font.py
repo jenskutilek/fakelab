@@ -5,7 +5,11 @@ from FL.helpers.classList import ClassList
 from FL.helpers.FLList import adjust_list
 from FL.helpers.ListParent import ListParent
 from FL.objects.Encoding import Encoding
+from FL.objects.Feature import Feature
+from FL.objects.Glyph import Glyph
+from FL.objects.NameRecord import NameRecord
 from FL.objects.Options import Options
+from FL.objects.TrueTypeTable import TrueTypeTable
 from FL.objects.TTInfo import TTInfo
 from FL.objects.WeightVector import WeightVector
 
@@ -13,11 +17,7 @@ if TYPE_CHECKING:
     from vfbLib.typing import CustomCmap, PSInfoDict
 
     from FL.objects.EncodingRecord import EncodingRecord
-    from FL.objects.Feature import Feature
-    from FL.objects.Glyph import Glyph
     from FL.objects.Guide import Guide
-    from FL.objects.NameRecord import NameRecord
-    from FL.objects.TrueTypeTable import TrueTypeTable
 
 
 __doc__ = "Class to represent a font"
@@ -202,7 +202,9 @@ class BaseFont:
         self.designer: str | None = None
         self.designer_url: str | None = None
         # list of font name records
-        self._fontnames: "ListParent[NameRecord]" = ListParent(parent=self)
+        self._fontnames: ListParent[NameRecord] = ListParent(
+            parent=self, only_type=NameRecord
+        )
         # Copyright name field
         self.copyright: str | None = None
         # Notice field
@@ -286,11 +288,13 @@ class BaseFont:
         # is not reported by the docstring)</font>
         self.ot_classes: str = ""
         # list of OpenType features
-        self._features: "ListParent[Feature]" = ListParent(parent=self)
+        self._features: ListParent[Feature] = ListParent(parent=self, only_type=Feature)
         # font custom data field
         self.customdata: str = ""
         # list of custom TrueType tables
-        self._truetypetables: "ListParent[TrueTypeTable]" = ListParent(parent=self)
+        self._truetypetables: ListParent[TrueTypeTable] = ListParent(
+            parent=self, only_type=TrueTypeTable
+        )
         # loaded TrueType information
         # (mostly hinting-related tables)
         self.ttinfo = TTInfo()
@@ -321,7 +325,7 @@ class BaseFont:
         self.vguides: "list[Guide]" = []
 
         self._axis: list[tuple[str, str, str]] = []
-        self._glyphs: "ListParent[Glyph]" = ListParent(parent=self)
+        self._glyphs: ListParent[Glyph] = ListParent(parent=self, only_type=Glyph)
 
         # Font data that is not accessible via FL5 Python API
         self._collection: list[Any] = []
