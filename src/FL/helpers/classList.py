@@ -30,26 +30,28 @@ class ClassList(UserList[str]):
         # Called from FL.vfb.reader
         self.data.append(data)
 
-    def fake_deserialize_kerning_class_flags(self, data: dict[str, list[int]]) -> None:
+    def fake_deserialize_kerning_class_flags(
+        self, data: dict[str, tuple[int, int]]
+    ) -> None:
         # Called from FL.vfb.reader
         self._kerning_flags = data
 
-    def fake_serialize_kerning_class_flags(self) -> dict[str, list[int]]:
-        # Called from FL.vfb.writer
-        # TODO: Use _kerning_flags directly
-        # Omit entries of classes that are not present in the font.
-        pass
+    def fake_serialize_kerning_class_flags(self) -> dict[str, tuple[int, int]]:
+        # Called from FL.vfb.writer, this even includes entries that have been deleted
+        # from the font.
+        return self._kerning_flags
 
-    def fake_deserialize_metrics_class_flags(self, data: dict[str, list[int]]) -> None:
+    def fake_deserialize_metrics_class_flags(
+        self, data: dict[str, tuple[int, int, int]]
+    ) -> None:
         # Deserialize a class without minding the flags.
         # Called from FL.vfb.reader
         self._metrics_flags = data
 
-    def fake_serialize_metrics_class_flags(self) -> dict[str, list[int]]:
-        # Called from FL.vfb.writer
-        # TODO: Use _metrics_flags directly
-        # Omit entries of classes that are not present in the font.
-        pass
+    def fake_serialize_metrics_class_flags(self) -> dict[str, tuple[int, int, int]]:
+        # Called from FL.vfb.writer, this even includes entries that have been deleted
+        # from the font.
+        return self._metrics_flags
 
     def fake_set_classes(self, classes: list[str]) -> None:
         # Called from Font.classes = [...]
@@ -57,14 +59,14 @@ class ClassList(UserList[str]):
 
     # Operations
 
-    def __add__(self, item: Any) -> ClassList:
+    def __add__(self, item: Iterable[str]) -> ClassList:
         result = ClassList(self.data)
         result._kerning_flags = copy(self._kerning_flags)
         result._metrics_flags = copy(self._metrics_flags)
         result += item
         return result
 
-    def __iadd__(self, item: Any) -> ClassList:
+    def __iadd__(self, item: Iterable[str]) -> ClassList:
         self.data.__iadd__(item)
         return self
 
@@ -107,7 +109,6 @@ class ClassList(UserList[str]):
         return 0
 
     def GetClassMetricsFlags(self, class_index: int) -> tuple[int, int, int] | None:
-        # TODO: Use _metrics_class_flags directly
         if class_index >= len(self.data) or class_index < 0:
             return None
 
