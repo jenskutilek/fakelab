@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections import UserList
 from copy import copy
 from typing import Any, Iterable, SupportsIndex
@@ -59,14 +57,14 @@ class ClassList(UserList[str]):
 
     # Operations
 
-    def __add__(self, item: Iterable[str]) -> ClassList:
+    def __add__(self, item: Iterable[str]) -> "ClassList":
         result = ClassList(self.data)
         result._kerning_flags = copy(self._kerning_flags)
         result._metrics_flags = copy(self._metrics_flags)
         result += item
         return result
 
-    def __iadd__(self, item: Iterable[str]) -> ClassList:
+    def __iadd__(self, item: Iterable[str]) -> "ClassList":
         self.data.__iadd__(item)
         return self
 
