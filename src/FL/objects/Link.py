@@ -79,7 +79,7 @@ class Link(Copyable):
         a source of node coordinates. Parent must exist
         """
         # This does *not* return the hint, but seems to append it to the
-        # glyph's hhints or vhints property
+        # glyph's hhints or vhints property. It also deletes itself from the links attr.
         return None
 
     # Defaults
