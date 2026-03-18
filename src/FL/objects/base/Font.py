@@ -124,12 +124,10 @@ class BaseFont:
         "_axis_mappings",
         "_collection",
         "_font_flags",  # 2030
-        "_kerning_class_flags",
         "_master_names",
         "_master_locations",
         "_master_ps_infos",
         "_mapping_mode",
-        "_metrics_class_flags",
         "_mm_enc_type",  # 1502
         "_primary_instance_locations",
         "_primary_instances",
@@ -357,8 +355,6 @@ class BaseFont:
         self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]
         self._axis_mappings: list[tuple[float, float]] = [(0.0, 0.0)] * 40
-        self._kerning_class_flags: dict[str, tuple[int, int]] = {}
-        self._metrics_class_flags: dict[str, tuple[int, int, int]] = {}
         self._master_names = ["Untitled"]
         self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
         # The infos are always stored for all possible masters
