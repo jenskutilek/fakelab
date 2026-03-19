@@ -12,6 +12,11 @@ class PointTests(unittest.TestCase):
         assert p.x == 0.0
         assert p.y == 0.0
 
+    def test_instantiation_float(self):
+        p = Point(1.75, 1.25)
+        assert p.x == 1.75
+        assert p.y == 1.25
+
     def test_instantiation_coords(self):
         p = Point(-200, 0)
         assert p.x == -200.0

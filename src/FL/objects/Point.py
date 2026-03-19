@@ -63,6 +63,10 @@ class Point(Copyable):
         parent = "orphan" if self._parent is None else "active refernce"
         return f"<Point: x={self.x:g}, y={self.y:g}, {parent}>"
 
+    def _copy_constructor(self, other: "Point") -> None:
+        self.x = other.x
+        self.y = other.y
+
     # Additions for FakeLab
 
     def fake_update(self, parent: Any | None = None) -> None:
