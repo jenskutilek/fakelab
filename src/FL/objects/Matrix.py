@@ -63,6 +63,44 @@ class Matrix(Copyable):
 
     # FakeLab additions
 
+    def fake_is_identity(self) -> bool:
+        """
+        Does the matrix describe an identity transformation?
+
+        Returns:
+            bool: Whether the matrix describes an identity transformation.
+        """
+        if self._a != 1:
+            return False
+        if self._b != 0:
+            return False
+        if self._c != 0:
+            return False
+        if self._d != 1:
+            return False
+        if self._e != 0:
+            return False
+        if self._f != 0:
+            return False
+        return True
+
+    def fake_is_shift(self) -> bool:
+        """
+        Does the matrix describe a shift-only transformation?
+
+        Returns:
+            bool: Whether the matrix describes a translation.
+        """
+        if self._a != 1:
+            return False
+        if self._b != 0:
+            return False
+        if self._c != 0:
+            return False
+        if self._d != 1:
+            return False
+        return True
+
     def fake_transform_point(self, p: Point) -> None:
         """
         Matrix is used to perform following transformations:
@@ -73,6 +111,14 @@ class Matrix(Copyable):
         Args:
             p (Point): The point to be transformed
         """
+        if self.fake_is_identity():
+            return
+
+        if self.fake_is_shift():
+            p.x += self.e
+            p.y += self.f
+            return
+
         x = p.x
         y = p.y
         p.x = x * self.a + y * self.b + self.e
