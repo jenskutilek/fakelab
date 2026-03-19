@@ -31,6 +31,12 @@ class Node(FakeNode):
         super(FakeNode, self).__init__()
         self.Assign(node_or_type, p)
 
+    def _copy_constructor(self, other: "Node") -> None:
+        self.type = other.type
+        self.alignment = other.alignment
+        self._masters_count = other._masters_count
+        self._points = [ListParent(other.points, only_type=Point)]
+
     # Methods
 
     def Assign(
