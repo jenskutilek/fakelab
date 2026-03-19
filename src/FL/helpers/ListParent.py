@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections import UserList
 from copy import copy
 from typing import Any, Iterable, SupportsIndex, TypeVar
@@ -21,13 +19,19 @@ class ListParent(UserList[T]):
         super().__init__(copy(iterable))
         self._parent = parent
         self._type = only_type
+        for item in self.data:
+            self._item_callback(item)
 
-    def __add__(self, item: Any) -> ListParent[T]:
+    def _item_callback(self, item: Any) -> None:
+        if hasattr(item, "_parent"):
+            item._parent = self._parent
+
+    def __add__(self, item: Any) -> "ListParent[T]":
         # Makes scripting unresponsive in FL5
         # We raise an error that is not used otherwise
         raise ReferenceError
 
-    def __iadd__(self, item: Any) -> ListParent[T]:
+    def __iadd__(self, item: Any) -> "ListParent[T]":
         # Makes scripting unresponsive in FL5
         # We raise an error that is not used otherwise
         raise ReferenceError
@@ -37,21 +41,20 @@ class ListParent(UserList[T]):
     #     self.data.__radd__(item)
 
     def __setitem__(
-        self, index: SupportsIndex | slice[Any, Any, Any], item: Any
+        self, index: "SupportsIndex | slice[Any, Any, Any]", item: Any
     ) -> None:
         if not isinstance(item, self._type):
             raise RuntimeError("Element being assigned has inappropriate type")
 
-        if hasattr(item, "_parent"):
-            item._parent = self._parent
         self.data[index] = item
+        self._item_callback(item)
 
     def append(self, item: Any) -> None:
         if not isinstance(item, self._type):
             raise RuntimeError("Element being assigned has inappropriate type")
 
-        item._parent = self._parent
         self.data.append(item)
+        self._item_callback(item)
 
     def clear(self) -> None:
         # Not implemented, probably a mix-up with clean()?
@@ -67,8 +70,8 @@ class ListParent(UserList[T]):
         if not isinstance(item, self._type):
             raise RuntimeError("Element being assigned has inappropriate type")
 
-        item._parent = self._parent
         self.data.insert(i, item)
+        self._item_callback(item)
 
     # FontLab-specific
 
