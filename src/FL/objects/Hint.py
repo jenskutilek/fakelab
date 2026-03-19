@@ -80,6 +80,11 @@ class Hint(Copyable):
             name = "Hint"
         return f'<{name}: p={self.position}, w={self.width}, parent: "{self._parent.name}">'
 
+    def _copy_constructor(self, other: "Hint") -> None:
+        self._stem_direction = other._stem_direction
+        self._positions = other._positions[:]
+        self._widths = other._widths[:]
+
     # Additions for FakeLab
 
     def fake_deserialize(self, data: list[HintDict]) -> None:
