@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+from functools import cached_property
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -16,13 +15,13 @@ class Matrix(Copyable):
     Matrix - class to represent planar transformations
     """
 
-    __slots__ = ["_a", "_b", "_c", "_d", "_e", "_f"]
+    __slots__ = ["_a", "_b", "_c", "_d", "_e", "_f", "__dict__"]
 
     # Constructor
 
     def __init__(
         self,
-        a: Matrix | list[float] | float | None = None,
+        a: "Matrix | list[float] | float | None" = None,
         b: float | None = None,
         c: float | None = None,
         d: float | None = None,
@@ -63,6 +62,7 @@ class Matrix(Copyable):
 
     # FakeLab additions
 
+    @cached_property
     def fake_is_identity(self) -> bool:
         """
         Does the matrix describe an identity transformation?
@@ -84,7 +84,8 @@ class Matrix(Copyable):
             return False
         return True
 
-    def fake_is_shift(self) -> bool:
+    @cached_property
+    def fake_is_translation(self) -> bool:
         """
         Does the matrix describe a shift-only transformation?
 
@@ -101,7 +102,7 @@ class Matrix(Copyable):
             return False
         return True
 
-    def fake_transform_point(self, p: Point) -> None:
+    def fake_transform_point(self, p: "Point") -> None:
         """
         Matrix is used to perform following transformations:
 
@@ -111,10 +112,10 @@ class Matrix(Copyable):
         Args:
             p (Point): The point to be transformed
         """
-        if self.fake_is_identity():
+        if self.fake_is_identity:
             return
 
-        if self.fake_is_shift():
+        if self.fake_is_translation:
             p.x += self.e
             p.y += self.f
             return
@@ -133,6 +134,7 @@ class Matrix(Copyable):
     @a.setter
     def a(self, value: float) -> None:
         self._a = float(value)
+        delattr(self, "fake_is_identity")
 
     @property
     def b(self) -> float:
@@ -141,6 +143,7 @@ class Matrix(Copyable):
     @b.setter
     def b(self, value: float) -> None:
         self._b = float(value)
+        delattr(self, "fake_is_identity")
 
     @property
     def c(self) -> float:
@@ -149,6 +152,7 @@ class Matrix(Copyable):
     @c.setter
     def c(self, value: float) -> None:
         self._c = float(value)
+        delattr(self, "fake_is_identity")
 
     @property
     def d(self) -> float:
@@ -157,6 +161,7 @@ class Matrix(Copyable):
     @d.setter
     def d(self, value: float) -> None:
         self._d = float(value)
+        delattr(self, "fake_is_identity")
 
     @property
     def e(self) -> float:
@@ -165,6 +170,8 @@ class Matrix(Copyable):
     @e.setter
     def e(self, value: float) -> None:
         self._e = float(value)
+        delattr(self, "fake_is_identity")
+        delattr(self, "fake_is_translation")
 
     @property
     def f(self) -> float:
@@ -173,10 +180,12 @@ class Matrix(Copyable):
     @f.setter
     def f(self, value: float) -> None:
         self._f = float(value)
+        delattr(self, "fake_is_identity")
+        delattr(self, "fake_is_translation")
 
     # Operations
 
-    def __add__(self, other: Matrix) -> Matrix:
+    def __add__(self, other: "Matrix") -> "Matrix":
         """
         Matrix must be second operand, all parameters are added
         """
@@ -189,7 +198,7 @@ class Matrix(Copyable):
             self.f + other.f,
         )
 
-    def __sub__(self, other: Matrix) -> Matrix:
+    def __sub__(self, other: "Matrix") -> "Matrix":
         """
         Matrix must be second operand, all parameters are subtracted
         """
@@ -202,7 +211,7 @@ class Matrix(Copyable):
             self.f - other.f,
         )
 
-    def __mul__(self, other: Matrix | float) -> Matrix:
+    def __mul__(self, other: "Matrix | float") -> "Matrix":
         """
         multiply (with Matrix) - matrixes are multiplied
         multiply (with float number) - all parameters are scaled by the operand
@@ -226,7 +235,7 @@ class Matrix(Copyable):
 
     def Assign(
         self,
-        a: Matrix | list[float] | float | None,
+        a: "Matrix | list[float] | float | None",
         b: float | None = None,
         c: float | None = None,
         d: float | None = None,
@@ -270,7 +279,7 @@ class Matrix(Copyable):
             self._e = e
             self._f = f
 
-    def Add(self, m: Matrix) -> None:
+    def Add(self, m: "Matrix") -> None:
         """
         Adds values of the Matrix m to current matrix
         """
@@ -281,7 +290,7 @@ class Matrix(Copyable):
         self.e += m.e
         self.f += m.f
 
-    def Sub(self, m: Matrix) -> None:
+    def Sub(self, m: "Matrix") -> None:
         """
         Subtracts values of the Matrix m from current matrix
         """
@@ -303,7 +312,7 @@ class Matrix(Copyable):
         self.e *= s
         self.f *= s
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         """
         Applies Matrix m transformation to the current Matrix
         """
