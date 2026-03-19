@@ -35,7 +35,7 @@ class Node(FakeNode):
         self.type = other.type
         self.alignment = other.alignment
         self._masters_count = other._masters_count
-        self._points = [ListParent(other.points, only_type=Point)]
+        self._points = [ListParent([Point(p) for p in other.points], only_type=Point)]
 
     # Methods
 
@@ -61,10 +61,10 @@ class Node(FakeNode):
             p = round(p)
             self.type = node_or_type
             if self.type == nCURVE:
-                points = [p, Point(), Point()]
+                points = [Point(p), Point(), Point()]
 
             else:
-                points = [p]
+                points = [Point(p)]
             self._points = [
                 ListParent(points, only_type=Point) for _ in range(self._masters_count)
             ]
