@@ -1,9 +1,6 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.constants import nCURVE
-from FL.fake.copy import copy_fl_object
 from FL.fake.Node import FakeNode
 from FL.helpers.ListParent import ListParent
 from FL.objects.Point import Point
@@ -17,7 +14,7 @@ __doc__ = "Class to represent a node"
 
 class Node(FakeNode):
     def __init__(
-        self, node_or_type: Node | int | None = None, p: Point | None = None
+        self, node_or_type: "Node | int | None" = None, p: Point | None = None
     ) -> None:
         """
         Node()
@@ -32,36 +29,39 @@ class Node(FakeNode):
             p (Point | None, optional): _description_. Defaults to None.
         """
         super(FakeNode, self).__init__()
-        if isinstance(node_or_type, Node):
-            assert p is None
-            copy_fl_object(node_or_type, self)
-        elif isinstance(node_or_type, int):
-            assert isinstance(p, Point)
-
-            self.type = node_or_type
-            p = Point(int(p.x), int(p.y))
-            p._parent = self
-            if self.type == nCURVE:
-                self._points = [
-                    ListParent([Point(p), Point(), Point()], only_type=Point)
-                    for _ in range(self._masters_count)
-                ]
-            else:
-                self._points = [
-                    ListParent([Point(p)], only_type=Point)
-                    for _ in range(self._masters_count)
-                ]
+        self.Assign(node_or_type, p)
 
     # Methods
 
     def Assign(
-        self, node_or_type: Node | int | None = None, p: Point | None = None
+        self, node_or_type: "Node | int | None" = None, p: Point | None = None
     ) -> None:
         """
         Assigns new values to a Node, refer to constructor for a description of
         possible options
         """
-        raise NotImplementedError
+        if isinstance(node_or_type, Node):
+            if p is not None:
+                raise RuntimeError("Extension object missing a required method.")
+
+            self._copy_constructor(node_or_type)
+
+        elif isinstance(node_or_type, int):
+            if not isinstance(p, Point):
+                raise RuntimeError(
+                    "Incorrect type of arguments in:\n  Node(integer type, Point p)"
+                )
+
+            p = round(p)
+            self.type = node_or_type
+            if self.type == nCURVE:
+                points = [p, Point(), Point()]
+
+            else:
+                points = [p]
+            self._points = [
+                ListParent(points, only_type=Point) for _ in range(self._masters_count)
+            ]
 
     def SetAllLayers(self, pointindex: int, p: Point) -> None:
         """
