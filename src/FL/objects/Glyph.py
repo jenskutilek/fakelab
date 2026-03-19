@@ -1479,7 +1479,33 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         Paste all components to the glyph outline.
         """
-        raise NotImplementedError
+        # TODO: Check results against FontLab
+        if self.parent is None:
+            return
+
+        for c in self.components:
+            base_glyph = self.parent[c.index]
+            if base_glyph is None:
+                logger.warning(
+                    "FakeLab: "
+                    f"Skipping invalid component GID {c.index} in glyph {self.name}"
+                )
+                continue
+            matrix = c.fake_get_matrix()
+            for base_node in base_glyph.nodes:
+                node = Node(base_node)
+                node.Transform(matrix)
+                self.nodes.append(node)
+            for base_hint in base_glyph.hhints:
+                hint = Hint(base_hint)
+                hint.Transform(matrix)
+                self.hhints.append(hint)
+            for base_hint in base_glyph.vhints:
+                hint = Hint(base_hint)
+                hint.Transform(matrix)
+                self.vhints.append(hint)
+            # TODO: Add links from component
+        self.components.clean()
 
     def MakeExtremeNodes(self, masterindex: int = 0) -> None:
         """
