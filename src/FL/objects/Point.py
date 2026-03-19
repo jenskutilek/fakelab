@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from math import floor
 from typing import TYPE_CHECKING, Any
 
@@ -18,7 +16,7 @@ class Point(Copyable):
     # Constructor
 
     def __init__(
-        self, p_or_x: Point | float | None = None, y: float | None = None
+        self, p_or_x: "Point | float | None" = None, y: float | None = None
     ) -> None:
         """
         Point - base class to represent point
@@ -122,13 +120,13 @@ class Point(Copyable):
             return False
         return self.x == other.x and self.y == other.y
 
-    def __coerce__(self, other: Point | float | Matrix | Rect) -> Point:
+    def __coerce__(self, other: "Point | float | Matrix | Rect") -> "Point":
         """
         can be operated on Point, float value, Matrix and Rect
         """
         raise NotImplementedError
 
-    def __add__(self, other: Point) -> Point:
+    def __add__(self, other: "Point") -> "Point":
         """
         Point must be second operand, both coordinates are added
         """
@@ -136,7 +134,7 @@ class Point(Copyable):
             raise RuntimeError("Point is expected as right operand of Point.operator+")
         return Point(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other: Point) -> Point:
+    def __sub__(self, other: "Point") -> "Point":
         """
         Point must be second operand, both coordinates are subtracted
         """
@@ -144,7 +142,7 @@ class Point(Copyable):
             raise RuntimeError("Point is expected as right operand of Point.operator-")
         return Point(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, other: Point | float | Matrix) -> Point | float:
+    def __mul__(self, other: "Point | float | Matrix") -> "Point | float":
         """
         Second operand may be `Point`, `float` or `Matrix`. If second operand is
         `Point`, then result of scalar product is returned
@@ -167,13 +165,13 @@ class Point(Copyable):
             "Point, Matrix or Number is expected as right operand of Point.operator*"
         )
 
-    def __round__(self) -> Point:
+    def __round__(self) -> "Point":
         # Added for FakeLab. Rounding a Point truncates in FL.
         return Point(floor(self.x), floor(self.y))
 
     # Methods
 
-    def Assign(self, p_or_x: Point | float, y: float | None = None) -> None:
+    def Assign(self, p_or_x: "Point | float", y: float | None = None) -> None:
         """
         Assigns new values to a Point
         """
@@ -205,7 +203,7 @@ class Point(Copyable):
             else:
                 self.y = float(y)
 
-    def Shift(self, p_or_x: Point | float, y: float | None = None) -> None:
+    def Shift(self, p_or_x: "Point | float", y: float | None = None) -> None:
         """
         Shifts Point on a position defined by p or x and y values
         """
@@ -227,7 +225,7 @@ class Point(Copyable):
         self.x += p.x
         self.y += p.y
 
-    def Add(self, p: Point) -> None:
+    def Add(self, p: "Point") -> None:
         """
         Same as Shift(Point p)
         """
@@ -243,7 +241,7 @@ class Point(Copyable):
         """
         self.Shift(p)
 
-    def Sub(self, p: Point) -> None:
+    def Sub(self, p: "Point") -> None:
         """
         Subtracts p coordinates from the current Point
         """
