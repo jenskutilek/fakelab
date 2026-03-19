@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
 from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_point_list
+from FL.objects.Matrix import Matrix
 from FL.objects.Point import Point
 
 if TYPE_CHECKING:
@@ -91,6 +92,16 @@ class Component(Copyable):
             "scaleY": [p.y for p in self.scales],
         }
         return d
+
+    def fake_get_matrix(self) -> Matrix:
+        """
+        Return the transformation matrix of the component.
+
+        Returns:
+            Matrix: The matrix.
+        """
+        # FIXME: What about MM values?
+        return Matrix(self.scale.x, 0, 0, self.scale.y, self.delta.x, self.delta.y)
 
     def fake_add_axis(self) -> None:
         add_axis_to_list(self._deltas)
