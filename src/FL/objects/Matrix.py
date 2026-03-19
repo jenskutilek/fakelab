@@ -53,11 +53,7 @@ class Matrix(Copyable):
         self._d: float = 1
         self._e: float = 0
         self._f: float = 0
-        if a is not None:
-            if isinstance(a, Matrix):
-                self._copy_constructor(a)
-            else:
-                self.Assign(a, b, c, d, e, f)
+        self.Assign(a, b, c, d, e, f)
 
     def __repr__(self) -> str:
         return (
@@ -194,6 +190,9 @@ class Matrix(Copyable):
         """
         assigns new values to a Matrix, uses the same syntax as in constructors
         """
+        if a is None:
+            return
+
         if isinstance(a, Matrix):
             self._a = a.a
             self._b = a.b
