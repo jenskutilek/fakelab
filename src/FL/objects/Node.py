@@ -104,4 +104,6 @@ class Node(FakeNode):
         """
         Applies Matrix transformation to the Node
         """
-        raise NotImplementedError
+        # FIXME: Does it handle MM?
+        for point in self.points:
+            point.Transform(m)
