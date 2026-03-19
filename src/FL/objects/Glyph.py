@@ -16,6 +16,7 @@ from vfbLib.typing import (
     MMHintsDict,
 )
 
+from FL.constants import DIR_HORIZONTAL, DIR_VERTICAL
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.FLList import adjust_list
@@ -24,7 +25,7 @@ from FL.helpers.interpolation import (
     remove_axis_from_factor_list,
     remove_axis_from_point_list,
 )
-from FL.helpers.ListParent import ListParent
+from FL.helpers.ListParent import DirectionalList, ListParent
 from FL.objects.Anchor import Anchor
 from FL.objects.Component import Component
 from FL.objects.Guide import Guide
@@ -154,10 +155,18 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self.mark: int = 0
         self._anchors: list[Anchor] = []
-        self._hhints: ListParent[Hint] = ListParent([], self, Hint)
-        self._vhints: ListParent[Hint] = ListParent([], self, Hint)
-        self._hlinks: ListParent[Link] = ListParent([], self, Link)
-        self._vlinks: ListParent[Link] = ListParent([], self, Link)
+        self._hhints: DirectionalList[Hint] = DirectionalList(
+            DIR_HORIZONTAL, parent=self, only_type=Hint
+        )
+        self._vhints: DirectionalList[Hint] = DirectionalList(
+            DIR_VERTICAL, parent=self, only_type=Hint
+        )
+        self._hlinks: DirectionalList[Link] = DirectionalList(
+            DIR_HORIZONTAL, parent=self, only_type=Link
+        )
+        self._vlinks: DirectionalList[Link] = DirectionalList(
+            DIR_VERTICAL, parent=self, only_type=Link
+        )
         self._hguides: ListParent[Guide] = ListParent([], self, Guide)
         self._vguides: ListParent[Guide] = ListParent([], self, Guide)
         self._components: ListParent[Component] = ListParent([], self, Component)

@@ -1,9 +1,9 @@
-from __future__ import annotations
-
+import logging
 from typing import TYPE_CHECKING
 
 from vfbLib.typing import HintDict
 
+from FL.constants import DIR_HORIZONTAL, DIR_UNDEFINED, DIR_VERTICAL
 from FL.fake.Base import Copyable
 from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_list
 from FL.objects.Link import Link
@@ -16,6 +16,9 @@ if TYPE_CHECKING:
 __doc__ = "Class to represent a PostScript hint"
 
 
+logger = logging.getLogger(__name__)
+
+
 class Hint(Copyable):
     """
     Hint - class to represent hint
@@ -23,12 +26,12 @@ class Hint(Copyable):
     This class is Multiple Master - compatible
     """
 
-    __slots__ = ["_parent", "_positions", "_widths"]
+    __slots__ = ["_parent", "_positions", "_widths", "_stem_direction"]
 
     # Constructor
 
     def __init__(
-        self, hint_or_position: Hint | int | None = None, width: int | None = None
+        self, hint_or_position: "Hint | int | None" = None, width: int | None = None
     ) -> None:
         """
         Hint()
@@ -42,9 +45,10 @@ class Hint(Copyable):
             hint_or_position (Hint | int | None): _description_
             width (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: Glyph | None = None
+        self._parent: "Glyph | None" = None
         self._positions: list[int] = [0] * 16
         self._widths: list[int] = [21] * 16
+        self._stem_direction = DIR_UNDEFINED
 
         arg1 = hint_or_position
         arg2 = width
@@ -68,12 +72,13 @@ class Hint(Copyable):
     def __repr__(self) -> str:
         if self._parent is None:
             return f"<Hint: p={self.position}, w={self.width}, orphan>"
+        if self._stem_direction == DIR_HORIZONTAL:
+            name = "HHint"
+        elif self._stem_direction == DIR_VERTICAL:
+            name = "VHint"
         else:
-            # TODO: return HHint or VHint
-            return (
-                f"<Hint: p={self.position}, w={self.width}, "
-                f'parent: "{self._parent.name}">'
-            )
+            name = "Hint"
+        return f'<{name}: p={self.position}, w={self.width}, parent: "{self._parent.name}">'
 
     # Additions for FakeLab
 
@@ -111,7 +116,7 @@ class Hint(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         Hint's parent object, `Glyph`
 
@@ -203,16 +208,16 @@ class Hint(Copyable):
             "In order to be converted to a Link, Hint must not be an orphan"
         )
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         """
         Apply Matrix transformation to the Hint (see Matrix().__doc__)
 
         Args:
-            m (Matrix): _description_
+            m (Matrix): The transformation matrix
         """
         raise NotImplementedError
 
-    def TransformLayer(self, m: Matrix, layernum: int) -> None:
+    def TransformLayer(self, m: "Matrix", layernum: int) -> None:
         """
         Apply Matrix transformation to the selected layer of the Hint
 

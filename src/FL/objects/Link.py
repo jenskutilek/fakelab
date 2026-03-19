@@ -1,7 +1,6 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
+from FL.constants import DIR_UNDEFINED
 from FL.fake.Base import Copyable
 
 if TYPE_CHECKING:
@@ -16,14 +15,14 @@ class Link(Copyable):
     Link - class to represent link
     """
 
-    __slots__ = ["_node1", "_node2", "_parent"]
+    __slots__ = ["_node1", "_node2", "_parent", "_stem_direction"]
 
     # Constructor
 
     def __init__(
-        self, link_or_index1: Link | int | None = None, index2: int | None = None
+        self, link_or_index1: "Link | int | None" = None, index2: int | None = None
     ) -> None:
-        self.set_defaults()
+        self.fake_set_defaults()
 
         # Process params
 
@@ -36,6 +35,19 @@ class Link(Copyable):
             if index2 is not None:
                 self._node2 = index2
 
+    # Defaults
+
+    def fake_set_defaults(self) -> None:
+        self._parent = None
+        self._node1 = -1
+        self._node2 = -1
+        self._stem_direction = DIR_UNDEFINED
+
+    def _copy_constructor(self, other: "Link") -> None:
+        self.node1 = other.node1
+        self.node2 = other.node2
+        self._stem_direction = other._stem_direction
+
     def __repr__(self) -> str:
         p = self._parent or "orphan"
         return f"<Link: node1={self.node1}, node2={self.node2}, {p}>"
@@ -43,7 +55,7 @@ class Link(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         Link's parent object, Glyph
         """
@@ -81,10 +93,3 @@ class Link(Copyable):
         # This does *not* return the hint, but seems to append it to the
         # glyph's hhints or vhints property. It also deletes itself from the links attr.
         return None
-
-    # Defaults
-
-    def set_defaults(self) -> None:
-        self._parent = None
-        self._node1 = -1
-        self._node2 = -1
