@@ -1,8 +1,6 @@
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from FL.fake.Base import Copyable
-
 if TYPE_CHECKING:
     from FL.objects.Point import Point
 
@@ -10,7 +8,7 @@ if TYPE_CHECKING:
 __doc__ = "Class to represent planar transformations"
 
 
-class Matrix(Copyable):
+class Matrix:
     """
     Matrix - class to represent planar transformations
     """
@@ -134,7 +132,10 @@ class Matrix(Copyable):
     @a.setter
     def a(self, value: float) -> None:
         self._a = float(value)
-        delattr(self, "fake_is_identity")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
 
     @property
     def b(self) -> float:
@@ -143,7 +144,10 @@ class Matrix(Copyable):
     @b.setter
     def b(self, value: float) -> None:
         self._b = float(value)
-        delattr(self, "fake_is_identity")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
 
     @property
     def c(self) -> float:
@@ -152,7 +156,10 @@ class Matrix(Copyable):
     @c.setter
     def c(self, value: float) -> None:
         self._c = float(value)
-        delattr(self, "fake_is_identity")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
 
     @property
     def d(self) -> float:
@@ -161,7 +168,10 @@ class Matrix(Copyable):
     @d.setter
     def d(self, value: float) -> None:
         self._d = float(value)
-        delattr(self, "fake_is_identity")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
 
     @property
     def e(self) -> float:
@@ -170,8 +180,14 @@ class Matrix(Copyable):
     @e.setter
     def e(self, value: float) -> None:
         self._e = float(value)
-        delattr(self, "fake_is_identity")
-        delattr(self, "fake_is_translation")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
+        try:
+            delattr(self, "fake_is_translation")
+        except AttributeError:
+            pass
 
     @property
     def f(self) -> float:
@@ -180,8 +196,14 @@ class Matrix(Copyable):
     @f.setter
     def f(self, value: float) -> None:
         self._f = float(value)
-        delattr(self, "fake_is_identity")
-        delattr(self, "fake_is_translation")
+        try:
+            delattr(self, "fake_is_identity")
+        except AttributeError:
+            pass
+        try:
+            delattr(self, "fake_is_translation")
+        except AttributeError:
+            pass
 
     # Operations
 
