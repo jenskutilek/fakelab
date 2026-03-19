@@ -235,10 +235,9 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Add(Point p)
-
-        Point is expected in arg 1:
-        Point.Add(Point p)
         """
+        if not isinstance(p, Point):
+            raise RuntimeError("Point is expected in arg 1:\n  Point.Add(Point p)")
         self.Shift(p)
 
     def Sub(self, p: "Point") -> None:
@@ -251,10 +250,9 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Sub(Point p).
-
-        Point is expected in arg 1:
-        Point.Sub(Point p)
         """
+        if not isinstance(p, Point):
+            raise RuntimeError("Point is expected in arg 1:\n  Point.Sub(Point p)")
         self.x -= p.x
         self.y -= p.y
 
@@ -268,10 +266,9 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Mul(number n).
-
-        Number is expected in arg 1:
-        Point.Mul(number n)
         """
+        if not (isinstance(s, float) or isinstance(s, int)):
+            raise RuntimeError("Number is expected in arg 1:\n  Point.Mul(number n)")
         self.x *= s
         self.y *= s
 
@@ -285,8 +282,9 @@ class Point(Copyable):
 
         Incorrect # of args to:
         Point.Transform(Matrix m).
-
-        Matrix is expected in arg 1:
-        Point.Transform(Matrix m)
         """
+        if not isinstance(m, Matrix):
+            raise RuntimeError(
+                "Matrix is expected in arg 1:\n  Point.Transform(Matrix m)"
+            )
         m.fake_transform_point(self)
