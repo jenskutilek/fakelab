@@ -7,6 +7,7 @@ from FL.constants import DIR_HORIZONTAL, DIR_UNDEFINED, DIR_VERTICAL
 from FL.fake.Base import Copyable
 from FL.helpers.interpolation import add_axis_to_list, remove_axis_from_list
 from FL.objects.Link import Link
+from FL.objects.Point import Point
 
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
@@ -68,6 +69,48 @@ class Hint(Copyable):
                     self.width = arg2
             else:
                 raise RuntimeError("Hint type is expected in arg 1: Hint(Hint)")
+
+    def _transform_horizontal(self, matrix: "Matrix") -> None:
+        # FIXME: Does this handle MM?
+        p0 = Point(0, self.position)
+        p1 = Point(0, self.position + self.width)
+        p0.Transform(matrix)
+        p1.Transform(matrix)
+        pos0, pos1 = sorted([p0.y, p1.y])
+        if self.width in (-20, -21):
+            if matrix.d < 0:
+                # Vertically flipped
+                if self.width == -21:
+                    # Handle inverted bottom ghost hint, now top
+                    self.position = int(pos1)
+                    self.width = -20
+                elif self.width == -20:
+                    # Handle inverted top ghost hint, now bottom
+                    self.position = int(pos1)
+                    self.width = -21
+                else:
+                    logger.error(f"Can't handle transformed hint: {self}, {matrix}")
+            elif self.width == -21:
+                # Handle normal bottom ghost hint
+                self.position = int(pos0 + 21)
+            elif self.width == -20:
+                # Handle normal top ghost hint
+                self.position = int(pos0 + 20)
+            else:
+                logger.error(f"Can't handle transformed hint: {self}, {matrix}")
+        else:
+            self.position = int(pos0)
+            self.width = int(pos1 - pos0)
+
+    def _transform_vertical(self, matrix: "Matrix") -> None:
+        # FIXME: Does this handle MM?
+        p0 = Point(self.position, 0)
+        p1 = Point(self.position + self.width, 0)
+        p0.Transform(matrix)
+        p1.Transform(matrix)
+        pos0, pos1 = sorted([p0.x, p1.x])
+        self.position = int(pos0)
+        self.width = int(pos1 - pos0)
 
     def __repr__(self) -> str:
         if self._parent is None:
@@ -220,7 +263,14 @@ class Hint(Copyable):
         Args:
             m (Matrix): The transformation matrix
         """
-        raise NotImplementedError
+        if self._stem_direction == DIR_HORIZONTAL:
+            self._transform_horizontal(m)
+        elif self._stem_direction == DIR_VERTICAL:
+            self._transform_vertical(m)
+        else:
+            raise NotImplementedError(
+                "Don't know how to transform hint without specified direction"
+            )
 
     def TransformLayer(self, m: "Matrix", layernum: int) -> None:
         """
