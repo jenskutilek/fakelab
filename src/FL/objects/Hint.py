@@ -138,6 +138,7 @@ class Hint(Copyable):
             self._widths.append(hint_dict["width"])
 
     def fake_serialize(self) -> list[HintDict]:
+        # TODO: Unused, move logic from Glyph.fake_serialize_hints here
         hint_dicts = []
         hint_dict = HintDict()
         hint_dicts.append(hint_dict)
