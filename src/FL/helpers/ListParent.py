@@ -80,3 +80,20 @@ class ListParent(UserList[T]):
         Remove all items from the list.
         """
         self.data = []
+
+
+class DirectionalList(ListParent[T]):
+    def __init__(
+        self,
+        stem_direction: int,
+        iterable: Iterable = [],
+        parent: Any | None = None,
+        only_type: Any = None,
+    ) -> None:
+        self._stem_direction = stem_direction
+        super().__init__(iterable, parent, only_type)
+
+    def _item_callback(self, item: Any) -> None:
+        # Set the stem direction from the list to the Hint items
+        super()._item_callback(item)
+        item._stem_direction = self._stem_direction

@@ -52,3 +52,8 @@ json2vfb_node_types = {nLINE: "line", nMOVE: "move", nCURVE: "curve", nOFF: "qcu
 
 vfb2json_node_conns = {0: nSHARP, 1: nSMOOTH, 2: nCLOSEPATH, 3: nFIXED}
 json2vfb_node_conns = {nSHARP: 0, nSMOOTH: 1, nCLOSEPATH: 2, nFIXED: 3}
+
+# For directional lists, e.g. Hint, Link, Guide
+DIR_UNDEFINED = -1
+DIR_HORIZONTAL = 0
+DIR_VERTICAL = 1
