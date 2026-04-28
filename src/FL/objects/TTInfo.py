@@ -4,7 +4,6 @@ from vfbLib.parsers.truetype import convert_int_to_flags_options
 from vfbLib.typing import FlagsOptionsDict, TTStemsDict, TTZonesDict
 
 from FL.fake.Base import Copyable
-from FL.helpers.math import int32_to_unsigned, uint32_to_signed
 from FL.objects.TTGasp import TTGasp
 from FL.objects.TTStem import TTStem
 from FL.objects.TTVdmx import TTVdmx
@@ -215,11 +214,11 @@ class TTInfo(Copyable):
         if "head_creation" in data:
             hc0 = data["head_creation"]
             assert isinstance(hc0, int)
-            self._head_creation[0] = uint32_to_signed(hc0)
+            self._head_creation[0] = hc0
         if "head_creation2" in data:
             hc1 = data["head_creation2"]
             assert isinstance(hc1, int)
-            self._head_creation[1] = uint32_to_signed(hc1)
+            self._head_creation[1] = hc1
 
         # I tried to make this value more self-explanatory in vfbLib, but FL
         # only shows us an int. So we have to convert it back ...
