@@ -2,7 +2,7 @@
 name = "fakelab"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
-version = "0.1.4"
+version = "0.1.5"
 
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -42,19 +42,19 @@ test = [
 [project.optional-dependencies]
 generate = [
     # Generate actual fonts with ufo2ft
-    "ufo2ft >= 3.6.8",
+    "ufo2ft >= 3.7.1",
     "mutatormath >= 3.0.1",
 ]
 repl = [
     # Better interactive prompt
-    "ptpython >= 3.0.30"
+    "ptpython >= 3.0.32"
 ]
 all = [
     "fakelab[generate]",
     "fakelab[repl]",
 ]
 doc = [
-    "sphinx >= 8.2.3",
+    "sphinx >= 9.1.0",
     "sphinx_rtd_theme",
 ]
 
