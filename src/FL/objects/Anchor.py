@@ -22,7 +22,7 @@ class Anchor(Copyable):
     # Constructor
 
     def __init__(
-        self, anchor_or_name:" Anchor | str | None" = None, x: int = 0, y: int = 0
+        self, anchor_or_name: "Anchor | str | None" = None, x: int = 0, y: int = 0
     ) -> None:
         """
         Integer values are accepted as coordinates.

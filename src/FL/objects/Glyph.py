@@ -1645,7 +1645,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Blend(self, source: "Glyph", layer1: int, layer2: int, amount: Point) -> "Glyph":
+    def Blend(
+        self, source: "Glyph", layer1: int, layer2: int, amount: Point
+    ) -> "Glyph":
         """
         Return a blend of the glyph and source.
 
