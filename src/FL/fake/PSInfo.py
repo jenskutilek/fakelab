@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from vfbLib.typing import PSInfoDict
 
 
-def get_default_ps_info() -> PSInfoDict:
+def get_default_ps_info() -> "PSInfoDict":
     return {
         "font_matrix": (0.001, 0.0, 0.0, 0.001, 0.0, 0.0),
         "force_bold": 0,

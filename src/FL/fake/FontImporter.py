@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -12,7 +10,7 @@ __doc__ = "Support for importing binary fonts. Called from FontLab.Open() and Fo
 
 
 class FontImporter:
-    def __init__(self, font_path: Path, options: Options) -> None:
+    def __init__(self, font_path: Path, options: "Options") -> None:
         self.font_path = font_path
         self.options = options
 

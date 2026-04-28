@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -22,7 +20,7 @@ class TrueTypeTable(Copyable):
 
     def __init__(
         self,
-        truetypetable_or_tag: TrueTypeTable | str | None = None,
+        truetypetable_or_tag: "TrueTypeTable | str | None" = None,
         value: str | None = None,
         valuelen: int | None = None,
     ) -> None:
@@ -45,7 +43,7 @@ class TrueTypeTable(Copyable):
             value (str | None, optional): _description_. Defaults to None.
             valuelen (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: Font | None = None
+        self._parent: "Font | None" = None
         self.tag = ""
         self.value = ""  # FIXME: str vs. bytes?
         if truetypetable_or_tag is not None:
@@ -66,7 +64,7 @@ class TrueTypeTable(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         return self._parent
 
     @property

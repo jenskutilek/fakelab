@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
@@ -22,8 +20,8 @@ class WeightVector(Copyable):
 
     # Constructor
 
-    def __init__(self, weight_vector: WeightVector | None = None) -> None:
-        self._parent: Font | None = None
+    def __init__(self, weight_vector: "WeightVector | None" = None) -> None:
+        self._parent: "Font | None" = None
         self._weights = [
             1.0,
             0.0,
@@ -48,10 +46,10 @@ class WeightVector(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         return self._parent
 
-    def __getitem__(self, index: int | slice[Any, Any, Any]) -> float | list[float]:
+    def __getitem__(self, index: "int | slice[Any, Any, Any]") -> float | list[float]:
         return self._weights[index]
 
     def __setitem__(self, key: int, value: float) -> None:

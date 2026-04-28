@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -31,7 +29,7 @@ class Component(Copyable):
 
     def __init__(
         self,
-        component_or_index: Component | int | None = None,
+        component_or_index: "Component | int | None" = None,
         delta: Point | None = None,
         scale: Point | None = None,
     ) -> None:
@@ -57,7 +55,7 @@ class Component(Copyable):
         self._deltas = [Point(0, 0)] * 16
         self._scales = [Point(1.0, 1.0)] * 16
         self._index = -1
-        self._parent: Glyph | None = None
+        self._parent: "Glyph | None" = None
 
         if isinstance(component_or_index, Component):
             self._copy_constructor(component_or_index)
@@ -120,7 +118,7 @@ class Component(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         parent object, Glyph
         """
@@ -215,7 +213,7 @@ class Component(Copyable):
 
     # Methods
 
-    def Get(self, f: Font | None = None) -> Glyph:
+    def Get(self, f: "Font | None" = None) -> "Glyph":
         """
         Creates a glyph from component applying delta and scale transformations.
 

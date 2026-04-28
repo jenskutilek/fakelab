@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from typing import TYPE_CHECKING
 
@@ -20,7 +18,7 @@ Base class for Kerning
 
 
 class FakeKerning:
-    def __init__(self, font: Font | None = None) -> None:
+    def __init__(self, font: "Font | None" = None) -> None:
         self._font = font
         # self.num_masters: int = 0
         # self.upm: int | None = None
@@ -92,7 +90,7 @@ class FakeKerning:
         self.import_classes_from_font(self._font)
         self._expand()
 
-    def export_afm(self, file_path: Path, expand: bool = True) -> None:
+    def export_afm(self, file_path: "Path", expand: bool = True) -> None:
         """
         Export kerning data to an AFM file at `file_path`.
 
@@ -106,10 +104,10 @@ class FakeKerning:
             self.expand()
         raise NotImplementedError
 
-    def export_flc(self, file_path: Path) -> None:
+    def export_flc(self, file_path: "Path") -> None:
         raise NotImplementedError
 
-    def import_afm(self, file_path: Path, master_index: int = 0) -> None:
+    def import_afm(self, file_path: "Path", master_index: int = 0) -> None:
         """
         Import kerning data from an AFM file at `file_path`.
 
@@ -119,7 +117,7 @@ class FakeKerning:
         """
         raise NotImplementedError
 
-    def import_classes_from_font(self, font: Font) -> None:
+    def import_classes_from_font(self, font: "Font") -> None:
         """
         Import the kerning classes from a font.
 
@@ -157,7 +155,7 @@ class FakeKerning:
             if "R" in kc.sides:
                 self.classes_right[kc.keyglyph] = kc
 
-    def import_flc(self, file_path: Path) -> None:
+    def import_flc(self, file_path: "Path") -> None:
         """
         Import the kerning classes from a FLC file.
 

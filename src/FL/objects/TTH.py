@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from vfbLib.truetype import TT_COMMAND_CONSTANTS, TT_COMMANDS
@@ -46,7 +44,7 @@ class TTH:
 
     # Constructor
 
-    def __init__(self, g: Glyph | None = None, f: Font | None = None) -> None:
+    def __init__(self, g: "Glyph | None" = None, f: "Font | None" = None) -> None:
         """
         TTH()
             generic constructor, creates an empty TTH
@@ -69,10 +67,10 @@ class TTH:
             else:
                 self.font = f
 
-        self._top_zones: list[Hint] = FLList()
-        self._bottom_zones: list[Hint] = FLList()
-        self._base_top_zones: list[Hint] = FLList()
-        self._base_bottom_zones: list[Hint] = FLList()
+        self._top_zones: "list[Hint]" = FLList()
+        self._bottom_zones: "list[Hint]" = FLList()
+        self._base_top_zones: "list[Hint]" = FLList()
+        self._base_bottom_zones: "list[Hint]" = FLList()
         self._hstems: list[int] = FLList()
         self._vstems: list[int] = FLList()
         self._base_hstems: list[int] = FLList()
@@ -81,10 +79,10 @@ class TTH:
         # self.zero_point._parent = self  # Needed?
         self.upm = 1000
         self.ppm = 0  # FL returns a random number
-        self._outline: list[TTHPoint] = FLList()
-        self._base_outline: list[TTHPoint] = FLList()
+        self._outline: "list[TTHPoint]" = FLList()
+        self._base_outline: "list[TTHPoint]" = FLList()
         self._commands: list[TTHCommand] = FLList()
-        self._problems: list[TTHProblem] = FLList()
+        self._problems: "list[TTHProblem]" = FLList()
 
     def _raise(self, attr: str) -> None:
         raise RuntimeError(
@@ -97,51 +95,51 @@ class TTH:
     # Attributes
 
     @property
-    def font(self) -> Font | None:
+    def font(self) -> "Font | None":
         return self._font
 
     @font.setter
-    def font(self, value: Font | None) -> None:
+    def font(self, value: "Font | None") -> None:
         self._font = value
 
     @property
-    def glyph(self) -> Glyph | None:
+    def glyph(self) -> "Glyph | None":
         return self._glyph
 
     @glyph.setter
-    def glyph(self, value: Glyph | None) -> None:
+    def glyph(self, value: "Glyph | None") -> None:
         self._glyph = value
 
     @property
-    def top_zones(self) -> list[Hint]:
+    def top_zones(self) -> "list[Hint]":
         return self._top_zones
 
     @top_zones.setter
-    def top_zones(self, value: list[Hint]) -> None:
+    def top_zones(self, value: "list[Hint]") -> None:
         self._raise("top_zones")
 
     @property
-    def bottom_zones(self) -> list[Hint]:
+    def bottom_zones(self) -> "list[Hint]":
         return self._bottom_zones
 
     @bottom_zones.setter
-    def bottom_zones(self, value: list[Hint]) -> None:
+    def bottom_zones(self, value: "list[Hint]") -> None:
         self._raise("bottom_zones")
 
     @property
-    def base_top_zones(self) -> list[Hint]:
+    def base_top_zones(self) -> "list[Hint]":
         return self._base_top_zones
 
     @base_top_zones.setter
-    def base_top_zones(self, value: list[Hint]) -> None:
+    def base_top_zones(self, value: "list[Hint]") -> None:
         self._raise("base_top_zones")
 
     @property
-    def base_bottom_zones(self) -> list[Hint]:
+    def base_bottom_zones(self) -> "list[Hint]":
         return self._base_bottom_zones
 
     @base_bottom_zones.setter
-    def base_bottom_zones(self, value: list[Hint]) -> None:
+    def base_bottom_zones(self, value: "list[Hint]") -> None:
         self._raise("base_bottom_zones")
 
     @property
@@ -205,19 +203,19 @@ class TTH:
         self._ppm = value
 
     @property
-    def outline(self) -> list[TTHPoint]:
+    def outline(self) -> "list[TTHPoint]":
         return self._outline
 
     @outline.setter
-    def outline(self, value: list[TTHPoint]) -> None:
+    def outline(self, value: "list[TTHPoint]") -> None:
         raise RuntimeError("class TTH has no attribute outline")
 
     @property
-    def base_outline(self) -> list[TTHPoint]:
+    def base_outline(self) -> "list[TTHPoint]":
         return self._base_outline
 
     @base_outline.setter
-    def base_outline(self, value: list[TTHPoint]) -> None:
+    def base_outline(self, value: "list[TTHPoint]") -> None:
         raise RuntimeError("class TTH has no attribute base_outline")
 
     @property
@@ -229,11 +227,11 @@ class TTH:
         self._raise("commands")
 
     @property
-    def problems(self) -> list[TTHProblem]:
+    def problems(self) -> "list[TTHProblem]":
         return self._problems
 
     @problems.setter
-    def problems(self, value: list[TTHProblem]) -> None:
+    def problems(self, value: "list[TTHProblem]") -> None:
         self._raise("problems")
 
     # Operations
@@ -252,7 +250,7 @@ class TTH:
 
     # Methods
 
-    def Init(self, g_or_f: Glyph | Font, f: Font | None = None) -> None:
+    def Init(self, g_or_f: "Glyph | Font", f: "Font | None" = None) -> None:
         raise NotImplementedError
 
     def Initoutline(self) -> None:
@@ -264,7 +262,7 @@ class TTH:
     def ResetProgram(self, direction: int | None = None) -> None:
         raise NotImplementedError
 
-    def LoadProgram(self, g: Glyph | None = None) -> None:
+    def LoadProgram(self, g: "Glyph | None" = None) -> None:
         # Initialize TTH object with Glyph first or specify it explicitly
         if g is None:
             if self.glyph is None:
@@ -284,7 +282,7 @@ class TTH:
             tthcmd = TTHCommand(cmd_int, *params)
             self.commands.append(tthcmd)
 
-    def SaveProgram(self, g: Glyph | None = None) -> None:
+    def SaveProgram(self, g: "Glyph | None" = None) -> None:
         if g is None:
             if self.glyph is None:
                 raise ValueError(
@@ -310,7 +308,7 @@ class TTH:
         # Returns some kind of error code? 1 for an empty program e.g.
         raise NotImplementedError
 
-    def BuildFromLinks(self, g: Glyph | None = None) -> None:
+    def BuildFromLinks(self, g: "Glyph | None" = None) -> None:
         if g is None:
             raise ValueError(
                 "TTH.LoadProgram without glyph argument will send FontLab into an "

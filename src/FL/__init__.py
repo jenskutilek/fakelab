@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL import fl_cmd
 from FL.constants import (
     ftFONTLAB,

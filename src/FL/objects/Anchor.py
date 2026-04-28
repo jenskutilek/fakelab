@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -24,7 +22,7 @@ class Anchor(Copyable):
     # Constructor
 
     def __init__(
-        self, anchor_or_name: Anchor | str | None = None, x: int = 0, y: int = 0
+        self, anchor_or_name:" Anchor | str | None" = None, x: int = 0, y: int = 0
     ) -> None:
         """
         Integer values are accepted as coordinates.
@@ -77,7 +75,7 @@ class Anchor(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         Anchors's parent object, `Glyph`
         """
@@ -186,7 +184,7 @@ class Anchor(Copyable):
         pt.x = int(point.x)
         pt.y = int(point.y)
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         """
         Applies Matrix transformation to the Anchor (see `Matrix`)
 

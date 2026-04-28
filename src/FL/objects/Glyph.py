@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from typing import TYPE_CHECKING, Any
 
@@ -120,7 +118,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     # Constructor
 
     def __init__(
-        self, glyph_or_masterscount: Glyph | int = 1, nodes: list[Node] | None = None
+        self, glyph_or_masterscount: "Glyph | int" = 1, nodes: list[Node] | None = None
     ) -> None:
         self.set_defaults()
 
@@ -173,7 +171,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._replace_table: list[Replace] = []
         self._kerning: ListParent[KerningPair] = ListParent([], self, KerningPair)
         self._layers_number = 1
-        self._mask: Glyph | None = None
+        self._mask: "Glyph | None" = None
         self._mask_weight_vector: list[float] = [1.0]
         self._mask_metrics: Point | None = None
         self._mask_metrics_mm: list[Point] | None = None
@@ -205,7 +203,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.y_pels: int = 1
         self.number_of_contours: int = 0
         self.end_points: list[int] = []
-        self.points: list[TTPoint] = []
+        self.points: "list[TTPoint]" = []
         self.instructions: list[int] = []
         self._imported: dict[str, Any] = {}
         self.hdmx: list[int] = []
@@ -217,7 +215,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._glyph_hinting_options: GlyphHintingOptionsDict = {}
         self._glyph_origin = {"x": 0, "y": 0}
         self._glyph_sketch: list[tuple[int, int, int]] = []
-        self._tth: list[Instruction] = []
+        self._tth: "list[Instruction]" = []
 
         # For binary compatibility with FL-written files:
 
@@ -235,11 +233,11 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     def _masters_count(self) -> int:
         return self.layers_number
 
-    def fake_update(self, font: Font | None = None, index: int = -1) -> None:
+    def fake_update(self, font: "Font | None" = None, index: int = -1) -> None:
         """
         Is called from FontLab.UpdateFont()
         """
-        self._parent: Font | None = font
+        self._parent: "Font | None" = font
         self._index: int = index
         if font is None:
             self._index = -1
@@ -667,7 +665,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
     # Attributes
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         """
         The glyph's parent object.
 
@@ -801,7 +799,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         return self._layers_number
 
     @property
-    def mask(self) -> Glyph | None:
+    def mask(self) -> "Glyph | None":
         """
         The mask (background layer) of the glyph.
 
@@ -963,7 +961,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def __add__(self, glyph_node_nodelist: Glyph | Node | Iterable[Node]) -> Glyph:
+    def __add__(self, glyph_node_nodelist: "Glyph | Node | Iterable[Node]") -> "Glyph":
         """
         Append a :py:class:`Glyph`, a :py:class:`Node`, or a sequence of
         :py:class:`Node`s.
@@ -976,7 +974,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def __mul__(self, matrix: Matrix) -> Glyph:
+    def __mul__(self, matrix: "Matrix") -> "Glyph":
         """
         Apply a matrix transformation to the glyph.
 
@@ -990,7 +988,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     # Methods
 
-    def Assign(self, g: Glyph) -> None:
+    def Assign(self, g: "Glyph") -> None:
         """
         Copy all information from a glyph.
 
@@ -999,7 +997,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Transform(self, matrix: Matrix) -> None:
+    def Transform(self, matrix: "Matrix") -> None:
         """
         Apply a matrix transformation to the glyph.
 
@@ -1023,7 +1021,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Add(self, glyph_node_nodelist: Glyph | Node | Iterable[Node]) -> None:
+    def Add(self, glyph_node_nodelist: "Glyph | Node | Iterable[Node]") -> None:
         """
         Append a glyph, a node, or a sequence of nodes.
 
@@ -1033,7 +1031,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         raise NotImplementedError
 
     def Insert(
-        self, node_or_glyph_or_nodelist: Node | Glyph | list[Node], nodeindex: int = 0
+        self, node_or_glyph_or_nodelist: "Node | Glyph | list[Node]", nodeindex: int = 0
     ) -> None:
         """
         Insert a node, a glyph, or a sequence of nodes at the beginning of the glyph's
@@ -1302,7 +1300,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Badd(self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0) -> None:
+    def Badd(self, glyph_nodelist: "Glyph | list[Node]", masterindex: int = 0) -> None:
         """
         Perform a boolean _Add_ operation with the glyph or list of nodes.
 
@@ -1313,7 +1311,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         raise NotImplementedError
 
     def Bsubtract(
-        self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
+        self, glyph_nodelist: "Glyph | list[Node]", masterindex: int = 0
     ) -> None:
         """
         Perform boolean _Subtract_ operation with the glyph or list of nodes.
@@ -1325,7 +1323,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         raise NotImplementedError
 
     def Bintersect(
-        self, glyph_nodelist: Glyph | list[Node], masterindex: int = 0
+        self, glyph_nodelist: "Glyph | list[Node]", masterindex: int = 0
     ) -> None:
         """
         Perform a boolean _Intersect_ operation with the glyph or list of nodes.
@@ -1516,7 +1514,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Audit(self) -> list[AuditRecord]:
+    def Audit(self) -> "list[AuditRecord]":
         """
         Perform a test of the glyph and return a list of :py:class:`AuditRecord`
         objects.
@@ -1603,7 +1601,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         raise NotImplementedError
 
     def Distance(
-        self, width_x: int, width_y: int, cornermode: int, dest: Glyph | None = None
+        self, width_x: int, width_y: int, cornermode: int, dest: "Glyph | None" = None
     ) -> None:
         """
         _summary_
@@ -1647,7 +1645,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def Blend(self, source: Glyph, layer1: int, layer2: int, amount: Point) -> Glyph:
+    def Blend(self, source: "Glyph", layer1: int, layer2: int, amount: Point) -> "Glyph":
         """
         Return a blend of the glyph and source.
 
@@ -1678,7 +1676,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         raise NotImplementedError
 
-    def LoadEPS(self, filename: str) -> Glyph:
+    def LoadEPS(self, filename: str) -> "Glyph":
         """
         Read an EPS file from filename and return it as a Glyph object.
 

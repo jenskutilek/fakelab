@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.fake.Base import Copyable
 
 __doc__ = "Class to represent a vdmx table record"
@@ -14,7 +12,7 @@ class TTVdmx(Copyable):
 
     __slots__ = ["_y_pel_height", "_y_min", "_y_max"]
 
-    def __init__(self, ttvdmx: TTVdmx | None = None) -> None:
+    def __init__(self, ttvdmx: "TTVdmx | None" = None) -> None:
         self._y_pel_height = 0
         self._y_min = 0
         self._y_max = 0

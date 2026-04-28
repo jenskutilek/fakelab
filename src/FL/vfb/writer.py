@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 # from fontTools.misc.textTools import deHexStr, hexStr
 from typing import TYPE_CHECKING, Any
 
@@ -39,7 +37,7 @@ class FontToVfbWriter:
         self.vfb = Vfb()
         self.compile()
 
-    def write(self, vfb_path: Path) -> None:
+    def write(self, vfb_path: "Path") -> None:
         """
         Write the VFB to `vfb_path`.
 
@@ -48,7 +46,7 @@ class FontToVfbWriter:
         """
         self.vfb.write(vfb_path)
 
-    def write_json(self, vfb_json_path: Path) -> None:
+    def write_json(self, vfb_json_path: "Path") -> None:
         """
         Write the VFB as JSON to `vfb_json_path`.
 
@@ -58,7 +56,7 @@ class FontToVfbWriter:
         write_vfb_json(self.vfb, vfb_json_path)
 
     def add_direct_entries(
-        self, keys: tuple[int, ...], parent: Font | TTInfo, enum: type[IntEnum] = F
+        self, keys: tuple[int, ...], parent: Font | TTInfo, enum: "type[IntEnum]" = F
     ) -> None:
         for key in keys:
             attr = enum(key).name

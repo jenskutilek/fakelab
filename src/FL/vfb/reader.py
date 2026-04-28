@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from typing import TYPE_CHECKING
 
@@ -116,7 +114,7 @@ class VfbToFontReader:
     know...) object (low-level representation of the binary VFB format)
     """
 
-    def __init__(self, vfb_path: Path) -> None:
+    def __init__(self, vfb_path: "Path") -> None:
         """
         Instantiate a reader for the VFB file at `vfb_path`.
 
@@ -126,7 +124,7 @@ class VfbToFontReader:
         self.vfb_path = vfb_path
         self.nametable = StandardNametable()
 
-    def read(self, font: Font) -> None:
+    def read(self, font: "Font") -> None:
         """
         Read the data from the VFB into a font.
 

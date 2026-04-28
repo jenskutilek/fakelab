@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -23,7 +21,7 @@ class KerningPair(Copyable):
     # Constructor
 
     def __init__(
-        self, kerningpair_or_index: KerningPair | int | None = None, value: int = 0
+        self, kerningpair_or_index: "KerningPair | int | None" = None, value: int = 0
     ) -> None:
         """
         KerningPair()
@@ -58,7 +56,7 @@ class KerningPair(Copyable):
         raise AttributeError
 
     @fake_parent.setter
-    def fake_parent(self, value: Glyph | None) -> None:
+    def fake_parent(self, value: "Glyph | None") -> None:
         self._parent = value
         if self._parent is None:
             # Pad values list to 16 masters
@@ -84,7 +82,7 @@ class KerningPair(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         KerningPair's parent object, Glyph.
         """

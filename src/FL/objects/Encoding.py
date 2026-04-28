@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections import UserList
 from typing import TYPE_CHECKING, Any, SupportsIndex
 
@@ -22,7 +20,7 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     # Constructor
 
-    def __init__(self, encoding_or_none: Encoding | None = None) -> None:
+    def __init__(self, encoding_or_none: "Encoding | None" = None) -> None:
         """
         Encoding()         - generic constructor, creates Encoding
         Encoding(Encoding) - copy constructor
@@ -30,7 +28,7 @@ class Encoding(UserList[EncodingRecord], Copyable):
         Args:
             encoding_or_none (Encoding | None, optional): _description_. Defaults to None.
         """
-        self._parent: Font | None = None
+        self._parent: "Font | None" = None
         self.data: list[EncodingRecord] = []
         if isinstance(encoding_or_none, Encoding):
             self._copy_constructor(encoding_or_none)
@@ -48,7 +46,7 @@ class Encoding(UserList[EncodingRecord], Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         """
         Encoding's parent object, Font
         """
@@ -56,13 +54,13 @@ class Encoding(UserList[EncodingRecord], Copyable):
 
     # Operations
 
-    def __delitem__(self, i: SupportsIndex | slice[Any, Any, Any]) -> None:
+    def __delitem__(self, i: "SupportsIndex | slice[Any, Any, Any]") -> None:
         """
         del Encoding[] - remove an element from the encoding
         """
         del self.data[i]
 
-    def __getitem__(self, i: SupportsIndex | slice[Any, Any, Any]) -> EncodingRecord:
+    def __getitem__(self, i: "SupportsIndex | slice[Any, Any, Any]") -> EncodingRecord:
         """
         Accesses individial EncodingRecord objects
         """

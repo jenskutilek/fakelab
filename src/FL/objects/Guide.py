@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from math import atan2, degrees, radians, tan
 from typing import TYPE_CHECKING
 
@@ -20,7 +18,7 @@ class Guide(Copyable):
     __slots__ = ["_angles", "_color", "_name", "_parent", "_positions", "_widths"]
 
     def __init__(
-        self, guide_or_position: Guide | int | None = None, angle: float = 0.0
+        self, guide_or_position: "Guide | int | None" = None, angle: float = 0.0
     ) -> None:
         """
         Guide - class to represent guideline
@@ -39,7 +37,7 @@ class Guide(Copyable):
                 or the position of the guide. Defaults to None.
             angle (float, optional): The width. Defaults to 0.0.
         """
-        self._parent: Glyph | None = None
+        self._parent: "Glyph | None" = None
         self._positions: list[int] = [0] * 16
         self._widths: list[int] = [21] * 16  # WTF
 
@@ -98,7 +96,7 @@ class Guide(Copyable):
         self.width = self.fake_angle_to_width(value)
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """Guide's parent object, `Glyph`. If the guide is global, parent is an orphan
         `Glyph`.
 
@@ -172,7 +170,7 @@ class Guide(Copyable):
 
     # Methods
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         """applies Matrix transformation to the Guide
 
         Args:
@@ -180,7 +178,7 @@ class Guide(Copyable):
         """
         raise NotImplementedError
 
-    def TransformLayer(self, m: Matrix, layernum: int) -> None:
+    def TransformLayer(self, m: "Matrix", layernum: int) -> None:
         """applies Matrix transformation to the selected layer of the Guide
 
         Args:

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -46,7 +44,7 @@ class Replace(Copyable):
 
     def __init__(
         self,
-        replace_or_hint_or_node_or_type: Replace | Hint | Node | int | None = None,
+        replace_or_hint_or_node_or_type: "Replace | Hint | Node | int | None" = None,
         index: int | None = None,
     ) -> None:
         """
@@ -60,7 +58,7 @@ class Replace(Copyable):
             replace_or_hint_or_node_or_type (Replace | Hint | Node | int | None, optional): _description_. Defaults to None.
             index (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: Glyph | None = None
+        self._parent: "Glyph | None" = None
         self._type = 0
         self._index = 0
         arg1 = replace_or_hint_or_node_or_type
@@ -96,7 +94,7 @@ class Replace(Copyable):
             return f"<Replace: Unknown replace type, index= {self.index}, {parent}>"
 
     @property
-    def parent(self) -> Glyph | None:
+    def parent(self) -> "Glyph | None":
         """
         Replace's parent object, `Glyph`
 

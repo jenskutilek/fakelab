@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -30,11 +28,11 @@ class Dialog:
     # Attributes
 
     @property
-    def size(self) -> Point:
+    def size(self) -> "Point":
         raise NotImplementedError
 
     @size.setter
-    def size(self, value: Point) -> None:
+    def size(self, value: "Point") -> None:
         """
         Size of the dialog as a Point object
 
@@ -66,7 +64,7 @@ class Dialog:
         raise NotImplementedError
 
     def AddControl(
-        self, ControlType: int, dimension: Rect, identifier: str, ControlStyle: int
+        self, ControlType: int, dimension: "Rect", identifier: str, ControlStyle: int
     ) -> None:
         """
         Adds a control to the dialog, see `FLdict` for Type- and Style-constants
@@ -130,7 +128,7 @@ class Dialog:
         """
         raise NotImplementedError
 
-    def GetRect(self, identifier: str) -> Rect:
+    def GetRect(self, identifier: str) -> "Rect":
         """
         Get dimension of the specified control as a Rect object
 

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.helpers.tth import TT_COMMANDS, TTCommandDict
 
 __doc__ = "Class to represent a visual TrueType instruction"

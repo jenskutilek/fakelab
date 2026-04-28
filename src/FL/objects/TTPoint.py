@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 __doc__ = "Class to represent a TrueType point"
 
 

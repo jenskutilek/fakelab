@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from vfbLib.compilers.truetype import convert_flags_options_to_int
 from vfbLib.helpers import deHexStr, hexStr
 from vfbLib.parsers.truetype import convert_int_to_flags_options
@@ -84,7 +82,7 @@ class TTInfo(Copyable):
 
     # Constructor
 
-    def __init__(self, ttinfo: TTInfo | None = None) -> None:
+    def __init__(self, ttinfo: "TTInfo | None" = None) -> None:
         """
         Never create TTInfo object explicitly - they must be obtained from the FontLab's
         `Font` classes.
@@ -242,8 +240,8 @@ class TTInfo(Copyable):
             "head_units_per_em": self.head_units_per_em,
             "head_mac_style": self.head_mac_style,
             "head_lowest_rec_ppem": self.head_lowest_rec_ppem,
-            "head_creation": int32_to_unsigned(self.head_creation[0]),
-            "head_creation2": int32_to_unsigned(self.head_creation[1]),
+            "head_creation": self.head_creation[0],
+            "head_creation2": self.head_creation[1],
             "head_font_direction_hint": self.head_font_direction_hint,
             "os2_us_weight_class": self.os2_us_weight_class,
             "os2_us_width_class": self.os2_us_width_class,

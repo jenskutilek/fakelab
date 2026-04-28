@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from typing import TYPE_CHECKING
 
@@ -45,7 +43,7 @@ class KerningClass:
         keyglyph: str | None = None,
         glyphs: list[str] | None = None,
         fromFLClass: str | None = None,
-        parent: FakeKerning | None = None,
+        parent: "FakeKerning | None" = None,
     ) -> None:
         self.name = name
         self.sides = sides  # "", "L", "R", "LR"
@@ -70,7 +68,7 @@ class KerningClass:
         return result
 
     @classmethod
-    def fromFontLabClass(cls, flClass: str) -> KerningClass:
+    def fromFontLabClass(cls, flClass: str) -> "KerningClass":
         kc = cls()
         kc.importFromFontLabClass(flClass)
         return kc

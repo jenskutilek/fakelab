@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -342,7 +340,7 @@ option_keys = {
 }
 
 
-def parse_registry_file(file_path: Path) -> dict[str, str | int | float]:
+def parse_registry_file(file_path: "Path") -> dict[str, str | int | float]:
     with open(file_path, "r") as f:
         data = f.read()
 

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 __doc__ = "Class to represent a TrueType instruction problem"
 
 
@@ -31,7 +29,7 @@ class TTHProblem:
     # Additions for FakeLab
 
     @staticmethod
-    def fake_create() -> TTHProblem:
+    def fake_create() -> "TTHProblem":
         p = TTHProblem.__new__(TTHProblem)
         return p
 

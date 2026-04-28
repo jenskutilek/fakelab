@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Callable
@@ -65,7 +63,7 @@ class FakeLab:
         # (integer) - index of currently selected font in the fonts list panel
         self.ifontslist = 0
 
-        self._glyph: Glyph | None = None
+        self._glyph: "Glyph | None" = None
 
         # (integer)  - index of currently active glyph
         self.iglyph = -1
@@ -137,7 +135,7 @@ class FakeLab:
             self._font = self._fonts[self._ifont]
 
     @property
-    def glyph(self) -> Glyph | None:
+    def glyph(self) -> "Glyph | None":
         """
         Return the currently active glyph in Font, Glyph or Metrics windows.
         """
@@ -455,7 +453,7 @@ class FakeLab:
         self._fonts[fontindex].fake_update()
 
     def SetFontWindow(
-        self, fontindex: int, position: Rect, state: int | None = None
+        self, fontindex: int, position: "Rect", state: int | None = None
     ) -> None:
         """
         Set the window size and style for the Font Window where font 'fontindex' is
@@ -504,7 +502,7 @@ class FakeLab:
 
         return 0
 
-    def Select(self, glyphid: str | Uni | int, value: bool | None = None) -> None:
+    def Select(self, glyphid: "str | Uni | int", value: bool | None = None) -> None:
         """
         Change a glyph's selection state. 'glyphid' may be string (glyph name), Uni
         (Unicode index) or integer (glyph index)
@@ -575,7 +573,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def UpdateRect(self, r: Rect) -> None:
+    def UpdateRect(self, r: "Rect") -> None:
         """
         Updates the rectangle r in the current Glyph Window.
         """
@@ -600,13 +598,13 @@ class FakeLab:
         # RuntimeError: Current window is not Glyph window: FontLab.HitContour(Point)
         raise NotImplementedError
 
-    def GetCanvas(self) -> Canvas:
+    def GetCanvas(self) -> "Canvas":
         """
         Return a :py:class:`Canvas` for the current Glyph Window.
         """
         raise RuntimeError("Current window is not Glyph window: FontLab.GetCanvas()")
 
-    def GetConvert(self, c: Canvas) -> None:
+    def GetConvert(self, c: "Canvas") -> None:
         """
         Copy conversion parameters from the current Glyph Window to the `Canvas`.
         """
@@ -641,7 +639,7 @@ class FakeLab:
         # int(lovalue) <= n < int(hivalue)
         raise NotImplementedError
 
-    def TransformGlyph(self, glyph: Glyph, code: int, text: str) -> None:
+    def TransformGlyph(self, glyph: "Glyph", code: int, text: str) -> None:
         """
         Transforms the glyph using one of the Transform actions.
 
@@ -650,7 +648,7 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def ForSelected(self, function: Callable[[Font, Glyph, int], None]) -> None:
+    def ForSelected(self, function: "Callable[[Font, Glyph, int], None]") -> None:
         """
         Call `function` for each selected glyph in the current font. The function has
         the following format:

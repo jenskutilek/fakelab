@@ -1,13 +1,11 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 from FL.fake.Base import Copyable
+from FL.objects.Point import Point
 
 if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
     from FL.objects.Image import Image
-    from FL.objects.Point import Point
     from FL.objects.Rect import Rect
     from FL.objects.WeightVector import WeightVector
 
@@ -41,7 +39,7 @@ class Canvas(Copyable):
 
     # Constructor
 
-    def __init__(self, canvas: Canvas | None = None) -> None:
+    def __init__(self, canvas: "Canvas | None" = None) -> None:
         """
         Never create Canvas object explicitly - they must be obtained from the FontLab's
         window classes
@@ -252,7 +250,7 @@ class Canvas(Copyable):
 
     def Ellipse(
         self,
-        r_or_p0_or_x0: Rect | Point | float,
+        r_or_p0_or_x0: "Rect | Point | float",
         p1_or_y0: Point | float | None = None,
         x1: float | None = None,
         y1: float | None = None,
@@ -271,7 +269,7 @@ class Canvas(Copyable):
 
     def Rectangle(
         self,
-        r_or_p0_or_x0: Rect | Point | float,
+        r_or_p0_or_x0: "Rect | Point | float",
         p1_or_y0: Point | float | None = None,
         x1: float | None = None,
         y1: float | None = None,
@@ -306,7 +304,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def FitGlyph(self, r: Rect, g: Glyph, w: WeightVector | None = None) -> None:
+    def FitGlyph(self, r: "Rect", g: "Glyph", w: "WeightVector | None" = None) -> None:
         """
         Recalculates parameters of coordinate conversion function to fit glyph g into
         rectangle r using currently selected options.
@@ -318,7 +316,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def FillGlyph(self, g: Glyph, w: WeightVector | None = None) -> None:
+    def FillGlyph(self, g: "Glyph", w: "WeightVector | None" = None) -> None:
         """
         Fills the glyph g using current coordinate transformation.
 
@@ -328,7 +326,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def OutlineGlyph(self, g: Glyph, w: WeightVector | None = None) -> None:
+    def OutlineGlyph(self, g: "Glyph", w: "WeightVector | None" = None) -> None:
         """
         Draws the glyph g outline using current coordinate transformation.
 
@@ -351,7 +349,7 @@ class Canvas(Copyable):
         """
         raise NotImplementedError
 
-    def PutImage(self, i: Image, p: Point, mode: int | None = None) -> None:
+    def PutImage(self, i: "Image", p: Point, mode: int | None = None) -> None:
         """
         Puts Image i at the selected point
 

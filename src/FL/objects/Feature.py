@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -21,7 +19,7 @@ class Feature(Copyable):  # Or TagObject?
     # Constructor
 
     def __init__(
-        self, feature_or_tag: Feature | str | None = None, value: str | None = None
+        self, feature_or_tag: "Feature | str | None" = None, value: str | None = None
     ) -> None:
         """
         Feature()
@@ -37,7 +35,7 @@ class Feature(Copyable):  # Or TagObject?
             feature_or_tag (Feature | str | None, optional): _description_. Defaults to None.
             value (str | None, optional): _description_. Defaults to None.
         """
-        self._parent: Font | None = None
+        self._parent: "Font | None" = None
         self._tag = ""
         self._value: str | None = None
 
@@ -53,7 +51,7 @@ class Feature(Copyable):  # Or TagObject?
         # else: Empty Feature
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         """
         Returns:
             Font | None: The parent Font object, or None.

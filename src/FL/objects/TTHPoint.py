@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.fake.Base import Copyable
 from FL.objects.Point import Point
 
@@ -20,7 +18,7 @@ class TTHPoint(Copyable):
 
     def __init__(
         self,
-        tthpoint_or_p_or_x: TTHPoint | Point | int | None = None,
+        tthpoint_or_p_or_x: "TTHPoint | Point | int | None" = None,
         mode_or_y: int | None = None,
     ) -> None:
         """

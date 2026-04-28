@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.objects.Point import Point
@@ -20,7 +18,7 @@ class AuditRecord:
 
     # Constructor
 
-    def __init__(self, parent: Glyph, _called_from_FL: bool = False) -> None:
+    def __init__(self, parent: "Glyph", _called_from_FL: bool = False) -> None:
         """
         There is no explicit constructor for object of this type.
 
@@ -30,7 +28,7 @@ class AuditRecord:
         Args:
             parent (Glyph): The parent of the AuditRecord, a glyph.
         """
-        self._parent: Glyph = parent
+        self._parent: "Glyph" = parent
         self._x = 0
         self._y = 0
         self._id = ""
@@ -44,7 +42,7 @@ class AuditRecord:
     # Additions for FakeLab
 
     @staticmethod
-    def fake_create(parent: Glyph) -> AuditRecord:
+    def fake_create(parent: "Glyph") -> "AuditRecord":
         a = AuditRecord.__new__(AuditRecord)
         a._parent = parent
         a._x = 0
@@ -57,7 +55,7 @@ class AuditRecord:
     # Attributes
 
     @property
-    def parent(self) -> Glyph:
+    def parent(self) -> "Glyph":
         """
         The audit record's parent object.
 

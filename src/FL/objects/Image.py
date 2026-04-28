@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import array
 from typing import TYPE_CHECKING
 
@@ -30,7 +28,7 @@ class Image:
     ]
 
     def __init__(
-        self, width_or_image: int | Image | None = None, height: int | None = None
+        self, width_or_image: "int | Image | None" = None, height: int | None = None
     ) -> None:
         """
         Image - class to represent image
@@ -214,7 +212,7 @@ class Image:
         """
         raise NotImplementedError
 
-    def Trace(self, glyph: Glyph) -> None:
+    def Trace(self, glyph: "Glyph") -> None:
         """
         Traces the image with the current option and adds it to the glyph
 
@@ -238,7 +236,7 @@ class Image:
         # (not reported by docstring)
         raise NotImplementedError
 
-    def ImageBlt(self, dest: Image, source_rect: Rect, dest_point: Point) -> None:
+    def ImageBlt(self, dest: "Image", source_rect: "Rect", dest_point: Point) -> None:
         # (not reported by docstring)
         raise NotImplementedError
 

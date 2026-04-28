@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -25,7 +23,7 @@ class Rect(Copyable):
 
     def __init__(
         self,
-        r_or_p0_or_x0: Rect | Point | float | None = None,
+        r_or_p0_or_x0: "Rect | Point | float | None" = None,
         p1_or_x0: Point | float | None = None,
         x1: float | None = None,
         y1: float | None = None,
@@ -113,7 +111,7 @@ class Rect(Copyable):
 
     # Operations
 
-    def __add__(self, other: Point | Rect) -> Rect:
+    def __add__(self, other: "Point | Rect") -> "Rect":
         """
         Point or Rect must be second operand, rectangle is expanded to include this
         point or rectangle
@@ -149,7 +147,7 @@ class Rect(Copyable):
             raise TypeError
         return self
 
-    def __mul__(self, other: Matrix) -> Rect:
+    def __mul__(self, other: "Matrix") -> "Rect":
         """
         Second operand must be `Matrix`. Matrix transformation is applied to the
         rectangle.
@@ -160,7 +158,7 @@ class Rect(Copyable):
 
     def Assign(
         self,
-        r_or_p0_or_x0: Rect | Point | float | None = None,
+        r_or_p0_or_x0: "Rect | Point | float | None" = None,
         p1_or_x0: Point | float | None = None,
         x1: float | None = None,
         y1: float | None = None,
@@ -204,7 +202,7 @@ class Rect(Copyable):
         # and y values
         raise NotImplementedError
 
-    def Transform(self, m: Matrix) -> None:
+    def Transform(self, m: "Matrix") -> None:
         # (Matrix m) - applies Matrix transformation to the Rect (see Matrix().__doc__)
         raise NotImplementedError
 
@@ -213,7 +211,7 @@ class Rect(Copyable):
         raise NotImplementedError
 
     def Include(
-        self, r_or_p_or_x: Rect | Point | float, y: float | None = None
+        self, r_or_p_or_x: "Rect | Point | float", y: float | None = None
     ) -> None:
         # Expands rectangle to include new rectangle or point
         if isinstance(r_or_p_or_x, Point):
@@ -235,7 +233,7 @@ class Rect(Copyable):
 
             raise NotImplementedError
 
-    def Check(self, r_or_p: Rect | Point) -> bool:
+    def Check(self, r_or_p: "Rect | Point") -> bool:
         # (Rect r) - returns True if r overlaps current rectangle
         # (Point p) - returns True if p is inside current rectangle
         raise NotImplementedError

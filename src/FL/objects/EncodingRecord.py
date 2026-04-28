@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.fake.Base import Copyable
 
 __doc__ = "Class to represent an encoding record"
@@ -10,7 +8,7 @@ class EncodingRecord(Copyable):
 
     # Constructor
 
-    def __init__(self, encoding_record: EncodingRecord | None = None) -> None:
+    def __init__(self, encoding_record: "EncodingRecord | None" = None) -> None:
         """
         EncodingRecord - class to represent EncodingRecord
 

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from FL.fake.Base import Copyable
@@ -28,9 +26,7 @@ class NameRecord(Copyable):
 
     def __init__(
         self,
-        name_record_or_s_or_tup_or_nid: (
-            NameRecord | str | tuple[int, int, int, int, str] | int | None
-        ) = None,
+        name_record_or_s_or_tup_or_nid: "NameRecord | str | tuple[int, int, int, int, str] | int | None" = None,
         pid: int | None = None,
         eid: int | None = None,
         lid: int | None = None,
@@ -67,7 +63,7 @@ class NameRecord(Copyable):
     # Attributes
 
     @property
-    def parent(self) -> Font | None:
+    def parent(self) -> "Font | None":
         return self._parent
 
     @property

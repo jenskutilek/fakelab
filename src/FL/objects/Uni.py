@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.fake.Base import Copyable
 
 __doc__ = "Class to represent a Unicode codepoint"
@@ -20,7 +18,7 @@ class Uni(Copyable):
 
     # Constructor
 
-    def __init__(self, uni_or_int_or_hex: Uni | int | str | None = None) -> None:
+    def __init__(self, uni_or_int_or_hex: "Uni | int | str | None" = None) -> None:
         """
         Uni()
             generic constructor, creates an empty Uni record (bullshit)

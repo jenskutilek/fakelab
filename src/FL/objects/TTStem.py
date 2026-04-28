@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from vfbLib.typing import TTStemDict
 
 from FL.fake.Base import Copyable
@@ -28,7 +26,7 @@ class TTStem(Copyable):
     # Constructor
 
     def __init__(
-        self, ttstem_or_width: TTStem | int | None = None, upm: int | None = None
+        self, ttstem_or_width: "TTStem | int | None" = None, upm: int | None = None
     ) -> None:
         """
         Args:

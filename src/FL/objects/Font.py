@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import traceback
 from pathlib import Path
 
@@ -22,7 +20,7 @@ class Font(FakeFont):
 
     def __init__(
         self,
-        font_or_path: Font | str | None = None,
+        font_or_path: "Font | str | None" = None,
         instances: tuple[float, ...] | None = None,
     ) -> None:
         super().__init__()
@@ -48,7 +46,7 @@ class Font(FakeFont):
         instances: tuple[float, ...],
         family_name: str | None = None,
         style_name: str | None = None,
-    ) -> Font:
+    ) -> "Font":
         """
         Return an interpolated instance of the font. The original font is not modified.
 
@@ -314,7 +312,7 @@ class Font(FakeFont):
         """
         raise NotImplementedError
 
-    def MergeFonts(self, source: Font, flags: int | None = None) -> None:
+    def MergeFonts(self, source: "Font", flags: int | None = None) -> None:
         """
         Append all glyphs from the source font to the current fonts.
         Check mfXXXX constants for options.

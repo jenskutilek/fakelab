@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from FL.fake.Base import Copyable
 
 __doc__ = "Class to represent a gasp table record"
@@ -12,7 +10,7 @@ class TTGasp(Copyable):
 
     __slots__ = ["_ppm", "_behavior"]
 
-    def __init__(self, ttgasp_or_ppm: TTGasp | int | None = None, behavior: int = 0):
+    def __init__(self, ttgasp_or_ppm: "TTGasp | int | None" = None, behavior: int = 0):
         """
         A gasp table record.
 

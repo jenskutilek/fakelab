@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 __doc__ = """
 Constants for menu commands
 """
