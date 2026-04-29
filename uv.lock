@@ -330,7 +330,7 @@ requires-dist = [
     { name = "sphinx", marker = "extra == 'doc'", specifier = ">=9.1.0" },
     { name = "sphinx-rtd-theme", marker = "extra == 'doc'" },
     { name = "ufo2ft", marker = "extra == 'generate'", specifier = ">=3.7.1" },
-    { name = "vfblib", specifier = ">=0.11.2,<0.12.0" },
+    { name = "vfblib", specifier = ">=0.11.3,<0.12.0" },
 ]
 provides-extras = ["generate", "repl", "all", "doc"]
 
@@ -1257,7 +1257,7 @@ wheels = [
 
 [[package]]
 name = "vfblib"
-version = "0.11.2"
+version = "0.11.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fonttools" },
@@ -1266,9 +1266,9 @@ dependencies = [
     { name = "ufolib2", extra = ["json"] },
     { name = "ufonormalizer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/10/efa1f28e5400b01f023f80233727f79d7c71caa2905b005a97a457064198/vfblib-0.11.2.tar.gz", hash = "sha256:752f020644a1922d771fd180b213aefc79b49e493c12a65eef5e163ae5ff4057", size = 8105746, upload-time = "2026-04-28T14:11:37.161Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d3/85/c7d47d475f3c8a0622601c43113bdd3ec45dd18b050d9cac955084c609ed/vfblib-0.11.3.tar.gz", hash = "sha256:b6fac52030cd60c36a759d65f80ffedf87578346d774dd8743935a337f8dbad5", size = 8105728, upload-time = "2026-04-28T15:05:37.828Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/48/d4/d57ad107685813048cb728139c6173e887e4d50038d3315af6e98fc5deb9/vfblib-0.11.2-py3-none-any.whl", hash = "sha256:ec38364f9d132c8161246395ccbe4ee22b36e1bbb3e0b5a9ecee65df5fd87168", size = 115632, upload-time = "2026-04-28T14:11:35.034Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/9c/d27c7addbb1ac051c6d6bba19e152ba2a16715c0c1a24105067ce7047eb9/vfblib-0.11.3-py3-none-any.whl", hash = "sha256:47029a2ee3e19a98967711bbd5585f83276edacf22b80516c863078f591054c0", size = 115618, upload-time = "2026-04-28T15:05:35.938Z" },
 ]
 
 [[package]]
