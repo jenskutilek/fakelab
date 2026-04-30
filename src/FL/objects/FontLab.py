@@ -538,26 +538,30 @@ class FakeLab:
     def Message(
         self,
         message: str,
-        question: str | None = None,
-        okstring: str | None = None,
-        cancelstring: str | None = None,
+        question: str = "",
+        okstring: str = "OK",
+        cancelstring: str = "Cancel",
     ) -> int:
         """
         Show an alert message dialog box. All parameters but the first can be omitted.
 
         Args:
             message (str): The message.
-            question (str | None, optional): The question text. Defaults to None.
-            okstring (str | None, optional): The label of the OK button. Defaults to
-                None.
-            cancelstring (str | None, optional): The label of the Cancel button.
-                Defaults to None.
+            question (str, optional): The question text. Defaults to an empty string.
+            okstring (str, optional): The label of the OK button. Defaults to "OK".
+            cancelstring (str, optional): The label of the Cancel button. Defaults to "Cancel".
 
         Returns:
             int: 1 if the OK button was clicked, 2 if the Cancel button was clicked or
                 the window has been closed.
         """
-        raise NotImplementedError
+        print(f"Message: {message}")
+        if question:
+            print(question)
+        print(f"  1. {okstring}")
+        print(f"  2. {cancelstring}")
+        result = input("Enter a number: ")
+        return int(result)
 
     def ScreenToGlyph(self, position: Point) -> Point:
         """
