@@ -610,24 +610,36 @@ class FakeLab:
         """
         raise NotImplementedError
 
-    def BeginProgress(self, title: str, counts: int) -> None:
+    def BeginProgress(self, title: str, counts: int = 100) -> None:
         """
         Open a Progress dialog box with 'counts' number of 'ticks'.
+
+        Args:
+            title (str): The title of the progress bar.
+            counts (int, optional): The number of ticks in the progress bar. Defaults to
+                100.
         """
-        raise NotImplementedError
+        print(title)
 
     def TickProgress(self, tick: int) -> bool:
         """
-        Update the Progress bar, return False if the Cancel button was pressed.
-        This is a relatively 'expensive' operation.
+        Update the Progress bar, return False if the Cancel button was pressed. This is
+        a relatively 'expensive' operation.
+
+        Args:
+            tick (int): The new tick value of the progress bar.
+
+        Returns:
+            bool: _description_
         """
-        raise NotImplementedError
+        # Can't be cancelled in FakeLab
+        return True
 
     def EndProgress(self) -> None:
         """
         Close the Progress dialog box.
         """
-        raise NotImplementedError
+        pass
 
     def Random(self, lovalue: float, hivalue: float | None = None) -> int:
         """
