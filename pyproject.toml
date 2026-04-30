@@ -2,7 +2,7 @@
 name = "fakelab"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
-version = "0.1.5"
+version = "0.1.6"
 
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -42,7 +42,7 @@ test = [
 [project.optional-dependencies]
 generate = [
     # Generate actual fonts with ufo2ft
-    "ufo2ft >= 3.7.1",
+    "ufo2ft >= 3.7.2",
     "mutatormath >= 3.0.1",
 ]
 repl = [
@@ -71,7 +71,7 @@ fakelab = "FL.cmdline:main"
 
 
 [build-system]
-requires = ["uv_build>=0.10.8,<0.11.0"]
+requires = ["uv_build>=0.11.8,<0.12"]
 build-backend = "uv_build"
 
 
