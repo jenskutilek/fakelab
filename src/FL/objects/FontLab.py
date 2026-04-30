@@ -450,6 +450,9 @@ class FakeLab:
         """
         if fontindex is None:
             fontindex = self.ifont
+        if fontindex >= len(self._fonts):
+            # Relax the updating if the index doesn't match
+            return
         self._fonts[fontindex].fake_update()
 
     def SetFontWindow(
