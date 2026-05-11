@@ -602,6 +602,9 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if self._mask_metrics_mm is not None:
             add_axis_to_list(self._mask_metrics_mm)
 
+        if self._vsb:
+            add_axis_to_list(self._vsb)
+
         self._layers_number *= 2
 
     def fake_remove_axis(
