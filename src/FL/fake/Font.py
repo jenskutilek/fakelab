@@ -645,8 +645,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         for guide in self.vguides:
             guide.fake_remove_axis(index, position, round_values, m)
 
-        # TODO: Remove axis from fontinfo (interpolate values)
-
         for attr in (
             self._ascender,
             self._descender,
