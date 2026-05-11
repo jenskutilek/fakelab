@@ -577,9 +577,17 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             # probably just duplicate the appropriate value(s)
             adjust_list(attr, 16)
 
-        # Blue values
+        # TODO: Blue values
 
-        # Stems
+        # TODO: Stems
+
+        # Add 2 mappings for the new axis
+        self._axis_mappings_count[self._axis_count] = 2
+        new_mapping_index = self._axis_count * 10
+        self._axis_mappings[new_mapping_index] = (0.0, 0.0)
+        self._axis_mappings[new_mapping_index + 1] = (1000.0, 1.0)
+
+        # TODO: Primary instances?
 
         # Add axis to font
         # tuple is reordered vs. args!
@@ -588,10 +596,8 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
 
         self._masters_count *= 2
 
-        # remove_axis_from_factor_list(self.weight_vector._weights, index)
+        adjust_list(self.weight_vector._weights, self._masters_count, 0.0)
         adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
-
-        # Primary instances
 
         # TODO: Font Matrix?
 
@@ -610,7 +616,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             tloc: tuple[float, float, float, float] = tuple(loc)
             self._master_locations.append((master_index + 1, tloc))
 
-        # TODO: Recalculate bounding box, adv_width_min, adv_width_max
+        # TODO: Recalculate bounding box, adv_width_min, adv_width_max?
 
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True

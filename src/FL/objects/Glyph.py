@@ -601,6 +601,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         if self._mask_metrics_mm is not None:
             add_axis_to_list(self._mask_metrics_mm)
+            adjust_list(self._mask_metrics_mm, self._layers_number * 2 - 1, Point())
 
         if self._vsb:
             add_axis_to_list(self._vsb)
