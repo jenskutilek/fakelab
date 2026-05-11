@@ -208,22 +208,7 @@ class Font(FakeFont):
             type (str): The axis type: "OpticalSize", "Serif", "Weight", or "Width".
             shortname (str): The two-letter abbreviation.
         """
-        if self._axis_count >= 4:
-            # Ignore silently
-            return
-
-        # tuple is reordered vs. args!
-        self._axis.append((name, shortname[:5], type))
-        self._axis_count = len(self._axis)
-
-        if self._global_mask is not None:
-            self._global_mask.fake_add_axis()
-
-        # Adjust glyphs
-        for glyph in self.glyphs:
-            glyph.fake_add_axis()
-
-        # Adjust font info
+        self.fake_add_axis(name, type, shortname)
 
     def DeleteAxis(self, axisindex: int, position: float) -> None:
         """

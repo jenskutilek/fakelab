@@ -544,6 +544,74 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             if self.apple_name is not None:
                 self.apple_name += f" {style_name}"
 
+    def fake_add_axis(self, name: str, type: str, shortname: str) -> None:
+        if self._axis_count >= 4:
+            # Ignore silently
+            return
+
+        if self._global_mask is not None:
+            self._global_mask.fake_add_axis()
+
+        # Adjust glyphs
+        for glyph in self.glyphs:
+            glyph.fake_add_axis()
+
+        # Adjust font info
+        for guide in self.hguides:
+            guide.fake_add_axis()
+        for guide in self.vguides:
+            guide.fake_add_axis()
+
+        for attr in (
+            self._ascender,
+            self._descender,
+            self._cap_height,
+            self._x_height,
+            self._default_width,
+            self.blue_fuzz,
+            self.blue_scale,
+            self.blue_shift,
+            # self.force_bold,
+        ):
+            # TODO: These always store all possible 16 masters, so we must should
+            # probably just duplicate the appropriate value(s)
+            adjust_list(attr, 16)
+
+        # Blue values
+
+        # Stems
+
+        # Add axis to font
+        # tuple is reordered vs. args!
+        self._axis.append((name, shortname[:5], type))
+        self._axis_count = len(self._axis)
+
+        self._masters_count *= 2
+
+        # remove_axis_from_factor_list(self.weight_vector._weights, index)
+        adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
+
+        # Primary instances
+
+        # TODO: Font Matrix?
+
+        # Rebuild master names
+        self._master_names = []
+        base = ""
+        for _, short_name, _ in self.axis:
+            base += f"{short_name}%s "
+        for loc in self.fake_master_map():
+            self._master_names.append(base % loc)
+
+        master_map = self.fake_master_map()
+        for master_index in range(self._masters_count // 2, self._masters_count):
+            loc = [float(i) for i in master_map[master_index]]
+            adjust_list(loc, 4, 0.0)
+            tloc: tuple[float, float, float, float] = tuple(loc)
+            self._master_locations.append((master_index + 1, tloc))
+
+        # TODO: Recalculate bounding box, adv_width_min, adv_width_max
+
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
     ) -> None:
