@@ -595,6 +595,10 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # Direct MM properties
 
         add_axis_to_list(self._metrics)
+
+        if self._mask is not None:
+            self._mask.fake_add_axis()
+
         if self._mask_metrics_mm is not None:
             add_axis_to_list(self._mask_metrics_mm)
 
