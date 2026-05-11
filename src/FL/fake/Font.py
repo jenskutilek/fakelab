@@ -575,7 +575,8 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         self._axis_mappings[new_mapping_index] = (0.0, 0.0)
         self._axis_mappings[new_mapping_index + 1] = (1000.0, 1.0)
 
-        # TODO: Primary instances?
+        # Primary instances
+        # They can stay as they are. Their value on the new axis is 0.0.
 
         # Add axis to font
         # tuple is reordered vs. args!
@@ -587,20 +588,21 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         adjust_list(self.weight_vector._weights, self._masters_count, 0.0)
         adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
 
-        # Rebuild master names
+        # Add master names
+        master_map = self.fake_master_map()
         self._master_names = []
         base = ""
         for _, short_name, _ in self.axis:
             base += f"{short_name}%s "
-        for loc in self.fake_master_map():
-            self._master_names.append(base % loc)
+        for location_tuple in master_map:
+            self._master_names.append(base % location_tuple)
 
-        master_map = self.fake_master_map()
+        # Master locations
         for master_index in range(self._masters_count // 2, self._masters_count):
-            loc = [float(i) for i in master_map[master_index]]
-            adjust_list(loc, 4, 0.0)
-            tloc: tuple[float, float, float, float] = tuple(loc)
-            self._master_locations.append((master_index + 1, tloc))
+            location = [float(i) for i in master_map[master_index]]
+            adjust_list(location, 4, 0.0)  # Master locations are always 4-tuples
+            location_tuple_2 = (location[0], location[1], location[2], location[3])
+            self._master_locations.append((master_index + 1, location_tuple_2))
 
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
