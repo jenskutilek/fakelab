@@ -562,24 +562,12 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         for guide in self.vguides:
             guide.fake_add_axis()
 
-        for attr in (
-            self._ascender,
-            self._descender,
-            self._cap_height,
-            self._x_height,
-            self._default_width,
-            self.blue_fuzz,
-            self.blue_scale,
-            self.blue_shift,
-            # self.force_bold,
-        ):
-            # TODO: These always store all possible 16 masters, so we must should
-            # probably just duplicate the appropriate value(s)
-            adjust_list(attr, 16)
-
-        # TODO: Blue values
-
-        # TODO: Stems
+        # PostScript Info (1 per master)
+        # All 16 possible PSInfos are present. We just need to copy the current number
+        # of master infos.
+        for src in range(self._masters_count):
+            tgt = src + self._masters_count
+            self._master_ps_infos[tgt] = deepcopy(self._master_ps_infos[src])
 
         # Add 2 mappings for the new axis
         self._axis_mappings_count[self._axis_count] = 2
@@ -599,8 +587,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         adjust_list(self.weight_vector._weights, self._masters_count, 0.0)
         adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
 
-        # TODO: Font Matrix?
-
         # Rebuild master names
         self._master_names = []
         base = ""
@@ -615,8 +601,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             adjust_list(loc, 4, 0.0)
             tloc: tuple[float, float, float, float] = tuple(loc)
             self._master_locations.append((master_index + 1, tloc))
-
-        # TODO: Recalculate bounding box, adv_width_min, adv_width_max?
 
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
