@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.7-dev
+
+- Fixes for `Font.DefineAxis()`
+
 ## v0.1.6
 
 - Add some test files
