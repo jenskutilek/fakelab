@@ -280,7 +280,7 @@ wheels = [
 
 [[package]]
 name = "fakelab"
-version = "0.1.5"
+version = "0.1.6"
 source = { editable = "." }
 dependencies = [
     { name = "vfblib" },
@@ -329,7 +329,7 @@ requires-dist = [
     { name = "ptpython", marker = "extra == 'repl'", specifier = ">=3.0.32" },
     { name = "sphinx", marker = "extra == 'doc'", specifier = ">=9.1.0" },
     { name = "sphinx-rtd-theme", marker = "extra == 'doc'" },
-    { name = "ufo2ft", marker = "extra == 'generate'", specifier = ">=3.7.1" },
+    { name = "ufo2ft", marker = "extra == 'generate'", specifier = ">=3.7.2" },
     { name = "vfblib", specifier = ">=0.11.3,<0.12.0" },
 ]
 provides-extras = ["generate", "repl", "all", "doc"]
@@ -1141,7 +1141,7 @@ wheels = [
 
 [[package]]
 name = "ufo2ft"
-version = "3.7.1"
+version = "3.7.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "booleanoperations" },
@@ -1149,9 +1149,9 @@ dependencies = [
     { name = "fontmath" },
     { name = "fonttools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e0/31/afc6225571a323ef7dc1fea2fd92e1a0c1ca2c02ff36d2f9dd5e659bb281/ufo2ft-3.7.1.tar.gz", hash = "sha256:3100f3058e01117560e99bdb064ce9dd636f17c28dfab02d2bfe31e05469ae3a", size = 445019, upload-time = "2026-03-18T11:37:59.01Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6a/36/127ab5fc644eed74f86d3d812bf7c0f817c7f35f3d6675d18c723ba370b4/ufo2ft-3.7.2.tar.gz", hash = "sha256:a43c582620651f3379a85015fc18634aa66dfbcb9be56d33134bb5bc0ac19266", size = 445056, upload-time = "2026-04-28T15:56:25.717Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/31/6f063f4a8aa9229f0e61e5cb37fde9200ae3b41266c72178c156e0d6f7a6/ufo2ft-3.7.1-py3-none-any.whl", hash = "sha256:daba1feec7a52ca9a9443cb5dae25a9e64a8d014390f19a8e4be406a7324689e", size = 165058, upload-time = "2026-03-18T11:37:57.258Z" },
+    { url = "https://files.pythonhosted.org/packages/4a/da/21be307068a7068fe0e65dcd5a5ba5a9d030155c45ba4fbf69acfbd5173e/ufo2ft-3.7.2-py3-none-any.whl", hash = "sha256:807140c16509c209b32abbd26433bfa07f30b9047331384463f060163aa23f33", size = 165067, upload-time = "2026-04-28T15:56:23.826Z" },
 ]
 
 [[package]]
