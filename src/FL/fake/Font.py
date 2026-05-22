@@ -43,7 +43,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
 
         super().__init__()
         self._fake_kerning = FakeKerning(self)
-        self.fake_sparse_json = True
         self.fake_deselect_all()
 
     # Additional properties for FakeLab
