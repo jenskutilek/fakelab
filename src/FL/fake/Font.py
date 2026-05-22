@@ -808,10 +808,10 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                     # component.index = -1
                     delete_components.append(ci)
                 elif component.index != new_cgid:
-                    logger.info(
-                        f"Setting component index in glyph '{glyph.name}' for base "
-                        f"glyph '{base_name}' from {component.index} to {new_cgid}"
-                    )
+                    # logger.info(
+                    #     f"Setting component index in glyph '{glyph.name}' for base "
+                    #     f"glyph '{base_name}' from {component.index} to {new_cgid}"
+                    # )
                     component.index = new_cgid
             # Remove any components from the glyph that pointed to deleted glyphs
             if delete_components:
@@ -827,10 +827,10 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                     # Right partner has been removed
                     delete_pairs.append(ki)
                 elif kerning_pair.key != new_gid:
-                    logger.info(
-                        f"Setting glyph index in glyph '{glyph.name}' for kern pair with "
-                        f"glyph '{name}' from {kerning_pair.key} to {new_gid}"
-                    )
+                    # logger.info(
+                    #     f"Setting glyph index in glyph '{glyph.name}' for kern pair with "
+                    #     f"glyph '{name}' from {kerning_pair.key} to {new_gid}"
+                    # )
                     kerning_pair.key = new_gid
             # Remove any kerning pairs from the glyph that pointed to deleted glyphs
             if delete_pairs:
