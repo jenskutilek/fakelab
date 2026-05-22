@@ -1,8 +1,10 @@
 # Changelog
 
-## v0.1.7-dev
+## v0.1.7
 
 - Fixes for `Font.DefineAxis()`
+- Implement deleting glyphs (`del Font.glyphs[i]`)
+- Add `Font.fake_open_from_vfblib(vfb)` to pass a Vfb object instead of opening a file
 
 ## v0.1.6
 

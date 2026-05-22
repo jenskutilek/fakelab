@@ -12,8 +12,7 @@ accidentally import the fake module when running the scripts in actual FontLab
 Studio 5. FakeLab will run in Python 3; you have to live with any
 incompatibilites between Python 2.7 and 3 that may occur in your scripts.
 
-Loading and saving VFBs is supported when you have the `vfb` extra installed,
-which uses [vfbLib](https://pypi.org/project/vfbLib/) to read and write VFBs.
+Loading and saving VFBs is supported via [vfbLib](https://pypi.org/project/vfbLib/).
 
 The implementation of FakeLab is based on the invaluable
 [Unofficial FontLab/Python API Reference](http://www.e-font.de/flpydoc/), and
