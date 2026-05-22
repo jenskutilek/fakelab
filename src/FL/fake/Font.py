@@ -1,7 +1,7 @@
 import logging
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser
@@ -747,7 +747,9 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
 
         # TODO: Recalculate bounding box, adv_width_min, adv_width_max
 
-    def fake_delete_glyphs(self, i: "SupportsIndex | slice[Any, Any, Any]") -> None:
+    def fake_delete_glyphs(
+        self, i: "SupportsIndex | slice[Any, Any, Any] | Sequence[int]"
+    ) -> None:
         """
         Delete one or more glyphs from the font. Updates the glyph indices in all places
         where glyphs are referenced by index instead of name.
@@ -768,13 +770,23 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
 
         old_gids = {gid: glyph.name for gid, glyph in enumerate(self._glyphs)}
         logger.info(f"Old GIDs: {old_gids}")
+
+        # The actual deletion
+
         # We can't call del on the list because it would be referred back to us:
         # del self._glyphs[i]
         # Access the data member directly instead:
-        try:
-            del self._glyphs.data[i]
-        except IndexError:
-            raise IndexError("List index is out of range")
+        if isinstance(i, Sequence):
+            for gid in sorted(i, reverse=True):
+                logger.info(f"Removing GID {gid}")
+                del self._glyphs.data[gid]
+        else:
+            try:
+                del self._glyphs.data[i]
+            except IndexError:
+                # FIXME: FontLab raises before doing anything
+                raise IndexError("List index is out of range")
+
         new_gids = {glyph.name: gid for gid, glyph in enumerate(self._glyphs)}
         logger.info(f"New GIDs: {new_gids}")
 
