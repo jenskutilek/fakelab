@@ -150,7 +150,7 @@ class VfbToFontReader:
             AttributeError: When an unknown font attribute is encountered.
         """
         glyph: Glyph | None = None
-        gids = {}
+        gids: dict[int, str] = {}
 
         font = self.font
         font.fake_clear_defaults()
