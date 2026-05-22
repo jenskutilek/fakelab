@@ -243,8 +243,7 @@ def test_selectComposites():
 
 As you see, you can use the objects just as you would inside FontLab.
 
-You can open a font from an existing VFB if you have the `vfb` extra installed.
-If not, you have to construct a test font using the
+You can open a font from an existing VFB, or you can construct a test font using the
 [FL Python API](http://www.e-font.de/flpydoc/).
 
 Invoke the test script in a Terminal window while your virtual environment is
