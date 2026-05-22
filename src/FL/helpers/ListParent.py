@@ -97,3 +97,16 @@ class DirectionalList(ListParent[T]):
         # Set the stem direction from the list to the Hint items
         super()._item_callback(item)
         item._stem_direction = self._stem_direction
+
+
+class GlyphList(ListParent[T]):
+    # Font.glyphs
+
+    def __delitem__(self, i: "SupportsIndex | slice[Any, Any, Any]") -> None:
+        # We can delete glyphs from the font through this. Glyph indices need to be
+        # updated afterwards, which this method takes care of.
+        # I put this in a subclass because I'm not sure what __delitem__ does on other
+        # ListParent lists.
+
+        # Let the parent (Font) handle this:
+        self._parent.fake_delete_glyphs(i)

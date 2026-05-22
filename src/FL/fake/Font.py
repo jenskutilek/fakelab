@@ -1,6 +1,7 @@
 import logging
 from copy import deepcopy
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser
@@ -22,6 +23,9 @@ from FL.objects.Feature import Feature
 from FL.objects.Glyph import Glyph
 from FL.objects.Rect import Rect
 from FL.objects.Uni import Uni
+
+if TYPE_CHECKING:
+    from typing import Any, SupportsIndex
 
 __doc__ = """
 Base class for Font
@@ -732,3 +736,81 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             self._master_names = ["Untitled"]
 
         # TODO: Recalculate bounding box, adv_width_min, adv_width_max
+
+    def fake_delete_glyphs(self, i: "SupportsIndex | slice[Any, Any, Any]") -> None:
+        """
+        Delete one or more glyphs from the font. Updates the glyph indices in all places
+        where glyphs are referenced by index instead of name.
+
+        Args:
+            i (SupportsIndex | slice[Any, Any, Any]): The glyph index/indices to delete.
+        """
+        # For slice, we must check for an IndexError ourselves to match FLS behaviour
+        num_glyphs = len(self._glyphs)
+        if isinstance(i, slice):
+            start, stop, step = i.indices(num_glyphs)
+            if stop >= num_glyphs:
+                raise IndexError("List index is out of range")
+            if start >= num_glyphs:
+                raise IndexError("List index is out of range")
+            if stop < start:
+                raise IndexError("Incorrect indexes for slice operation")
+
+        old_gids = {gid: glyph.name for gid, glyph in enumerate(self._glyphs)}
+        logger.warning(f"Old GIDs: {old_gids}")
+        # We can't call del on the list because it would be referred back to us:
+        # del self._glyphs[i]
+        # Access the data member directly instead:
+        try:
+            del self._glyphs.data[i]
+        except IndexError:
+            raise IndexError("List index is out of range")
+        new_gids = {glyph.name: gid for gid, glyph in enumerate(self._glyphs)}
+        logger.warning(f"New GIDs: {new_gids}")
+
+        # Fix component and kerning indices
+        for glyph in self._glyphs:
+            # Components
+            delete_components = []
+            for ci, component in enumerate(glyph.components):
+                base_name = old_gids[component.index]
+                new_cgid = new_gids.get(base_name)
+                if new_cgid is None:
+                    # Referenced glyph has been removed.
+                    logger.warning(
+                        f"Glyph '{base_name}' was removed, but it is used as a "
+                        f"component in '{glyph.name}'"
+                    )
+                    # TODO: In an earlier version, we set the component index to -1.
+                    # What is FL's behaviour?
+                    # component.index = -1
+                    delete_components.append(ci)
+                elif component.index != new_cgid:
+                    logger.info(
+                        f"Setting component index in glyph '{glyph.name}' for base "
+                        f"glyph '{base_name}' from {component.index} to {new_cgid}"
+                    )
+                    component.index = new_cgid
+            # Remove any components from the glyph that pointed to deleted glyphs
+            if delete_components:
+                for ci in reversed(delete_components):
+                    del glyph.components[ci]
+
+            # Kerning
+            delete_pairs = []
+            for ki, kerning_pair in enumerate(glyph.kerning):
+                name = old_gids[kerning_pair.key]
+                new_gid = new_gids.get(name)
+                if new_gid is None:
+                    # Right partner has been removed
+                    delete_pairs.append(ki)
+                elif kerning_pair.key != new_gid:
+                    logger.info(
+                        f"Setting glyph index in glyph '{glyph.name}' for kern pair with "
+                        f"glyph '{name}' from {kerning_pair.key} to {new_gid}"
+                    )
+                    kerning_pair.key = new_gid
+            # Remove any kerning pairs from the glyph that pointed to deleted glyphs
+            if delete_pairs:
+                for ki in reversed(delete_pairs):
+                    del glyph.kerning.data[ki]

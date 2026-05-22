@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from FL import Feature, Font, Glyph, fl
+from FL import Component, Feature, Font, Glyph, KerningPair, fl
 
 
 class FontTests(unittest.TestCase):
@@ -622,3 +622,103 @@ class FontTests(unittest.TestCase):
             (0, 1, 1, 1),
             (1, 1, 1, 1),
         ]
+
+    def test_delete_glyph(self) -> None:
+        # Build a font
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        B = f.glyphs[1]
+        B.components.append(Component(0))  # A, a glyph that will stay the same
+        B.components.append(Component(2))  # C, the glyph to be deleted
+        B.components.append(Component(3))  # D, a glyph to be reindexed
+        B.kerning.append(KerningPair(3, -20))  # B D -20
+        # Now delete glyph C
+        # 0: A
+        # 1: B
+        # 2: D
+        del f.glyphs[2]
+        assert len(f.glyphs) == 3
+        assert len(B.components) == 2
+        assert B.components[0].index == 0  # A
+        assert B.components[1].index == 2  # D, was 3
+        assert len(B.kerning) == 1
+        assert B.kerning[0].key == 2  # D, was 3
+        assert B.kerning[0].value == -20
+
+    def test_delete_glyph_out_of_range(self) -> None:
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        with pytest.raises(IndexError):
+            del f.glyphs[4]
+        with pytest.raises(IndexError):
+            del f.glyphs[-5]
+
+    def test_delete_glyph_out_of_range_negative(self) -> None:
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        with pytest.raises(IndexError):
+            del f.glyphs[-5]
+
+    def test_delete_glyphs(self) -> None:
+        # Build a font
+        f = Font()
+        for name in ("A", "B", "C", "D", "E"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        B = f.glyphs[1]
+        B.components.append(Component(0))  # A, a glyph that will stay the same
+        B.components.append(Component(2))  # C, a glyph to be deleted
+        B.components.append(Component(3))  # D, a glyph to be deleted
+        B.components.append(Component(4))  # E, a glyph to be reindexed
+        B.kerning.append(KerningPair(3, -20))  # B D -20
+        B.kerning.append(KerningPair(4, -30))  # B E -30
+        # Now delete glyph C and D
+        # 0: A
+        # 1: B
+        # 2: E
+        del f.glyphs[2:4]
+        assert len(f.glyphs) == 3
+        assert len(B.components) == 2
+        assert B.components[0].index == 0  # A
+        assert B.components[1].index == 2  # E, was 4
+        assert len(B.kerning) == 1
+        assert B.kerning[0].key == 2  # E, was 4
+        assert B.kerning[0].value == -30
+
+    def test_delete_glyphs_out_of_range_stop(self) -> None:
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        with pytest.raises(IndexError):
+            del f.glyphs[2:4]
+
+    def test_delete_glyphs_out_of_range_stop_smaller(self) -> None:
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        with pytest.raises(IndexError):
+            # If stop is smaller than start, Python doesn't throw an error, but FLS does
+            del f.glyphs[2:1]
+
+    def test_delete_glyphs_out_of_range_start(self) -> None:
+        f = Font()
+        for name in ("A", "B", "C", "D"):
+            g = Glyph()
+            g.name = name
+            f.glyphs.append(g)
+        with pytest.raises(IndexError):
+            del f.glyphs[4:4]

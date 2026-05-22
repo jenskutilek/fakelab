@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any
 from FL.fake.PSInfo import get_default_ps_info
 from FL.helpers.classList import ClassList
 from FL.helpers.FLList import adjust_list
-from FL.helpers.ListParent import ListParent
+from FL.helpers.ListParent import GlyphList, ListParent
 from FL.objects.Encoding import Encoding
 from FL.objects.Feature import Feature
 from FL.objects.Glyph import Glyph
@@ -139,12 +139,21 @@ class BaseFont:
         "fake_sparse_json",
     ]
 
+    def __delitem__(self, key: int | str) -> None:
+        """
+        Calling this crashes FontLab Studio.
+
+        Args:
+            key (int | str): The glyph index or name to delete, in theory.
+        """
+        raise RuntimeError
+
     def __getitem__(self, index: int | str) -> "Glyph | None":
         """
         Access the glyphs array.
 
         Args:
-            index (int | str): The glyph index to get.
+            index (int | str): The glyph index or name to get.
 
         Returns:
             Glyph | None: Return the glyph, or None if the index was out of bounds.
@@ -325,7 +334,7 @@ class BaseFont:
         self.vguides: "list[Guide]" = []
 
         self._axis: list[tuple[str, str, str]] = []
-        self._glyphs: ListParent[Glyph] = ListParent(parent=self, only_type=Glyph)
+        self._glyphs: GlyphList[Glyph] = GlyphList(parent=self, only_type=Glyph)
 
         # Font data that is not accessible via FL5 Python API
         self._collection: list[Any] = []
@@ -613,7 +622,7 @@ class BaseFont:
         raise RuntimeError("Class Font has no attribute force_bold or it is read-only")
 
     @property
-    def glyphs(self) -> "ListParent[Glyph]":
+    def glyphs(self) -> "GlyphList[Glyph]":
         """
         Return the array of glyphs.
         """
