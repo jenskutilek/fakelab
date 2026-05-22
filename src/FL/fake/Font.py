@@ -27,6 +27,8 @@ from FL.objects.Uni import Uni
 if TYPE_CHECKING:
     from typing import Any, SupportsIndex
 
+    from vfbLib.vfb.vfb import Vfb
+
 __doc__ = """
 Base class for Font
 """
@@ -45,6 +47,15 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         self.fake_deselect_all()
 
     # Additional properties for FakeLab
+
+    def fake_open_from_vfblib(self, vfb: "Vfb") -> None:
+        from FL.vfb.reader import VfbToFontReader
+
+        self._set_file_name(None)
+        reader = VfbToFontReader(None)
+        reader.read_from_obj(vfb, self)
+        del reader
+        self._set_file_name(vfb.vfb_path)
 
     def fake_clear_defaults(self) -> None:
         """
