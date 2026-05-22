@@ -136,7 +136,6 @@ class BaseFont:
         "_fake_kerning",
         "_file_name",
         "_selection",
-        "fake_sparse_json",
     ]
 
     def __delitem__(self, key: int | str) -> None:
