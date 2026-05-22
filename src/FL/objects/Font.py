@@ -96,6 +96,7 @@ class Font(FakeFont):
         try:
             reader = VfbToFontReader(Path(filename))
             reader.read(self)
+            del reader
         except Exception:
             print(traceback.format_exc())
             return 0

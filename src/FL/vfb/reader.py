@@ -114,7 +114,7 @@ class VfbToFontReader:
     know...) object (low-level representation of the binary VFB format)
     """
 
-    def __init__(self, vfb_path: "Path") -> None:
+    def __init__(self, vfb_path: "Path | None") -> None:
         """
         Instantiate a reader for the VFB file at `vfb_path`.
 
@@ -133,6 +133,19 @@ class VfbToFontReader:
         """
         self.font = font
         self._open_vfb()
+        self._read_into_font()
+
+    def read_from_obj(self, vfb: Vfb, font: "Font") -> None:
+        """
+        Read the data from a Vfb object into a font.
+
+        Args:
+            vfb (Vfb): The Vfb object.
+            font (Font): The target object of the data.
+        """
+        self.font = font
+        self.vfb = vfb
+        self.vfb.decompile()
         self._read_into_font()
 
     def _open_vfb(self) -> None:
