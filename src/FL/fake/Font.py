@@ -769,7 +769,6 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 raise IndexError("Incorrect indexes for slice operation")
 
         old_gids = {gid: glyph.name for gid, glyph in enumerate(self._glyphs)}
-        logger.info(f"Old GIDs: {old_gids}")
 
         # The actual deletion
 
@@ -778,7 +777,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # Access the data member directly instead:
         if isinstance(i, Sequence):
             for gid in sorted(i, reverse=True):
-                logger.info(f"Removing GID {gid}")
+                # logger.info(f"Removing GID {gid}")
                 del self._glyphs.data[gid]
         else:
             try:
@@ -788,20 +787,20 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 raise IndexError("List index is out of range")
 
         new_gids = {glyph.name: gid for gid, glyph in enumerate(self._glyphs)}
-        logger.info(f"New GIDs: {new_gids}")
+        gid_map = {og: new_gids.get(name) for og, name in old_gids.items()}
+        logger.info(f"GID map: {gid_map}")
 
         # Fix component and kerning indices
         for glyph in self._glyphs:
             # Components
             delete_components = []
             for ci, component in enumerate(glyph.components):
-                base_name = old_gids[component.index]
-                new_cgid = new_gids.get(base_name)
+                new_cgid = gid_map.get(component.index)
                 if new_cgid is None:
                     # Referenced glyph has been removed.
                     logger.warning(
-                        f"Glyph '{base_name}' was removed, but it is used as a "
-                        f"component in '{glyph.name}'"
+                        f"Glyph '{old_gids.get(component.index)}' was removed, but it "
+                        f"is used as component #{ci} in '{glyph.name}'"
                     )
                     # TODO: In an earlier version, we set the component index to -1.
                     # What is FL's behaviour?
@@ -821,16 +820,11 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             # Kerning
             delete_pairs = []
             for ki, kerning_pair in enumerate(glyph.kerning):
-                name = old_gids[kerning_pair.key]
-                new_gid = new_gids.get(name)
+                new_gid = gid_map.get(kerning_pair.key)
                 if new_gid is None:
                     # Right partner has been removed
                     delete_pairs.append(ki)
                 elif kerning_pair.key != new_gid:
-                    # logger.info(
-                    #     f"Setting glyph index in glyph '{glyph.name}' for kern pair with "
-                    #     f"glyph '{name}' from {kerning_pair.key} to {new_gid}"
-                    # )
                     kerning_pair.key = new_gid
             # Remove any kerning pairs from the glyph that pointed to deleted glyphs
             if delete_pairs:
