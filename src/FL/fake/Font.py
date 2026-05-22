@@ -767,7 +767,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 raise IndexError("Incorrect indexes for slice operation")
 
         old_gids = {gid: glyph.name for gid, glyph in enumerate(self._glyphs)}
-        logger.warning(f"Old GIDs: {old_gids}")
+        logger.info(f"Old GIDs: {old_gids}")
         # We can't call del on the list because it would be referred back to us:
         # del self._glyphs[i]
         # Access the data member directly instead:
@@ -776,7 +776,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         except IndexError:
             raise IndexError("List index is out of range")
         new_gids = {glyph.name: gid for gid, glyph in enumerate(self._glyphs)}
-        logger.warning(f"New GIDs: {new_gids}")
+        logger.info(f"New GIDs: {new_gids}")
 
         # Fix component and kerning indices
         for glyph in self._glyphs:
