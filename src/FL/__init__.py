@@ -225,7 +225,8 @@ outside of FontLab Studio 5, and run tests.
 """
 
 __all__ = [
-    "fl_cmd",
+    # "fl_cmd",
+    # Constants
     "ftFONTLAB",
     "ftMACTRUETYPE",
     "ftMACTRUETYPE_DFONT",
@@ -243,6 +244,7 @@ __all__ = [
     "nOFF",
     "nSHARP",
     "nSMOOTH",
+    # FLdict
     "BUTTONCONTROL",
     "CHECKBOXCONTROL",
     "CHOICECONTROL",
@@ -404,6 +406,7 @@ __all__ = [
     "cTO_RIGHT",
     "cTO_TOP",
     "cTO_VCENTER",
+    # Objects
     "Anchor",
     "AuditRecord",
     "Canvas",
