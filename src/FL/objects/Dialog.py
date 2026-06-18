@@ -19,9 +19,23 @@ class Dialog:
 
     # Constructor
 
-    def __init__(self) -> None:
+    def __init__(self, parent: object) -> None:
         """
-        Dialog(DialogClass) - generic constructor
+        Class to represent a dialog.
+
+        There is not a lot of documentations, but examples that use it pass the
+        object to the parent parameter when constructing.
+
+        ```
+        class MyDialog:
+            def __init__(self):
+                self.d = Dialog(self)
+                self.d.size = Point(300, 140)
+                self.d.Center()
+        ```
+
+        Args:
+            parent (object ): The parent.
         """
         pass
 
@@ -64,16 +78,21 @@ class Dialog:
         raise NotImplementedError
 
     def AddControl(
-        self, ControlType: int, dimension: "Rect", identifier: str, ControlStyle: int
+        self,
+        ControlType: int,
+        dimension: "Rect",
+        identifier: str,
+        ControlStyle: int,
+        text: str,
     ) -> None:
         """
         Adds a control to the dialog, see `FLdict` for Type- and Style-constants
 
         Args:
-            ControlType (int): _description_
-            dimension (Rect): _description_
-            identifier (str): _description_
-            ControlStyle (int): _description_
+            ControlType (int): The type, e.g. BUTTONCONTROL.
+            dimension (Rect): The size of the control.
+            identifier (str): The identifier of the control.
+            ControlStyle (int): The style, e.g. STYLE_BUTTON.
         """
         raise NotImplementedError
 
