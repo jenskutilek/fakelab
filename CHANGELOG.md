@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.8
+
+- Explicit exports in `FL/__init__.py` to make code checkers happy
+- Update dependencies
+
 ## v0.1.7
 
 - Fixes for `Font.DefineAxis()`
