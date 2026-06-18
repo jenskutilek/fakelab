@@ -2,7 +2,7 @@
 name = "fakelab"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
-version = "0.1.7"
+version = "0.1.8"
 
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -20,34 +20,34 @@ classifiers = [
 
 requires-python = ">=3.12"
 dependencies = [
-    "vfblib >= 0.11.3, < 0.12.0",  # Could be made optional for a leaner test framework
+    "vfblib >= 0.11.5, < 0.12.0",  # Could be made optional for a leaner test framework
 ]
 
 
 [dependency-groups]
 dev = [
-    "flake8",
-    "mypy",
-    "ruff",
+    "flake8 >= 7.3.0",
+    "mypy >= 2.1.0",
+    "ruff >= 0.15.17",
 ]
 test = [
     { include-group = "dev"},
-    "pytest",
-    "pytest-cov",
-    "tox",
-    "tox-gh",
-    "tox-uv",
+    "pytest >= 9.1.0",
+    "pytest-cov >= 7.1.0",
+    "tox >= 4.55.1",
+    "tox-gh >= 1.7.1",
+    "tox-uv >= 1.35.2",
 ]
 
 [project.optional-dependencies]
 generate = [
     # Generate actual fonts with ufo2ft
-    "ufo2ft >= 3.7.2",
+    "ufo2ft >= 3.8.2",
     "mutatormath >= 3.0.1",
 ]
 repl = [
     # Better interactive prompt
-    "ptpython >= 3.0.32"
+    "ptpython >= 3.0.32, < 3.1.0"
 ]
 all = [
     "fakelab[generate]",
@@ -55,7 +55,7 @@ all = [
 ]
 doc = [
     "sphinx >= 9.1.0",
-    "sphinx_rtd_theme",
+    "sphinx_rtd_theme >= 3.1.0",
 ]
 
 
@@ -71,7 +71,7 @@ fakelab = "FL.cmdline:main"
 
 
 [build-system]
-requires = ["uv_build>=0.11.8,<0.12"]
+requires = ["uv_build>=0.11.21,<0.12"]
 build-backend = "uv_build"
 
 
