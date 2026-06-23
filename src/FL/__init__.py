@@ -1,4 +1,5 @@
-from FL import fl_cmd
+import fl_cmd
+
 from FL.constants import (
     ftFONTLAB,
     ftMACTRUETYPE,
@@ -225,7 +226,6 @@ outside of FontLab Studio 5, and run tests.
 """
 
 __all__ = [
-    # "fl_cmd",
     # Constants
     "ftFONTLAB",
     "ftMACTRUETYPE",
