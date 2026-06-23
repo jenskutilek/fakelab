@@ -38,7 +38,10 @@ from FL import fl
 
 class FontLab5Console(InteractiveConsole):
     def __init__(
-        self, startup_code: str = "", locals: dict[str, Any] | None = None
+        self,
+        startup_code: str = "",
+        locals: dict[str, Any] | None = None,
+        # local_exit: bool = False,  # Python 3.13+
     ) -> None:
         """
         The interactive console. You usually don't use this class directly; it is
@@ -52,7 +55,10 @@ class FontLab5Console(InteractiveConsole):
         namespace = locals or {}
         # code = compile(__startup_code__, "", "exec", 0)
         # exec(code, namespace)
-        super().__init__(locals=namespace)
+        super().__init__(
+            locals=namespace,
+            # local_exit=local_exit,  # Python 3.13+
+        )
 
 
 def main() -> None:
