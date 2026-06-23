@@ -175,6 +175,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._mask_weight_vector: list[float] = [1.0]
         self._mask_metrics: Point | None = None
         self._mask_metrics_mm: list[Point] | None = None
+        self._metrics: list[Point] = [Point() for _ in range(self._layers_number)]
 
         # flags set for this glyph
         self.flags: int = 0
