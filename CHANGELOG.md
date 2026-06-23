@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.0
+
+- Move `fl_cmd` to a separate module (`fakelab_menucommands`) so it can be imported like
+  in FL (#20)
+
 ## v0.1.8
 
 - Explicit exports in `FL/__init__.py` to make code checkers happy
