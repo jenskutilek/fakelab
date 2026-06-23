@@ -340,9 +340,10 @@ wheels = [
 
 [[package]]
 name = "fakelab"
-version = "0.1.8"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
+    { name = "fakelab-menucommands" },
     { name = "vfblib" },
 ]
 
@@ -385,6 +386,7 @@ test = [
 requires-dist = [
     { name = "fakelab", extras = ["generate"], marker = "extra == 'all'" },
     { name = "fakelab", extras = ["repl"], marker = "extra == 'all'" },
+    { name = "fakelab-menucommands", specifier = ">=1.0.0" },
     { name = "mutatormath", marker = "extra == 'generate'", specifier = ">=3.0.1" },
     { name = "ptpython", marker = "extra == 'repl'", specifier = ">=3.0.32,<3.1.0" },
     { name = "sphinx", marker = "extra == 'doc'", specifier = ">=9.1.0" },
@@ -409,6 +411,15 @@ test = [
     { name = "tox", specifier = ">=4.55.1" },
     { name = "tox-gh", specifier = ">=1.7.1" },
     { name = "tox-uv", specifier = ">=1.35.2" },
+]
+
+[[package]]
+name = "fakelab-menucommands"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/3b/db/605f11ed225e051c7eca719e4d3fbc8026940793e669639c0a4f868adeed/fakelab_menucommands-1.0.0.tar.gz", hash = "sha256:7d8366a43f78fd4006e99cb1867b2c08ec1680888714cc82ff0ea5518ea7205d", size = 5010, upload-time = "2026-06-23T11:26:17.818Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0c/46/3c82721154764cb57d936245db7eca1454b5a9f1c9257cb650e6a1774714/fakelab_menucommands-1.0.0-py3-none-any.whl", hash = "sha256:5d7e58121eb880a2f4276cd4b59c76e887afa9c676c21878d42b84bde9f42e71", size = 5381, upload-time = "2026-06-23T11:26:16.942Z" },
 ]
 
 [[package]]
