@@ -2,7 +2,7 @@
 name = "fakelab"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["vfb", "fonttools"]
-version = "0.2.0"
+version = "0.2.1"
 
 readme = "README.md"
 license = "GPL-3.0-or-later"
@@ -16,12 +16,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
 
 requires-python = ">=3.12"
 dependencies = [
     "fakelab_menucommands >= 1.0.0",
-    "vfblib >= 0.11.5, < 0.12.0",  # Could be made optional for a leaner test framework
+    "vfblib >= 0.11.6, < 0.12.0",  # Could be made optional for a leaner test framework
 ]
 
 
