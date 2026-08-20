@@ -14,8 +14,9 @@ from FL.objects.TTInfo import TTInfo
 from FL.objects.WeightVector import WeightVector
 
 if TYPE_CHECKING:
-    from vfbLib.typing import CustomCmap, PSInfoDict
+    from vfbLib.typing import PSInfoDict
 
+    from FL.objects.CmapTable import CmapTable
     from FL.objects.EncodingRecord import EncodingRecord
     from FL.objects.Guide import Guide
 
@@ -343,7 +344,7 @@ class BaseFont:
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
-        self._custom_cmaps: "list[CustomCmap]" = []
+        self._custom_cmaps: "list[CmapTable]" = []
         self._custom_dict: str = ""
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {

@@ -208,7 +208,9 @@ class FontToVfbWriter:
 
         # Special handling required:
         self.add_entry(F.fontnames, [nr.fake_serialize() for nr in font.fontnames])
-        self.add_entry(F.CustomCMAPs, font._custom_cmaps)
+        self.add_entry(
+            F.CustomCMAPs, [cmap.fake_serialize() for cmap in font._custom_cmaps]
+        )
         self.add_entry(F.PCLTTable, font._pclt_table)
         self.add_entry(F.ExportPCLTTable, font._export_pclt_table)
         if font.note:

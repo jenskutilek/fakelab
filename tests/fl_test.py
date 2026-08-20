@@ -318,3 +318,10 @@ class FLTests(unittest.TestCase):
         fk.Open(str(get_vfb_path("mini.vfb")))
         fk.GenerateFont(ftFONTLAB, str(get_vfb_path("mini.gen.vfb")))
         save_vfb_json_file("mini.gen.vfb")
+
+    def test_roundtrip_custom_cmap(self) -> None:
+        fk = FakeLab()
+        fk.Open(str(get_vfb_path("custom_cmap.vfb")))
+        assert fk.font is not None
+        assert len(fk.font._custom_cmaps) == 1
+        assert fk.font._custom_cmaps[0].pagename == "MS Windows 1252 Western (ANSI)"

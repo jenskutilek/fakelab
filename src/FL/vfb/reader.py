@@ -5,6 +5,7 @@ from vfbLib.enum import F, G, M, T
 from vfbLib.vfb.vfb import Vfb
 
 from FL.helpers.nametables import StandardNametable
+from FL.objects.CmapTable import CmapTable
 from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
@@ -275,7 +276,11 @@ class VfbToFontReader:
                     for nr in data:
                         font.fontnames.append(NameRecord(tuple(nr)))
                 case F.CustomCMAPs:
-                    font._custom_cmaps = data
+                    font._custom_cmaps = []
+                    for cmap_dict in data:
+                        cmap = CmapTable()
+                        cmap.fake_deserialize(cmap_dict)
+                        font._custom_cmaps.append(cmap)
                 case F.PCLTTable:
                     font._pclt_table = data
                 case F.ExportPCLTTable:
