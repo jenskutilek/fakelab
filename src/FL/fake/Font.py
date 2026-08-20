@@ -786,7 +786,18 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
                 # FIXME: FontLab raises before doing anything
                 raise IndexError("List index is out of range")
 
+        self._fake_fix_glyph_indices(old_gids)
+
+    def _fake_fix_glyph_indices(self, old_gids: dict[int, str]) -> None:
+        """
+        Fix glyph indices in kerning and components.
+
+        Args:
+            old_gids (dict[int, str]): The original mapping from glyph index to name.
+        """
         new_gids = {glyph.name: gid for gid, glyph in enumerate(self._glyphs)}
+
+        # Make a mapping from old to new GID
         gid_map = {og: new_gids.get(name) for og, name in old_gids.items()}
         logger.info(f"GID map: {gid_map}")
 
