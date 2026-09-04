@@ -328,23 +328,23 @@ class BaseFont:
         self.weight_vector._parent = self
         # list of horizontal guides
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.hguides: "list[Guide]" = []
+        self.hguides: list[Guide] = []
         # list of vertical guides
         # <font color="red">(new in v4.5.4 and not reported by docstring)</font>
-        self.vguides: "list[Guide]" = []
+        self.vguides: list[Guide] = []
 
         self._axis: list[tuple[str, str, str]] = []
         self._glyphs: GlyphList[Glyph] = GlyphList(parent=self, only_type=Glyph)
 
         # Font data that is not accessible via FL5 Python API
         self._collection: list[Any] = []
-        self._encoding_default: "list[EncodingRecord]" = []
+        self._encoding_default: list[EncodingRecord] = []
         self._font_flags = ""
         self._global_mask: Glyph | None = None
         self._masters_count: int = 1
         self._license: str = ""
         self._license_url: str = ""
-        self._custom_cmaps: "list[CmapTable]" = []
+        self._custom_cmaps: list[CmapTable] = []
         self._custom_dict: str = ""
         self._export_pclt_table: int = 0
         self._pclt_table: dict[str, Any] = {
@@ -371,7 +371,7 @@ class BaseFont:
         self._master_names = ["Untitled"]
         self._master_locations = [(1, (0.0, 0.0, 0.0, 0.0))]
         # The infos are always stored for all possible masters
-        self._master_ps_infos: "list[PSInfoDict]" = [
+        self._master_ps_infos: list[PSInfoDict] = [
             get_default_ps_info() for _ in range(16)
         ]
         self._mapping_mode = {

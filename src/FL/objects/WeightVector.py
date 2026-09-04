@@ -21,7 +21,7 @@ class WeightVector(Copyable):
     # Constructor
 
     def __init__(self, weight_vector: "WeightVector | None" = None) -> None:
-        self._parent: "Font | None" = None
+        self._parent: Font | None = None
         self._weights = [
             1.0,
             0.0,

@@ -35,7 +35,7 @@ class Feature(Copyable):  # Or TagObject?
             feature_or_tag (Feature | str | None, optional): _description_. Defaults to None.
             value (str | None, optional): _description_. Defaults to None.
         """
-        self._parent: "Font | None" = None
+        self._parent: Font | None = None
         self._tag = ""
         self._value: str | None = None
 

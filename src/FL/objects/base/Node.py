@@ -39,7 +39,7 @@ class BaseNode:
 
         # 1 if node is selected
         self.selected = 0
-        self._points: "list[ListParent[Point]]" = [
+        self._points: list[ListParent[Point]] = [
             ListParent(only_type=Point) for _ in range(self._masters_count)
         ]
         for master_index in range(self._masters_count):

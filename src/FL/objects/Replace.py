@@ -58,7 +58,7 @@ class Replace(Copyable):
             replace_or_hint_or_node_or_type (Replace | Hint | Node | int | None, optional): _description_. Defaults to None.
             index (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: "Glyph | None" = None
+        self._parent: Glyph | None = None
         self._type = 0
         self._index = 0
         arg1 = replace_or_hint_or_node_or_type

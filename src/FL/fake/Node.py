@@ -74,7 +74,7 @@ class FakeNode(BaseNode):
         """
         Is called from FontLab.UpdateFont()
         """
-        self._parent: "Glyph | None" = glyph
+        self._parent: Glyph | None = glyph
         for p in self.points:
             p.fake_update(self)
 

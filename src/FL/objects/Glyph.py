@@ -171,7 +171,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._replace_table: list[Replace] = []
         self._kerning: ListParent[KerningPair] = ListParent([], self, KerningPair)
         self._layers_number = 1
-        self._mask: "Glyph | None" = None
+        self._mask: Glyph | None = None
         self._mask_weight_vector: list[float] = [1.0]
         self._mask_metrics: Point | None = None
         self._mask_metrics_mm: list[Point] | None = None
@@ -204,7 +204,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self.y_pels: int = 1
         self.number_of_contours: int = 0
         self.end_points: list[int] = []
-        self.points: "list[TTPoint]" = []
+        self.points: list[TTPoint] = []
         self.instructions: list[int] = []
         self._imported: dict[str, Any] = {}
         self.hdmx: list[int] = []
@@ -216,7 +216,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._glyph_hinting_options: GlyphHintingOptionsDict = {}
         self._glyph_origin = {"x": 0, "y": 0}
         self._glyph_sketch: list[tuple[int, int, int]] = []
-        self._tth: "list[Instruction]" = []
+        self._tth: list[Instruction] = []
 
         # For binary compatibility with FL-written files:
 
@@ -238,7 +238,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         """
         Is called from FontLab.UpdateFont()
         """
-        self._parent: "Font | None" = font
+        self._parent: Font | None = font
         self._index: int = index
         if font is None:
             self._index = -1

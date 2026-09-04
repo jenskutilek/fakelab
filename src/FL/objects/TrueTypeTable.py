@@ -43,7 +43,7 @@ class TrueTypeTable(Copyable):
             value (str | None, optional): _description_. Defaults to None.
             valuelen (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: "Font | None" = None
+        self._parent: Font | None = None
         self.tag = ""
         self.value = ""  # FIXME: str vs. bytes?
         if truetypetable_or_tag is not None:

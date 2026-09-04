@@ -67,10 +67,10 @@ class TTH:
             else:
                 self.font = f
 
-        self._top_zones: "list[Hint]" = FLList()
-        self._bottom_zones: "list[Hint]" = FLList()
-        self._base_top_zones: "list[Hint]" = FLList()
-        self._base_bottom_zones: "list[Hint]" = FLList()
+        self._top_zones: list[Hint] = FLList()
+        self._bottom_zones: list[Hint] = FLList()
+        self._base_top_zones: list[Hint] = FLList()
+        self._base_bottom_zones: list[Hint] = FLList()
         self._hstems: list[int] = FLList()
         self._vstems: list[int] = FLList()
         self._base_hstems: list[int] = FLList()
@@ -79,10 +79,10 @@ class TTH:
         # self.zero_point._parent = self  # Needed?
         self.upm = 1000
         self.ppm = 0  # FL returns a random number
-        self._outline: "list[TTHPoint]" = FLList()
-        self._base_outline: "list[TTHPoint]" = FLList()
+        self._outline: list[TTHPoint] = FLList()
+        self._base_outline: list[TTHPoint] = FLList()
         self._commands: list[TTHCommand] = FLList()
-        self._problems: "list[TTHProblem]" = FLList()
+        self._problems: list[TTHProblem] = FLList()
 
     def _raise(self, attr: str) -> None:
         raise RuntimeError(

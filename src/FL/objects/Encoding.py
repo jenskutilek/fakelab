@@ -28,7 +28,7 @@ class Encoding(UserList[EncodingRecord], Copyable):
         Args:
             encoding_or_none (Encoding | None, optional): _description_. Defaults to None.
         """
-        self._parent: "Font | None" = None
+        self._parent: Font | None = None
         self.data: list[EncodingRecord] = []
         if isinstance(encoding_or_none, Encoding):
             self._copy_constructor(encoding_or_none)

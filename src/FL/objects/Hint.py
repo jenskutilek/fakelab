@@ -46,7 +46,7 @@ class Hint(Copyable):
             hint_or_position (Hint | int | None): _description_
             width (int | None, optional): _description_. Defaults to None.
         """
-        self._parent: "Glyph | None" = None
+        self._parent: Glyph | None = None
         self._positions: list[int] = [0] * 16
         self._widths: list[int] = [21] * 16
         self._stem_direction = DIR_UNDEFINED

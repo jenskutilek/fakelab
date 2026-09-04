@@ -37,7 +37,7 @@ class Guide(Copyable):
                 or the position of the guide. Defaults to None.
             angle (float, optional): The width. Defaults to 0.0.
         """
-        self._parent: "Glyph | None" = None
+        self._parent: Glyph | None = None
         self._positions: list[int] = [0] * 16
         self._widths: list[int] = [21] * 16  # WTF
 

@@ -28,7 +28,7 @@ class AuditRecord:
         Args:
             parent (Glyph): The parent of the AuditRecord, a glyph.
         """
-        self._parent: "Glyph" = parent
+        self._parent: Glyph = parent
         self._x = 0
         self._y = 0
         self._id = ""

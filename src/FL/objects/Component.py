@@ -55,7 +55,7 @@ class Component(Copyable):
         self._deltas = [Point(0, 0)] * 16
         self._scales = [Point(1.0, 1.0)] * 16
         self._index = -1
-        self._parent: "Glyph | None" = None
+        self._parent: Glyph | None = None
 
         if isinstance(component_or_index, Component):
             self._copy_constructor(component_or_index)

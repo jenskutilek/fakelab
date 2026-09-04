@@ -261,7 +261,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         self._file_name = Path(filename) if not isinstance(filename, Path) else filename
 
     def fake_generate_primary_instances(self) -> "list[FakeFont]":
-        instances: "list[FakeFont]" = []
+        instances: list[FakeFont] = []
         for inst_dict in self._primary_instances:
             logger.info(inst_dict)
             instance = self.ip(inst_dict["values"], style_name=inst_dict["name"])
