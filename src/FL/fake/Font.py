@@ -82,9 +82,8 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         for g in self.glyphs:
             gr = g.GetBoundingRect()
             rect += gr
-        if for_afm:
-            if rect._x0 > 0:
-                rect._x0 = 0
+        if for_afm and rect._x0 > 0:
+            rect._x0 = 0
         return rect
 
     def fake_save_afm_expanded(self, filename: str) -> None:
