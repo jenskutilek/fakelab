@@ -35,7 +35,7 @@ class Font(FakeFont):
                 instance = self.ip(instances)
                 copy_fl_object(instance, self)
 
-        elif isinstance(font_or_path, str) or isinstance(font_or_path, Path):
+        elif isinstance(font_or_path, (str, Path)):
             # Instantiate with path
             self.Open(font_or_path)
 

@@ -281,18 +281,18 @@ class Matrix:
             assert len(a) == 6
             self._a, self._b, self._c, self._d, self._e, self._f = a
         else:
-            if not (isinstance(a, float) or isinstance(a, int)):
-                raise RuntimeError
-            if not (isinstance(b, float) or isinstance(b, int)):
-                raise RuntimeError
-            if not (isinstance(c, float) or isinstance(c, int)):
-                raise RuntimeError
-            if not (isinstance(d, float) or isinstance(d, int)):
-                raise RuntimeError
-            if not (isinstance(e, float) or isinstance(e, int)):
-                raise RuntimeError
-            if not (isinstance(f, float) or isinstance(f, int)):
-                raise RuntimeError
+            if not (isinstance(a, (float, int))):
+                raise RuntimeError  # noqa: TRY004
+            if not (isinstance(b, (float, int))):
+                raise RuntimeError  # noqa: TRY004
+            if not (isinstance(c, (float, int))):
+                raise RuntimeError  # noqa: TRY004
+            if not (isinstance(d, (float, int))):
+                raise RuntimeError  # noqa: TRY004
+            if not (isinstance(e, (float, int))):
+                raise RuntimeError  # noqa: TRY004
+            if not (isinstance(f, (float, int))):
+                raise RuntimeError  # noqa: TRY004
 
             self._a = a
             self._b = b

@@ -39,11 +39,9 @@ class TTHPoint(Copyable):
             self.y = tthpoint_or_p_or_x.y
             if mode_or_y is not None:
                 self._mode = mode_or_y
-        elif isinstance(tthpoint_or_p_or_x, int) or isinstance(
-            tthpoint_or_p_or_x, float
-        ):
+        elif isinstance(tthpoint_or_p_or_x, (int, float)):
             self.x = float(tthpoint_or_p_or_x)
-            if isinstance(mode_or_y, int) or isinstance(mode_or_y, float):
+            if isinstance(mode_or_y, (int, float)):
                 self.y = float(mode_or_y)
             else:
                 raise TypeError

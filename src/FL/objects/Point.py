@@ -271,8 +271,8 @@ class Point(Copyable):
         Incorrect # of args to:
         Point.Mul(number n).
         """
-        if not (isinstance(s, float) or isinstance(s, int)):
-            raise RuntimeError("Number is expected in arg 1:\n  Point.Mul(number n)")
+        if not (isinstance(s, (float, int))):
+            raise RuntimeError("Number is expected in arg 1:\n  Point.Mul(number n)")  # noqa: TRY004
         self.x *= s
         self.y *= s
 

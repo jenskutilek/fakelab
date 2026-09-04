@@ -188,8 +188,8 @@ class Rect(Copyable):
                 self._y0 = r_or_p0_or_x0.y
                 self._x1 = r_or_p0_or_x0.x
                 self._y1 = r_or_p0_or_x0.y
-        elif isinstance(r_or_p0_or_x0, int) or isinstance(r_or_p0_or_x0, float):
-            assert isinstance(p1_or_x0, int) or isinstance(p1_or_x0, float)
+        elif isinstance(r_or_p0_or_x0, (int, float)):
+            assert isinstance(p1_or_x0, (int, float))
             assert x1 is not None
             assert y1 is not None
             self._x0 = float(r_or_p0_or_x0)

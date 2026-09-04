@@ -233,7 +233,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         """
         if isinstance(gid, int):
             glyph_index = gid
-        elif isinstance(gid, Uni) or isinstance(gid, str):
+        elif isinstance(gid, (Uni, str)):
             glyph_index = self.FindGlyph(gid)
         if glyph_index > -1:
             if value:
