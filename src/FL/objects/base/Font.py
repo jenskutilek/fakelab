@@ -365,7 +365,7 @@ class BaseFont:
         self._export_options: list[str] = []
         self._ot_export_options: list[dict[str, int]] = []
         self._axis_count: int = 0
-        self._anisotropic_interpolation_mappings: list[tuple[int, int]] = []
+        self._anisotropic_interpolation_mappings: list[list[tuple[int, int]]] = []
         self._axis_mappings_count: list[int] = [0, 0, 0, 0]
         self._axis_mappings: list[tuple[float, float]] = [(0.0, 0.0)] * 40
         self._master_names = ["Untitled"]

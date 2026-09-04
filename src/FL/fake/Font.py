@@ -600,7 +600,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         self._masters_count *= 2
 
         adjust_list(self.weight_vector._weights, self._masters_count, 0.0)
-        adjust_list(self._anisotropic_interpolation_mappings, self._axis_count)
+        self._anisotropic_interpolation_mappings.append([(0, 0), (1000, 1000)])
 
         # Add master names
         master_map = self.fake_master_map()
