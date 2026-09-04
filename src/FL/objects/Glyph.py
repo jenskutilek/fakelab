@@ -344,7 +344,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             case _:
                 logger.warning(f"Unhandled glyph entry: {key}")
 
-    def fake_serialize(self) -> dict[int, Any]:  # noqa: C901
+    def fake_serialize(self) -> dict[int, Any]:
         """
         Serialize the glyph to a dict which resembles the low-level VFB structure
 
