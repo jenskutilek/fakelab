@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.1
+
+- Add `Font.fake_assign_master()` to mimick the menu command _Tools – Multiple Master – Assign Master..._
+- Update dependencies
+
 ## v0.2.0
 
 - Move `fl_cmd` to a separate module (`fakelab_menucommands`) so it can be imported like
