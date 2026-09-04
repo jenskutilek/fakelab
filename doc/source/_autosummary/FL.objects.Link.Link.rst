@@ -18,7 +18,7 @@ FL.objects.Link.Link
    
       ~Link.ToHint
       ~Link.__init__
-      ~Link.set_defaults
+      ~Link.fake_set_defaults
    
    
 

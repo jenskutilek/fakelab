@@ -1,4 +1,4 @@
-﻿FL.vfb.writer.FontToVfbWriter
+FL.vfb.writer.FontToVfbWriter
 =============================
 
 .. currentmodule:: FL.vfb.writer

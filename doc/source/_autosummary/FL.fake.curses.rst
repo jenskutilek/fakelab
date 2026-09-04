@@ -1,7 +1,7 @@
-FL.helpers.math
-===============
+FL.fake.curses
+==============
 
-.. automodule:: FL.helpers.math
+.. automodule:: FL.fake.curses
   
    
    
@@ -14,8 +14,8 @@ FL.helpers.math
    .. autosummary::
       :toctree:
    
-      int32_to_unsigned
-      uint32_to_signed
+      ask_ok_cancel
+      dlg_ask_ok_cancel
    
    
 

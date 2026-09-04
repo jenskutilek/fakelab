@@ -1,4 +1,4 @@
-﻿FL.objects.Options.Options
+FL.objects.Options.Options
 ==========================
 
 .. currentmodule:: FL.objects.Options

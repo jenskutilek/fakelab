@@ -1,6 +1,6 @@
-FL.helpers.interpolation.interpolate\_float
+FL.helpers.interpolation.round\_float\_list
 ===========================================
 
 .. currentmodule:: FL.helpers.interpolation
 
-.. autofunction:: interpolate_float
+.. autofunction:: round_float_list

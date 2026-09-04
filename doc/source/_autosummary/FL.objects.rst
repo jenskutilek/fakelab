@@ -31,6 +31,7 @@
    Anchor
    AuditRecord
    Canvas
+   CmapTable
    Component
    Dialog
    Encoding
@@ -63,4 +64,5 @@
    TrueTypeTable
    Uni
    WeightVector
+   base
 

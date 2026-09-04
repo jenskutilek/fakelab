@@ -1,7 +1,7 @@
-FL.fake.FontInterpolator.AxisDict
+FL.helpers.interpolation.AxisDict
 =================================
 
-.. currentmodule:: FL.fake.FontInterpolator
+.. currentmodule:: FL.helpers.interpolation
 
 .. autoclass:: AxisDict
    :members:

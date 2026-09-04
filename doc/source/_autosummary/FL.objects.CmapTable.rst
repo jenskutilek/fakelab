@@ -1,7 +1,7 @@
-FL.fake.FontInterpolator
-========================
+FL.objects.CmapTable
+====================
 
-.. automodule:: FL.fake.FontInterpolator
+.. automodule:: FL.objects.CmapTable
   
    
    
@@ -19,8 +19,7 @@ FL.fake.FontInterpolator
       :toctree:
       :template: custom-class-template.rst
    
-      AxisDict
-      FontInterpolator
+      CmapTable
    
    
 

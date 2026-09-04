@@ -1,4 +1,4 @@
-﻿FL.objects.Font.Font
+FL.objects.Font.Font
 ====================
 
 .. currentmodule:: FL.objects.Font
@@ -37,10 +37,11 @@
       ~Font.SaveAFM
       ~Font.SetClassFlags
       ~Font.__init__
-      ~Font.fake_binary_from_path
-      ~Font.fake_binary_get
+      ~Font.fake_add_axis
+      ~Font.fake_assign_master
       ~Font.fake_bounding_rect
       ~Font.fake_clear_defaults
+      ~Font.fake_delete_glyphs
       ~Font.fake_deselect_all
       ~Font.fake_deserialize_axis
       ~Font.fake_deserialize_features
@@ -52,8 +53,12 @@
       ~Font.fake_get_afm
       ~Font.fake_get_afm_kerning
       ~Font.fake_get_inf
+      ~Font.fake_interpolate
+      ~Font.fake_interpolate_internal
       ~Font.fake_map_axis_location
       ~Font.fake_master_map
+      ~Font.fake_open_from_vfblib
+      ~Font.fake_remove_axis
       ~Font.fake_save_afm_expanded
       ~Font.fake_select
       ~Font.fake_serialize_axis
@@ -71,6 +76,7 @@
       ~Font.fake_sort_kerning
       ~Font.fake_update
       ~Font.has_key
+      ~Font.ip
    
    
 
@@ -134,7 +140,6 @@
       ~Font.weight
       ~Font.width
       ~Font.year
-      ~Font.fake_vfb_object
       ~Font.ascender
       ~Font.axis
       ~Font.blue_values
@@ -145,7 +150,6 @@
       ~Font.descender
       ~Font.encoding
       ~Font.fake_kerning
-      ~Font.fake_sparse_json
       ~Font.family_blues
       ~Font.family_blues_num
       ~Font.family_other_blues

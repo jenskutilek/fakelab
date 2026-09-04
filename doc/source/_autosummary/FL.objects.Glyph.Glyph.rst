@@ -1,4 +1,4 @@
-﻿FL.objects.Glyph.Glyph
+FL.objects.Glyph.Glyph
 ======================
 
 .. currentmodule:: FL.objects.Glyph
@@ -84,6 +84,7 @@
       ~Glyph.__init__
       ~Glyph.clear
       ~Glyph.fake_add_axis
+      ~Glyph.fake_assign_master
       ~Glyph.fake_deserialize
       ~Glyph.fake_deserialize_anchor_supp
       ~Glyph.fake_deserialize_anchors_mm

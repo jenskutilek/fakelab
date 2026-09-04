@@ -1,7 +1,7 @@
-﻿FL.fake
-=======
+FL.objects.base
+===============
 
-.. automodule:: FL.fake
+.. automodule:: FL.objects.base
   
    
    
@@ -28,14 +28,6 @@
    :template: custom-module-template.rst
    :recursive:
 
-   Base
    Font
-   FontImporter
-   Kerning
-   KerningClass
    Node
-   PSInfo
-   copy
-   curses
-   mixins
 

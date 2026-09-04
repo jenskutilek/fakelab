@@ -1,4 +1,4 @@
-﻿FL.objects.FontLab.FakeLab
+FL.objects.FontLab.FakeLab
 ==========================
 
 .. currentmodule:: FL.objects.FontLab

@@ -1,4 +1,4 @@
-﻿FL.objects.Component.Component
+FL.objects.Component.Component
 ==============================
 
 .. currentmodule:: FL.objects.Component
@@ -20,7 +20,9 @@
       ~Component.Paste
       ~Component.__init__
       ~Component.fake_add_axis
+      ~Component.fake_assign_master
       ~Component.fake_deserialize
+      ~Component.fake_get_matrix
       ~Component.fake_remove_axis
       ~Component.fake_serialize
    

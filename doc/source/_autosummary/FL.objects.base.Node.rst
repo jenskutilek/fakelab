@@ -1,7 +1,7 @@
-FL.helpers.ListParent
-=====================
+FL.objects.base.Node
+====================
 
-.. automodule:: FL.helpers.ListParent
+.. automodule:: FL.objects.base.Node
   
    
    
@@ -19,9 +19,7 @@ FL.helpers.ListParent
       :toctree:
       :template: custom-class-template.rst
    
-      DirectionalList
-      GlyphList
-      ListParent
+      BaseNode
    
    
 

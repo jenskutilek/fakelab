@@ -26,6 +26,11 @@ FL.helpers.classList.ClassList
       ~ClassList.copy
       ~ClassList.count
       ~ClassList.extend
+      ~ClassList.fake_deserialize_class
+      ~ClassList.fake_deserialize_kerning_class_flags
+      ~ClassList.fake_deserialize_metrics_class_flags
+      ~ClassList.fake_serialize_kerning_class_flags
+      ~ClassList.fake_serialize_metrics_class_flags
       ~ClassList.fake_set_classes
       ~ClassList.index
       ~ClassList.insert
@@ -37,12 +42,5 @@ FL.helpers.classList.ClassList
    
 
    
-   
-   .. rubric:: Attributes
-
-   .. autosummary::
-   
-      ~ClassList.fake_kerning_flags
-      ~ClassList.fake_metrics_flags
    
    

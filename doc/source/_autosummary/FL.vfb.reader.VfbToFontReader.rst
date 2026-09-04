@@ -1,4 +1,4 @@
-﻿FL.vfb.reader.VfbToFontReader
+FL.vfb.reader.VfbToFontReader
 =============================
 
 .. currentmodule:: FL.vfb.reader
@@ -18,6 +18,7 @@
    
       ~VfbToFontReader.__init__
       ~VfbToFontReader.read
+      ~VfbToFontReader.read_from_obj
    
    
 

@@ -1,4 +1,4 @@
-﻿FL.objects.Anchor.Anchor
+FL.objects.Anchor.Anchor
 ========================
 
 .. currentmodule:: FL.objects.Anchor
@@ -21,6 +21,7 @@
       ~Anchor.Transform
       ~Anchor.__init__
       ~Anchor.fake_add_axis
+      ~Anchor.fake_assign_master
       ~Anchor.fake_remove_axis
    
    

@@ -1,4 +1,4 @@
-﻿FL.objects.Node.Node
+FL.objects.Node.Node
 ====================
 
 .. currentmodule:: FL.objects.Node
@@ -25,6 +25,7 @@
       ~Node.Transform
       ~Node.__init__
       ~Node.fake_add_axis
+      ~Node.fake_assign_master
       ~Node.fake_deserialize
       ~Node.fake_remove_axis
       ~Node.fake_serialize

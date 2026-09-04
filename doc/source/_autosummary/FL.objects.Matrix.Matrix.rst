@@ -38,5 +38,7 @@ FL.objects.Matrix.Matrix
       ~Matrix.d
       ~Matrix.e
       ~Matrix.f
+      ~Matrix.fake_is_identity
+      ~Matrix.fake_is_translation
    
    
