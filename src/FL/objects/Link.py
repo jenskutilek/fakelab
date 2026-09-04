@@ -92,4 +92,4 @@ class Link(Copyable):
         """
         # This does *not* return the hint, but seems to append it to the
         # glyph's hhints or vhints property. It also deletes itself from the links attr.
-        return None
+        return

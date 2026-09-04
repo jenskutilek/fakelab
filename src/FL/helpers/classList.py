@@ -130,7 +130,7 @@ class ClassList(UserList[str]):
         width: bool | int | None = None,
     ) -> None:
         if class_index >= len(self.data) or class_index < 0:
-            return None
+            return
 
         contents = self.data[class_index]
         name = self._get_class_name(contents)
