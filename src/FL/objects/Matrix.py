@@ -78,9 +78,7 @@ class Matrix:
             return False
         if self._e != 0:
             return False
-        if self._f != 0:
-            return False
-        return True
+        return self._f == 0
 
     @cached_property
     def fake_is_translation(self) -> bool:
@@ -96,9 +94,7 @@ class Matrix:
             return False
         if self._c != 0:
             return False
-        if self._d != 1:
-            return False
-        return True
+        return self._d == 1
 
     def fake_transform_point(self, p: "Point") -> None:
         """
