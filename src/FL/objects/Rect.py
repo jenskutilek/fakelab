@@ -126,23 +126,15 @@ class Rect(Copyable):
         # start with a "negative" rect spanning the full area, and have easier
         # comparisons.
         if isinstance(other, Point):
-            if other.x < self._x0:
-                self._x0 = other.x
-            if other.y < self._y0:
-                self._y0 = other.y
-            if other.x > self._x1:
-                self._x1 = other.x
-            if other.y > self._y1:
-                self._y1 = other.y
+            self._x0 = min(self._x0, other.x)
+            self._y0 = min(self._y0, other.y)
+            self._x1 = max(self._x1, other.x)
+            self._y1 = max(self._y1, other.y)
         elif isinstance(other, Rect):
-            if other.ll.x < self._x0:
-                self._x0 = other.ll.x
-            if other.ll.y < self._y0:
-                self._y0 = other.ll.y
-            if other.ur.x > self._x1:
-                self._x1 = other.ur.x
-            if other.ur.y > self._y1:
-                self._y1 = other.ur.y
+            self._x0 = min(self._x0, other.ll.x)
+            self._y0 = min(self._y0, other.ll.y)
+            self._x1 = max(self._x1, other.ur.x)
+            self._y1 = max(self._y1, other.ur.y)
         else:
             raise TypeError
         return self
@@ -216,14 +208,10 @@ class Rect(Copyable):
         # Expands rectangle to include new rectangle or point
         if isinstance(r_or_p_or_x, Point):
             # This again doesn't check that the corner points are normalized.
-            if r_or_p_or_x.x < self._x0:
-                self._x0 = r_or_p_or_x.x
-            if r_or_p_or_x.y < self._y0:
-                self._y0 = r_or_p_or_x.y
-            if r_or_p_or_x.x > self._x1:
-                self._x1 = r_or_p_or_x.x
-            if r_or_p_or_x.y > self._y1:
-                self._y1 = r_or_p_or_x.y
+            self._x0 = min(self._x0, r_or_p_or_x.x)
+            self._y0 = min(self._y0, r_or_p_or_x.y)
+            self._x1 = max(self._x1, r_or_p_or_x.x)
+            self._y1 = max(self._y1, r_or_p_or_x.y)
         elif isinstance(r_or_p_or_x, Rect):
             raise NotImplementedError
         else:
