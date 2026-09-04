@@ -627,11 +627,19 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # global mask
         if self._global_mask is not None:
             raise NotImplementedError
+
         # glyphs
         for tgt_glyph, src_glpyh in zip(self.glyphs, other.glyphs):
             tgt_glyph.fake_assign_master(master_index, src_glpyh)
+
         # font info
+        for tgt_guide, src_guide in zip(self.hguides, other.hguides):
+            tgt_guide.fake_assign_master(master_index, src_guide)
+        for tgt_guide, src_guide in zip(self.vguides, other.vguides):
+            tgt_guide.fake_assign_master(master_index, src_guide)
+
         # ps info
+        self._master_ps_infos[master_index] = deepcopy(other._master_ps_infos[0])
 
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
