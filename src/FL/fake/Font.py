@@ -619,6 +619,19 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             self._master_locations.append((master_index + 1, location_tuple_2))
 
     def fake_assign_master(self, master_index: int, other: "BaseFont") -> None:
+        """
+        Assign all coordinates and other values from another font to master
+        `master_index` of a font.
+
+        Args:
+            master_index (int): The target master index.
+            other (Font): The font to take the values from. Always uses the first
+                master of the source font.
+
+        Raises:
+            IndexError: If master_index is larger than the actual number of masters.
+            NotImplementedError: If a global mask is present, which is currently not handled.
+        """
         if master_index > self._masters_count:
             raise IndexError
 
