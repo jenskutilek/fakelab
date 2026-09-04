@@ -68,6 +68,9 @@ class KerningPair(Copyable):
     def fake_add_axis(self) -> None:
         add_axis_to_list(self._values)
 
+    def fake_assign_master(self, master_index: int, other: "KerningPair") -> None:
+        self._values[master_index] = other._values[0]
+
     def fake_remove_axis(
         self,
         index: int,

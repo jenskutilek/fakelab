@@ -618,6 +618,21 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             location_tuple_2 = (location[0], location[1], location[2], location[3])
             self._master_locations.append((master_index + 1, location_tuple_2))
 
+    def fake_assign_master(self, master_index: int, other: "BaseFont") -> None:
+        if master_index > self._masters_count:
+            raise IndexError
+
+        # See fake_add_axis for what needs to be updated
+
+        # global mask
+        if self._global_mask is not None:
+            raise NotImplementedError
+        # glyphs
+        for tgt_glyph, src_glpyh in zip(self.glyphs, other.glyphs):
+            tgt_glyph.fake_assign_master(master_index, src_glpyh)
+        # font info
+        # ps info
+
     def fake_remove_axis(
         self, index: int, position: float, round_values: bool = True
     ) -> None:

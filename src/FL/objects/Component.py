@@ -105,6 +105,10 @@ class Component(Copyable):
         add_axis_to_list(self._deltas)
         add_axis_to_list(self._scales)
 
+    def fake_assign_master(self, master_index: int, other: "Component") -> None:
+        self._deltas[master_index].Assign(other._deltas[0])
+        self._scales[master_index].Assign(other._scales[0])
+
     def fake_remove_axis(
         self,
         index: int,

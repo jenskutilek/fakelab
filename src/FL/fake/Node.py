@@ -82,6 +82,10 @@ class FakeNode(BaseNode):
         add_axis_to_master_list(self._points)
         self._masters_count *= 2
 
+    def fake_assign_master(self, master_index, other: "FakeNode") -> None:
+        for i in range(len(self.points)):
+            self._points[master_index][i].Assign(other._points[0][i])
+
     def fake_remove_axis(
         self,
         axisindex: int,

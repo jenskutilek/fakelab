@@ -609,6 +609,36 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         self._layers_number *= 2
 
+    def fake_assign_master(self, master_index: int, other: "Glyph") -> None:
+        # See fake_add_axis for what needs to be updated
+        for tgt_node, src_node in zip(self._nodes, other._nodes):
+            tgt_node.fake_assign_master(master_index, src_node)
+        for tgt_anchor, src_anchor in zip(self._anchors, other._anchors):
+            tgt_anchor.fake_assign_master(master_index, src_anchor)
+        for tgt_hint, src_hint in zip(self._hhints, other._hhints):
+            tgt_hint.fake_assign_master(master_index, src_hint)
+        for tgt_hint, src_hint in zip(self._vhints, other._vhints):
+            tgt_hint.fake_assign_master(master_index, src_hint)
+        for tgt_guide, src_guide in zip(self._hguides, other._hguides):
+            tgt_guide.fake_assign_master(master_index, src_guide)
+        for tgt_guide, src_guide in zip(self._vguides, other._vguides):
+            tgt_guide.fake_assign_master(master_index, src_guide)
+        for tgt_component, src_component in zip(self._components, other._components):
+            tgt_component.fake_assign_master(master_index, src_component)
+        for tgt_kernpair, src_kernpair in zip(self._kerning, other._kerning):
+            tgt_kernpair.fake_assign_master(master_index, src_kernpair)
+
+        self._metrics[master_index].Assign(other._metrics[0])
+
+        if self._mask is not None:
+            raise NotImplementedError
+
+        if self._mask_metrics_mm is not None:
+            raise NotImplementedError
+
+        if self._vsb:
+            self._vsb[master_index] = other._vsb[0]
+
     def fake_remove_axis(
         self,
         index: int,

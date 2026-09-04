@@ -71,6 +71,10 @@ class Guide(Copyable):
         add_axis_to_list(self._positions)
         add_axis_to_list(self._widths)
 
+    def fake_assign_master(self, master_index: int, other: "Guide") -> None:
+        self._positions[master_index] = other._positions[0]
+        self._widths[master_index] = other._widths[0]
+
     def fake_remove_axis(
         self,
         index: int,

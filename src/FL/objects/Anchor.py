@@ -61,6 +61,9 @@ class Anchor(Copyable):
     def fake_add_axis(self) -> None:
         add_axis_to_list(self._points)
 
+    def fake_assign_master(self, master_index: int, other: "Anchor") -> None:
+        self._points[master_index].Assign(other._points[0])
+
     def fake_remove_axis(
         self,
         index: int,
