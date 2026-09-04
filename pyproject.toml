@@ -75,7 +75,10 @@ build-backend = "uv_build"
 source = ["src", ".tox/py*/**/site-packages"]
 
 [tool.ruff]
-extend-exclude = ["examples"]
+extend-exclude = [
+  "examples",
+  "README.md",
+]
 
 [tool.ruff.lint]
 ignore = [
