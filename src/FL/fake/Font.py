@@ -761,7 +761,7 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
         # For slice, we must check for an IndexError ourselves to match FLS behaviour
         num_glyphs = len(self._glyphs)
         if isinstance(i, slice):
-            start, stop, step = i.indices(num_glyphs)
+            start, stop, _step = i.indices(num_glyphs)
             if stop >= num_glyphs:
                 raise IndexError("List index is out of range")
             if start >= num_glyphs:
