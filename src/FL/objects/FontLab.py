@@ -285,7 +285,7 @@ class FakeLab:
         `addtolist` seems to be ignored; the font window is always opened.
         If the file at the path is already opened, it will not be opened again.
         """
-        open_paths = set([f.file_name for f in self._fonts])
+        open_paths = {f.file_name for f in self._fonts}
         if filename in open_paths:
             return
 
