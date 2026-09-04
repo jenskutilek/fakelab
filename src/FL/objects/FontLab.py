@@ -64,7 +64,7 @@ class FakeLab:
         # (integer) - index of currently selected font in the fonts list panel
         self.ifontslist = 0
 
-        self._glyph: "Glyph | None" = None
+        self._glyph: Glyph | None = None
 
         # (integer)  - index of currently active glyph
         self.iglyph = -1
