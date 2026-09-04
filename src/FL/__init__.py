@@ -225,7 +225,7 @@ Everything is only implemented so far as to make FontLab objects importable
 outside of FontLab Studio 5, and run tests.
 """
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # Constants
     "ftFONTLAB",
     "ftMACTRUETYPE",
@@ -444,7 +444,7 @@ __all__ = [
 ]
 
 # fl is pre-instantiated
-fl = FakeLab()  # noqa: F405
+fl = FakeLab()
 
 # Everything that is needed for a convincing emulation:
 
