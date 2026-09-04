@@ -2,8 +2,12 @@
 
 ## v0.2.1
 
+- Set `Glyph` metrics by default
+- Use `CmapTable` class for custom cmaps
+- Fix anisotropic interpolation mappings when an axis is added
 - Add `Font.fake_assign_master()` to mimick the menu command _Tools – Multiple Master – Assign Master..._
 - Update dependencies
+- Prepare for Python 3.15
 
 ## v0.2.0
 
