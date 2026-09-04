@@ -26,13 +26,12 @@ class Dialog:
         There is not a lot of documentations, but examples that use it pass the
         object to the parent parameter when constructing.
 
-        ```
-        class MyDialog:
-            def __init__(self):
-                self.d = Dialog(self)
-                self.d.size = Point(300, 140)
-                self.d.Center()
-        ```
+        Example:
+            class MyDialog:
+                def __init__(self):
+                    self.d = Dialog(self)
+                    self.d.size = Point(300, 140)
+                    self.d.Center()
 
         Args:
             parent (object ): The parent.
