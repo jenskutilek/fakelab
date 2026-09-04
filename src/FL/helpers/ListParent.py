@@ -1,6 +1,7 @@
 from collections import UserList
+from collections.abc import Iterable
 from copy import copy
-from typing import Any, Iterable, SupportsIndex, TypeVar
+from typing import Any, SupportsIndex, TypeVar
 
 T = TypeVar("T")
 

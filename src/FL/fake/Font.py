@@ -1,7 +1,8 @@
 import logging
+from collections.abc import Sequence
 from copy import deepcopy
 from pathlib import Path
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING
 
 from vfbLib.enum import G
 from vfbLib.parsers.text import OpenTypeStringParser

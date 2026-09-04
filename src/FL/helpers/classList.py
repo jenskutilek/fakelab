@@ -1,6 +1,7 @@
 from collections import UserList
+from collections.abc import Iterable
 from copy import copy
-from typing import Any, Iterable, SupportsIndex
+from typing import Any, Self, SupportsIndex
 
 
 class ClassList(UserList[str]):
@@ -64,7 +65,7 @@ class ClassList(UserList[str]):
         result += item
         return result
 
-    def __iadd__(self, item: Iterable[str]) -> "ClassList":
+    def __iadd__(self, item: Iterable[str]) -> Self:
         self.data.__iadd__(item)
         return self
 

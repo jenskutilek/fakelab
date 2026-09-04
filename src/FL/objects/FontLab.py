@@ -1,6 +1,7 @@
 import logging
+from collections.abc import Callable
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 from FL import ftFONTLAB, ftOPENTYPE, ftTRUETYPE
 from FL.fake.FontImporter import FontImporter
