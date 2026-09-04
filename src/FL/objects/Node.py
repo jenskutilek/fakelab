@@ -54,7 +54,7 @@ class Node(FakeNode):
 
         elif isinstance(node_or_type, int):
             if not isinstance(p, Point):
-                raise RuntimeError(
+                raise RuntimeError(  # noqa: TRY004
                     "Incorrect type of arguments in:\n  Node(integer type, Point p)"
                 )
 

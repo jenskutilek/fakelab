@@ -229,7 +229,7 @@ class Rect(Copyable):
         else:
             # floats
             if not isinstance(y, float):
-                raise RuntimeError
+                raise RuntimeError  # noqa: TRY004
 
             raise NotImplementedError
 

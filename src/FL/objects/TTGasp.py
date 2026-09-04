@@ -31,7 +31,7 @@ class TTGasp(Copyable):
                 self._copy_constructor(ttgasp_or_ppm)
             else:
                 if not isinstance(behavior, int):
-                    raise RuntimeError("Gasp is expected in arg 1: TTGasp(TTGasp)")
+                    raise RuntimeError("Gasp is expected in arg 1: TTGasp(TTGasp)")  # noqa: TRY004
                 self.ppm = ttgasp_or_ppm
                 self.behavior = behavior
 

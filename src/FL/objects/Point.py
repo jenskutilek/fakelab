@@ -135,7 +135,7 @@ class Point(Copyable):
         Point must be second operand, both coordinates are added
         """
         if not isinstance(other, Point):
-            raise RuntimeError("Point is expected as right operand of Point.operator+")
+            raise RuntimeError("Point is expected as right operand of Point.operator+")  # noqa: TRY004
         return Point(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other: "Point") -> "Point":
@@ -143,7 +143,7 @@ class Point(Copyable):
         Point must be second operand, both coordinates are subtracted
         """
         if not isinstance(other, Point):
-            raise RuntimeError("Point is expected as right operand of Point.operator-")
+            raise RuntimeError("Point is expected as right operand of Point.operator-")  # noqa: TRY004
         return Point(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other: "Point | float | Matrix") -> "Point | float":
@@ -241,7 +241,7 @@ class Point(Copyable):
         Point.Add(Point p)
         """
         if not isinstance(p, Point):
-            raise RuntimeError("Point is expected in arg 1:\n  Point.Add(Point p)")
+            raise RuntimeError("Point is expected in arg 1:\n  Point.Add(Point p)")  # noqa: TRY004
         self.Shift(p)
 
     def Sub(self, p: "Point") -> None:
@@ -256,7 +256,7 @@ class Point(Copyable):
         Point.Sub(Point p).
         """
         if not isinstance(p, Point):
-            raise RuntimeError("Point is expected in arg 1:\n  Point.Sub(Point p)")
+            raise RuntimeError("Point is expected in arg 1:\n  Point.Sub(Point p)")  # noqa: TRY004
         self.x -= p.x
         self.y -= p.y
 
@@ -288,7 +288,7 @@ class Point(Copyable):
         Point.Transform(Matrix m).
         """
         if not isinstance(m, Matrix):
-            raise RuntimeError(
+            raise RuntimeError(  # noqa: TRY004
                 "Matrix is expected in arg 1:\n  Point.Transform(Matrix m)"
             )
         m.fake_transform_point(self)

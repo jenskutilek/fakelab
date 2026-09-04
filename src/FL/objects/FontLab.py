@@ -753,6 +753,6 @@ class FakeLab:
         if len(args) != 1:
             raise RuntimeError("Incorrect # of args to: FontLab._setcurrentfont()")
         if not isinstance(args[0], int):
-            raise RuntimeError(
+            raise RuntimeError(  # noqa: TRY004
                 "Number is expected in arg 1: FontLab._setcurrentfont(Font font)"
             )
