@@ -37,7 +37,6 @@ class Dialog:
         Args:
             parent (object ): The parent.
         """
-        pass
 
     # Attributes
 

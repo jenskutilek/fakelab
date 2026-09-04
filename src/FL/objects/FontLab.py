@@ -256,7 +256,6 @@ class FakeLab:
         Set the contents of the output panel, e.g. setting it to "" will clear the
         output panel.
         """
-        pass
 
     # Methods
 
@@ -646,7 +645,6 @@ class FakeLab:
         """
         Close the Progress dialog box.
         """
-        pass
 
     def Random(self, lovalue: float, hivalue: float | None = None) -> int:
         """

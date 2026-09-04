@@ -27,4 +27,3 @@ class Copyable:
                     setattr(self, attr, getattr(tmp, attr))
                 except AttributeError:
                     logger.warning(f"Attribute not copied: {self}.{attr}")
-                    pass

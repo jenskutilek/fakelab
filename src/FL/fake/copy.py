@@ -17,4 +17,3 @@ def copy_fl_object(source: Any, target: Any) -> None:
                 setattr(target, attr, getattr(tmp, attr))
             except AttributeError:
                 logger.warning(f"Attribute not copied: {target}.{attr}")
-                pass
