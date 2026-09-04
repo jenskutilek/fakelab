@@ -137,7 +137,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         # else: Empty Glyph
 
     def __repr__(self) -> str:
-        return "<Glyph: '%s', %i nodes, orphan>" % (self.name, len(self))
+        return f"<Glyph: '{self.name}', {len(self)} nodes, orphan>"
 
     # FakeLab Defaults
 

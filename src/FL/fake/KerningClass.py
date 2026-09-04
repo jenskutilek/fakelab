@@ -63,8 +63,8 @@ class KerningClass:
 
     def __repr__(self) -> str:
         result = f"Kerning class {self.name} ({self.sides})\n"
-        result += "  Key: %s\n" % self.keyglyph
-        result += "  Glyphs: %s\n\n" % self.glyphs
+        result += f"  Key: {self.keyglyph}\n"
+        result += f"  Glyphs: {self.glyphs}\n\n"
         return result
 
     @classmethod
@@ -142,8 +142,8 @@ class KerningClass:
             if self.glyphs:
                 self.keyglyph = self.glyphs[0]
             else:
-                logger.warning("Empty class: %s" % self.name)
-                logger.warning("             %s" % flClass)
+                logger.warning(f"Empty class: {self.name}")
+                logger.warning(f"             {flClass}")
 
     def getFontLabExternalClassCode(self) -> str:
         """
@@ -160,6 +160,6 @@ class KerningClass:
 
         result = f"%%CLASS _{self.name}{sideName}\n"
         result += f"%%GLYPHS {self.keyglyph}' {' '.join(self.glyphs)}\n"
-        result += "%%%%KERNING %s 0\n%%%%END\n" % (self.sides)
+        result += f"%%KERNING {self.sides} 0\n%%END\n"
 
         return result

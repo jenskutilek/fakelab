@@ -56,7 +56,7 @@ class Rect(Copyable):
             self.Assign(r_or_p0_or_x0, p1_or_x0, x1, y1)
 
     def __repr__(self) -> str:
-        return "<Rect: %g,%g,%g,%g>" % (self._x0, self._y0, self._x1, self._y1)
+        return f"<Rect: {self._x0:g},{self._y0:g},{self._x1:g},{self._y1:g}>"
 
     # Attributes
 

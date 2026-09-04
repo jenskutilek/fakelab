@@ -80,7 +80,7 @@ class FakeKerning:
         for L, R, value in gg:
             pairs[(L, R)] = value
         self.flat_kerning = sorted([(g[0], g[1], v) for g, v in pairs.items()])
-        logger.info("Expanded kerning: %i pairs." % len(self.flat_kerning))
+        logger.info(f"Expanded kerning: {len(self.flat_kerning)} pairs.")
 
     def expand(self) -> None:
         if self._font is None:

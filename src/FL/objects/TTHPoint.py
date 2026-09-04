@@ -49,7 +49,7 @@ class TTHPoint(Copyable):
                 raise TypeError
 
     def __repr__(self) -> str:
-        return "<TTHPoint: x: %g, y: %g, mode: %i>" % (self.x, self.y, self.mode)
+        return f"<TTHPoint: x: {self.x:g}, y: {self.y:g}, mode: {self.mode}>"
 
     # Attributes
 

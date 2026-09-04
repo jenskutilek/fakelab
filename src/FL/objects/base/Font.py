@@ -396,7 +396,7 @@ class BaseFont:
         return len(self._glyphs)
 
     def __repr__(self) -> str:
-        return "<Font: '%s', %i glyphs>" % (self.full_name, len(self))
+        return f"<Font: '{self.full_name}', {len(self)} glyphs>"
 
     # Helpers
 
