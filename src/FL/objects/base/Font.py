@@ -431,6 +431,9 @@ class BaseFont:
 
     @property
     def ascender(self) -> list[int]:
+        """
+        List of ascenders, one for each master.
+        """
         return self._ascender
 
     @ascender.setter
@@ -477,6 +480,9 @@ class BaseFont:
 
     @property
     def cap_height(self) -> list[int]:
+        """
+        List of CapHeight values, one for each master.
+        """
         return self._cap_height
 
     @cap_height.setter
@@ -508,6 +514,9 @@ class BaseFont:
 
     @property
     def descender(self) -> list[int]:
+        """
+        List of descenders, one for each master.
+        """
         return self._descender
 
     @descender.setter
@@ -739,6 +748,9 @@ class BaseFont:
 
     @property
     def x_height(self) -> list[int]:
+        """
+        List of xHeight values, one for each master.
+        """
         return self._x_height
 
     @x_height.setter
