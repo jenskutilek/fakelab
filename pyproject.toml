@@ -78,6 +78,12 @@ source = ["src", ".tox/py*/**/site-packages"]
 [tool.ruff]
 extend-exclude = ["examples"]
 
+[tool.ruff.lint]
+ignore = [
+  "N999",  # Mixed case module names
+  "RUF023",  # Unsorted __slots__
+]
+
 [tool.ruff.lint.isort]
 known-first-party = ["FL"]
 
