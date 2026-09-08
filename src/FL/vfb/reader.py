@@ -286,7 +286,7 @@ class VfbToFontReader:
                 case F.ExportPCLTTable:
                     font._export_pclt_table = data
                 case F.FontFlags:
-                    font._font_flags = data
+                    font._font_flags = data["data"]
                 case F.TrueTypeTable:
                     font.truetypetables.append(data)
                 case F.MetricsClassFlags:

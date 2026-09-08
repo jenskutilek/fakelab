@@ -215,7 +215,7 @@ class FontToVfbWriter:
         self.add_entry(F.ExportPCLTTable, font._export_pclt_table)
         if font.note:
             self.add_entry(F.note, font.note)
-        self.add_entry(F.FontFlags, font._font_flags)
+        self.add_entry(F.FontFlags, {"data": font._font_flags})
         if font.customdata:
             self.add_entry(F.customdata, font.customdata)
 

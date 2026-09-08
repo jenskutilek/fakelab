@@ -339,7 +339,7 @@ class BaseFont:
         # Font data that is not accessible via FL5 Python API
         self._collection: list[Any] = []
         self._encoding_default: list[EncodingRecord] = []
-        self._font_flags = ""
+        self._font_flags = b""
         self._global_mask: Glyph | None = None
         self._masters_count: int = 1
         self._license: str = ""
