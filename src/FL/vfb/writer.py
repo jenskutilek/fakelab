@@ -277,7 +277,7 @@ class FontToVfbWriter:
         for k in (T.cvt, T.prep, T.fpgm):
             d = self.font.ttinfo.fake_get_binary(T(k).name)
             if d:
-                self.add_entry(k, d)
+                self.add_entry(k, {"data": d})
 
         if gasp := self.font.ttinfo.fake_serialize_gasp():
             self.add_entry(T.gasp, gasp)

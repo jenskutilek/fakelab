@@ -188,7 +188,7 @@ class VfbToFontReader:
                 continue
 
             if key in (T.cvt, T.prep, T.fpgm):
-                font.ttinfo.fake_set_binary(T(key).name, data)
+                font.ttinfo.fake_set_binary(T(key).name, data["data"])
                 continue
 
             if key in (
