@@ -274,7 +274,7 @@ class VfbToFontReader:
                 case F.fontnames:
                     assert isinstance(data, list)
                     for nr in data:
-                        font.fontnames.append(NameRecord(tuple(nr)))
+                        font.fontnames.append(NameRecord.fake_deserialize(nr))
                 case F.CustomCMAPs:
                     font._custom_cmaps = []
                     for cmap_dict in data:
