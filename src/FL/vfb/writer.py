@@ -220,7 +220,7 @@ class FontToVfbWriter:
             self.add_entry(F.customdata, font.customdata)
 
         for ttt in font.truetypetables:
-            self.add_entry(F.TrueTypeTable, ttt)
+            self.add_entry(F.TrueTypeTable, ttt.fake_serialize())
 
         if metrics_class_flags := font._classes.fake_serialize_metrics_class_flags():
             self.add_entry(F.MetricsClassFlags, metrics_class_flags)

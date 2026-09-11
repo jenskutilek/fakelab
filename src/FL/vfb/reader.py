@@ -10,6 +10,7 @@ from FL.objects.Encoding import Encoding
 from FL.objects.EncodingRecord import EncodingRecord
 from FL.objects.Glyph import Glyph
 from FL.objects.NameRecord import NameRecord
+from FL.objects.TrueTypeTable import TrueTypeTable
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -288,7 +289,7 @@ class VfbToFontReader:
                 case F.FontFlags:
                     font._font_flags = data["data"]
                 case F.TrueTypeTable:
-                    font.truetypetables.append(data)
+                    font.truetypetables.append(TrueTypeTable.fake_deserialize(data))
                 case F.MetricsClassFlags:
                     font._classes.fake_deserialize_metrics_class_flags(data)
                 case F.KerningClassFlags:
