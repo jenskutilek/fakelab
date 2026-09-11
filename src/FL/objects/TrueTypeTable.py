@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 from FL.fake.Base import Copyable
 
 if TYPE_CHECKING:
+    from vfbLib.typing import BinaryTableDict
+
     from FL.objects.Font import Font
 
 
@@ -21,7 +23,7 @@ class TrueTypeTable(Copyable):
     def __init__(
         self,
         truetypetable_or_tag: "TrueTypeTable | str | None" = None,
-        value: str | None = None,
+        value: bytes | None = None,
         valuelen: int | None = None,
     ) -> None:
         """
@@ -40,12 +42,12 @@ class TrueTypeTable(Copyable):
 
         Args:
             truetypetable_or_tag (TrueTypeTable | str | None, optional): _description_. Defaults to None.
-            value (str | None, optional): _description_. Defaults to None.
+            value (bytes | None, optional): _description_. Defaults to None.
             valuelen (int | None, optional): _description_. Defaults to None.
         """
         self._parent: Font | None = None
         self.tag = ""
-        self.value = ""  # FIXME: str vs. bytes?
+        self.value = b""  # FIXME: str vs. bytes?
         if truetypetable_or_tag is not None:
             if isinstance(truetypetable_or_tag, TrueTypeTable):
                 self._copy_constructor(truetypetable_or_tag)
@@ -60,6 +62,13 @@ class TrueTypeTable(Copyable):
     def __repr__(self) -> str:
         parent = self._parent or "orphan"
         return f"<TTTable: tag={self.tag}, {parent}>"
+
+    @classmethod
+    def fake_deserialize(cls, data: "BinaryTableDict") -> "TrueTypeTable":
+        return TrueTypeTable(data["tag"], data["data"])
+
+    def fake_serialize(self) -> "BinaryTableDict":
+        return {"tag": self.tag, "data": self.value}
 
     # Attributes
 
@@ -76,9 +85,9 @@ class TrueTypeTable(Copyable):
         self._tag = value
 
     @property
-    def value(self) -> str:
+    def value(self) -> bytes:
         return self._value
 
     @value.setter
-    def value(self, value: str) -> None:
+    def value(self, value: bytes) -> None:
         self._value = value

@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.3.0
+
+- Adapt to incompatible changes in vfbLib 0.12
+- Fix `Font._font_flags` (bytes instead of str)
+- Improve error message when opening a files throws an error
+- Fix format and de/serialization of `TrueTypeTable`
+- Drop Python 3.12 support
+
 ## v0.2.1
 
 - Set `Glyph` metrics by default

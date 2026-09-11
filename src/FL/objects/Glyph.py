@@ -34,7 +34,7 @@ from FL.objects.Link import Link
 from FL.objects.Node import Node
 from FL.objects.Point import Point
 from FL.objects.Rect import Rect
-from FL.objects.Replace import Replace
+from FL.objects.Replace import Replace, replace_types_inv
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -474,10 +474,16 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 hint = Hint()
                 hint.fake_deserialize(hint_list)
                 target.append(hint)
-        for record_type, index in data.get("hintmasks", []):
-            self.replace_table.append(
-                Replace({"h": 0x01, "v": 0x02, "r": 0xFF}[record_type], index)
-            )
+        for replace_type_name, index in data.get("hintmasks", []):
+            replace_type = replace_types_inv.get(replace_type_name)
+            if replace_type is None:
+                replace_type = int(replace_type_name, 16)
+            # Index may be negative index, but we preserve it.
+            # To get to the node index:
+            # if index < 0:
+            #     index = -index - 1
+
+            self.replace_table.append(Replace(replace_type, index))
 
     def fake_serialize_hints(self) -> MMHintsDict:
         hints_dict = MMHintsDict(v=[], h=[])
@@ -495,7 +501,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if self.replace_table:
             hintmasks = hints_dict["hintmasks"] = []
             for r in self.replace_table:
-                hintmasks.append((replace_types[r.type], r.index))
+                hintmasks.append((replace_types.get(r.type, hex(r.type)), r.index))
         return hints_dict
 
     def fake_serialize_mask(self) -> MaskData:

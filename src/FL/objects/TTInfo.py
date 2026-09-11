@@ -413,18 +413,19 @@ class TTInfo(Copyable):
                 d[bottom_index + top_index + 1] = zone_deltas
         return d
 
-    def fake_get_binary(self, attr: str) -> str:
-        return hexStr(bytes(getattr(self, attr)))
+    def fake_get_binary(self, attr: str) -> bytes:
+        return bytes(getattr(self, attr))
 
-    def fake_set_binary(self, attr: str, data: str) -> None:
+    def fake_set_binary(self, attr: str, data: bytes) -> None:
         """
-        Set a binary table (cvt, prep, fpgm) from the representation chosen in JSON.
+        Set a binary table (cvt, prep, fpgm) from the representation chosen in JSON. In
+        FL, the bytes are stored as a list.
 
         Args:
             attr (str): The attribute name the data should go to
-            data (str): The data as a hexStr
+            data (bytes): The binary table data
         """
-        setattr(self, attr, list(deHexStr(data)))
+        setattr(self, attr, list(data))
 
     @property
     def hstem_data(self) -> list[TTStem]:

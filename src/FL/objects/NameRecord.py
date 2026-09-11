@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from vfbLib.typing import NameRecordDict
+
 from FL.fake.Base import Copyable
 
 if TYPE_CHECKING:
@@ -57,8 +59,25 @@ class NameRecord(Copyable):
 
     # Additions for FakeLab
 
-    def fake_serialize(self) -> tuple[int, int, int, int, str]:
-        return (self.nid, self.pid, self.eid, self.lid, self.name)
+    def fake_serialize(self) -> NameRecordDict:
+        return NameRecordDict(
+            name_id=self.nid,
+            platform_id=self.pid,
+            encoding_id=self.eid,
+            language_id=self.lid,
+            string=self.name,
+        )
+
+    @classmethod
+    def fake_deserialize(cls, data: NameRecordDict) -> "NameRecord":
+        name_record = NameRecord(
+            data["name_id"],
+            data["platform_id"],
+            data["encoding_id"],
+            data["language_id"],
+            data["string"],
+        )
+        return name_record
 
     # Attributes
 
