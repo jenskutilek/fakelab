@@ -215,7 +215,7 @@ class FontToVfbWriter:
         self.add_entry(F.ExportPCLTTable, font._export_pclt_table)
         if font.note:
             self.add_entry(F.note, font.note)
-        self.add_entry(F.FontFlags, {"data": font._font_flags})
+        self.add_entry(F.FontFlags, font._font_flags)
         if font.customdata:
             self.add_entry(F.customdata, font.customdata)
 
@@ -277,7 +277,7 @@ class FontToVfbWriter:
         for k in (T.cvt, T.prep, T.fpgm):
             d = self.font.ttinfo.fake_get_binary(T(k).name)
             if d:
-                self.add_entry(k, {"data": d})
+                self.add_entry(k, d)
 
         if gasp := self.font.ttinfo.fake_serialize_gasp():
             self.add_entry(T.gasp, gasp)

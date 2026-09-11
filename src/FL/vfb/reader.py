@@ -189,7 +189,7 @@ class VfbToFontReader:
                 continue
 
             if key in (T.cvt, T.prep, T.fpgm):
-                font.ttinfo.fake_set_binary(T(key).name, data["data"])
+                font.ttinfo.fake_set_binary(T(key).name, data)
                 continue
 
             if key in (
@@ -287,7 +287,7 @@ class VfbToFontReader:
                 case F.ExportPCLTTable:
                     font._export_pclt_table = data
                 case F.FontFlags:
-                    font._font_flags = data["data"]
+                    font._font_flags = data
                 case F.TrueTypeTable:
                     font.truetypetables.append(TrueTypeTable.fake_deserialize(data))
                 case F.MetricsClassFlags:
