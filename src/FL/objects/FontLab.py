@@ -290,15 +290,20 @@ class FakeLab:
             return
 
         # Try to open the font as VFB:
-        font = Font()
-        result = font.Open(filename)
-        if result == 0:
+        if Path(filename).suffix.lower() == ".vfb":
+            font = Font()
+            result = font.Open(filename)
+            if result == 0:
+                logger.error(f"Opening the VFB failed: {filename}")
+                raise RuntimeError(f"Opening the VFB failed: {filename}")
+        else:
             # Was not a VFB, try to import it
             fi = FontImporter(Path(filename), options=Options())
             try:
                 font = fi.import_font()
             except ValueError:
-                return
+                logger.error(f"Importing the font failed: {filename}")
+                raise
         self.Add(font)
 
     def Save(
