@@ -8,10 +8,17 @@ if TYPE_CHECKING:
     from FL.objects.Glyph import Glyph
 
 
+# TODO: Import from vfbLib when > 0.12.0
 TYPE_HORIZONTAL_HINT = 1
 TYPE_VERTICAL_HINT = 2
 TYPE_NODE = 255
 
+
+replace_types_inv = {
+    "h": TYPE_HORIZONTAL_HINT,
+    "v": TYPE_VERTICAL_HINT,
+    "r": TYPE_NODE,
+}
 
 __doc__ = "Class to represent an item of a hint replacment program"
 
@@ -52,7 +59,7 @@ class Replace(Copyable):
         Replace(Replace)      - copy constructor
         Replace(Hint)
         Replace(Node)
-        Replace(Int type,Int index)
+        Replace(Int type, Int index)
 
         Args:
             replace_or_hint_or_node_or_type (Replace | Hint | Node | int | None, optional): _description_. Defaults to None.
