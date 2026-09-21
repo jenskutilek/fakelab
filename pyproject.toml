@@ -1,6 +1,6 @@
 [project]
 name = "fakelab"
-version = "0.3.0"
+version = "0.3.1"
 description = "Fake FontLab Studio 5 for automated tests and external scripting"
 keywords = ["fonttools", "vfb"]
 

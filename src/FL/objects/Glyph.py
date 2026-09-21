@@ -168,7 +168,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         self._hguides: ListParent[Guide] = ListParent([], self, Guide)
         self._vguides: ListParent[Guide] = ListParent([], self, Guide)
         self._components: ListParent[Component] = ListParent([], self, Component)
-        self._replace_table: list[Replace] = []
+        self._replace_table: ListParent[Replace] = ListParent([], self, Replace)
         self._kerning: ListParent[KerningPair] = ListParent([], self, KerningPair)
         self._layers_number = 1
         self._mask: Glyph | None = None
@@ -814,7 +814,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         return self._components
 
     @property
-    def replace_table(self) -> list[Replace]:
+    def replace_table(self) -> ListParent[Replace]:
         """
         The hint replacement program, a list of :py:class:`Replace` objects.
 

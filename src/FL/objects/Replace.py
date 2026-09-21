@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from FL.constants import DIR_HORIZONTAL, DIR_VERTICAL
 from FL.fake.Base import Copyable
 from FL.objects.Hint import Hint
 from FL.objects.Node import Node
@@ -9,6 +10,7 @@ if TYPE_CHECKING:
 
 
 # TODO: Import from vfbLib when > 0.12.0
+# from vfbLib import TYPE_HORIZONTAL_HINT, TYPE_NODE, TYPE_VERTICAL_HINT
 TYPE_HORIZONTAL_HINT = 1
 TYPE_VERTICAL_HINT = 2
 TYPE_NODE = 255
@@ -73,9 +75,30 @@ class Replace(Copyable):
             if isinstance(arg1, Replace):
                 self._copy_constructor(arg1)
             elif isinstance(arg1, Hint):
-                # FIXME: How to determine if a hint is horizontal or vertical?
-                self._type = TYPE_HORIZONTAL_HINT  # or TYPE_VERTICAL_HINT
+                hint = arg1
+                if hint.parent is None:
+                    raise RuntimeError(
+                        "RuntimeError: To construct Replace from a Hint, Hint must not "
+                        "be an orphan"
+                    )
+                self._parent = hint.parent
+                if hint._stem_direction == DIR_HORIZONTAL:
+                    self._type = TYPE_HORIZONTAL_HINT
+                elif hint._stem_direction == DIR_VERTICAL:
+                    self._type = TYPE_VERTICAL_HINT
+                else:
+                    raise ValueError(
+                        "(FakeLab) Unknown hint direction while initialising "
+                        f"Replace: {hint._stem_direction}"
+                    )
             elif isinstance(arg1, Node):
+                node = arg1
+                if node.parent is None:
+                    raise RuntimeError(
+                        "RuntimeError: To construct Replace from a Node, Node must not "
+                        "be an orphan"
+                    )
+                self._parent = node.parent
                 self._type = TYPE_NODE
             elif isinstance(arg1, int):
                 self.type = arg1
