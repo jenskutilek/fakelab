@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.1
+
+- Improve `Glyph.replace_table` and `Replace` objects
+- Drop Python 3.12 from CI
+
 ## v0.3.0
 
 - Adapt to incompatible changes in vfbLib 0.12
