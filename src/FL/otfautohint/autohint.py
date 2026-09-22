@@ -8,12 +8,13 @@
 import logging
 import os
 import time
+from collections.abc import Iterator
 from multiprocessing import Manager, Pool, current_process
 from threading import Thread
 
 # Import from __main__ for type annotations
 # (avoid circular import by using TYPE_CHECKING)
-from typing import TYPE_CHECKING, Any, Iterator, NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 from . import FontParseError, get_font_format
 from .fdTools import FDDictManager

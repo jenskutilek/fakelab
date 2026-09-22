@@ -11,7 +11,8 @@ import logging
 import os
 import subprocess
 import tempfile
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 # import subset.cff is needed to load the implementation for
 # CFF.desubroutinize: the module adds this class method to the CFF and CFF2

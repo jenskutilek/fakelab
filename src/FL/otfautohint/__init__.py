@@ -1,7 +1,6 @@
 import os
-from typing import TypeAlias
 
-Number: TypeAlias = int | float
+type Number = int | float
 
 
 class FontParseError(Exception):

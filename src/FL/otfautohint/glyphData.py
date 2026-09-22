@@ -4,21 +4,15 @@
 Internal representation of a T2 CharString glyph with hints
 """
 
+import logging
 import operator
-import sys
 import threading
 from builtins import tuple as _tuple
 from collections import defaultdict
+from collections.abc import Callable, Iterator
 from copy import deepcopy
 from math import sqrt
-from typing import Any, Callable, Iterator
-
-if sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing_extensions import Self
-
-import logging
+from typing import Any, Self
 
 from fontTools.misc.bezierTools import (
     approximateCubicArcLength,

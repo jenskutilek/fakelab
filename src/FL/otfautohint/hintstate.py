@@ -6,24 +6,13 @@ Storage for intermediate state built by the hinter object
 
 import bisect
 import logging
-import sys
 import weakref
+from collections.abc import Callable, Sequence
 from enum import IntEnum
-from typing import (
-    Any,
-    Callable,
-    Protocol,
-    Sequence,
-    Set,
-)
+from typing import Any, Protocol, Self
 
 from . import Number
 from .glyphData import feq, pathElement, stem
-
-if sys.version_info >= (3, 11):
-    from typing import Self
-else:
-    from typing_extensions import Self
 
 log: logging.Logger = logging.getLogger(__name__)
 
@@ -568,7 +557,7 @@ class instanceStemState:
         self.defaultLoc = loc
         self.dhinter = dhinter
         self.candDict: dict[float, stemLocCandidate] = {}
-        self.usedSegs: Set[int] = set()
+        self.usedSegs: set[int] = set()
         self.bb: bool | None = None
 
     def addToLoc(
