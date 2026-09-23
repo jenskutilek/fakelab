@@ -1008,7 +1008,7 @@ class glyphData(BasePen):
             if not self.startmasks and not self.cntr:
                 # XXX Should refactor so this prints as warning when
                 # using existing hint data
-                log.info("Initial hintmask missing in current glyph %s" % self.name)
+                log.info(f"Initial hintmask missing in current glyph {self.name}")
             # In the glyphdata format the end of a path is implicit in the
             # charstring but explicit in the subpath, while a moveto is
             # explicit in the charstring and implicit in the subpath. So
@@ -1172,7 +1172,7 @@ class glyphData(BasePen):
     # XXX deal with or avoid reordering when preserving any hints
     def reorder(self, neworder) -> None:
         """Change the order of subpaths according to neworder"""
-        log.debug("Reordering subpaths: %r" % neworder)
+        log.debug(f"Reordering subpaths: {neworder!r}")
         spl = self.subpaths
         assert len(neworder) == len(spl)
         self.subpaths = [spl[i] for i in neworder]
@@ -1476,9 +1476,7 @@ class glyphData(BasePen):
             if done:
                 continue
             assert not hasattr(c, "association")
-            log.warning(
-                "Unable to map derived path element from " + "%s to %s" % (c.s, c.e)
-            )
+            log.warning(f"Unable to map derived path element from {c.s} to {c.e}")
             c.association = None
         self.syncPositions()
 

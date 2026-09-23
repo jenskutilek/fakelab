@@ -833,8 +833,7 @@ class dimensionHinter(ABC):
             ):
                 if c.splitAtInflectionsForSegs():
                     log.debug(
-                        "splitting at inflection point in %d %d"
-                        % (c.position[0], c.position[1] + 1)
+                        f"splitting at inflection point in {c.position[0]} {c.position[1] + 1}"
                     )
 
     def genSegs(self) -> None:
