@@ -310,11 +310,9 @@ class CFFFontData:
     def getPSName(self) -> str:
         if self.is_cff2 and "name" in self.ttFont:
             psName = next(
-                (
-                    name_rec.string
-                    for name_rec in self.ttFont["name"].names
-                    if (name_rec.nameID == 6) and (name_rec.platformID == 3)
-                )
+                name_rec.string
+                for name_rec in self.ttFont["name"].names
+                if (name_rec.nameID == 6) and (name_rec.platformID == 3)
             )
             psName = psName.decode("utf-16be")
         else:

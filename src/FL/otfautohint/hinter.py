@@ -297,7 +297,7 @@ class dimensionHinter(ABC):
                 log.info("Already has flex hints, skipping addFlex")
                 return
         for cl in self:
-            if all((self.tryFlex(x.glyph, x.pe) for x in cl)):
+            if all(self.tryFlex(x.glyph, x.pe) for x in cl):
                 self.markFlex(cl)
         self.stopFlex()
 
@@ -1300,7 +1300,7 @@ class dimensionHinter(ABC):
         if dist < self.MinDist / 2:
             return None
 
-        d, nearStem = min(((abs(s - loc_d), s) for s in self.dominantStems()))
+        d, nearStem = min((abs(s - loc_d), s) for s in self.dominantStems())
         if d == 0 or d > 2:
             return None
         log.info(
@@ -1573,11 +1573,9 @@ class dimensionHinter(ABC):
 
         try:
             _, highest = max(
-                (
-                    (sv.compVal(self.SpcBonus, self.GhostFactor), sv)
-                    for sv in svl
-                    if OKcond(sv)
-                )
+                (sv.compVal(self.SpcBonus, self.GhostFactor), sv)
+                for sv in svl
+                if OKcond(sv)
             )
         except ValueError:
             pass
@@ -1661,11 +1659,9 @@ class dimensionHinter(ABC):
         while True:
             try:
                 _, bst = max(
-                    (
-                        (sv.best.compVal(self.SFactor), sv)  # type: ignore[union-attr]  # noqa: E501
-                        for sv in svl
-                        if not sv.merge
-                    )
+                    (sv.best.compVal(self.SFactor), sv)  # type: ignore[union-attr]
+                    for sv in svl
+                    if not sv.merge
                 )
             except ValueError:
                 break
@@ -1800,7 +1796,7 @@ class dimensionHinter(ABC):
             w = abs(u - l)
             minDiff = 0
             try:
-                minDiff, mdw = min(((abs(w - dw), dw) for dw in self.dominantStems()))
+                minDiff, mdw = min((abs(w - dw), dw) for dw in self.dominantStems())
             except ValueError:
                 pass
             if feq(minDiff, 0) or minDiff > 2:
@@ -1851,11 +1847,9 @@ class dimensionHinter(ABC):
         while True:
             try:
                 _, best = max(
-                    (
-                        (sv.compVal(self.SpcBonus), sv)
-                        for sv in svl
-                        if self.mainOK(sv.spc, sv.val, mainValues, prevBV)
-                    )
+                    (sv.compVal(self.SpcBonus), sv)
+                    for sv in svl
+                    if self.mainOK(sv.spc, sv.val, mainValues, prevBV)
                 )
             except ValueError:
                 break
@@ -1985,7 +1979,7 @@ class dimensionHinter(ABC):
             mn_pt, mx_pt = pt(*pbs.bounds[0]), pt(*pbs.bounds[1])
             peidx = 0 if self.isV() else 1
             if any(
-                (hv.lloc <= mx_pt.o and mn_pt.o <= hv.uloc for hv in self.hs.mainValues)
+                hv.lloc <= mx_pt.o and mn_pt.o <= hv.uloc for hv in self.hs.mainValues
             ):
                 continue
             lseg = hintSegment(
@@ -2053,20 +2047,16 @@ class dimensionHinter(ABC):
         self.startStemConvert()
         if self.keepHints:
             if self.isV():
-                self.hs.stems = tuple(
-                    (g.vstems if g.vstems else [] for g in self.gllist)
-                )
+                self.hs.stems = tuple(g.vstems if g.vstems else [] for g in self.gllist)
             else:
-                self.hs.stems = tuple(
-                    (g.hstems if g.hstems else [] for g in self.gllist)
-                )
+                self.hs.stems = tuple(g.hstems if g.hstems else [] for g in self.gllist)
                 l = self.hs.stems[0]
                 self.stopStemConvert()
-                return all((len(sl) == l for sl in self.hs.stems))
+                return all(len(sl) == l for sl in self.hs.stems)
 
         # Build up the default stem list
         valuepairmap: dict[tuple[Number, Number], int] = {}
-        self.hs.stems = tuple(([] for g in self.gllist))
+        self.hs.stems = tuple([] for g in self.gllist)
         if self.options.removeConflicts:
             self.hs.weights = []
             wl = self.hs.weights
@@ -2282,7 +2272,7 @@ class dimensionHinter(ABC):
                 pinSet[sidx] = True
 
         if doIdx is None:
-            return (sum((self.hs.weights[x] for x in range(l) if curSet[sidx])), curSet)
+            return (sum(self.hs.weights[x] for x in range(l) if curSet[sidx]), curSet)
         else:
             pinSet[doIdx] = True
             assert doConflictSet
@@ -2422,18 +2412,14 @@ class dimensionHinter(ABC):
                         continue
                     remidx = None
                     _, segi = max(
-                        (
-                            (sg.hintval.compVal(self.SpcBonus), sg)
-                            for sg in segments
-                            if (not sg.suppressed and sg.hintval.idx == sidx)
-                        )
+                        (sg.hintval.compVal(self.SpcBonus), sg)
+                        for sg in segments
+                        if (not sg.suppressed and sg.hintval.idx == sidx)
                     )
                     _, segj = max(
-                        (
-                            (sg.hintval.compVal(self.SpcBonus), sg)
-                            for sg in segments
-                            if (not sg.suppressed and sg.hintval.idx == sjdx)
-                        )
+                        (sg.hintval.compVal(self.SpcBonus), sg)
+                        for sg in segments
+                        if (not sg.suppressed and sg.hintval.idx == sjdx)
                     )
                     vali, valj = segi.hintval, segj.hintval
                     assert vali.lloc <= valj.lloc or valj.isGhost
@@ -2487,7 +2473,7 @@ class dimensionHinter(ABC):
                             f"Could not resolve conflicting hints at {c.e.x:g} {c.e.y:g}, removing both"
                         )
         if True in mask:
-            maskstr = "".join(("1" if i else "0" for i in mask))
+            maskstr = "".join("1" if i else "0" for i in mask)
             log.debug(f"{self.aDesc()} mask {maskstr} at {c.e.x:g} {c.e.y:g}")
             pestate.mask = mask
         else:
@@ -2932,9 +2918,7 @@ class glyphHinter:
                 mode = NOTSHORT
             cmasks = self.getMasks(glyph, c)
             candmasks, conflict = self.joinMasks(masks, cmasks, mode == CONFLICT)
-            maskstr = "".join(
-                ("1" if i else "0" for i in (candmasks[0] + candmasks[1]))
-            )
+            maskstr = "".join("1" if i else "0" for i in (candmasks[0] + candmasks[1]))
             log.debug(
                 f"mask {maskstr} at {c.e.x:g} {c.e.y:g}, mode {mode}, conflict: {conflict!r}"
             )
@@ -3065,11 +3049,9 @@ class glyphHinter:
                 oloc = po.x if hv == 1 else po.y
                 try:
                     _, ms = min(
-                        (
-                            (stems[hv][i].distance(oloc), i)
-                            for i in range(len(o[hv]))
-                            if goodmask[hv][i]
-                        )
+                        (stems[hv][i].distance(oloc), i)
+                        for i in range(len(o[hv]))
+                        if goodmask[hv][i]
                     )
                     assert ms < len(o[hv])
                     o[hv][ms] = True  # pytype: disable=unsupported-operands

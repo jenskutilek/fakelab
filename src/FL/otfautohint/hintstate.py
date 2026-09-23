@@ -688,16 +688,14 @@ class links:
         suborder: list[int] = []
         while subidxs:
             # negate s to preserve all-links-equal subpath ordering
-            _, bst = max(((sumlinks[s], -s) for s in subidxs))
+            _, bst = max((sumlinks[s], -s) for s in subidxs)
             self.moveIdx(suborder, subidxs, outlinks, -bst)
             while True:
                 try:
                     _, _, bst = max(
-                        (
-                            (outlinks[s], sumlinks[s], -s)
-                            for s in subidxs
-                            if outlinks[s] > 0
-                        )
+                        (outlinks[s], sumlinks[s], -s)
+                        for s in subidxs
+                        if outlinks[s] > 0
                     )
                 except ValueError:
                     break

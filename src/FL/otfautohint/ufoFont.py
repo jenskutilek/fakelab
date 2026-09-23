@@ -893,7 +893,7 @@ class GlyphDataWrapper(object):
             if iscntr[i]:
                 pl = [cntropname[i]]
                 for s in sl:
-                    pl.extend((str(norm_float(v)) for v in s.UFOVals()))
+                    pl.extend(str(norm_float(v)) for v in s.UFOVals())
                 ustems.append(" ".join(pl))
             else:
                 for s in sl:

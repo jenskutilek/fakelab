@@ -323,10 +323,8 @@ class fontWrapper:
 
                 else:
                     gt = tuple(
-                        (
-                            get_glyph(self.fw.options, f.font, name)
-                            for f in self.fw.fontInstances
-                        )
+                        get_glyph(self.fw.options, f.font, name)
+                        for f in self.fw.fontInstances
                     )
                 if True not in (g is not None for g in gt):
                     self.notFound += 1
