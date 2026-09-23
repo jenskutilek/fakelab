@@ -212,7 +212,7 @@ def get_glyph(
             options.hintAll,
         )
         if gl is None or gl.isEmpty():
-            log.info("Skipping glyph %s: no data from convertToGlyphData" % name)
+            log.info(f"Skipping glyph {name}: no data from convertToGlyphData")
             return None
         return gl
     except KeyError:
@@ -276,7 +276,7 @@ class fontWrapper:
         )
         if not self.glyphNameList:
             raise FontParseError(
-                "Selected glyph list is empty for " + "font <%s>." % fil[0].font.desc
+                f"Selected glyph list is empty for font <{fil[0].font.desc}>."
             )
         self.dictManager = FDDictManager(options, fil, self.glyphNameList, self.isVF)
 
@@ -435,12 +435,12 @@ class fontWrapper:
 
     def save(self) -> None:
         for f in self.fontInstances:
-            log.info("Saving font file %s with new hints..." % f.outpath)
+            log.info(f"Saving font file {f.outpath} with new hints...")
             f.font.save(f.outpath)
 
     def close(self) -> None:
         for f in self.fontInstances:
-            log.info("Closing font file %s without saving." % f.outpath)
+            log.info(f"Closing font file {f.outpath} without saving.")
             f.font.close()
 
 

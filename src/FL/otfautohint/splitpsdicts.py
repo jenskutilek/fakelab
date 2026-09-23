@@ -96,15 +96,14 @@ def getDictmap(options: argparse.Namespace) -> list[Dictspec]:
 def remapDicts(fpath: str, dictmap: list[Dictspec]) -> None:
     f = TTFont(fpath)
     if "CFF " not in f:
-        logger.error("No CFF table in %s: will not modify" % fpath)
+        logger.error(f"No CFF table in {fpath}: will not modify")
         return
 
     cff = f["CFF "]
     top = cff.cff[0]
     if hasattr(top, "FDArray"):
         logger.error(
-            "CFF table in %s already has " % fpath
-            + "%d private dicts: will not modify" % len(top.FDArray)
+            f"CFF table in {fpath} already has {len(top.FDArray)} private dicts: will not modify"
         )
         return
 
@@ -141,7 +140,7 @@ def remapDicts(fpath: str, dictmap: list[Dictspec]) -> None:
             indexMap.append(j)
             j += 1
         else:
-            logger.warning("No glyphs found for entry %s, skipping" % dictspec.name)
+            logger.warning(f"No glyphs found for entry {dictspec.name}, skipping")
             indexMap.append(-1)
     if hasExtra:
         indexMap.append(j)
@@ -242,7 +241,7 @@ def remapDicts(fpath: str, dictmap: list[Dictspec]) -> None:
 
     numdicts = len(newdictmap) + 1 if hasExtra else 0
 
-    logger.warning("Updating %s with %d dictionaries" % (fpath, numdicts))
+    logger.warning(f"Updating {fpath} with {numdicts} dictionaries")
     cfftpath = get_temp_file_path()
     cfftfile = open(cfftpath, "w+b")
     cff.cff.compile(cfftfile, f, False)

@@ -320,10 +320,10 @@ PUBLIC_GLYPH_ORDER = "public.glyphOrder"
 
 ADOBE_DOMAIN_PREFIX = "com.adobe.type"
 
-PROCESSED_LAYER_NAME = "%s.processedglyphs" % ADOBE_DOMAIN_PREFIX
-PROCESSED_GLYPHS_DIRNAME = "glyphs.%s" % PROCESSED_LAYER_NAME
+PROCESSED_LAYER_NAME = f"{ADOBE_DOMAIN_PREFIX}.processedglyphs"
+PROCESSED_GLYPHS_DIRNAME = f"glyphs.{PROCESSED_LAYER_NAME}"
 
-HASHMAP_NAME = "%s.processedHashMap" % ADOBE_DOMAIN_PREFIX
+HASHMAP_NAME = f"{ADOBE_DOMAIN_PREFIX}.processedHashMap"
 HASHMAP_VERSION_NAME = "hashMapVersion"
 HASHMAP_VERSION = (1, 0)  # If major version differs, do not use.
 AUTOHINT_NAME = "autohint"
@@ -500,7 +500,7 @@ class UFOFontData:
 
         data = ["{"]
         for gName in sorted(hashMap.keys()):
-            data.append("'%s': %s," % (gName, hashMap[gName]))
+            data.append(f"'{gName}': {hashMap[gName]},")
         data.append("}")
         data.append("")
         joined = "\n".join(data)
@@ -800,7 +800,7 @@ class HashPointPen(AbstractPointPen):
     ) -> None:
         self.glyphset = glyphset
         self.width = norm_float(round(getattr(glyph, "width", 0), 9))
-        self.data = ["w%s" % self.width]
+        self.data = [f"w{self.width}"]
 
     def getHash(self) -> str:
         data = "".join(self.data)
@@ -828,12 +828,7 @@ class HashPointPen(AbstractPointPen):
         else:
             pt_type = segmentType[0]
         self.data.append(
-            "%s%s%s"
-            % (
-                pt_type,
-                repr(norm_float(round(pt[0], 9))),
-                repr(norm_float(round(pt[1], 9))),
-            )
+            f"{pt_type}{norm_float(round(pt[0], 9))!r}{norm_float(round(pt[1], 9))!r}"
         )
 
     def addComponent(self, baseGlyphName, transformation, identifier=None, **kwargs):
@@ -848,12 +843,12 @@ class HashPointPen(AbstractPointPen):
                 "Internal error: addComponent called " + "when UFO glyphset is not set"
             )
 
-        self.data.append("base:%s" % baseGlyphName)
+        self.data.append(f"base:{baseGlyphName}")
 
         for v in transformation:
             self.data.append(str(norm_float(round(v, 9))))
 
-        self.data.append("w%s" % self.width)
+        self.data.append(f"w{self.width}")
         glyph = self.glyphset[baseGlyphName]
         glyph.drawPoints(self)
 
@@ -903,9 +898,7 @@ class GlyphDataWrapper(object):
             else:
                 for s in sl:
                     p, w = s.UFOVals()
-                    ustems.append(
-                        "%s %s %s" % (opname[i], norm_float(p), norm_float(w))
-                    )
+                    ustems.append(f"{opname[i]} {norm_float(p)} {norm_float(w)}")
         hintset: dict[str, Any] = {}
         hintset[POINT_TAG] = pointname
         hintset[STEMS_NAME] = ustems

@@ -348,15 +348,15 @@ class dimensionHinter(ABC):
 
         real_n = gl.nextInSubpath(c, skipTiny=False)
         if real_n is not n:
-            log.info("Remove short spline at %g %g to add flex." % c.e)
+            log.info("Remove short spline at {:g} {:g} to add flex.".format(*c.e))
             return False
         elif real_n.isClose() or real_n.isStart():
-            log.info("Move closepath from %g %.gto add flex." % c.e)
+            log.info("Move closepath from {:g} {:.0g}to add flex.".format(*c.e))
             return False
 
         if fne(c.s.a, n.e.a):
             log.info(
-                "Curves from %g %g to %g %g " % (*c.s, *n.e)
+                "Curves from {:g} {:g} to {:g} {:g} ".format(*c.s, *n.e)
                 + "near miss for adding flex"
             )
             return False
@@ -368,7 +368,7 @@ class dimensionHinter(ABC):
             and not self.linearFlexOK()
         ):
             log.info(
-                "Make curves from %g %g to %g %g" % (*c.s, *n.e)
+                "Make curves from {:g} {:g} to {:g} {:g}".format(*c.s, *n.e)
                 + "non-linear to add flex"
             )  # XXX what if only one line?
             return False
@@ -395,21 +395,21 @@ class dimensionHinter(ABC):
         self.startHint()
         if self.glyph.hasHints(doVert=self.isV()):
             if force:
-                log.info("Clearing existing %s hints" % self.aDesc())
+                log.info(f"Clearing existing {self.aDesc()} hints")
                 self.glyph.clearHints(self.isV())
                 self.glyph.changed = True
             else:
                 self.keepHints = True
-                log.info("Already has %s hints" % self.aDesc())
+                log.info(f"Already has {self.aDesc()} hints")
                 self.stopHint()
                 return
         self.keepHints = False
         self.BigDist = max(self.dominantStems() + [self.InitBigDist])
         self.BigDist *= self.BigDistFactor
-        log.debug("generate %s segments" % self.aDesc())
+        log.debug(f"generate {self.aDesc()} segments")
         self.genSegs()
         self.limitSegs()
-        log.debug("generate %s stem values" % self.aDesc())
+        log.debug(f"generate {self.aDesc()} stem values")
         self.Pruning = not (tryCounter and self.isCounterGlyph())
         self.genStemVals()
         self.pruneStemVals()
@@ -418,7 +418,7 @@ class dimensionHinter(ABC):
         self.limitVals()
         for sv in self.hs.stemValues:
             sv.show(self.isV(), "postmerge")
-        log.debug("pick main %s" % self.aDesc())
+        log.debug(f"pick main {self.aDesc()}")
         assert self.glyph is not None
         self.glyph.syncPositions()
         lnks.mark(self.hs.stemValues, self.isV())
@@ -447,9 +447,9 @@ class dimensionHinter(ABC):
                     self.highestStemVals()  # for bbox segments
         if len(self.hs.mainValues) == 0:
             self.addBBox(False)
-        log.debug("%s results" % self.aDesc())
+        log.debug(f"{self.aDesc()} results")
         if self.hs.counterHinted:
-            log.debug("Using %s counter hints." % self.aDesc())
+            log.debug(f"Using {self.aDesc()} counter hints.")
         for hv in self.hs.mainValues:
             hv.show(self.isV(), "result")
         self.markStraySegs()
@@ -882,7 +882,7 @@ class dimensionHinter(ABC):
         weighted by segment length.
         """
         prv = self.glyph.prevInSubpath(c, segSub=True)
-        log.debug("Element %d %d" % (c.position[0], c.position[1] + 1))
+        log.debug(f"Element {c.position[0]} {c.position[1] + 1}")
         if c.isStart():
             # Certain glyphs with one contour above (or below) all others
             # are marked as "Special", so that segments on that contour
@@ -931,9 +931,8 @@ class dimensionHinter(ABC):
                     d = (c.s - c.e).abs()
                     if d.o <= 2 and (d.a > 10 or d.normsq() > 100):
                         log.info(
-                            "The line from %g %g to %g %g" % (*c.s, *c.e)
-                            + " is not exactly "
-                            + self.aDesc()
+                            "The line from {:g} {:g} to {:g} {:g}".format(*c.s, *c.e)
+                            + f" is not exactly {self.aDesc()}"
                         )
             else:
                 # If the line is not somewhat flat just add BEND segments
@@ -1053,13 +1052,11 @@ class dimensionHinter(ABC):
                                 c.convertToLine()
                                 ccs, cce = c.s, c.e
                                 log.info(
-                                    "Curve from %s to %s " % (c.s, c.e)
-                                    + "changed to a line."
+                                    f"Curve from {c.s} to {c.e} changed to a line."
                                 )
                             elif not self.isMulti:
                                 log.info(
-                                    "Curve from %s to %s " % (c.s, c.e)
-                                    + "can be changed to a line."
+                                    f"Curve from {c.s} to {c.e} can be changed to a line."
                                 )
                         adist = ad2 / 2
                         aavg = (c.s.a + c.e.a) / 2
@@ -1144,8 +1141,7 @@ class dimensionHinter(ABC):
         maxsegs = max(len(self.hs.increasingSegs), len(self.hs.decreasingSegs))
         if not self.options.explicitGlyphs and maxsegs > self.options.maxSegments:
             log.warning(
-                "Calculated %d segments, skipping %s stem testing"
-                % (maxsegs, self.aDesc())
+                f"Calculated {maxsegs} segments, skipping {self.aDesc()} stem testing"
             )
             self.hs.deleteSegments()
 
@@ -1158,7 +1154,7 @@ class dimensionHinter(ABC):
         """
         log.debug("Generated segments")
         for pe in self.glyph:
-            log.debug("for path element x %g y %g" % (pe.e.x, pe.e.y))
+            log.debug(f"for path element x {pe.e.x:g} y {pe.e.y:g}")
             pestate = self.hs.getPEState(pe)
             seglist = pestate.segments() if pestate else []
             if seglist:
@@ -1308,8 +1304,7 @@ class dimensionHinter(ABC):
         if d == 0 or d > 2:
             return None
         log.info(
-            "%s %s stem near miss: %g instead of %g at %g to %g."
-            % (
+            "{} {} stem near miss: {:g} instead of {:g} at {:g} to {:g}.".format(
                 self.aDesc(),
                 "curve" if (ls.isCurve() or us.isCurve()) else "linear",
                 loc_d,
@@ -1522,7 +1517,7 @@ class dimensionHinter(ABC):
         """
         Sets the pruned property on sv and logs it and the "better" stemValue
         """
-        log.debug("Prune %s val: %s" % (self.aDesc(), desc))
+        log.debug(f"Prune {self.aDesc()} val: {desc}")
         sv.show(self.isV(), "pruned")
         other_sv.show(self.isV(), "pruner")
         sv.pruned = True
@@ -1586,7 +1581,7 @@ class dimensionHinter(ABC):
             )
         except ValueError:
             pass
-        log.debug("findHighestVal: loc %g min %g max %g" % (seg.loc, seg.min, seg.max))
+        log.debug(f"findHighestVal: loc {seg.loc:g} min {seg.min:g} max {seg.max:g}")
         if highest:
             highest.show(self.isV(), "highest")
         else:
@@ -1638,12 +1633,10 @@ class dimensionHinter(ABC):
             if fne(sv.lloc, oldl) or fne(sv.uloc, oldu) or sv.merge:
                 continue
             log.debug(
-                "Replace %s hints pair at %g %g by %g %g"
-                % (self.aDesc(), oldl, oldu, newl, newu)
+                f"Replace {self.aDesc()} hints pair at {oldl:g} {oldu:g} by {newl:g} {newu:g}"
             )
             log.debug(
-                "\told value %g %g new value %g %g"
-                % (sv.val, sv.spc, newbest.val, newbest.spc)
+                f"\told value {sv.val:g} {sv.spc:g} new value {newbest.val:g} {newbest.spc:g}"
             )
             sv.lloc = newl
             sv.uloc = newu
@@ -1772,8 +1765,7 @@ class dimensionHinter(ABC):
             return  # Even unique positions fit, no trimming needed
 
         log.info(
-            "Trimming stem list to %g from %g unique positions"
-            % (self.StemLimit, len(representatives))
+            f"Trimming stem list to {self.StemLimit:g} from {len(representatives):g} unique positions"
         )
         # This will leave some segments with .highest entries that aren't
         # part of the stemValues list, but those won't get .idx values so
@@ -1817,9 +1809,8 @@ class dimensionHinter(ABC):
                 line = self.findLineSeg(l, True) and self.findLineSeg(u, False)
                 if not sv.isGhost:
                     log.info(
-                        "%s %s stem near miss: "
-                        % (self.aDesc(), "linear" if line else "curve")
-                        + "%g instead of %g at %g to %g" % (w, mdw, l, u)
+                        f"{self.aDesc()} {'linear' if line else 'curve'} stem near miss: "
+                        f"{w:g} instead of {mdw:g} at {l:g} to {u:g}"
                     )
             lPrev, uPrev = l, u
 
@@ -1967,7 +1958,7 @@ class dimensionHinter(ABC):
             abs(mindelta - maxdelta) < self.DeltaDiffReport
             and abs((maxloc - midloc) - (midloc - minloc)) < self.DeltaDiffReport
         ):
-            log.info("Near miss for %s counter hints." % self.aDesc())
+            log.info(f"Near miss for {self.aDesc()} counter hints.")
         return False
 
     def addBBox(self, doSubpaths=False) -> None:
@@ -2106,9 +2097,9 @@ class dimensionHinter(ABC):
         for glidx in range(1, len(self.gllist)):
             self.calcInstanceStems(glidx)
 
-        log.debug("Initial %s stem list (including regions, if any):" % self.aDesc())
+        log.debug(f"Initial {self.aDesc()} stem list (including regions, if any):")
         for sidx in range(len(self.hs.stems[0])):
-            log.debug("Stem %d: %s" % (sidx, [sl[sidx] for sl in self.hs.stems]))
+            log.debug(f"Stem {sidx}: {[sl[sidx] for sl in self.hs.stems]}")
         self.stopStemConvert()
         return True
 
@@ -2255,10 +2246,8 @@ class dimensionHinter(ABC):
                 loc = iSSl[seg.hintval.idx][ul].bestLocation(ul == 0)
                 if loc is not None:
                     return loc
-        log.warning(
-            "No data for %s location of stem %d"
-            % ("lower" if ul == 0 else "upper", sidx)
-        )
+        side = "lower" if ul == 0 else "upper"
+        log.warning(f"No data for {side} location of stem {sidx}")
         assert hs0.stems is not None
         return hs0.stems[0][sidx][ul]
 
@@ -2343,8 +2332,7 @@ class dimensionHinter(ABC):
                 sc, self.hs.goodMask, [not a for a in self.hs.goodMask]
             )
             log.info(
-                "Removed %s stems %s to resolve conflicts"
-                % (self.aDesc(), [i for i, g in enumerate(self.hs.goodMask) if not g])
+                f"Removed {self.aDesc()} stems {[i for i, g in enumerate(self.hs.goodMask) if not g]} to resolve conflicts"
             )
 
         self.hs.hasOverlaps = False
@@ -2487,9 +2475,7 @@ class dimensionHinter(ABC):
                     # XXX ResolveConflictBySplit was called here.
                     if remidx is not None:
                         mask[remidx] = False
-                        log.debug(
-                            "Resolved conflicting hints at %g %g" % (c.e.x, c.e.y)
-                        )
+                        log.debug(f"Resolved conflicting hints at {c.e.x:g} {c.e.y:g}")
                     else:
                         # Removing the hints from the spline doesn't mean
                         # neither will be hinted, it means that whatever
@@ -2498,13 +2484,11 @@ class dimensionHinter(ABC):
                         # neither but it is likely one will be in the set
                         mask[sidx] = mask[sjdx] = False
                         log.debug(
-                            "Could not resolve conflicting hints"
-                            + " at %g %g" % (c.e.x, c.e.y)
-                            + ", removing both"
+                            f"Could not resolve conflicting hints at {c.e.x:g} {c.e.y:g}, removing both"
                         )
         if True in mask:
             maskstr = "".join(("1" if i else "0" for i in mask))
-            log.debug("%s mask %s at %g %g" % (self.aDesc(), maskstr, c.e.x, c.e.y))
+            log.debug(f"{self.aDesc()} mask {maskstr} at {c.e.x:g} {c.e.y:g}")
             pestate.mask = mask
         else:
             pestate.mask = None
@@ -2599,13 +2583,11 @@ class hhinter(dimensionHinter):
         for p in pl:
             if loc >= p[1] - self.NearFuzz and loc < p[1]:
                 log.info(
-                    "Near miss above horizontal zone at "
-                    + "%f instead of %f." % (loc, p[1])
+                    f"Near miss above horizontal zone at {loc:f} instead of {p[1]:f}."
                 )
             if loc <= p[0] + self.NearFuzz and loc > p[0]:
                 log.info(
-                    "Near miss below horizontal zone at "
-                    + "%f instead of %f." % (loc, p[0])
+                    f"Near miss below horizontal zone at {loc:f} instead of {p[0]:f}."
                 )
 
     def segmentLists(self):
@@ -2747,7 +2729,7 @@ class glyphHinter:
 
         an = self.options.nameAliases.get(name, name)
         if an != name:
-            log_name = "%s (%s)" % (name, an)
+            log_name = f"{name} ({an})"
         else:
             log_name = name
 
@@ -2756,7 +2738,7 @@ class glyphHinter:
         else:
             set_log_parameters(glyph=log_name, instance="")
 
-        log.info("Begin %s (using fdDict '%s').", self.taskDesc, fddict.DictName)
+        log.info(f"Begin {self.taskDesc} (using fdDict '{fddict.DictName}').")
 
         gr = GlyphReport(name, self.options.report_all_stems)
         self.hHinter.setGlyph(fddicts, gr, gllist, name)
@@ -2831,8 +2813,7 @@ class glyphHinter:
             set_log_parameters(instance=fd.FontName)
             if len(glyph.subpaths) != len(g.subpaths):
                 log.warning(
-                    "Path has a different number of subpaths compared "
-                    "with '%s': Cannot hint." % fd.FontName
+                    f"Path has a different number of subpaths compared with '{fd.FontName}': Cannot hint."
                 )
                 return False
             for si, dp in enumerate(glyph.subpaths):
@@ -2847,9 +2828,7 @@ class glyphHinter:
                         g.addNullClose(si)
                         continue
                     log.warning(
-                        "subpath %d has %d elements " % (si, len(gp))
-                        + "while '%s' had %d elements: Cannot hint"
-                        % (fd.FontName, len(dp))
+                        f"subpath {si} has {len(gp)} elements while '{fd.FontName}' had {len(dp)} elements: Cannot hint"
                     )
                     return False
 
@@ -2957,8 +2936,7 @@ class glyphHinter:
                 ("1" if i else "0" for i in (candmasks[0] + candmasks[1]))
             )
             log.debug(
-                "mask %s at %g %g, mode %d, conflict: %r"
-                % (maskstr, c.e.x, c.e.y, mode, conflict)
+                f"mask {maskstr} at {c.e.x:g} {c.e.y:g}, mode {mode}, conflict: {conflict!r}"
             )
             if conflict:
                 if mode == NOTSHORT:
@@ -3146,7 +3124,7 @@ class glyphHinter:
             hList = self.getSegments(glyph, pe, False)
             vList = self.getSegments(glyph, pe, True)
             if hList or vList:
-                log.debug("hintlist x %g y %g" % (pe.e.x, pe.e.y))
+                log.debug(f"hintlist x {pe.e.x:g} y {pe.e.y:g}")
                 for seg in hList:
                     seg.hintval.show(False, "listhint")
                 for seg in vList:
@@ -3215,16 +3193,9 @@ class glyphHinter:
         return abs(uloc - loc) <= abs(lloc - loc)
 
     def reportRemFlare(self, pe, pe2, desc) -> None:
+        direction = "vertical" if self.doV else "horizontal"
         log.debug(
-            "Removed %s flare at %g %g by %g %g : %s"
-            % (
-                "vertical" if self.doV else "horizontal",
-                pe.e.x,
-                pe.e.y,
-                pe2.e.x,
-                pe2.e.y,
-                desc,
-            )
+            f"Removed {direction} flare at {pe.e.x:g} {pe.e.y:g} by {pe2.e.x:g} {pe2.e.y:g} : {desc}"
         )
 
     def otherInstanceStems(self, gllist) -> None:

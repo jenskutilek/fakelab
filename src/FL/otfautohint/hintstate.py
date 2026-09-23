@@ -156,7 +156,7 @@ class hintSegment:
             pp = (label, "v", self.loc, self.min, self.loc, self.max, self.desc)
         else:
             pp = (label, "h", self.min, self.loc, self.max, self.loc, self.desc)
-        log.debug("%s %sseg %g %g to %g %g %s" % pp)
+        log.debug("{} {}seg {:g} {:g} to {:g} {:g} {}".format(*pp))
 
 
 HintSegListWithType = tuple[str, list[hintSegment]]
@@ -229,7 +229,7 @@ class stemValue:
     def show(self, isV, typ) -> None:
         """Add a log message with the content of the object"""
         tags = ("v", "l", "r", "b", "t") if isV else ("h", "b", "t", "l", "r")
-        start = "%s %sval %s %g %s %g v %g s %g %s" % (
+        start = "{} {}val {} {:g} {} {:g} v {:g} s {:g} {}".format(
             typ,
             tags[0],
             tags[1],
@@ -244,18 +244,7 @@ class stemValue:
             log.debug(start)
             return
         log.debug(
-            "%s %s1 %g %s1 %g  %s2 %g %s2 %g"
-            % (
-                start,
-                tags[3],
-                self.lseg.min,
-                tags[4],
-                self.lseg.max,
-                tags[3],
-                self.useg.min,
-                tags[4],
-                self.useg.max,
-            )
+            f"{start} {tags[3]}1 {self.lseg.min:g} {tags[4]}1 {self.lseg.max:g}  {tags[3]}2 {self.useg.min:g} {tags[4]}2 {self.useg.max:g}"
         )
 
 
@@ -381,7 +370,7 @@ class glyphHintState:
             pp = ("v", loc, fr, loc, to, desc)
         else:
             pp = ("h", fr, loc, to, loc, desc)
-        log.debug("add %sseg %g %g to %g %g %s" % pp)
+        log.debug("add {}seg {:g} {:g} to {:g} {:g} {}".format(*pp))
         if fr > to:
             mn, mx = to, fr
             isInc = False
@@ -471,7 +460,7 @@ class glyphHintState:
                     ):
                         hsi.deleted = True
                         log.debug(
-                            "rem seg loc %g from %g to %g" % (hsi.loc, hsi.min, hsi.max)
+                            f"rem seg loc {hsi.loc:g} from {hsi.min:g} to {hsi.max:g}"
                         )
                         break
                     elif (
@@ -482,7 +471,7 @@ class glyphHintState:
                     ):
                         hsd.deleted = True
                         log.debug(
-                            "rem seg loc %g from %g to %g" % (hsd.loc, hsd.min, hsd.max)
+                            f"rem seg loc {hsd.loc:g} from {hsd.min:g} to {hsd.max:g}"
                         )
 
     def deleteSegments(self) -> None:
@@ -631,24 +620,21 @@ class links:
         if self.cnt == 0:
             return
         log.debug("Links")
-        log.debug(" ".join((str(i).rjust(2) for i in range(self.cnt))))
+        log.debug(" ".join(str(i).rjust(2) for i in range(self.cnt)))
         for j in range(self.cnt):
             log.debug(
                 " ".join(
-                    (
-                        ("Y" if self.links[j][i] else " ").rjust(2)
-                        for i in range(self.cnt)
-                    )
+                    ("Y" if self.links[j][i] else " ").rjust(2) for i in range(self.cnt)
                 )
             )
 
     def logShort(self, shrt, lab) -> None:
         """Prints a log message representing (1-d) shrt"""
         log.debug(lab)
-        log.debug(" ".join((str(i).rjust(2) for i in range(self.cnt))))
+        log.debug(" ".join(str(i).rjust(2) for i in range(self.cnt)))
         log.debug(
             " ".join(
-                ((str(shrt[i]) if shrt[i] else " ").rjust(2) for i in range(self.cnt))
+                (str(shrt[i]) if shrt[i] else " ").rjust(2) for i in range(self.cnt)
             )
         )
 
@@ -669,7 +655,7 @@ class links:
             if lsubp == usubp:
                 continue
             sv.show(isV, "mark")
-            log.debug(" : %d <=> %d" % (lsubp, usubp))
+            log.debug(f" : {lsubp} <=> {usubp}")
             self.links[lsubp][usubp] = 1
             self.links[usubp][lsubp] = 1
 

@@ -157,7 +157,7 @@ class FDDict:
         if dictName is not None:
             self.DictName = dictName
         else:
-            self.DictName = "FDArray[%s]" % fdIndex
+            self.DictName = f"FDArray[{fdIndex}]"
         self.FontName = fontName
         self.FlexOK = True
         setattr(self, kFontDictBluePairsName, [])
@@ -173,14 +173,14 @@ class FDDict:
             if k == "FontName":
                 continue
             if isinstance(v, list):
-                v = "[%s]" % " ".join((str(i) for i in v))
+                v = f"[{' '.join(str(i) for i in v)}]"
             elif v is False:
                 v = "false"
             elif v is True:
                 v = "true"
             elif not isinstance(v, str):
                 v = str(v)
-            a += "%s %s\n" % (k, v)
+            a += f"{k} {v}\n"
         return a
 
     def setInfo(self, key, value) -> None:
@@ -211,17 +211,17 @@ class FDDict:
         setattr(self, key, value)
 
     def buildBlueLists(self):
-        log.info("Building BlueValue lists for FDDict %s" % self.DictName)
+        log.info(f"Building BlueValue lists for FDDict {self.DictName}")
         if self.BaselineOvershoot is None:
             raise FontInfoParseError(
-                "FDDict definition %s is missing the BaselineYCoord/"
-                "BaselineOvershoot values. These are required." % self.DictName
+                f"FDDict definition {self.DictName} is missing the BaselineYCoord/"
+                "BaselineOvershoot values. These are required."
             )
         elif int(self.BaselineOvershoot) > 0:
             raise FontInfoParseError(
-                "The BaselineYCoord/BaselineOvershoot in FDDict definition %s "
+                f"The BaselineYCoord/BaselineOvershoot in FDDict definition {self.DictName} "
                 "must be a bottom zone - the BaselineOvershoot must be "
-                "negative, not positive." % self.DictName
+                "negative, not positive."
             )
 
         blueKeyList = [
@@ -254,16 +254,14 @@ class FDDict:
                             tempKey = "FamilyBaselineYCoord"
                         else:
                             for posSuffix in ["", "Height", "Baseline"]:
-                                tempKey = "%s%s" % (baseName, posSuffix)
+                                tempKey = f"{baseName}{posSuffix}"
                                 value = getattr(self, tempKey, None)
                                 if value is not None:
                                     zonePos = value
                                     break
                         if zonePos is None:
                             raise FontInfoParseError(
-                                "Failed to find fontinfo FDDict %s top/bottom "
-                                "zone name %s to match the zone width key '%s'"
-                                "." % (self.DictName, tempKey, key)
+                                f"Failed to find fontinfo FDDict {self.DictName} top/bottom zone name {tempKey} to match the zone width key '{key}'."
                             )
                         if width < 0:
                             topPos = zonePos
@@ -287,16 +285,13 @@ class FDDict:
                             isBottomZone = 0
                             if i == 1 and width > 0:
                                 raise FontInfoParseError(
-                                    "FontDict %s. Zone %s is a bottom zone, "
-                                    "and so the width (%s) must be negative."
-                                    % (self.DictName, tempKey, width)
+                                    f"FontDict {self.DictName}. Zone {tempKey} is a bottom zone, and so the width ({width}) must be negative."
                                 )
                         bluePairList.append(
                             (topPos, bottomPos, tempKey, self.DictName, isBottomZone)
                         )
                         log.debug(
-                            "%s BlueValue %s: (%g, %g)"
-                            % (
+                            "{} BlueValue {}: ({:g}, {:g})".format(
                                 "Bottom" if isBottomZone else "Top",
                                 tempKey,
                                 bottomPos,
@@ -310,37 +305,21 @@ class FDDict:
                 for pair in bluePairList[1:]:
                     if prevPair[0] > pair[1]:
                         raise FontInfoParseError(
-                            "In FDDict %s. The top of zone %s at %s overlaps "
-                            "zone %s with the bottom at %s."
-                            % (
-                                self.DictName,
-                                prevPair[2],
-                                prevPair[0],
-                                pair[2],
-                                pair[1],
-                            )
+                            f"In FDDict {self.DictName}. The top of zone {prevPair[2]} at {prevPair[0]} overlaps "
+                            f"zone {pair[2]} with the bottom at {pair[1]}."
                         )
                     elif abs(pair[1] - prevPair[0]) < zoneBuffer:
                         raise FontInfoParseError(
-                            "In FDDict %s. The top of zone %s at %s is within "
-                            "the min separation limit (%s units) of zone %s "
-                            "with the bottom at %s."
-                            % (
-                                self.DictName,
-                                prevPair[2],
-                                prevPair[0],
-                                zoneBuffer,
-                                pair[2],
-                                pair[1],
-                            )
+                            f"In FDDict {self.DictName}. The top of zone {prevPair[2]} at {prevPair[0]} is within "
+                            f"the min separation limit ({zoneBuffer} units) of zone {pair[2]} "
+                            f"with the bottom at {pair[1]}."
                         )
                     prevPair = pair
                 setattr(self, pairFieldName, bluePairList)
-        return
 
     def __repr__(self) -> str:
         fddict = {k: v for k, v in vars(self).items() if v is not None}
-        return "<%s '%s' %s>" % (
+        return "<{} '{}' {}>".format(
             self.__class__.__name__,
             fddict.get("DictName", "no name"),
             fddict,
@@ -421,13 +400,13 @@ def parseFontInfoFile(
                     state = glyphSetState
                     setName = tokenList[i]
                     if setName in glyphSetSet:
-                        raise FontInfoParseError('Duplicate GlyphSet "%s"' % setName)
+                        raise FontInfoParseError(f'Duplicate GlyphSet "{setName}"')
                     else:
                         glyphSetSet.add(setName)
                     i += 1
                 else:
                     raise FontInfoParseError(
-                        'Unrecognized token after "begin" keyword: %s' % token
+                        f'Unrecognized token after "begin" keyword: {token}'
                     )
 
             elif token in kBaseStateTokens:
@@ -437,7 +416,7 @@ def parseFontInfoFile(
                 if (token[0] in ["[", "("]) and (not token[-1] in ["]", ")"]):
                     state = inValue
             else:
-                raise FontInfoParseError("Unrecognized token in base state: %s" % token)
+                raise FontInfoParseError(f"Unrecognized token in base state: {token}")
 
         elif state == inValue:
             # We are processing a list value for a base state token.
@@ -459,8 +438,7 @@ def parseFontInfoFile(
             if (token == kEndToken) and tokenList[i] == kGlyphSetToken:
                 if tokenList[i + 1] != setName:
                     raise FontInfoParseError(
-                        'End glyph set name "%s" does not match begin glyph '
-                        'set name "%s".' % (tokenList[i + 1], setName)
+                        f'End glyph set name "{tokenList[i + 1]}" does not match begin glyph set name "{setName}".'
                     )
                 state = baseState
                 i += 2
@@ -481,8 +459,8 @@ def parseFontInfoFile(
             if (token == kEndToken) and tokenList[i] == kFDDictToken:
                 if tokenList[i + 1] != dictName:
                     raise FontInfoParseError(
-                        'End FDDict  name "%s" does not match begin FDDict '
-                        'name "%s".' % (tokenList[i + 1], dictName)
+                        f'End FDDict  name "{tokenList[i + 1]}" does not match begin FDDict '
+                        f'name "{dictName}".'
                     )
                 state = baseState
                 i += 2
@@ -504,8 +482,7 @@ def parseFontInfoFile(
                         fdDict.setInfo(token, value)
                 else:
                     raise FontInfoParseError(
-                        'FDDict key "%s" in fdDict named "%s" is not '
-                        "recognized." % (token, dictName)
+                        f'FDDict key "{token}" in fdDict named "{dictName}" is not recognized.'
                     )
 
     for dictName, fdIndex in fdIndexDict.items():
@@ -694,7 +671,7 @@ def fontinfoIncludeData(fdir, idir, match):
         if os.path.isfile(incpath):
             with open(incpath, "r", encoding="utf-8") as ii:
                 return ii.read()
-    raise FontInfoParseError('fontinfo include file "%s" not found' % incrpath)
+    raise FontInfoParseError(f'fontinfo include file "{incrpath}" not found')
 
 
 def fontinfoFileData(
@@ -840,8 +817,7 @@ class FDDictManager:
                     self.fdSelectMap = fdSelectMap
                 elif not self.addDict(self.fdSelectMap, fdSelectMap):
                     log.error(
-                        "FDDict indexes for font %s " % i.font.desc
-                        + ("different from those in font %s" % refI.font.desc)
+                        f"FDDict indexes for font {i.font.desc} different from those in font {refI.font.desc}"
                     )
                     fdArrayCompat = False
                 if privateMap is not None:
@@ -875,7 +851,7 @@ class FDDictManager:
                         gnameList = [
                             gn for gn, fi in self.fdSelectMap.items() if fdIndex == fi
                         ]
-                        print("%d glyphs:" % len(gnameList))
+                        print(f"{len(gnameList)} glyphs:")
                         if len(gnameList) > 0:
                             gTxt = " ".join(gnameList)
                         else:
@@ -926,9 +902,7 @@ class FDDictManager:
             ("noBlues", options.noBlues),
         ]:
             for name in (n for n, w in charDict.items() if w and n not in glyphSet):
-                log.warning(
-                    "%s glyph named in fontinfo is " % label + "not in font: %s" % name
-                )
+                log.warning(f"{label} glyph named in fontinfo is not in font: {name}")
 
     def addDict(self, dict1: dict, dict2: dict) -> bool:
         # This allows for sparse masters, just verifying that if a glyph name

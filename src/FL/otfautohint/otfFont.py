@@ -57,10 +57,9 @@ def _add_method(*clazzes) -> Callable:
             done.append(clazz)
             assert clazz.__name__ != "DefaultTable", "Oops, table class not found."
             assert not hasattr(clazz, method.__name__), (
-                "Oops, class '%s' has method '%s'." % (clazz.__name__, method.__name__)
+                f"Oops, class '{clazz.__name__}' has method '{method.__name__}'."
             )
             setattr(clazz, method.__name__, method)
-        return None
 
     return wrapper
 
@@ -260,7 +259,7 @@ class CFFFontData:
                 cff_format = "CFF2"
                 self.is_cff2 = True
             else:
-                raise FontParseError("OTF font has no CFF table <%s>." % path)
+                raise FontParseError(f"OTF font has no CFF table <{path}>.")
         else:
             # Else, package it in an OTF font.
             cff_format = "CFF "
@@ -479,7 +478,7 @@ class CFFFontData:
                 assert gl_vsindex is not None  # Set above if was None
                 fontName = self.getInstanceName(vn, vsi, self.axes)
                 if fontName is None:
-                    fontName = "Model %d Instance %d" % (gl_vsindex, vn)
+                    fontName = f"Model {gl_vsindex} Instance {vn}"
             fdDict = fdTools.FDDict(fdIndex, fontName=fontName)
             fdDict.setInfo(
                 "LanguageGroup",
@@ -520,9 +519,7 @@ class CFFFontData:
                         numbvs = len(bvs)
                     else:
                         raise FontParseError(
-                            "Font must have at least four "
-                            + "values in its %s " % bvattr
-                            + "array for otfautohint to work!"
+                            f"Font must have at least four values in its {bvattr} array for otfautohint to work!"
                         )
                     bvs.sort()  # type: ignore[union-attr]
 
@@ -563,16 +560,14 @@ class CFFFontData:
                         # hint wider than twice the largest global stem width.
                         sstems = [upm]
                     else:
-                        raise FontParseError(
-                            "Font has neither %s nor %s!" % (ssnap, stdw)
-                        )
+                        raise FontParseError(f"Font has neither {ssnap} nor {stdw}!")
                 sstems.sort()  # type: ignore[union-attr]
                 if (
                     (len(sstems) == 0)  # type: ignore[arg-type]
                     or ((len(sstems) == 1) and (sstems[0] < 1))
                 ):  # type: ignore[arg-type, index]  # noqa: E501
                     sstems = [upm]  # dummy value that will allow PyAC to run
-                    log.warning("There is no value or 0 value for %s." % fdkey)
+                    log.warning(f"There is no value or 0 value for {fdkey}.")
                 fdDict.setInfo(fdkey, sstems)
 
             if noFlex:

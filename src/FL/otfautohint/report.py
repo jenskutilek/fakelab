@@ -200,10 +200,10 @@ class Report:
         atime = time.asctime()
         suffixes = (".hstm.txt", ".vstm.txt", ".top.txt", ".bot.txt")
         titles = (
-            "Horizontal Stem List for %s on %s\n" % (path, atime),
-            "Vertical Stem List for %s on %s\n" % (path, atime),
-            "Top Zone List for %s on %s\n" % (path, atime),
-            "Bottom Zone List for %s on %s\n" % (path, atime),
+            f"Horizontal Stem List for {path} on {atime}\n",
+            f"Vertical Stem List for {path} on {atime}\n",
+            f"Top Zone List for {path} on {atime}\n",
+            f"Bottom Zone List for {path} on {atime}\n",
         )
         headers = ["count    width    glyphs\n"] * 2 + [
             "count   height    glyphs\n"
@@ -223,4 +223,4 @@ class Report:
                 for rep in reps:
                     gnames = " ".join(rep[2])
                     fp.write(f"{rep[0]:5}    {rep[1]:5}    [{gnames}]\n")
-                log.info("Wrote %s" % fName)
+                log.info(f"Wrote {fName}")

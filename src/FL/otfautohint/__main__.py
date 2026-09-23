@@ -301,7 +301,7 @@ def _expand_cid_name(glyph_name, name_aliases):
     if len(glyphRange) > 1:
         g1 = _expand_cid_name(glyphRange[0], name_aliases)
         g2 = _expand_cid_name(glyphRange[1], name_aliases)
-        glyph_name = "%s-%s" % (g1, g2)
+        glyph_name = f"{g1}-{g2}"
 
     elif glyph_name[0] == "/":
         glyph_name = "cid" + glyph_name[1:].zfill(5)
@@ -519,23 +519,24 @@ def add_common_options(parser, term, name):
         dest="glyphs_to_hint",
         type=_split_comma_sequence,
         default=[],
-        help="comma-separated sequence of glyphs to %s\n"
-        % term
-        + "The glyph identifiers may be glyph indexes, glyph names, or "
-        "glyph CIDs. CID values must be prefixed with a forward slash.\n"
-        "Examples:\n"
-        + "    otf%s -g A,B,C,69 MyFont.ufo\n" % name
-        + "    otf%s -g /103,/434,68 MyCIDFont" % name,
+        help=(
+            f"comma-separated sequence of glyphs to {term}\nThe glyph identifiers may "
+            "be glyph indexes, glyph names, or glyph CIDs. CID values must be prefixed "
+            "with a forward slash.\n"
+            "Examples:\n"
+            f"    otf{name} -g A,B,C,69 MyFont.ufo\n"
+            f"    otf{name} -g /103,/434,68 MyCIDFont"
+        ),
     )
     glyphs_parser.add_argument(
         "--glyphs-file",
         metavar="PATH",
         dest="glyphs_to_hint_file",
         type=_validate_path,
-        help="file containing a list of glyphs to %s\n"
-        % term
-        + "The file must contain a comma-separated sequence of glyph "
-        "identifiers.",
+        help=(
+            f"file containing a list of glyphs to {term}\nThe file must contain a "
+            "comma-separated sequence of glyph identifiers."
+        ),
     )
     glyphs_parser.add_argument(
         "-x",
@@ -544,7 +545,7 @@ def add_common_options(parser, term, name):
         dest="glyphs_to_not_hint",
         type=_split_comma_sequence,
         default=[],
-        help="comma-separated sequence of glyphs to NOT %s\n" % term
+        help=f"comma-separated sequence of glyphs to NOT {term}\n"
         + "Counterpart to '--glyphs' option.",
     )
     glyphs_parser.add_argument(
@@ -552,8 +553,10 @@ def add_common_options(parser, term, name):
         metavar="PATH",
         dest="glyphs_to_not_hint_file",
         type=_validate_path,
-        help="file containing a list of glyphs to NOT %s\n" % term
-        + "Counterpart to '--glyphs-file' option.",
+        help=(
+            f"file containing a list of glyphs to NOT {term}\nCounterpart to "
+            "'--glyphs-file' option."
+        ),
     )
     overlap_parser = parser.add_mutually_exclusive_group()
     overlap_parser.add_argument(

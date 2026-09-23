@@ -61,7 +61,7 @@ class otfautoLogFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         rec = cast(OtfautohintLogRecord, record)
         if self.verbose:
-            verbose_field = "[%s:%d] " % (rec.filename, rec.lineno)
+            verbose_field = f"[{rec.filename}:{rec.lineno}] "
         else:
             verbose_field = ""
         if rec.dimension != "":
@@ -69,9 +69,9 @@ class otfautoLogFormatter(logging.Formatter):
         else:
             dim_field = ""
         if rec.instance != "" and rec.glyph != "":
-            glyph_field = '(%s, "%s") ' % (rec.glyph, rec.instance)
+            glyph_field = f'({rec.glyph}, "{rec.instance}") '
         elif rec.glyph != "":
-            glyph_field = "(%s) " % (rec.glyph)
+            glyph_field = f"({rec.glyph}) "
         else:
             glyph_field = ""
         return verbose_field + glyph_field + dim_field + super().format(record)
