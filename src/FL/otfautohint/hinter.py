@@ -20,7 +20,7 @@ from fontTools.misc.bezierTools import solveCubic
 
 from . import Number
 from .fdTools import BlueValue, FDDict
-from .glyphData import feq, fne, glyphData, pathElement, pt, stem
+from .glyphData import Pt, feq, fne, glyphData, pathElement, stem
 from .hintstate import glyphHintState, hintSegment, instanceStemState, links, stemValue
 from .logging import logging_reconfig, set_log_parameters
 from .overlap import removeOverlap
@@ -549,7 +549,7 @@ class dimensionHinter(ABC):
         """
         d = (p1 - p2).abs()
         if doOppo:
-            d = pt(d.y, d.x)
+            d = Pt(d.y, d.x)
         if feq(d.o, 0):
             return 1
         if feq(d.a, 0):
@@ -734,7 +734,7 @@ class dimensionHinter(ABC):
         return not self.testBend(p0, p1, p2)
 
     def extremaSegment(
-        self, pe: pathElement, extp: pt, extt, isMn: bool
+        self, pe: pathElement, extp: Pt, extt, isMn: bool
     ) -> tuple[Any, Any]:
         """
         Given a curved pathElement pe and a point on that spline extp at
@@ -748,7 +748,7 @@ class dimensionHinter(ABC):
         sl = solveCubic(a[horiz], b[horiz], c[horiz], d[horiz] - loc)
         pl = [
             (
-                pt(
+                Pt(
                     a[0] * t * t * t + b[0] * t * t + c[0] * t + d[0],
                     a[1] * t * t * t + b[1] * t * t + c[1] * t + d[1],
                 ),
@@ -1981,7 +1981,7 @@ class dimensionHinter(ABC):
             pbs = gl.getBounds(param)
             if pbs is None:
                 continue
-            mn_pt, mx_pt = pt(*pbs.bounds[0]), pt(*pbs.bounds[1])
+            mn_pt, mx_pt = Pt(*pbs.bounds[0]), Pt(*pbs.bounds[1])
             peidx = 0 if self.isV() else 1
             if any(
                 hv.lloc <= mx_pt.o and mn_pt.o <= hv.uloc for hv in self.hs.mainValues
@@ -2161,8 +2161,8 @@ class dimensionHinter(ABC):
                             raise NotImplementedError
                             pbs = self.glyph.getBounds(peSi.position[0])
                         if pbs is not None:
-                            mn_pt = pt(*pbs.bounds[0])
-                            mx_pt = pt(*pbs.bounds[1])
+                            mn_pt = Pt(*pbs.bounds[0])
+                            mx_pt = Pt(*pbs.bounds[1])
                             score: int | float = mx_pt.a - mn_pt.a
                             loc = mx_pt.o if seg0.isUBBox() else mn_pt.o
                             iSS.addToLoc(loc, score, strong=True, bb=True)
@@ -2495,17 +2495,17 @@ class hhinter(dimensionHinter):
         self.bottomPairs: list[BlueValue] = []
 
     def startFlex(self) -> None:
-        """Make pt.a map to x and pt.b map to y"""
+        """Make Pt.a map to x and Pt.b map to y"""
         set_log_parameters(dimension="-")
-        pt.setAlign(False)
+        Pt.setAlign(False)
 
     def stopFlex(self) -> None:
         set_log_parameters(dimension="")
-        pt.clearAlign()
+        Pt.clearAlign()
 
     def startHint(self) -> None:
         """
-        Make pt.a map to x and pt.b map to y and store BlueValue bands
+        Make Pt.a map to x and Pt.b map to y and store BlueValue bands
         for easier processing
         """
         self.startFlex()
@@ -2592,11 +2592,11 @@ class hhinter(dimensionHinter):
 class vhinter(dimensionHinter):
     def startFlex(self) -> None:
         set_log_parameters(dimension="|")
-        pt.setAlign(True)
+        Pt.setAlign(True)
 
     def stopFlex(self) -> None:
         set_log_parameters(dimension="")
-        pt.clearAlign()
+        Pt.clearAlign()
 
     startHint = startStemConvert = startMaskConvert = startFlex
     stopHint = stopStemConvert = stopMaskConvert = stopFlex

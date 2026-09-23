@@ -51,7 +51,7 @@ def fne(a: float, b: float, factor: float = 1.52e-5) -> bool:
     return abs(a - b) >= factor
 
 
-class pt(tuple):
+class Pt(tuple):
     """A 2-tuple representing a point in 2D space"""
 
     __slots__ = ()
@@ -94,7 +94,7 @@ class pt(tuple):
         roundCoords: bool = False,
     ) -> Self:
         """
-        Creates a new pt object initialied with x and y.
+        Creates a new Pt object initialied with x and y.
 
         If roundCoords is True the values are rounded before storing
         """
@@ -147,117 +147,117 @@ class pt(tuple):
         else:
             raise RuntimeError("glyphData.pt method ao used without " + "setting align")
 
-    def norm_float(self) -> "pt":
-        return pt(norm_float(self[0]), norm_float(self[1]))
+    def norm_float(self) -> "Pt":
+        return Pt(norm_float(self[0]), norm_float(self[1]))
 
     # for two pts
-    def __add__(self, other: object) -> "pt":
+    def __add__(self, other: object) -> "Pt":
         """
-        Returns a new pt object representing the sum of respective
+        Returns a new Pt object representing the sum of respective
         values of the two arguments
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.__add__ must be pts")
-        return pt(self[0] + other[0], self[1] + other[1])
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.__add__ must be Pts")
+        return Pt(self[0] + other[0], self[1] + other[1])
 
-    def __sub__(self, other: object) -> "pt":
+    def __sub__(self, other: object) -> "Pt":
         """
-        Returns a new pt object representing the difference of respective
+        Returns a new Pt object representing the difference of respective
         values of the two arguments
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.__sub__ must be pts")
-        return pt(self[0] - other[0], self[1] - other[1])
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.__sub__ must be Pts")
+        return Pt(self[0] - other[0], self[1] - other[1])
 
-    def avg(self, other: object) -> "pt":
+    def avg(self, other: object) -> "Pt":
         """
-        Returns a new pt object representing the average of this pt object
+        Returns a new Pt object representing the average of this Pt object
         with the argument
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.avg must be pts")
-        return pt((self[0] + other[0]) * 0.5, (self[1] + other[1]) * 0.5)
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.avg must be Pts")
+        return Pt((self[0] + other[0]) * 0.5, (self[1] + other[1]) * 0.5)
 
     def dot(self, other: object) -> int | float:
         """
         Returns a numeric value representing the dot product of this
-        pt object with the argument
+        Pt object with the argument
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.dot must be pts")
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.dot must be Pts")
         return self[0] * other[0] + self[1] * other[1]
 
     def scross(self, other: object) -> int | float:
         """
         Returns a numeric value representing the cross product of this
-        pt object with the argument
+        Pt object with the argument
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.dot must be pts")
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.dot must be Pts")
         return other[1] * self[0] - other[0] * self[1]
 
     def distsq(self, other: object) -> int | float:
         """
         Returns a numerical value representing the squared distance
-        between this pt object and the argument
+        between this Pt object and the argument
         """
-        if not isinstance(other, pt):
-            raise TypeError("Both arguments to pt.distsq must be pts")
+        if not isinstance(other, Pt):
+            raise TypeError("Both arguments to Pt.distsq must be Pts")
         dx = self[0] - other[0]
         dy = self[1] - other[1]
         return dx * dx + dy * dy
 
-    def a_dist(self, other: "pt") -> int | float:
+    def a_dist(self, other: "Pt") -> int | float:
         """
         Returns a numerical value representing the distance between this
-        pt object and the argument in the "a" dimension
+        Pt object and the argument in the "a" dimension
         """
         return abs((self - other).a)
 
-    def o_dist(self, other: "pt") -> int | float:
+    def o_dist(self, other: "Pt") -> int | float:
         """
         Returns a numerical value representing the distance between this
-        pt object and the argument in the "o" dimension
+        Pt object and the argument in the "o" dimension
         """
         return abs((self - other).o)
 
     def normsq(self) -> int | float:
-        """Returns the squared magnitude of the pt (treated as a vector)"""
+        """Returns the squared magnitude of the Pt (treated as a vector)"""
         return self[0] * self[0] + self[1] * self[1]
 
-    def abs(self) -> "pt":
+    def abs(self) -> "Pt":
         """
-        Returns a new pt object with the absolute values of the coordinates
+        Returns a new Pt object with the absolute values of the coordinates
         """
-        return pt(abs(self[0]), abs(self[1]))
+        return Pt(abs(self[0]), abs(self[1]))
 
-    def round(self, dec: int = 0) -> "pt":
-        """Returns a new pt object with rounded coordinate values"""
-        return pt(round(self[0], dec), round(self[1], dec))
+    def round(self, dec: int = 0) -> "Pt":
+        """Returns a new Pt object with rounded coordinate values"""
+        return Pt(round(self[0], dec), round(self[1], dec))
 
-    # for pt and number
-    def __mul__(self, other: SupportsIndex) -> "pt":
+    # for Pt and number
+    def __mul__(self, other: SupportsIndex) -> "Pt":
         """
-        Returns a new pt object with this object's coordinates multiplied by
+        Returns a new Pt object with this object's coordinates multiplied by
         a scalar value
         """
         if not isinstance(other, (int, float)):
-            raise TypeError("One argument to pt.__mul__ must be a scalar " + "number")
-        return pt(self[0] * other, self[1] * other)
+            raise TypeError("One argument to Pt.__mul__ must be a scalar " + "number")
+        return Pt(self[0] * other, self[1] * other)
 
-    def __rmul__(self, other: SupportsIndex) -> "pt":
+    def __rmul__(self, other: SupportsIndex) -> "Pt":
         """Same as __mul__ for right-multiplication"""
         if not isinstance(other, (int, float)):
-            raise TypeError("One argument to pt.__rmul__ must be a scalar " + "number")
-        return pt(self[0] * other, self[1] * other)
+            raise TypeError("One argument to Pt.__rmul__ must be a scalar " + "number")
+        return Pt(self[0] * other, self[1] * other)
 
     def __eq__(self, other: object, factor: float = 1.52e-5) -> bool:
         """Returns True if each coordinate is feq to that of the argument"""
-        if not isinstance(other, pt):
+        if not isinstance(other, Pt):
             return NotImplemented
         return feq(self[0], other[0], factor) and feq(self[1], other[1], factor)
 
-    def eq_exact(self, other: "pt") -> bool:
+    def eq_exact(self, other: "Pt") -> bool:
         """Returns True if each coordinate is equal to that of the argument"""
         return self[0] == other[0] and self[1] == other[1]
 
@@ -423,7 +423,7 @@ class boundsState:
                         self.extpts[i][j] = p
                         self.tmap[i][j] = t
 
-    def linearBounds(self, c: "pathElement") -> list[list[pt]]:
+    def linearBounds(self, c: "pathElement") -> list[list[Pt]]:
         """
         Calculate the bounds of the line betwen the start and end points of
         the passed pathElement.
@@ -448,7 +448,7 @@ class boundsState:
             ]
 
         for t in roots:
-            p = pt(
+            p = Pt(
                 a[0] * t * t * t + b[0] * t * t + c[0] * t + d[0],
                 a[1] * t * t * t + b[1] * t * t + c[1] * t + d[1],
             )
@@ -544,10 +544,10 @@ class pathElement:
     tSlop = 0.005
     middleMult = 2
 
-    s: pt
-    e: pt
-    cs: pt
-    ce: pt
+    s: Pt
+    e: Pt
+    cs: Pt
+    ce: Pt
 
     def __init__(
         self,
@@ -560,10 +560,10 @@ class pathElement:
         self.is_line = False
         self.is_close = is_close
         for p in args:
-            if not isinstance(p, pt):
+            if not isinstance(p, Pt):
                 raise TypeError(
                     "Positional arguments to "
-                    + "pathElement.__init__ must be pt objects"
+                    + "pathElement.__init__ must be Pt objects"
                 )
         if len(args) == 2:
             self.is_line = True
@@ -720,7 +720,7 @@ class pathElement:
         else:
             return False, 0
 
-    def slopePoint(self, t: "Number") -> pt:
+    def slopePoint(self, t: "Number") -> Pt:
         """
         Returns the point definiing the slope of the pathElement
         (relative to the on-curve point) at t==0 or t==1
@@ -767,7 +767,7 @@ class pathElement:
             r3 = self.e - self.ce
             return [*r1, *r2, *r3]
 
-    def T2(self, is_start: tuple[pt, Self] | None = None) -> tuple[list, pt]:
+    def T2(self, is_start: tuple[Pt, Self] | None = None) -> tuple[list, Pt]:
         """Returns an array of T2 operators corresponding to the pathElement"""
         prog = []
 
@@ -816,7 +816,7 @@ class pathElement:
         if len(sols) > 0:
             self.segment_sub = []
             for s in splitCubicAtT(self.s, self.cs, self.ce, self.e, *sols):
-                pts = [pt(tup) for tup in s]
+                pts = [Pt(tup) for tup in s]
                 spe = pathElement(*pts)
                 spe.position = self.position
                 spe.segment_sub = len(self.segment_sub)
@@ -835,20 +835,20 @@ class pathElement:
             self.bounds = None
         else:
             s, n = splitCubicAtT(self.s, self.cs, self.ce, self.e, t)
-            ptsn = [pt(p) for p in n]
+            ptsn = [Pt(p) for p in n]
             ret = pathElement(*ptsn, position=self.position, is_close=self.is_close)
             assert s[0] == self.s and n[3] == ret.e
-            self.cs = pt(s[1])
-            self.ce = pt(s[2])
-            self.e = pt(s[3])
+            self.cs = Pt(s[1])
+            self.ce = Pt(s[2])
+            self.e = Pt(s[3])
             self.is_close = False
             self.bounds = None
         # The typing is correct but neither mypy nor pytype handle
         # self types well yet.
         return ret  # type: ignore
 
-    def atT(self, t: "Number") -> pt:
-        return pt(segmentPointAtT(self.fonttoolsSegment(), t))
+    def atT(self, t: "Number") -> Pt:
+        return Pt(segmentPointAtT(self.fonttoolsSegment(), t))
 
     def fonttoolsSegment(self) -> "list[tuple[Number, Number]]":
         if self.is_line:
@@ -900,8 +900,8 @@ class glyphData(BasePen):
     def _lineTo(self, ptup: tuple[int, int]) -> None:
         """lineTo pen method"""
         self.lastcp = None
-        curpt = pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
-        newpt = pt(ptup, roundCoords=self.roundCoords)
+        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
+        newpt = Pt(ptup, roundCoords=self.roundCoords)
         self.subpaths[-1].append(
             pathElement(
                 curpt,
@@ -917,10 +917,10 @@ class glyphData(BasePen):
     ) -> None:
         """lineTo pen method"""
         self.lastcp = None
-        curpt = pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
-        newpt1 = pt(ptup1, roundCoords=self.roundCoords)
-        newpt2 = pt(ptup2, roundCoords=self.roundCoords)
-        newpt3 = pt(ptup3, roundCoords=self.roundCoords)
+        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
+        newpt1 = Pt(ptup1, roundCoords=self.roundCoords)
+        newpt2 = Pt(ptup2, roundCoords=self.roundCoords)
+        newpt3 = Pt(ptup3, roundCoords=self.roundCoords)
         self.subpaths[-1].append(
             pathElement(
                 curpt,
@@ -937,7 +937,7 @@ class glyphData(BasePen):
     # we rely on its semantics here
     def _closePath(self) -> None:
         """closePath (courtesy) pen method"""
-        curpt = pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
+        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
         if len(self.subpaths[-1]) == 0:  # No content after moveTo
             self.subpaths.pop()
             return
@@ -1115,7 +1115,7 @@ class glyphData(BasePen):
         if self.startmasks:
             prog.extend(["hintmask", pathElement.stemBytes(self.startmasks)])
 
-        curpt = pt(0, 0)
+        curpt = Pt(0, 0)
 
         for c in self:
             is_start = None

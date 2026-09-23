@@ -120,9 +120,9 @@ from fontTools.ufoLib import UFOReader, UFOWriter
 from fontTools.ufoLib.errors import UFOLibError
 from fontTools.ufoLib.glifLib import Glyph, GlyphSet
 
-from . import FontParseError, Number, fdTools
+from . import FontParseError, fdTools
 from .fdTools import FDDict
-from .glyphData import glyphData, norm_float
+from .glyphData import Pt, glyphData, norm_float
 
 log = logging.getLogger(__name__)
 
@@ -815,7 +815,7 @@ class HashPointPen(AbstractPointPen):
 
     def addPoint(
         self,
-        pt: tuple[Number, Number],
+        pt: Pt,
         segmentType: str | None = None,
         smooth: bool = False,
         name: str | None = None,
