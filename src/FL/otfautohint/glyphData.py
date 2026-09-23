@@ -869,7 +869,7 @@ class glyphData(BasePen):
         super().__init__()
         self.roundCoords = roundCoords
 
-        self.subpaths: list[Any] = []
+        self.subpaths: list[pathElement] = []
         self.hstems: list[stem] = []
         self.vstems: list[stem] = []
         self.startmasks: list[Any] | None = None
