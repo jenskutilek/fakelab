@@ -1707,29 +1707,34 @@ class dimensionHinter(ABC):
                         if svlIB:
                             if bst.lloc > sv.lloc:
                                 replace = True
-                        elif svuIB:
-                            if bst.uloc < sv.uloc:
-                                replace = True
+                        elif svuIB and bst.uloc < sv.uloc:
+                            replace = True
                     else:
                         replace = True
                 elif (
-                    feq(bst.best.spc, sv.spc)
-                    and bst.lseg is not None
-                    and bst.useg is not None
+                    (
+                        feq(bst.best.spc, sv.spc)
+                        and bst.lseg is not None
+                        and bst.useg is not None
+                    )
+                    and sv.lseg is not None
+                    and sv.useg is not None
                 ):
-                    if sv.lseg is not None and sv.useg is not None:
-                        if (
-                            abs(bst.lloc - sv.lloc) <= 1
-                            and abs(bst.uloc - sv.uloc) <= self.MaxBendMerge
-                        ):
-                            if sv.useg.isBend() and not svuIB:
-                                replace = True
-                        elif (
+                    if (
+                        abs(bst.lloc - sv.lloc) <= 1
+                        and abs(bst.uloc - sv.uloc) <= self.MaxBendMerge
+                    ):
+                        if sv.useg.isBend() and not svuIB:
+                            replace = True
+                    elif (
+                        (
                             abs(bst.uloc - sv.uloc) <= 1
                             and abs(bst.lloc - sv.lloc) <= self.MaxBendMerge
-                        ):
-                            if sv.lseg.isBend() and not svlIB:
-                                replace = True
+                        )
+                        and sv.lseg.isBend()
+                        and not svlIB
+                    ):
+                        replace = True
                 if replace:
                     self.replaceVals(sv.lloc, sv.uloc, bst.lloc, bst.uloc, bst.best)
 
