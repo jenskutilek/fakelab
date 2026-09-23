@@ -749,7 +749,7 @@ class pathElement:
         lenb = len(t)
         lenB = (lenb + 7) // 8
         t += [False for i in range(lenB * 8 - lenb)]
-        return int("".join(("1" if i else "0" for i in t)), 2).to_bytes(
+        return int("".join("1" if i else "0" for i in t), 2).to_bytes(
             lenB, byteorder="big"
         )
 
