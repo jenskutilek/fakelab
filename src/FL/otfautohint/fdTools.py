@@ -267,17 +267,14 @@ class FDDict:
                             topPos = zonePos
                             bottomPos = zonePos + width
                             isBottomZone = 1
-                            if (i == 0) and (key != "BaselineOvershoot"):
+                            if (
+                                (i == 0)
+                                and (key != "BaselineOvershoot")
+                                or (i == 2)
+                                and (key != "FamilyBaselineOvershoot")
+                            ):
                                 raise FontInfoParseError(
-                                    "FontDict %s. Zone %s is a top zone, and "
-                                    "the width (%s) must be positive."
-                                    % (self.DictName, tempKey, width)
-                                )
-                            elif (i == 2) and (key != "FamilyBaselineOvershoot"):
-                                raise FontInfoParseError(
-                                    "FontDict %s. Zone %s is a top zone, and "
-                                    "the width (%s) must be positive."
-                                    % (self.DictName, tempKey, width)
+                                    f"FontDict {self.DictName}. Zone {tempKey} is a top zone, and the width ({width}) must be positive."
                                 )
                         else:
                             bottomPos = zonePos
