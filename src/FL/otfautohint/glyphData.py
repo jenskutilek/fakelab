@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
-def norm_float(value: float) -> int | float:
+def norm_float(value: float) -> "Number":
     """Converts a float (whose decimal part is zero) to integer"""
     if isinstance(value, float):
         value = round(value, 4)
@@ -61,9 +61,8 @@ class Pt(tuple):
     @classmethod
     def setAlign(cls, vertical: bool = False) -> None:
         """
-        Class-level method to control the value of properties a and o.
-        "a" is meant so suggest "aligned" and "o" is meant to suggest
-        "opposite".
+        Class-level method to control the value of properties a and o. "a" is meant to
+        suggest "aligned" and "o" is meant to suggest "opposite".
 
         When called with vertical==False (the default):
             a will be equivalent to x
@@ -122,9 +121,7 @@ class Pt(tuple):
         elif self.tl.align == 2:
             return self[1]
         else:
-            raise RuntimeError(
-                "glyphData.pt property a used without " + "setting align"
-            )
+            raise RuntimeError("glyphData.pt property a used without setting align")
 
     @property
     def o(self) -> int:
@@ -134,18 +131,16 @@ class Pt(tuple):
         elif self.tl.align == 2:
             return self[0]
         else:
-            raise RuntimeError(
-                "glyphData.pt property o used without " + "setting align"
-            )
+            raise RuntimeError("glyphData.pt property o used without setting align")
 
-    def ao(self):
+    def ao(self) -> "tuple[Number, Number]":
         """See note in setAlign"""
         if self.tl.align == 1:
             return (self.x, self.y)
         elif self.tl.align == 2:
             return (self.y, self.x)
         else:
-            raise RuntimeError("glyphData.pt method ao used without " + "setting align")
+            raise RuntimeError("glyphData.pt method ao used without setting align")
 
     def norm_float(self) -> "Pt":
         return Pt(norm_float(self[0]), norm_float(self[1]))
@@ -153,8 +148,7 @@ class Pt(tuple):
     # for two pts
     def __add__(self, other: object) -> "Pt":
         """
-        Returns a new Pt object representing the sum of respective
-        values of the two arguments
+        Returns a new Pt object representing the sum of respective values of the two arguments
         """
         if not isinstance(other, Pt):
             raise TypeError("Both arguments to Pt.__add__ must be Pts")
@@ -178,7 +172,7 @@ class Pt(tuple):
             raise TypeError("Both arguments to Pt.avg must be Pts")
         return Pt((self[0] + other[0]) * 0.5, (self[1] + other[1]) * 0.5)
 
-    def dot(self, other: object) -> int | float:
+    def dot(self, other: object) -> "Number":
         """
         Returns a numeric value representing the dot product of this
         Pt object with the argument
@@ -187,7 +181,7 @@ class Pt(tuple):
             raise TypeError("Both arguments to Pt.dot must be Pts")
         return self[0] * other[0] + self[1] * other[1]
 
-    def scross(self, other: object) -> int | float:
+    def scross(self, other: object) -> "Number":
         """
         Returns a numeric value representing the cross product of this
         Pt object with the argument
@@ -196,7 +190,7 @@ class Pt(tuple):
             raise TypeError("Both arguments to Pt.dot must be Pts")
         return other[1] * self[0] - other[0] * self[1]
 
-    def distsq(self, other: object) -> int | float:
+    def distsq(self, other: object) -> "Number":
         """
         Returns a numerical value representing the squared distance
         between this Pt object and the argument
@@ -207,21 +201,21 @@ class Pt(tuple):
         dy = self[1] - other[1]
         return dx * dx + dy * dy
 
-    def a_dist(self, other: "Pt") -> int | float:
+    def a_dist(self, other: "Pt") -> "Number":
         """
         Returns a numerical value representing the distance between this
         Pt object and the argument in the "a" dimension
         """
         return abs((self - other).a)
 
-    def o_dist(self, other: "Pt") -> int | float:
+    def o_dist(self, other: "Pt") -> "Number":
         """
         Returns a numerical value representing the distance between this
         Pt object and the argument in the "o" dimension
         """
         return abs((self - other).o)
 
-    def normsq(self) -> int | float:
+    def normsq(self) -> "Number":
         """Returns the squared magnitude of the Pt (treated as a vector)"""
         return self[0] * self[0] + self[1] * self[1]
 
@@ -236,19 +230,19 @@ class Pt(tuple):
         return Pt(round(self[0], dec), round(self[1], dec))
 
     # for Pt and number
-    def __mul__(self, other: SupportsIndex) -> "Pt":
+    def __mul__(self, other: SupportsIndex | float) -> "Pt":
         """
         Returns a new Pt object with this object's coordinates multiplied by
         a scalar value
         """
         if not isinstance(other, (int, float)):
-            raise TypeError("One argument to Pt.__mul__ must be a scalar " + "number")
+            raise TypeError("One argument to Pt.__mul__ must be a scalar number")
         return Pt(self[0] * other, self[1] * other)
 
-    def __rmul__(self, other: SupportsIndex) -> "Pt":
+    def __rmul__(self, other: SupportsIndex | float) -> "Pt":
         """Same as __mul__ for right-multiplication"""
         if not isinstance(other, (int, float)):
-            raise TypeError("One argument to Pt.__rmul__ must be a scalar " + "number")
+            raise TypeError("One argument to Pt.__rmul__ must be a scalar number")
         return Pt(self[0] * other, self[1] * other)
 
     def __eq__(self, other: object, factor: float = 1.52e-5) -> bool:
@@ -282,12 +276,12 @@ class stem(tuple):
         return _tuple.__new__(cls, (lb, rt))
 
     @property
-    def lb(self) -> int | float:
+    def lb(self) -> "Number":
         """The left or bottom value, depending on stem alignment"""
         return self[0]
 
     @property
-    def rt(self) -> int | float:
+    def rt(self) -> "Number":
         """The right or top value, depending on stem alignment"""
         return self[1]
 
@@ -363,7 +357,7 @@ class stem(tuple):
         lloc -= stem.BandMargin
         return olloc <= uloc and ouloc >= lloc
 
-    def distance(self, loc: int) -> int | float:
+    def distance(self, loc: int) -> "Number":
         """
         Returns the distance between this stem and the passed location,
         which is zero if the location falls within the stem
@@ -554,11 +548,11 @@ class pathElement:
         *args,
         is_close: bool = False,
         masks: Sequence[Any] | None = None,
-        flex: bool = False,
+        flex: int | bool | None = False,
         position: tuple[int, int] | None = None,
     ) -> None:
-        self.is_line = False
-        self.is_close = is_close
+        self.is_line: bool = False
+        self.is_close: bool = is_close
         for p in args:
             if not isinstance(p, Pt):
                 raise TypeError(
@@ -578,7 +572,7 @@ class pathElement:
             self.e = args[3]
         else:
             raise TypeError(
-                "Wrong number of positional arguments to " + "pathElement.__init__"
+                "Wrong number of positional arguments to pathElement.__init__"
             )
         self.masks = masks
         self.flex = flex
@@ -738,13 +732,14 @@ class pathElement:
                 return self.ce
             return self.cs
 
-    def __deepcopy__(self, memo) -> Self:
+    def __deepcopy__(self, memo: Any) -> Self:
         """Don't deepcopy pathElement objects"""
         return self
 
     @staticmethod
-    def stemBytes(masks) -> bytes:
+    def stemBytes(masks: Sequence) -> bytes:
         """Calculate bytes corresponding to a (boolean array) hintmask"""
+        # FIXME: Typing
         t = masks[0] + masks[1]
         lenb = len(t)
         lenB = (lenb + 7) // 8
@@ -767,9 +762,11 @@ class pathElement:
             r3 = self.e - self.ce
             return [*r1, *r2, *r3]
 
-    def T2(self, is_start: tuple[Pt, Self] | None = None) -> tuple[list, Pt]:
+    def T2(
+        self, is_start: tuple[Pt, Self] | None = None
+    ) -> tuple[list[float | str | bytes], Pt]:
         """Returns an array of T2 operators corresponding to the pathElement"""
-        prog = []
+        prog: list[float | str | bytes] = []
 
         if is_start:
             if is_start[1].masks:
@@ -824,7 +821,7 @@ class pathElement:
             return True
         return False
 
-    def splitAt(self, t: "Number") -> Self:
+    def splitAt(self, t: float) -> "pathElement":
         if self.is_line:
             pb = self.s + (self.e - self.s) * t
             ret = pathElement(
@@ -843,9 +840,7 @@ class pathElement:
             self.e = Pt(s[3])
             self.is_close = False
             self.bounds = None
-        # The typing is correct but neither mypy nor pytype handle
-        # self types well yet.
-        return ret  # type: ignore
+        return ret
 
     def atT(self, t: "Number") -> Pt:
         return Pt(segmentPointAtT(self.fonttoolsSegment(), t))
@@ -867,9 +862,10 @@ class glyphData(BasePen):
 
     def __init__(self, roundCoords: bool, name: str = "") -> None:
         super().__init__()
+        self.__currentPoint: Pt | None = None
         self.roundCoords = roundCoords
 
-        self.subpaths: list[pathElement] = []
+        self.subpaths: list[list[pathElement]] = []
         self.hstems: list[stem] = []
         self.vstems: list[stem] = []
         self.startmasks: list[Any] | None = None
@@ -879,7 +875,7 @@ class glyphData(BasePen):
 
         self.is_hm: bool | None = None
         self.flex_count = 0
-        self.lastcp = None
+        self.lastcp: pathElement | None = None
 
         self.nextmasks: list[Any] | None = None
         self.nextflex: int | None = None
@@ -892,16 +888,19 @@ class glyphData(BasePen):
 
     # pen methods:
 
-    def _moveTo(self, ptup: tuple[int, int]) -> None:
+    def _moveTo(self, pt: tuple[int, int]) -> None:
         """moveTo pen method"""
         self.lastcp = None
         self.subpaths.append([])
 
-    def _lineTo(self, ptup: tuple[int, int]) -> None:
+    def _lineTo(self, pt: tuple[int, int]) -> None:
         """lineTo pen method"""
         self.lastcp = None
-        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
-        newpt = Pt(ptup, roundCoords=self.roundCoords)
+        current_point: Pt | None = self._getCurrentPoint()
+        if current_point is None:
+            raise RuntimeError("_lineTo() called outside a path")
+        curpt = Pt(current_point, roundCoords=self.roundCoords)
+        newpt = Pt(pt, roundCoords=self.roundCoords)
         self.subpaths[-1].append(
             pathElement(
                 curpt,
@@ -913,14 +912,17 @@ class glyphData(BasePen):
         )
 
     def _curveToOne(
-        self, ptup1: tuple[int, int], ptup2: tuple[int, int], ptup3: tuple[int, int]
+        self, pt1: tuple[int, int], pt2: tuple[int, int], pt3: tuple[int, int]
     ) -> None:
         """lineTo pen method"""
         self.lastcp = None
-        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
-        newpt1 = Pt(ptup1, roundCoords=self.roundCoords)
-        newpt2 = Pt(ptup2, roundCoords=self.roundCoords)
-        newpt3 = Pt(ptup3, roundCoords=self.roundCoords)
+        current_point: Pt | None = self._getCurrentPoint()
+        if current_point is None:
+            raise RuntimeError("_curveToOne() called outside a path")
+        curpt = Pt(current_point, roundCoords=self.roundCoords)
+        newpt1 = Pt(pt1, roundCoords=self.roundCoords)
+        newpt2 = Pt(pt2, roundCoords=self.roundCoords)
+        newpt3 = Pt(pt3, roundCoords=self.roundCoords)
         self.subpaths[-1].append(
             pathElement(
                 curpt,
@@ -937,7 +939,10 @@ class glyphData(BasePen):
     # we rely on its semantics here
     def _closePath(self) -> None:
         """closePath (courtesy) pen method"""
-        curpt = Pt(self._getCurrentPoint(), roundCoords=self.roundCoords)
+        current_point: Pt | None = self._getCurrentPoint()
+        if current_point is None:
+            raise RuntimeError("_closePath() called outside a path")
+        curpt = Pt(current_point, roundCoords=self.roundCoords)
         if len(self.subpaths[-1]) == 0:  # No content after moveTo
             self.subpaths.pop()
             return
@@ -966,7 +971,7 @@ class glyphData(BasePen):
         self.flex_count += 1
         self.nextflex = 1
 
-    def hStem(self, data, is_hm: bool) -> None:
+    def hStem(self, data: list[int], is_hm: bool) -> None:
         """
         quasi-pen method to pass horizontal stem data (in relative format)
         """
@@ -980,7 +985,7 @@ class glyphData(BasePen):
         self.is_hm = is_hm
         self.hstems.extend(self.toStems(data))
 
-    def vStem(self, data, is_hm: bool | None) -> None:
+    def vStem(self, data: list[int], is_hm: bool | None) -> None:
         """quasi-pen method passing vertical stem data (in relative format)"""
         if is_hm is not None:
             if self.is_hm is not None and self.is_hm != is_hm:
@@ -1098,7 +1103,7 @@ class glyphData(BasePen):
 
     def T2(self, version: int = 1) -> list[int | str | float | bytes]:
         """Returns an array of T2 operators corresponding to the object"""
-        prog = []
+        prog: list[float | str | bytes] = []
 
         if self.hstems:
             prog.extend(self.fromStems(self.hstems))
@@ -1130,8 +1135,8 @@ class glyphData(BasePen):
 
     def drawPoints(self, pen: Any, ufoH: Callable | None = None) -> None:
         """
-        Calls pointPen commands on pen to draw the glyph, optionally naming
-        some points and building a library of hint annotations
+        Calls pointPen commands on pen to draw the glyph, optionally naming some points
+        and building a library of hint annotations
         """
         doHints = ufoH is not None and (self.hasFlex() or self.hasHints(either=True))
         pln, pn = 0, None
@@ -1178,19 +1183,19 @@ class glyphData(BasePen):
         self.subpaths = [spl[i] for i in neworder]
         self.setPathEdited()
 
-    def first(self):
+    def first(self) -> pathElement | None:
         """Returns the first pathElement of the path"""
         if self.subpaths and self.subpaths[0]:
             return self.subpaths[0][0]
         return None
 
-    def last(self):
+    def last(self) -> pathElement | None:
         """Returns the last (implicit close) pathElement of the path"""
         if self.subpaths and self.subpaths[-1]:
             return self.subpaths[-1][-1]
         return None
 
-    def next(self, c, segSub: bool = False):
+    def next(self, c: "pathElement | Self", segSub: bool = False) -> pathElement | None:
         """
         If c == self, returns the first elemeht of the path
 
@@ -1492,7 +1497,7 @@ class glyphData(BasePen):
         self.nextmasks = None
         return s
 
-    def checkFlex(self, is_curve: bool):
+    def checkFlex(self, is_curve: bool) -> int | None:
         """Utility function for pen methods"""
         if self.nextflex is None:
             return None

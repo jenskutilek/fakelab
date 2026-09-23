@@ -2163,7 +2163,7 @@ class dimensionHinter(ABC):
                         if pbs is not None:
                             mn_pt = Pt(*pbs.bounds[0])
                             mx_pt = Pt(*pbs.bounds[1])
-                            score: int | float = mx_pt.a - mn_pt.a
+                            score: float = mx_pt.a - mn_pt.a
                             loc = mx_pt.o if seg0.isUBBox() else mn_pt.o
                             iSS.addToLoc(loc, score, strong=True, bb=True)
                             found = True
@@ -2510,7 +2510,6 @@ class hhinter(dimensionHinter):
         """
         self.startFlex()
         assert self.fddict
-        # pytype: disable=attribute-error
         blues = self.fddict.BlueValuesPairs + self.fddict.OtherBlueValuesPairs
         self.topPairs = [pair for pair in blues if not pair[4]]
         self.bottomPairs = [pair for pair in blues if pair[4]]
@@ -2521,7 +2520,7 @@ class hhinter(dimensionHinter):
 
     def dominantStems(self) -> Any:
         assert self.fddict
-        return self.fddict.DominantH  # pytype: disable=attribute-error
+        return self.fddict.DominantH
 
     def isV(self) -> bool:
         """Mark the hinter as horizontal rather than vertical"""
@@ -2537,7 +2536,6 @@ class hhinter(dimensionHinter):
         else:
             pl = self.topPairs
         for p in pl:
-            # pytype: disable=attribute-error
             if (
                 p[0] + self.fddict.BlueFuzz >= loc
                 and p[1] - self.fddict.BlueFuzz <= loc
