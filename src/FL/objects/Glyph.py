@@ -14,7 +14,15 @@ from vfbLib.typing import (
     MMHintsDict,
 )
 
-from FL.constants import DIR_HORIZONTAL, DIR_VERTICAL
+from FL.constants import (
+    DIR_HORIZONTAL,
+    DIR_VERTICAL,
+    nCURVE,
+    nLINE,
+    nMOVE,
+    nOFF,
+    nSMOOTH,
+)
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.FLList import adjust_list
@@ -39,6 +47,7 @@ from FL.objects.Replace import Replace, replace_types_inv
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from fontTools.pens.pointPen import AbstractPointPen
     from vfbLib.typing import Instruction
 
     from FL.objects.AuditRecord import AuditRecord
@@ -644,6 +653,60 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
         if self._vsb:
             self._vsb[master_index] = other._vsb[0]
+
+    def fake_drawPoints(self, pen: "AbstractPointPen", master_index: int = 0) -> None:
+        in_path = False
+        in_qcurve = False
+
+        for n in self.nodes:
+            print(n)
+            node_type = n.type
+            smooth = n.alignment == nSMOOTH
+            if node_type == nMOVE:
+                if in_qcurve:
+                    pen.addPoint(n._points[master_index][0], "qcurve", smooth)
+                    in_qcurve = False
+                if in_path:
+                    pen.endPath()
+                pen.beginPath()
+                in_path = True
+                pen.addPoint(n._points[master_index][0], "move", smooth)
+            elif node_type == nLINE:
+                if in_qcurve:
+                    pen.addPoint(n._points[master_index][0], "qcurve", smooth)
+                    in_qcurve = False
+                else:
+                    pen.addPoint(n._points[master_index][0], "line", smooth)
+            elif node_type == nCURVE:
+                pt3, pt1, pt2 = n._points[master_index]
+                pen.addPoint(pt1, None)
+                pen.addPoint(pt2, None)
+                pen.addPoint(pt3, "curve", smooth)
+            elif node_type == nOFF:  # FIXME: Same as "qcurve"?
+                if not in_qcurve:
+                    in_qcurve = True
+                pen.addPoint(n._points[master_index][0], None, smooth)
+            else:
+                raise ValueError(f"Unknown node type: '{node_type}'")
+        if in_path:
+            pen.endPath()
+
+        for c in self.components:
+            if self._parent is None:
+                raise TypeError(
+                    "Can't access component in Glyph without parent. "
+                    f"Composite: {self.name}, Component GID: {c.index}"
+                )
+            baseGlyphName = self._parent.glyphs[c.index]
+            transformation = (
+                c._scales[master_index].x,
+                0,
+                0,
+                c._scales[master_index].y,
+                c._deltas[master_index].x,
+                c._deltas[master_index].y,
+            )
+            pen.addComponent(baseGlyphName, transformation)
 
     def fake_remove_axis(
         self,
