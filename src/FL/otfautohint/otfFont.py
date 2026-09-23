@@ -525,10 +525,10 @@ class CFFFontData:
                 if bvattr == "BlueValues":
                     bvs[0] = bvs[0] - bvs[1]  # type: ignore[index, assignment]
                     for i in range(3, numbvs, 2):
-                        bvs[i] = bvs[i] - bvs[i - 1]  # type: ignore[index, assignment]  # noqa: E501
+                        bvs[i] = bvs[i] - bvs[i - 1]  # type: ignore[index, assignment]
                 else:
                     for i in range(0, numbvs, 2):
-                        bvs[i] = bvs[i] - bvs[i + 1]  # type: ignore[index, assignment]  # noqa: E501
+                        bvs[i] = bvs[i] - bvs[i + 1]  # type: ignore[index, assignment]
 
                 numbvs = min(numbvs, len(bvkeys))
                 for i in range(numbvs):
@@ -561,7 +561,7 @@ class CFFFontData:
                 if (
                     (len(sstems) == 0)  # type: ignore[arg-type]
                     or ((len(sstems) == 1) and (sstems[0] < 1))
-                ):  # type: ignore[arg-type, index]  # noqa: E501
+                ):  # type: ignore[arg-type, index]
                     sstems = [upm]  # dummy value that will allow PyAC to run
                     log.warning(f"There is no value or 0 value for {fdkey}.")
                 fdDict.setInfo(fdkey, sstems)
