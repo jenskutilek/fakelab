@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from math import floor
 from typing import TYPE_CHECKING, Any
 
@@ -74,6 +75,9 @@ class Point(Copyable):
         Is called from FontLab.UpdateFont()
         """
         self._parent = parent
+
+    def __iter__(self) -> Iterator[float]:
+        return iter((self._x, self._y))
 
     # Attributes
 
