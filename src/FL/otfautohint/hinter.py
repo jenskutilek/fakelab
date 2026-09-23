@@ -2202,8 +2202,7 @@ class dimensionHinter(ABC):
                         else:
                             loc = (ci.pe.s.o + ci.pe.e.o) / 2
                         log.info(
-                            "Falling back to point location for "
-                            "segment %s" % (ci.pe.position,)
+                            f"Falling back to point location for segment {ci.pe.position}"
                         )
                         iSS.addToLoc(loc, self.NoSegScore)
                     done[sidx][ul] = True

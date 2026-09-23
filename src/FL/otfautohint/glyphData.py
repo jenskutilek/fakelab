@@ -296,13 +296,13 @@ class stem(tuple):
         isgh = self.isGhost()
         isbad = self.isBad()
         if not isgh and not isbad:
-            return "({0} -> {1})".format(self.lb, self.rt)
+            return f"({self.lb} -> {self.rt})"
         elif isgh == "high":
-            return "({0} (high ghost))".format(self.rt)
+            return f"({self.rt} (high ghost))"
         elif isgh == "low":
-            return "({0} (low ghost))".format(self.rt)
+            return f"({self.rt} (low ghost))"
         else:
-            return "(bad stem values {0}, {1})".format(self.lb, self.rt)
+            return f"(bad stem values {self.lb}, {self.rt})"
 
     def isGhost(self, doBool: bool = False) -> str | bool:
         """Returns True if the stem is a ghost hint"""
