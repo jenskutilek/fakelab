@@ -807,7 +807,7 @@ class pathElement:
             a,
             b,
             c,
-            d,
+            _d,
         ) = self.cubicParameters()
         t2c = 3 * (b[0] * a[1] - a[0] * b[1])
         t1c = 3 * (c[0] * a[1] - a[0] * c[1])
