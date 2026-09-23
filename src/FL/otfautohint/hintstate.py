@@ -215,9 +215,7 @@ class stemValue:
                 lloc = uloc + 21
         return (lloc, uloc)
 
-    def compVal(
-        self, spcFactor: int | float = 1, ghostFactor: int | float = 1
-    ) -> tuple[Any, Any]:
+    def compVal(self, spcFactor: float = 1, ghostFactor: float = 1) -> tuple[Any, Any]:
         """Represent self.val and self.spc as a comparable 2-tuple"""
         v = self.val
         if self.isGhost:
