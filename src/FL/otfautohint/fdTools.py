@@ -692,7 +692,7 @@ def fontinfoFileData(
                     lambda m: fontinfoIncludeData(fdir, idir, m),
                     fontInfoData,
                     count=0,
-                    flags=re.M,
+                    flags=re.MULTILINE,
                 )
             fontInfoData = re.sub(r"#[^\r\n]+", "", fontInfoData)
             return fontInfoData, "FDDict" in fontInfoData
