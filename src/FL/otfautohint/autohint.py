@@ -143,7 +143,7 @@ def getGlyphNames(
         log.warning("Too many hyphens in glyph selection range <%s>", glyphSpec)
         return None
 
-    glyphName1, glyphName2 = rangeList
+    # glyphName1, glyphName2 = rangeList
     gidList = []
 
     for r in rangeList:

@@ -445,13 +445,11 @@ def parseFontInfoFile(
                 setName = None
             else:
                 # Need to add matching glyphs.
-                gi = 0
                 for gname in glyphList:
                     if re.search(token, gname):
                         # fdIndex value
                         assert setName is not None
                         fdSelectMap[gname] = fdIndexDict[setName]
-                    gi += 1
 
         elif state == dictState:
             # "end FDDict" marks end of set,
