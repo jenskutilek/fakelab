@@ -780,7 +780,7 @@ def get_scalars(self, vsindex, region_idx) -> dict[int, float]:
     return scalars
 
 
-class VarDataModel(object):
+class VarDataModel:
     def __init__(
         self, var_data: VarData, vsindex: int, master_vsi_list: list[VarStoreInstancer]
     ) -> None:

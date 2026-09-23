@@ -853,7 +853,7 @@ class HashPointPen(AbstractPointPen):
         glyph.drawPoints(self)
 
 
-class GlyphDataWrapper(object):
+class GlyphDataWrapper:
     """
     Wraps a glyphData object while storing the properties set by readGlyph
     to aid output of hint data in Adobe's "hint format 2" for UFO.

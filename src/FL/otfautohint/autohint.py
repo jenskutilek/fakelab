@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
-class ACOptions(object):
+class ACOptions:
     def __init__(self) -> None:
         self.inputPaths: list[str] = []
         self.outputPaths: list[str] = []
