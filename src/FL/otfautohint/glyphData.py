@@ -9,10 +9,10 @@ import operator
 import threading
 from builtins import tuple as _tuple
 from collections import defaultdict
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterator, Sequence
 from copy import deepcopy
 from math import sqrt
-from typing import Any, Self
+from typing import TYPE_CHECKING, Any, Self, SupportsIndex
 
 from fontTools.misc.bezierTools import (
     approximateCubicArcLength,
@@ -24,12 +24,14 @@ from fontTools.misc.bezierTools import (
 )
 from fontTools.pens.basePen import BasePen
 
-from . import Number
+if TYPE_CHECKING:
+    from . import Number
+    from .hintstate import glyphHintState
 
 log = logging.getLogger(__name__)
 
 
-def norm_float(value: int | float) -> int | float:
+def norm_float(value: float) -> int | float:
     """Converts a float (whose decimal part is zero) to integer"""
     if isinstance(value, float):
         value = round(value, 4)
@@ -39,12 +41,12 @@ def norm_float(value: int | float) -> int | float:
     return value
 
 
-def feq(a: int | float, b: int | float, factor: float = 1.52e-5) -> bool:
+def feq(a: float, b: float, factor: float = 1.52e-5) -> bool:
     """Returns True if a and b are close enough to be considered equal"""
     return abs(a - b) < factor
 
 
-def fne(a: int | float, b: int | float, factor: float = 1.52e-5) -> bool:
+def fne(a: float, b: float, factor: float = 1.52e-5) -> bool:
     """Returns True if a and b are not close enough to be considered equal"""
     return abs(a - b) >= factor
 
@@ -87,10 +89,10 @@ class pt(tuple):
 
     def __new__(
         cls,
-        x: int | float | tuple[int, int] = 0,
-        y: int | float = 0,
+        x: float | tuple[int, int] = 0,
+        y: float = 0,
         roundCoords: bool = False,
-    ):
+    ) -> Self:
         """
         Creates a new pt object initialied with x and y.
 
@@ -105,11 +107,11 @@ class pt(tuple):
         return _tuple.__new__(cls, (x, y))
 
     @property
-    def x(self) -> Number:
+    def x(self) -> "Number":
         return self[0]
 
     @property
-    def y(self) -> Number:
+    def y(self) -> "Number":
         return self[1]
 
     @property
@@ -145,11 +147,11 @@ class pt(tuple):
         else:
             raise RuntimeError("glyphData.pt method ao used without " + "setting align")
 
-    def norm_float(self):
+    def norm_float(self) -> "pt":
         return pt(norm_float(self[0]), norm_float(self[1]))
 
     # for two pts
-    def __add__(self, other):
+    def __add__(self, other: object) -> "pt":
         """
         Returns a new pt object representing the sum of respective
         values of the two arguments
@@ -158,7 +160,7 @@ class pt(tuple):
             raise TypeError("Both arguments to pt.__add__ must be pts")
         return pt(self[0] + other[0], self[1] + other[1])
 
-    def __sub__(self, other: "pt") -> "pt":
+    def __sub__(self, other: object) -> "pt":
         """
         Returns a new pt object representing the difference of respective
         values of the two arguments
@@ -167,7 +169,7 @@ class pt(tuple):
             raise TypeError("Both arguments to pt.__sub__ must be pts")
         return pt(self[0] - other[0], self[1] - other[1])
 
-    def avg(self, other):
+    def avg(self, other: object) -> "pt":
         """
         Returns a new pt object representing the average of this pt object
         with the argument
@@ -176,7 +178,7 @@ class pt(tuple):
             raise TypeError("Both arguments to pt.avg must be pts")
         return pt((self[0] + other[0]) * 0.5, (self[1] + other[1]) * 0.5)
 
-    def dot(self, other: "pt") -> int:
+    def dot(self, other: object) -> int | float:
         """
         Returns a numeric value representing the dot product of this
         pt object with the argument
@@ -185,7 +187,7 @@ class pt(tuple):
             raise TypeError("Both arguments to pt.dot must be pts")
         return self[0] * other[0] + self[1] * other[1]
 
-    def scross(self, other):
+    def scross(self, other: object) -> int | float:
         """
         Returns a numeric value representing the cross product of this
         pt object with the argument
@@ -194,7 +196,7 @@ class pt(tuple):
             raise TypeError("Both arguments to pt.dot must be pts")
         return other[1] * self[0] - other[0] * self[1]
 
-    def distsq(self, other):
+    def distsq(self, other: object) -> int | float:
         """
         Returns a numerical value representing the squared distance
         between this pt object and the argument
@@ -205,21 +207,21 @@ class pt(tuple):
         dy = self[1] - other[1]
         return dx * dx + dy * dy
 
-    def a_dist(self, other: "pt") -> int:
+    def a_dist(self, other: "pt") -> int | float:
         """
         Returns a numerical value representing the distance between this
         pt object and the argument in the "a" dimension
         """
         return abs((self - other).a)
 
-    def o_dist(self, other: "pt") -> int:
+    def o_dist(self, other: "pt") -> int | float:
         """
         Returns a numerical value representing the distance between this
         pt object and the argument in the "o" dimension
         """
         return abs((self - other).o)
 
-    def normsq(self) -> int:
+    def normsq(self) -> int | float:
         """Returns the squared magnitude of the pt (treated as a vector)"""
         return self[0] * self[0] + self[1] * self[1]
 
@@ -229,12 +231,12 @@ class pt(tuple):
         """
         return pt(abs(self[0]), abs(self[1]))
 
-    def round(self, dec: int = 0):
+    def round(self, dec: int = 0) -> "pt":
         """Returns a new pt object with rounded coordinate values"""
         return pt(round(self[0], dec), round(self[1], dec))
 
     # for pt and number
-    def __mul__(self, other):
+    def __mul__(self, other: SupportsIndex) -> "pt":
         """
         Returns a new pt object with this object's coordinates multiplied by
         a scalar value
@@ -243,13 +245,13 @@ class pt(tuple):
             raise TypeError("One argument to pt.__mul__ must be a scalar " + "number")
         return pt(self[0] * other, self[1] * other)
 
-    def __rmul__(self, other):
+    def __rmul__(self, other: SupportsIndex) -> "pt":
         """Same as __mul__ for right-multiplication"""
         if not isinstance(other, (int, float)):
             raise TypeError("One argument to pt.__rmul__ must be a scalar " + "number")
         return pt(self[0] * other, self[1] * other)
 
-    def __eq__(self, other: object, factor: float = 1.52e-5) -> bool:  # type: ignore[override]
+    def __eq__(self, other: object, factor: float = 1.52e-5) -> bool:
         """Returns True if each coordinate is feq to that of the argument"""
         if not isinstance(other, pt):
             return NotImplemented
@@ -274,7 +276,7 @@ class stem(tuple):
     BandMargin = 30
     __slots__ = ()
 
-    def __new__(cls, lb: Number = 0, rt: Number = 0):
+    def __new__(cls, lb: "Number" = 0, rt: "Number" = 0) -> Self:
         if isinstance(lb, tuple):
             return _tuple.__new__(cls, lb)
         return _tuple.__new__(cls, (lb, rt))
@@ -323,7 +325,7 @@ class stem(tuple):
         """Returns True if the stem is malformed"""
         return not self.isGhost() and (self.rt - self.lb) < 0
 
-    def relVals(self, last: "stem | None" = None) -> tuple[Number, Number]:
+    def relVals(self, last: "stem | None" = None) -> "tuple[Number, Number]":
         """
         Returns a tuple of "relative" stem values (start relative to
         the passed last stem, then width) appropriate for
@@ -335,7 +337,7 @@ class stem(tuple):
             l = 0
         return (norm_float(self.lb - l), norm_float(self.rt - self.lb))
 
-    def UFOVals(self) -> tuple[Number, Number]:
+    def UFOVals(self) -> "tuple[Number, Number]":
         """Returns a tuple of stem values appropriate for UFO output"""
         return (self.lb, self.rt - self.lb)
 
@@ -384,7 +386,7 @@ class boundsState:
     locations that define the boundaries.
     """
 
-    def __init__(self, c) -> None:
+    def __init__(self, c: "pathElement") -> None:
         """
         Initialize the object with the passed pathElement and calculate the
         bounds
@@ -405,7 +407,7 @@ class boundsState:
             else:
                 self.bounds = self.lb
 
-    def mergePt(self, b, p, t, doExt: bool = True) -> None:
+    def mergePt(self, b, p, t: float, doExt: bool = True) -> None:
         """
         Add the passed point into the bounds as a potential extreme.
 
@@ -421,12 +423,12 @@ class boundsState:
                         self.extpts[i][j] = p
                         self.tmap[i][j] = t
 
-    def linearBounds(self, c):
+    def linearBounds(self, c: "pathElement") -> list[list[pt]]:
         """
         Calculate the bounds of the line betwen the start and end points of
         the passed pathElement.
         """
-        self.tmap = [[0, 0], [0, 0]]
+        self.tmap: list[list[Number]] = [[0, 0], [0, 0]]
         self.extpts = [[c.s, c.s], [c.s, c.s]]
         lb = [[*c.s], [*c.s]]
         self.mergePt(lb, c.e, 1)
@@ -551,9 +553,9 @@ class pathElement:
         self,
         *args,
         is_close: bool = False,
-        masks=None,
+        masks: Sequence[Any] | None = None,
         flex: bool = False,
-        position=None,
+        position: tuple[int, int] | None = None,
     ) -> None:
         self.is_line = False
         self.is_close = is_close
@@ -582,7 +584,7 @@ class pathElement:
         self.flex = flex
         self.bounds: boundsState | None = None
         self.position: tuple[int, int] = position or (-1, -1)
-        self.segment_sub: list["pathElement"] | int | None = None
+        self.segment_sub: list[pathElement] | int | None = None
 
     def getBounds(self) -> boundsState:
         """Returns the bounds object for the object, generating it if needed"""
@@ -622,7 +624,7 @@ class pathElement:
         about six em-units
         """
         d = (self.e - self.s).abs()
-        mx, mn = sorted(tuple(d))
+        mx, mn = sorted(d)
         return mx + mn * 0.336 < 6  # head.c IsShort
 
     def convertToLine(self) -> None:
@@ -641,7 +643,10 @@ class pathElement:
         self.bounds = None
 
     def convertToCurve(
-        self, sRatio: float = 0.333333, eRatio=None, roundCoords: bool = False
+        self,
+        sRatio: float = 0.333333,
+        eRatio: float | None = None,
+        roundCoords: bool = False,
     ) -> None:
         """
         If the pathElement is not already a curve, make it one. The control
@@ -676,14 +681,16 @@ class pathElement:
         """Returns the fontTools cubic parameters for this pathElement"""
         return calcCubicParameters(self.s, self.cs, self.ce, self.e)
 
-    def getAssocFactor(self, loose: bool = False):
+    def getAssocFactor(self, loose: bool = False) -> float:
         if self.is_line:
             l = sqrt(self.s.distsq(self.e))
         else:
             l = approximateCubicArcLength(self.s, self.cs, self.ce, self.e)
         return l / (self.assocMatchFactor / 2 if loose else self.assocMatchFactor)
 
-    def containsPoint(self, p, factor, returnT: bool = False):
+    def containsPoint(
+        self, p, factor, returnT: bool = False
+    ) -> tuple[bool, float] | bool:
         if self.is_line:
             # We sometimes want t anyway, so why not?
             ds = sqrt(self.s.distsq(self.e))
@@ -713,7 +720,7 @@ class pathElement:
         else:
             return False, 0
 
-    def slopePoint(self, t):
+    def slopePoint(self, t: "Number") -> pt:
         """
         Returns the point definiing the slope of the pathElement
         (relative to the on-curve point) at t==0 or t==1
@@ -731,12 +738,12 @@ class pathElement:
                 return self.ce
             return self.cs
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo) -> Self:
         """Don't deepcopy pathElement objects"""
         return self
 
     @staticmethod
-    def stemBytes(masks):
+    def stemBytes(masks) -> bytes:
         """Calculate bytes corresponding to a (boolean array) hintmask"""
         t = masks[0] + masks[1]
         lenb = len(t)
@@ -746,7 +753,7 @@ class pathElement:
             lenB, byteorder="big"
         )
 
-    def relVals(self):
+    def relVals(self) -> list[float]:
         """
         Return relative coordinates appropriate for an rLineTo or
         rCurveTo T2 operator
@@ -817,7 +824,7 @@ class pathElement:
             return True
         return False
 
-    def splitAt(self, t: Number) -> Self:
+    def splitAt(self, t: "Number") -> Self:
         if self.is_line:
             pb = self.s + (self.e - self.s) * t
             ret = pathElement(
@@ -840,10 +847,10 @@ class pathElement:
         # self types well yet.
         return ret  # type: ignore
 
-    def atT(self, t: Number) -> pt:
+    def atT(self, t: "Number") -> pt:
         return pt(segmentPointAtT(self.fonttoolsSegment(), t))
 
-    def fonttoolsSegment(self) -> list[tuple[Number, Number]]:
+    def fonttoolsSegment(self) -> "list[tuple[Number, Number]]":
         if self.is_line:
             return [(self.s[0], self.s[1]), (self.e[0], self.e[1])]
         else:
@@ -880,8 +887,8 @@ class glyphData(BasePen):
         self.pathEdited = False
         self.boundsMap: dict[Any, Any] = {}
 
-        self.hhs: object | None = None
-        self.vhs: object | None = None
+        self.hhs: glyphHintState | None = None
+        self.vhs: glyphHintState | None = None
 
     # pen methods:
 
@@ -1506,20 +1513,20 @@ class glyphData(BasePen):
             self.nextflex = None
             return None
 
-    def toStems(self, data):
+    def toStems(self, data: list[int]) -> list[stem]:
         """Converts relative T2 charstring stem data to stem object array"""
         high = 0
         sl = []
         for i in range(len(data) // 2):
             low = high + data[i * 2]
             high = low + data[i * 2 + 1]
-            sl.append(stem(low, high))  # pytype: disable=wrong-arg-count
+            sl.append(stem(low, high))
         return sl
 
-    def fromStems(self, stems):
+    def fromStems(self, stems: list[stem]) -> list[float]:
         """Converts stem array to relative T2 charstring stem data"""
         l = None
-        data = []
+        data: list[float] = []
         for s in stems:
             data.extend(s.relVals(last=l))
             l = s

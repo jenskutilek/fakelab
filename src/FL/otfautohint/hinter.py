@@ -2708,16 +2708,17 @@ class glyphHinter:
         pestate = gstate.getPEState(pe)
         return pestate.segments() if pestate else []
 
-    def getMasks(self, glyph, pe) -> list:
+    def getMasks(self, glyph: glyphData, pe: pathElement) -> list:
         """
         Returns the masks of hints needed by/desired for pe in each dimension
         """
         masks = []
         for i, hs in enumerate((glyph.hhs, glyph.vhs)):
+            assert hs is not None
             mask = None
             if hs.keepHints:
-                if pe.mask:
-                    mask = copy(pe.mask[i])
+                if pe.masks:
+                    mask = copy(pe.masks[i])
             elif hs.counterHinted:
                 mask = copy(hs.mainMask)
             else:
@@ -2725,6 +2726,7 @@ class glyphHinter:
                 if pes and pes.mask:
                     mask = copy(pes.mask)
             if mask is None:
+                assert hs.stems is not None
                 mask = [False] * len(hs.stems[0])
             masks.append(mask)
         return masks
@@ -2868,7 +2870,7 @@ class glyphHinter:
                     return False
         return True
 
-    def distributeMasks(self, glyph) -> list | None:
+    def distributeMasks(self, glyph: glyphData) -> list | None:
         """
         When necessary, chose the locations and contents of hintmasks for
         the glyph
