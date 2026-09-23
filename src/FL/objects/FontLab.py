@@ -571,6 +571,10 @@ class FakeLab:
         result = input("Enter a number: ")
         return int(result)
 
+        # from FL.fake.curses import ask_ok_cancel
+
+        # return ask_ok_cancel(message, question, okstring, cancelstring)
+
     def ScreenToGlyph(self, position: Point) -> Point:
         """
         Converts the screen coordinates of the point to glyph coordinates in the current
