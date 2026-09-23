@@ -1774,7 +1774,7 @@ class dimensionHinter(ABC):
         ol.sort(reverse=True)
 
         # Keep top StemLimit representatives (store their locations)
-        kept_locations = set((sv.lloc, sv.uloc) for weight, sv in ol[: self.StemLimit])
+        kept_locations = {(sv.lloc, sv.uloc) for weight, sv in ol[: self.StemLimit]}
 
         # Expand back: keep all stems whose location matches a kept
         # representative

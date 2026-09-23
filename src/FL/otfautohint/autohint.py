@@ -240,7 +240,7 @@ def setUniqueDescs(fontInstances: list[FontInstance]) -> None:
             descs = [os.path.relpath(p, prefix) for p in descs]
             while True:
                 dirname = [os.path.dirname(p) for p in descs]
-                if len(set(os.path.basename(p) for p in descs)) == 1:
+                if len({os.path.basename(p) for p in descs}) == 1:
                     descs = dirname
                 else:
                     break
