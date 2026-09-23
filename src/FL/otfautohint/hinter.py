@@ -906,8 +906,7 @@ class dimensionHinter(ABC):
                         c.s.a, c.e.a, c.s.o, prv, c, hintSegment.sType.LINE, "flat line"
                     )
                 else:
-                    if q < 0.25:
-                        q = 0.25
+                    q = max(q, 0.25)
                     adist = self.adjustDist(c.e.a - c.s.a, q) / 2
                     aavg = (c.s.a + c.e.a) / 2
                     sp = self.pickSpot(

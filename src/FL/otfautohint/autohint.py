@@ -350,8 +350,7 @@ class fontWrapper:
             pcount = cpu_count - pcount
             if pcount < 0:
                 pcount = 1
-        if pcount > self.numGlyphs():
-            pcount = self.numGlyphs()
+        pcount = min(pcount, self.numGlyphs())
 
         if pcount > 1 and current_process().daemon:
             pcount = 1
