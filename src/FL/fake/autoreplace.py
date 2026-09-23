@@ -1,6 +1,9 @@
 from itertools import chain
 from typing import TYPE_CHECKING
 
+from ufoLib2 import Font as UFOFont
+from ufoLib2.objects.glyph import Glyph as UFOGlyph
+
 from FL.objects.Hint import Hint
 from FL.objects.Replace import (
     TYPE_HORIZONTAL_HINT,
@@ -8,7 +11,9 @@ from FL.objects.Replace import (
     TYPE_VERTICAL_HINT,
     Replace,
 )
+from FL.otfautohint.autohint import FontInstance, fontWrapper
 from FL.otfautohint.hinter import glyphHinter
+from FL.otfautohint.ufoFont import UFOFontData
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -48,15 +53,19 @@ def autoreplace_glyph(glyph: "Glyph") -> None:
     # Check if any hints overlap
     if do_hints_overlap(glyph.hhints) or do_hints_overlap(glyph.vhints):
         # Calculate hint masks
-        # for node_index, node in enumerate(glyph.nodes):
-        #     print(node_index, node)
-        #     for hint_index, h in enumerate(glyph.hhints):
-        #         if h.position == node.y or h.position + h.width == node.y:
-        #             hint_sets.append((TYPE_HORIZONTAL_HINT, hint_index))
-        #     for hint_index, v in enumerate(glyph.vhints):
-        #         if v.position == node.x or v.position + v.width == node.x:
-        #             hint_sets.append((TYPE_VERTICAL_HINT, hint_index))
-        #     # FIXME
+        options = HintOptions()
+        glyphHinter.initialize(options, dictRecord={})
+        # Construct a single glyph UFO
+        ufo = UFOWrapper()
+        ufo_glyph = UFOGlyph(glyph.name)
+        pen = ufo_glyph.getPointPen()
+        glyph.fake_drawPoints(pen)
+        ufo.addGlyph(ufo_glyph)
+
+        inst = FontInstance(font=ufo, inpath="Memory", outpath=None)
+        fw = fontWrapper(options, fil=[inst])
+        r = glyphHinter.hint(glyph.name, glyphTuple=[], fdKey=None)
+        print(r)
 
         # Set green hint replacement flag
         glyph._glyph_hinting_options["hint_replacement"] = 1
@@ -65,7 +74,7 @@ def autoreplace_glyph(glyph: "Glyph") -> None:
             if 28 in opts:
                 opts.remove(28)
     else:
-        # Remove hint replacement flag
+        # Hints don't overlap, remove hint replacement flag
         if "hint_replacement" in glyph._glyph_hinting_options:
             del glyph._glyph_hinting_options["hint_replacement"]
 
@@ -73,3 +82,33 @@ def autoreplace_glyph(glyph: "Glyph") -> None:
     glyph._replace_table.clean()
     for type, index in hint_sets:
         glyph.replace_table.append(Replace(type, index))
+
+
+class UFOWrapper(UFOFont):
+    def getPSName(self) -> str:
+        return "TemporaryUfo"
+
+    def getGlyphList(self) -> list[str]:
+        return [g.name for g in self]
+
+    def isVF(self) -> bool:
+        return False
+
+    def getInputPath(self) -> str:
+        return "Memory"
+
+
+class HintOptions:
+    def __init__(self) -> None:
+        self.logOnly = False
+        self.removeConflicts = True
+        self.verbose = True
+        self.glyphList = None
+        self.fontinfoPath = None
+
+    def justReporting(self) -> bool:
+        return True
+
+
+class GlyphHintReplacer(glyphHinter):
+    pass
