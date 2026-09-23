@@ -42,8 +42,6 @@ kStemLimit = 96
 class SEACError(Exception):
     """Raised when a charString has an obsolete 'seac' operator"""
 
-    pass
-
 
 def _add_method(*clazzes) -> Callable:
     """Returns a decorator function that adds a new method to one or
