@@ -329,7 +329,7 @@ HASHMAP_VERSION = (1, 0)  # If major version differs, do not use.
 AUTOHINT_NAME = "autohint"
 CHECKOUTLINE_NAME = "checkOutlines"
 
-POINT_NAME_PATTERN = "hintRef%04d"
+POINT_NAME_PATTERN = "hr%02d"  # Adobe: "hintRef%04d"
 HINT_DOMAIN_NAME1 = "com.adobe.type.autohint"
 HINT_DOMAIN_NAME2 = "com.adobe.type.autohint.v2"
 FLEX_INDEX_LIST_NAME = "flexList"
