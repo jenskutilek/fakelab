@@ -861,6 +861,7 @@ class glyphData(BasePen):
     """Stores state corresponding to a T2 CharString"""
 
     def __init__(self, roundCoords: bool, name: str = "") -> None:
+        print("glyphData", name)
         super().__init__()
         self.__currentPoint: Pt | None = None
         self.roundCoords = roundCoords
@@ -975,6 +976,7 @@ class glyphData(BasePen):
         """
         quasi-pen method to pass horizontal stem data (in relative format)
         """
+        print("hStem", data, is_hm)
         if self.is_hm is not None and self.is_hm != is_hm:
             # XXX Should refactor so this prints as warning when
             # using existing hint data
@@ -987,6 +989,7 @@ class glyphData(BasePen):
 
     def vStem(self, data: list[int], is_hm: bool | None) -> None:
         """quasi-pen method passing vertical stem data (in relative format)"""
+        print("vStem", data, is_hm)
         if is_hm is not None:
             if self.is_hm is not None and self.is_hm != is_hm:
                 # XXX Should refactor so this prints as warning when
@@ -1000,6 +1003,7 @@ class glyphData(BasePen):
 
     def hintmask(self, hhints, vhints) -> None:
         """quasi-pen method passing hintmask data"""
+        print("hintmask", hhints, vhints)
         if not self.is_hm:
             # XXX Should refactor so this prints as warning when
             # using existing hint data
@@ -1027,6 +1031,7 @@ class glyphData(BasePen):
 
     def cntrmask(self, hhints, vhints) -> None:
         """quasi-pen method passing cntrmask data"""
+        print("cntrmask", hhints, vhints)
         self.cntr.append([hhints, vhints])
 
     # width
@@ -1083,6 +1088,7 @@ class glyphData(BasePen):
         Returns the bounds of the specified subpath, or of the whole
         path if subpath is None
         """
+        print("getBounds", subpath)
         b = self.boundsMap.get(subpath, None)
         if b is not None:
             return b
@@ -1407,6 +1413,7 @@ class glyphData(BasePen):
         return False
 
     def associatePath(self, orig, loose: bool = False) -> None:
+        print("associatePath", orig)
         peMap = defaultdict(list)
         for oc in orig:
             peMap[tuple(oc.e.round(1))].append(oc)

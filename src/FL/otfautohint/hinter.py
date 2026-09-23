@@ -2299,6 +2299,7 @@ class dimensionHinter(ABC):
         hs.ghostCompat: [i][j] is true if stem i is a ghost and stem j can
                         substitute for it.
         """
+        print("convertToMasks")
         self.startMaskConvert()
         if self.keepHints:
             # XXX to figure out
@@ -2682,6 +2683,7 @@ class glyphHinter:
         """
         Returns the masks of hints needed by/desired for pe in each dimension
         """
+        print("getMasks", glyph, pe)
         masks = []
         for i, hs in enumerate((glyph.hhs, glyph.vhs)):
             assert hs is not None
@@ -2844,6 +2846,7 @@ class glyphHinter:
         When necessary, chose the locations and contents of hintmasks for
         the glyph
         """
+        print("distributeMasks", glyph)
         stems = [None, None]
         masks: list[list[bool]] = [[], []]
         lnstm = [0, 0]
