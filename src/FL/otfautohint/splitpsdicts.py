@@ -69,8 +69,6 @@ class Dictspec:
     SIH: list[int]
     foundGlyph: bool
 
-    pass
-
 
 def getDictmap(options: argparse.Namespace) -> list[Dictspec]:
     with open(options.metaPath, "rb") as dictmapfile:
