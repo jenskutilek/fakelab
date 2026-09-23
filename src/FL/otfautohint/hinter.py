@@ -1330,7 +1330,9 @@ class dimensionHinter(ABC):
             upesub = useg.pe().position[0]
             if lpesub != upesub:
                 lsb = self.glyph.getBounds(lpesub)
+                assert lsb is not None
                 usb = self.glyph.getBounds(upesub)
+                assert usb is not None
                 if not lsb.within(usb) and not usb.within(lsb):
                     return
         if not useg:
