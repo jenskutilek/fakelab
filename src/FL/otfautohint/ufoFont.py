@@ -511,7 +511,7 @@ class UFOFontData:
         # srcHash has already been set: we are fixing the history list.
 
         # Get hash entry for glyph
-        srcHash, historyList = self.hashMap[glyphName]
+        _srcHash, historyList = self.hashMap[glyphName]
 
         self.hashMapChanged = True
         # If the program is not in the history list, add it.

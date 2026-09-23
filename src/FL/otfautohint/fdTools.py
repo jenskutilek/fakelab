@@ -822,10 +822,8 @@ class FDDictManager:
         if not isVF:
             if fdArrayCompat:
                 fdmap = {}
-                for fdIndex in fdArrays[0].keys():
-                    fdmap[fdIndex] = [
-                        x[fdIndex] if fdIndex in x else None for x in fdArrays
-                    ]
+                for fdIndex in fdArrays[0]:
+                    fdmap[fdIndex] = [x.get(fdIndex, None) for x in fdArrays]
                 self.dictRecord = {0: fdmap}  # type: ignore[assignment]
             else:
                 log.error("Cannot continue")
@@ -835,7 +833,7 @@ class FDDictManager:
         if options.printFDDictList or options.printAllFDDict:
             # Print the user defined FontDicts, and exit.
             print("Private Dictionaries:\n")
-            for _model, fda in self.dictRecord.items():
+            for fda in self.dictRecord.values():
                 for fdIndex, fdl in fda.items():
                     for fontDict in fdl:
                         if fontDict is None:
