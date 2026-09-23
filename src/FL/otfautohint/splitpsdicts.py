@@ -241,9 +241,8 @@ def remapDicts(fpath: str, dictmap: list[Dictspec]) -> None:
 
     logger.warning(f"Updating {fpath} with {numdicts} dictionaries")
     cfftpath = get_temp_file_path()
-    cfftfile = open(cfftpath, "w+b")
-    cff.cff.compile(cfftfile, f, False)
-    cfftfile.close()
+    with open(cfftpath, "w+b") as cfftfile:
+        cff.cff.compile(cfftfile, f, False)
     f.close()
 
     replaceCFF(fpath, cfftpath)
