@@ -20,6 +20,7 @@ classifiers = [
 
 requires-python = ">=3.13"
 dependencies = [
+  "booleanOperations >= 0.10.0",  # For remove overlap and autohint
   "fakelab_menucommands >= 1.0.0",
   "vfblib >= 0.12.0, < 0.13.0",  # Could be made optional for a leaner test framework
 ]
