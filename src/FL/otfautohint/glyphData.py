@@ -1150,7 +1150,7 @@ class glyphData(BasePen):
                 assert ufoH is not None
                 pln, pn = ufoH(w, pln, True)
             pen.addPoint((w.e.x, w.e.y), segmentType=wt, name=pn)
-            for i in range(0, wrapi):
+            for i in range(wrapi):
                 c = s[i]
                 if doHints:
                     assert ufoH is not None
