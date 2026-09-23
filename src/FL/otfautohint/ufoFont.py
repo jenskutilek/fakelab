@@ -1,6 +1,5 @@
 # Copyright 2014 Adobe. All rights reserved.
 
-from __future__ import annotations
 
 """
 This module provides means of reading glyph data from and writing data
@@ -796,7 +795,7 @@ class UFOFontData:
 
 class HashPointPen(AbstractPointPen):
     def __init__(
-        self, glyph: GlyphDataWrapper | Glyph, glyphset: GlyphSet | None = None
+        self, glyph: "GlyphDataWrapper | Glyph", glyphset: GlyphSet | None = None
     ) -> None:
         self.glyphset = glyphset
         self.width = norm_float(round(getattr(glyph, "width", 0), 9))

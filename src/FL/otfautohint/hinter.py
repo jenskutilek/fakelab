@@ -12,7 +12,7 @@ import bisect
 import logging
 import math
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from copy import copy, deepcopy
 from typing import Any, NamedTuple, Self
 
@@ -2793,7 +2793,9 @@ class glyphHinter:
         set_log_parameters(glyph="", instance="")
         return name, glyphTuple
 
-    def compatiblePaths(self, gllist, fddicts) -> bool:
+    def compatiblePaths(
+        self, gllist: Sequence[glyphData], fddicts: Sequence[FDDict]
+    ) -> bool:
         if len(gllist) < 2:
             return True
 
