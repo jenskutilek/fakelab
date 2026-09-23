@@ -39,7 +39,7 @@ class DuplicateMessageFilter(logging.Filter):
     """
 
     def __init__(self) -> None:
-        super(DuplicateMessageFilter, self).__init__()
+        super().__init__()
         self.logs: set[tuple[str, int, str]] = set()
 
     def filter(self, record: logging.LogRecord) -> bool:

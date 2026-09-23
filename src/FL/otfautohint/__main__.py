@@ -324,7 +324,7 @@ def _process_glyph_list_arg(glyph_list, name_aliases):
 
 class HintOptions(ACOptions):
     def __init__(self, pargs):
-        super(HintOptions, self).__init__()
+        super().__init__()
         self.inputPaths = pargs.font_paths
         self.outputPaths = pargs.output_paths
         self.referenceFont = pargs.reference_font
@@ -394,7 +394,7 @@ class _AdditionalHelpAction(argparse.Action):
         default=argparse.SUPPRESS,
         help=None,
     ):
-        super(_AdditionalHelpAction, self).__init__(
+        super().__init__(
             option_strings=option_strings,
             dest=dest,
             default=default,
@@ -865,7 +865,7 @@ def main(args=None):
 
 class ReportOptions(ACOptions):
     def __init__(self, pargs):
-        super(ReportOptions, self).__init__()
+        super().__init__()
         self.hintAll = True
         self.noFlex = True
         self.allowNoBlues = True
