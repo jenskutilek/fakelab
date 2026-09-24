@@ -861,7 +861,6 @@ class glyphData(BasePen):
     """Stores state corresponding to a T2 CharString"""
 
     def __init__(self, roundCoords: bool, name: str = "") -> None:
-        print("glyphData", name)
         super().__init__()
         self.__currentPoint: Pt | None = None
         self.roundCoords = roundCoords
@@ -1248,7 +1247,7 @@ class glyphData(BasePen):
     # Iterate through path elements but start each subpath
     # with implicit closing line (if any). Skip pro forma
     # (zero-length) close elements
-    def nextForHints(self, c):
+    def nextForHints(self, c: "pathElement | Self"):
         """
         Like next() but returns the next element in "hint order", with
         implicit close elements coming first in the subpath instead of
@@ -1283,7 +1282,14 @@ class glyphData(BasePen):
             return c
         return None
 
-    def inSubpath(self, c, i, skipTiny, closeWrapOK, segSub):
+    def inSubpath(
+        self,
+        c: "pathElement | Self",
+        i: int,
+        skipTiny: bool,
+        closeWrapOK: bool,
+        segSub: bool,
+    ) -> "pathElement | Self | None":
         """Utility function for nextInSubpath and prevInSubpath"""
         if c is None or (c is self and i == -1):
             return None
@@ -1296,7 +1302,7 @@ class glyphData(BasePen):
         subpath, offset = c.position
         sp = self.subpaths[subpath]
         l = len(sp)
-        o = offset
+        o: int = offset
         while True:
             done = False
             if isinstance(c.segment_sub, int):
@@ -1324,8 +1330,12 @@ class glyphData(BasePen):
         return c
 
     def nextInSubpath(
-        self, c, skipTiny: bool = False, closeWrapOK: bool = True, segSub: bool = False
-    ):
+        self,
+        c: "pathElement | Self",
+        skipTiny: bool = False,
+        closeWrapOK: bool = True,
+        segSub: bool = False,
+    ) -> "pathElement | Self | None":
         """
         Returns the next element in the subpath after c.
 
@@ -1337,7 +1347,11 @@ class glyphData(BasePen):
         return self.inSubpath(c, 1, skipTiny, closeWrapOK, segSub)
 
     def prevInSubpath(
-        self, c, skipTiny: bool = False, closeWrapOK: bool = True, segSub: bool = False
+        self,
+        c: "pathElement | Self",
+        skipTiny: bool = False,
+        closeWrapOK: bool = True,
+        segSub: bool = False,
     ):
         """
         Returns the previous element in the subpath before c.
@@ -1349,7 +1363,7 @@ class glyphData(BasePen):
         """
         return self.inSubpath(c, -1, skipTiny, closeWrapOK, segSub)
 
-    def nextSlopePoint(self, c):
+    def nextSlopePoint(self, c: "pathElement | Self"):
         """Returns the slope point of the element of the subpath after c"""
         n = self.nextInSubpath(c, skipTiny=True, segSub=True)
         return None if n is None else n.slopePoint(0)
@@ -1364,7 +1378,7 @@ class glyphData(BasePen):
 
         __slots__ = ("gd", "pos")
 
-        def __init__(self, gd) -> None:
+        def __init__(self, gd: "glyphData") -> None:
             self.gd = self.pos = gd
 
         def __next__(self):

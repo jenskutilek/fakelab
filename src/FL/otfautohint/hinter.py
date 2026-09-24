@@ -2300,7 +2300,6 @@ class dimensionHinter(ABC):
         hs.ghostCompat: [i][j] is true if stem i is a ghost and stem j can
                         substitute for it.
         """
-        print("convertToMasks")
         self.startMaskConvert()
         if self.keepHints:
             # XXX to figure out
@@ -2673,7 +2672,6 @@ class glyphHinter:
     def __init__(
         self, options: "HintOptions", dictRecord: dict[int, dict[int, list[FDDict]]]
     ) -> None:
-        print(f"glyphHinter.__init__, dictRecord={dictRecord}")
         self.options = options
         self.dictRecord = dictRecord
         self.hHinter = hhinter(options)
@@ -2867,13 +2865,15 @@ class glyphHinter:
         When necessary, chose the locations and contents of hintmasks for
         the glyph
         """
-        print("distributeMasks", glyph)
-        stems = [None, None]
+        stems: list[list[stem] | None] = [None, None]
         masks: list[list[bool]] = [[], []]
         lnstm = [0, 0]
+
         # Initial horizontal data
         # If keepHints was true hhs.stems was already set to glyph.hstems in
         # converttoMasks()
+        assert glyph.hhs is not None
+        assert glyph.hhs.stems is not None
         stems[0] = glyph.hstems = glyph.hhs.stems[0]
         assert stems[0] is not None
         lnstm[0] = len(stems[0])
@@ -2888,6 +2888,8 @@ class glyphHinter:
             masks[0] = [False] * lnstm[0]
 
         # Initial vertical data
+        assert glyph.vhs is not None
+        assert glyph.vhs.stems is not None
         stems[1] = glyph.vstems = glyph.vhs.stems[0]
         lnstm[1] = len(stems[1])
         if self.vHinter.keepHints:
@@ -3104,7 +3106,9 @@ class glyphHinter:
     def mergeMain(self, glyph) -> bool:
         return len(glyph.subpaths) <= 5
 
-    def cleanupUnused(self, gllist, usedmasks) -> None:
+    def cleanupUnused(
+        self, gllist: list[glyphData], usedmasks: list[list[bool]]
+    ) -> None:
         if usedmasks is None or (
             False not in usedmasks[0] and False not in usedmasks[1]
         ):
@@ -3132,10 +3136,9 @@ class glyphHinter:
         for hv in range(2):
             l[hv][:] = [l[hv][i] for i in range(len(l[hv])) if ml[hv][i]]
 
-    def listHintInfo(self, glyph) -> None:
+    def listHintInfo(self, glyph: glyphData) -> None:
         """
-        Output debug messages about which stems are associated with which
-        segments
+        Output debug messages about which stems are associated with which segments
         """
         for pe in glyph:
             hList = self.getSegments(glyph, pe, False)
