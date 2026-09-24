@@ -47,6 +47,7 @@ from FL.objects.Replace import Replace, replace_types_inv
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from fontTools.pens.basePen import BasePen
     from fontTools.pens.pointPen import AbstractPointPen
     from vfbLib.typing import Instruction
 
@@ -691,13 +692,33 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         if in_path:
             pen.endPath()
 
+        self._fake_draw_components(pen, master_index)
+
+    def fake_draw(self, pen: "BasePen", master_index: int = 0) -> None:
+        for node in self.nodes:
+            if node.type == nMOVE:
+                pen.moveTo(node._points[master_index][0].__tuple__())
+            elif node.type == nLINE:
+                pen.lineTo(node._points[master_index][0].__tuple__())
+            elif node.type == nCURVE:
+                pt3, pt1, pt2 = node._points[master_index]
+                pen.curveTo(pt1.__tuple__(), pt2.__tuple__(), pt3.__tuple__())
+            else:
+                raise ValueError(f"Unsupported segment type in Glyph.fake_draw: {node}")
+            # TODO: Call pen._closePath() after each contour?
+
+        self._fake_draw_components(pen, master_index)
+
+    def _fake_draw_components(
+        self, pen: "BasePen | AbstractPointPen", master_index: int = 0
+    ) -> None:
         for c in self.components:
             if self._parent is None:
                 raise TypeError(
                     "Can't access component in Glyph without parent. "
                     f"Composite: {self.name}, Component GID: {c.index}"
                 )
-            baseGlyphName = self._parent.glyphs[c.index]
+            base_glyph = self._parent.glyphs[c.index]
             transformation = (
                 c._scales[master_index].x,
                 0,
@@ -706,7 +727,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
                 c._deltas[master_index].x,
                 c._deltas[master_index].y,
             )
-            pen.addComponent(baseGlyphName, transformation)
+            pen.addComponent(base_glyph.name, transformation)
 
     def fake_remove_axis(
         self,

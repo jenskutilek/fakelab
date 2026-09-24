@@ -1,8 +1,6 @@
 from itertools import chain
+from types import SimpleNamespace
 from typing import TYPE_CHECKING
-
-from ufoLib2 import Font as UFOFont
-from ufoLib2.objects.glyph import Glyph as UFOGlyph
 
 from FL.objects.Hint import Hint
 from FL.objects.Replace import (
@@ -11,13 +9,15 @@ from FL.objects.Replace import (
     TYPE_VERTICAL_HINT,
     Replace,
 )
-from FL.otfautohint.autohint import FontInstance, fontWrapper
+from FL.otfautohint.__main__ import HintOptions
+from FL.otfautohint.fdTools import FDDict, kBlueValueKeys, kOtherBlueValueKeys
+from FL.otfautohint.glyphData import glyphData
 from FL.otfautohint.hinter import glyphHinter
-from FL.otfautohint.ufoFont import UFOFontData
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from FL.objects.Font import Font
     from FL.objects.Glyph import Glyph
 
 
@@ -41,7 +41,7 @@ def do_hints_overlap(hints: "Iterable[Hint]") -> bool:
     return hint_values != sorted(hint_values_unique)
 
 
-def autoreplace_glyph(glyph: "Glyph") -> None:
+def autoreplace_glyph(glyph: "Glyph", master_index: int = 0) -> None:
     """
     Recalculate the hint masks for a glyph.
 
@@ -52,20 +52,24 @@ def autoreplace_glyph(glyph: "Glyph") -> None:
 
     # Check if any hints overlap
     if do_hints_overlap(glyph.hhints) or do_hints_overlap(glyph.vhints):
+        if glyph.parent is None:
+            raise ValueError(
+                f"Can't calculate hint replacements for a glyph witout a font: {glyph.name}"
+            )
         # Calculate hint masks
-        options = HintOptions()
-        glyphHinter.initialize(options, dictRecord={})
-        # Construct a single glyph UFO
-        ufo = UFOWrapper()
-        ufo_glyph = UFOGlyph(glyph.name)
-        pen = ufo_glyph.getPointPen()
-        glyph.fake_drawPoints(pen)
-        ufo.addGlyph(ufo_glyph)
 
-        inst = FontInstance(font=ufo, inpath="Memory", outpath=None)
-        fw = fontWrapper(options, fil=[inst])
-        r = glyphHinter.hint(glyph.name, glyphTuple=[], fdKey=None)
-        print(r)
+        # Initialize the hinter
+        options = fake_HintOptions()
+        dr = build_dict_record(glyph.parent)
+        glyphHinter.initialize(options, dictRecord=dr)
+
+        # Build glyph data in a format the hinter understands
+        glyph_data = glyphData(roundCoords=False, name=glyph.name)
+        glyph.fake_draw(glyph_data, master_index)
+
+        glyphHinter.hint(glyph.name, glyphTuple=(glyph_data,), fdKey=(0, 0))
+        # The original glyph_data object has been modified
+        print(glyph_data.T2(version=1))
 
         # Set green hint replacement flag
         glyph._glyph_hinting_options["hint_replacement"] = 1
@@ -84,31 +88,115 @@ def autoreplace_glyph(glyph: "Glyph") -> None:
         glyph.replace_table.append(Replace(type, index))
 
 
-class UFOWrapper(UFOFont):
-    def getPSName(self) -> str:
-        return "TemporaryUfo"
+def build_dict_record(
+    font: "Font", master_index: int = 0
+) -> dict[int, dict[int, list[FDDict]]]:
+    fddict = FDDict(fdIndex=0, fontName=font.font_name)
+    for key, value in (
+        ("LanguageGroup", 0),  # 1 if the glyphs are ideographic, else 0.
+        ("OrigEmSqUnits", font.upm),
+        ("DominantV", font.stem_snap_v[master_index]),
+        ("DominantH", font.stem_snap_h[master_index]),
+        (
+            "VCounterChars",
+            {
+                "m": False,
+                "M": False,
+                "T": False,
+                "ellipsis": False,
+            },
+        ),
+        (
+            "HCounterChars",
+            {
+                "element": False,
+                "equivalence": False,
+                "notelement": False,
+                "divide": False,
+            },
+        ),
+        ("FlexOK", True),  # TODO: can this be controlled in VFB?
+        ("BlueFuzz", font.blue_fuzz[master_index]),
+    ):
+        fddict.setInfo(key, value)
 
-    def getGlyphList(self) -> list[str]:
-        return [g.name for g in self]
+    # From otfautohint.ufoFont.getPrivateFDDict():
+    # Set values for BlueValues and OtherBlues
 
-    def isVF(self) -> bool:
-        return False
+    blue_values = font.blue_values[master_index]
+    num_blue_values = len(blue_values)
+    if num_blue_values < 4:
+        raise ValueError(
+            "Font must have at least four values in its BlueValues array for otfautohint to work!"
+        )
+    blue_values.sort()
+    # The first pair only is a bottom zone, where the first value is the
+    # overshoot position; the rest are top zones, and second value of the
+    # pair is the overshoot position.
+    blue_values[0] = blue_values[0] - blue_values[1]
+    for i in range(3, num_blue_values, 2):
+        blue_values[i] = blue_values[i] - blue_values[i - 1]
+    num_blue_values = min(num_blue_values, len(kBlueValueKeys))
+    for i in range(num_blue_values):
+        key = kBlueValueKeys[i]
+        value = blue_values[i]
+        fddict.setInfo(key, value)
 
-    def getInputPath(self) -> str:
-        return "Memory"
+    other_blues = font.other_blues[master_index]
+    num_other_blues = len(other_blues)
+
+    if num_other_blues > 0:
+        other_blues.sort()
+        for i in range(num_other_blues, 2):
+            other_blues[i] = other_blues[i] - other_blues[i + 1]
+        num_other_blues = min(num_other_blues, len(kOtherBlueValueKeys))
+        for i in range(num_other_blues):
+            key = kOtherBlueValueKeys[i]
+            value = other_blues[i]
+            fddict.setInfo(key, value)
+
+    # Build and return the complete dict
+    return {0: {0: [fddict]}}
 
 
-class HintOptions:
-    def __init__(self) -> None:
-        self.logOnly = False
-        self.removeConflicts = True
-        self.verbose = True
-        self.glyphList = None
-        self.fontinfoPath = None
+def build_glyph_data(glyph: "Glyph", master_index: int = 0) -> glyphData:
+    """
+    Convert the FL Glyph to glyphData so otfautohint can handle it.
 
-    def justReporting(self) -> bool:
-        return True
+    Args:
+        glyph (Glyph): The FL Glyph.
+
+    Returns:
+        glyphData: The glyph as glyphData.
+    """
+    glyph_data = glyphData(roundCoords=False, name=glyph.name)
+    glyph.fake_draw(glyph_data, master_index)
+    return glyph_data
 
 
-class GlyphHintReplacer(glyphHinter):
-    pass
+def fake_HintOptions():
+    pargs = SimpleNamespace()
+    pargs.font_paths = None
+    pargs.output_paths = None
+    pargs.reference_font = None
+    pargs.reference_out = None
+    pargs.hint_all_ufo = True
+    pargs.allow_changes = True
+    pargs.no_flex = False
+    pargs.no_hint_sub = False
+    pargs.no_zones_stems = False
+    pargs.ignore_fontinfo = False
+    pargs.report_only = False
+    pargs.keep_conflicts = False
+    pargs.print_list_fddict = False
+    pargs.print_all_fddict = False
+    pargs.decimal = False  # round coordinates
+    pargs.write_to_default_layer = True
+    pargs.max_segments = 100
+    pargs.verbose = True
+    pargs.loose_overlap_mapping = True
+    pargs.force_overlap = False
+    pargs.force_no_overlap = False
+    pargs.processes = 1
+    options = HintOptions(pargs)
+    return options

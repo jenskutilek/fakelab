@@ -79,6 +79,9 @@ class Point(Copyable):
     def __iter__(self) -> Iterator[float]:
         return iter((self._x, self._y))
 
+    def __tuple__(self) -> tuple[float, float]:
+        return (self.x, self.y)
+
     # Attributes
 
     @property

@@ -374,6 +374,32 @@ class FakeFont(BaseFont, GuideMixin, GuidePropertiesMixin):
             master_info = self._master_ps_infos[master_index]
             master_info[key] = master_values
 
+    def fake_set_master_stem_snap_h(
+        self, values: list[int], master_index: int = 0
+    ) -> None:
+        """
+        Set the stem_snap_h values for a master. Makes a copy of the list.
+
+        Args:
+            values (list[int]): The stem_snap_h values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self.stem_snap_h_num = len(values)
+        self._master_ps_infos[master_index]["stem_snap_h"] = list(values)
+
+    def fake_set_master_stem_snap_v(
+        self, values: list[int], master_index: int = 0
+    ) -> None:
+        """
+        Set the stem_snap_v values for a master. Makes a copy of the list.
+
+        Args:
+            values (list[int]): The stem_snap_v values.
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        self.stem_snap_v_num = len(values)
+        self._master_ps_infos[master_index]["stem_snap_v"] = list(values)
+
     def fake_set_master_blue_values(
         self, values: list[int], master_index: int = 0
     ) -> None:

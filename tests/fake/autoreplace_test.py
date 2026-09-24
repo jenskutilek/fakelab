@@ -1,11 +1,10 @@
-from random import shuffle
 from time import time
 from unittest import TestCase
 
 from vfbLib.enum import G
 from vfbLib.typing import GlyphData, MMNode
 
-from FL import Glyph, Hint
+from FL import Font, Glyph, Hint
 from FL.fake.autoreplace import autoreplace_glyph, do_hints_overlap
 from FL.objects.Replace import TYPE_HORIZONTAL_HINT, TYPE_NODE, TYPE_VERTICAL_HINT
 
@@ -169,24 +168,35 @@ class HintReplacementTest(TestCase):
         duration1 = (stop1 - start1) * 1000
         print(duration1)
 
-    # def test_charstring_hints(self) -> None:
-    #     fl_glyph = Glyph()
-    #     fl_glyph.fake_deserialize(G.Glyph, vfb_glyph)
-    #     autoreplace_glyph(fl_glyph)
-    #     result = [(r.type, r.index) for r in fl_glyph.replace_table]
-    #     assert result == [
-    #         (1, 1),  # TYPE_HORIZONTAL_HINT
-    #         (2, 1),  # TYPE_VERTICAL_HINT
-    #         (1, 0),  # TYPE_HORIZONTAL_HINT
-    #         (2, 0),  # TYPE_VERTICAL_HINT
-    #         (TYPE_NODE, 7),
-    #         (1, 2),  # TYPE_HORIZONTAL_HINT
-    #         (2, 0),  # TYPE_VERTICAL_HINT
-    #         (1, 1),  # TYPE_HORIZONTAL_HINT
-    #         (2, 1),  # TYPE_VERTICAL_HINT
-    #         (TYPE_NODE, 18),
-    #         (1, 0),  # TYPE_HORIZONTAL_HINT
-    #         (2, 1),  # TYPE_VERTICAL_HINT
-    #         (1, 1),  # TYPE_HORIZONTAL_HINT
-    #         (2, 0),  # TYPE_VERTICAL_HINT
-    #     ]
+    def test_charstring_hints(self) -> None:
+        # BlueValues etc. are taken from the font
+        fl_font = Font()
+        fl_font.fake_set_master_blue_values(
+            [-12, 0, 317, 325, 498, 510, 542, 554, 675, 687, 734, 746, 789, 797]
+        )
+        fl_font.fake_set_master_other_blues(
+            [-258, -247, -182, -170, -130, -122, 187, 191, 343, 350]
+        )
+        fl_font.fake_set_master_stem_snap_h([46, 30])
+        fl_font.fake_set_master_stem_snap_v([93])
+        fl_glyph = Glyph()
+        fl_glyph.fake_deserialize(G.Glyph, vfb_glyph)
+        fl_font.glyphs.append(fl_glyph)
+        autoreplace_glyph(fl_glyph)
+        result = [(r.type, r.index) for r in fl_glyph.replace_table]
+        assert result == [
+            (1, 1),  # TYPE_HORIZONTAL_HINT
+            (2, 1),  # TYPE_VERTICAL_HINT
+            (1, 0),  # TYPE_HORIZONTAL_HINT
+            (2, 0),  # TYPE_VERTICAL_HINT
+            (TYPE_NODE, 7),
+            (1, 2),  # TYPE_HORIZONTAL_HINT
+            (2, 0),  # TYPE_VERTICAL_HINT
+            (1, 1),  # TYPE_HORIZONTAL_HINT
+            (2, 1),  # TYPE_VERTICAL_HINT
+            (TYPE_NODE, 18),
+            (1, 0),  # TYPE_HORIZONTAL_HINT
+            (2, 1),  # TYPE_VERTICAL_HINT
+            (1, 1),  # TYPE_HORIZONTAL_HINT
+            (2, 0),  # TYPE_VERTICAL_HINT
+        ]
