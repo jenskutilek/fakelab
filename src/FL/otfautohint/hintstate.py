@@ -265,7 +265,7 @@ class pathElementHintState:
         for l in (self.s_segs, self.m_segs, self.e_segs):
             l[:] = [s for s in l if s.hintval is not None]
 
-    def segments(self) -> list:
+    def segments(self) -> list[hintSegment]:
         return [s for s in self.s_segs + self.m_segs + self.e_segs]
 
     def segLists(

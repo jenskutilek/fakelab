@@ -1,7 +1,5 @@
 # Copyright 2014 Adobe. All rights reserved.
 
-from __future__ import annotations
-
 """
 Utilities for converting between T2 charstrings and glyphData objects.
 """
@@ -663,7 +661,7 @@ class CFFFontData:
         return glyph_list, vsindex
 
     @staticmethod
-    def get_vs_data_models(topDict: TopDict, axes: list[Axis]) -> list[VarDataModel]:
+    def get_vs_data_models(topDict: TopDict, axes: list[Axis]) -> "list[VarDataModel]":
         otvs = topDict.VarStore.otVarStore
         region_list = otvs.VarRegionList.Region
         axis_tags = [axis_entry.axisTag for axis_entry in axes]
@@ -744,7 +742,7 @@ def merge_hinted_programs(
     charstring: T2CharString,
     t2_programs: list[list[str | bytes | int]],
     gname: str,
-    vs_data_model: VarDataModel,
+    vs_data_model: "VarDataModel",
 ) -> T2CharString:
     num_masters = vs_data_model.num_masters
     var_pen = CFF2CharStringMergePen([], gname, num_masters, 0)
@@ -789,7 +787,7 @@ class VarDataModel:
         # for default font value
         self.delta_weights: list[dict[int, float]] = [{}]
         for region_idx, vsi in enumerate(master_vsi_list[1:]):
-            scalars = vsi.get_scalars(vsindex, region_idx)
+            scalars = vsi.get_scalars(vsindex, region_idx)  # type: ignore
             self.delta_weights.append(scalars)
 
     @property

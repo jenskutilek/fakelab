@@ -1,7 +1,5 @@
 # Copyright 2021 Adobe. All rights reserved.
 
-from __future__ import annotations
-
 """
 Associates segments with points on a pathElement, then builds
 these into candidate stem pairs that are evaluated and pruned
@@ -14,7 +12,7 @@ import math
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Sequence
 from copy import copy, deepcopy
-from typing import Any, NamedTuple, Self
+from typing import TYPE_CHECKING, Any, NamedTuple, Self
 
 from fontTools.misc.bezierTools import solveCubic
 
@@ -25,6 +23,9 @@ from .hintstate import glyphHintState, hintSegment, instanceStemState, links, st
 from .logging import logging_reconfig, set_log_parameters
 from .overlap import removeOverlap
 from .report import GlyphReport
+
+if TYPE_CHECKING:
+    from .__main__ import HintOptions
 
 
 class GlyphPE(NamedTuple):
@@ -2640,24 +2641,39 @@ class glyphHinter:
     for hintmask distribution
     """
 
-    impl: glyphHinter | None = None
+    impl: "glyphHinter | None" = None
 
     @classmethod
-    def initialize(cls, options, dictRecord, logQueue=None) -> None:
+    def initialize(
+        cls,
+        options: "HintOptions",
+        dictRecord: dict[int, dict[int, list[FDDict]]],
+        logQueue=None,
+    ) -> None:
         cls.impl = cls(options, dictRecord)
         if logQueue is not None:
             logging_reconfig(logQueue, options.verbose)
 
     @classmethod
-    def hint(cls, name, glyphTuple=None, fdKey=None) -> Any:
+    def hint(
+        cls,
+        name: str | tuple[str, tuple[glyphData, ...], tuple[int, int]],
+        glyphTuple: tuple[glyphData, ...] | None = None,
+        fdKey: tuple[int, int] | None = None,
+    ) -> Any:
         if cls.impl is None:
             raise RuntimeError("glyphHinter implementation not initialized")
         if isinstance(name, tuple):
             return cls.impl._hint(*name)
         else:
+            if glyphTuple is None or fdKey is None:
+                raise TypeError
             return cls.impl._hint(name, glyphTuple, fdKey)
 
-    def __init__(self, options, dictRecord) -> None:
+    def __init__(
+        self, options: "HintOptions", dictRecord: dict[int, dict[int, list[FDDict]]]
+    ) -> None:
+        print(f"glyphHinter.__init__, dictRecord={dictRecord}")
         self.options = options
         self.dictRecord = dictRecord
         self.hHinter = hhinter(options)
@@ -2673,9 +2689,12 @@ class glyphHinter:
         self.MaxHalfMargin = 20  # XXX 10 might better match original C code
         self.PromotionDistance = 50
 
-    def getSegments(self, glyph, pe, oppo=False) -> Any:
+    def getSegments(
+        self, glyph: glyphData, pe: pathElement, oppo: bool = False
+    ) -> list[hintSegment]:
         """Returns the list of segments for pe in the requested dimension"""
         gstate = glyph.vhs if (self.doV == (not oppo)) else glyph.hhs
+        assert gstate is not None
         pestate = gstate.getPEState(pe)
         return pestate.segments() if pestate else []
 
@@ -2683,7 +2702,6 @@ class glyphHinter:
         """
         Returns the masks of hints needed by/desired for pe in each dimension
         """
-        print("getMasks", glyph, pe)
         masks = []
         for i, hs in enumerate((glyph.hhs, glyph.vhs)):
             assert hs is not None
@@ -2704,7 +2722,10 @@ class glyphHinter:
         return masks
 
     def _hint(
-        self, name: str, glyphTuple, fdKey
+        self,
+        name: str,
+        glyphTuple: tuple[glyphData, ...],
+        fdKey: tuple[int, int],
     ) -> tuple[str, GlyphReport | Any | None]:
         """Top-level flex and stem hinting method for a glyph"""
         if isinstance(fdKey, tuple):
@@ -2955,16 +2976,20 @@ class glyphHinter:
 
         return usedmasks
 
-    def buildCounterMasks(self, glyph) -> None:
+    def buildCounterMasks(self, glyph: glyphData) -> None:
         """
         For glyph dimensions that are counter-hinted, make a cntrmask
         with all Trues in that dimension (because only h/vstem3 style counter
         hints are supported)
         """
+        assert glyph.hhs is not None
+        assert glyph.vhs is not None
         assert not glyph.hhs.keepHints or not glyph.vhs.keepHints
         if not glyph.hhs.keepHints:
+            assert glyph.hhs.stems is not None
             hcmsk = [glyph.hhs.counterHinted] * len(glyph.hhs.stems[0])
         if not glyph.vhs.keepHints:
+            assert glyph.vhs.stems is not None
             vcmsk = [glyph.vhs.counterHinted] * len(glyph.vhs.stems[0])
         if (glyph.hhs.keepHints or glyph.vhs.keepHints) and glyph.cntr:
             cntr = []
@@ -2978,13 +3003,15 @@ class glyphHinter:
             cntr = []
         glyph.cntr = cntr
 
-    def joinMasks(self, m, cm, log) -> tuple[list, bool]:
+    def joinMasks(
+        self, m: list[list[bool]], cm: list[list[bool]], log: bool
+    ) -> tuple[list[list[bool] | None], bool]:
         """
         Try to add the stems in cm to m, or start a new mask if there are
         conflicts.
         """
         conflict = False
-        nm = [None, None]
+        nm: list[list[bool] | None] = [None, None]
         for hv in range(2):
             hs = self.vHinter.hs if hv == 1 else self.hHinter.hs
             assert hs is not None
