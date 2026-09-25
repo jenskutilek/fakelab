@@ -123,7 +123,7 @@ def build_dict_record(
     # From otfautohint.ufoFont.getPrivateFDDict():
     # Set values for BlueValues and OtherBlues
 
-    blue_values = font.blue_values[master_index]
+    blue_values = font.blue_values[master_index].copy()  # Don't modify the font
     num_blue_values = len(blue_values)
     if num_blue_values < 4:
         raise ValueError(
@@ -142,7 +142,7 @@ def build_dict_record(
         value = blue_values[i]
         fddict.setInfo(key, value)
 
-    other_blues = font.other_blues[master_index]
+    other_blues = font.other_blues[master_index].copy()  # Don't modify the font
     num_other_blues = len(other_blues)
 
     if num_other_blues > 0:
