@@ -3,12 +3,7 @@ from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 from FL.objects.Hint import Hint
-from FL.objects.Replace import (
-    TYPE_HORIZONTAL_HINT,
-    TYPE_NODE,
-    TYPE_VERTICAL_HINT,
-    Replace,
-)
+from FL.objects.Replace import TYPE_NODE, Replace
 from FL.otfautohint.__main__ import HintOptions
 from FL.otfautohint.fdTools import FDDict, kBlueValueKeys, kOtherBlueValueKeys
 from FL.otfautohint.glyphData import glyphData
