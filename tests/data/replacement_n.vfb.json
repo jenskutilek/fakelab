@@ -1,0 +1,5301 @@
+{
+  "header": {
+    "signature": 1179408154,
+    "app_version": 49,
+    "file_version": 48,
+    "version_major": 3,
+    "version_minor": 0
+  },
+  "entries": [
+    {
+      "Block File Data Start": ""
+    },
+    {
+      "Block Font Start": ""
+    },
+    {
+      "FL Version": {
+        "platform": "macos",
+        "version": [
+          5,
+          2,
+          2,
+          128
+        ],
+        "owner": 0
+      }
+    },
+    {
+      "Block Names Start": ""
+    },
+    {
+      "Encoding Default": [
+        0,
+        "FL0000"
+      ]
+    },
+    {
+      "Encoding Default": [
+        1,
+        "FL0001"
+      ]
+    },
+    {
+      "Encoding Default": [
+        2,
+        "FL0002"
+      ]
+    },
+    {
+      "Encoding Default": [
+        3,
+        "FL0003"
+      ]
+    },
+    {
+      "Encoding Default": [
+        4,
+        "FL0004"
+      ]
+    },
+    {
+      "Encoding Default": [
+        5,
+        "FL0005"
+      ]
+    },
+    {
+      "Encoding Default": [
+        6,
+        "FL0006"
+      ]
+    },
+    {
+      "Encoding Default": [
+        7,
+        "FL0007"
+      ]
+    },
+    {
+      "Encoding Default": [
+        8,
+        "FL0008"
+      ]
+    },
+    {
+      "Encoding Default": [
+        9,
+        "FL0009"
+      ]
+    },
+    {
+      "Encoding Default": [
+        10,
+        "FL0010"
+      ]
+    },
+    {
+      "Encoding Default": [
+        11,
+        "FL0011"
+      ]
+    },
+    {
+      "Encoding Default": [
+        12,
+        "FL0012"
+      ]
+    },
+    {
+      "Encoding Default": [
+        13,
+        "FL0013"
+      ]
+    },
+    {
+      "Encoding Default": [
+        14,
+        "FL0014"
+      ]
+    },
+    {
+      "Encoding Default": [
+        15,
+        "FL0015"
+      ]
+    },
+    {
+      "Encoding Default": [
+        16,
+        "FL0016"
+      ]
+    },
+    {
+      "Encoding Default": [
+        17,
+        "FL0017"
+      ]
+    },
+    {
+      "Encoding Default": [
+        18,
+        "FL0018"
+      ]
+    },
+    {
+      "Encoding Default": [
+        19,
+        "FL0019"
+      ]
+    },
+    {
+      "Encoding Default": [
+        20,
+        "FL0020"
+      ]
+    },
+    {
+      "Encoding Default": [
+        21,
+        "FL0021"
+      ]
+    },
+    {
+      "Encoding Default": [
+        22,
+        "FL0022"
+      ]
+    },
+    {
+      "Encoding Default": [
+        23,
+        "FL0023"
+      ]
+    },
+    {
+      "Encoding Default": [
+        24,
+        "FL0024"
+      ]
+    },
+    {
+      "Encoding Default": [
+        25,
+        "FL0025"
+      ]
+    },
+    {
+      "Encoding Default": [
+        26,
+        "FL0026"
+      ]
+    },
+    {
+      "Encoding Default": [
+        27,
+        "FL0027"
+      ]
+    },
+    {
+      "Encoding Default": [
+        28,
+        "FL0028"
+      ]
+    },
+    {
+      "Encoding Default": [
+        29,
+        "FL0029"
+      ]
+    },
+    {
+      "Encoding Default": [
+        30,
+        "FL0030"
+      ]
+    },
+    {
+      "Encoding Default": [
+        31,
+        "FL0031"
+      ]
+    },
+    {
+      "Encoding Default": [
+        32,
+        "space"
+      ]
+    },
+    {
+      "Encoding Default": [
+        33,
+        "exclam"
+      ]
+    },
+    {
+      "Encoding Default": [
+        34,
+        "quotedbl"
+      ]
+    },
+    {
+      "Encoding Default": [
+        35,
+        "numbersign"
+      ]
+    },
+    {
+      "Encoding Default": [
+        36,
+        "dollar"
+      ]
+    },
+    {
+      "Encoding Default": [
+        37,
+        "percent"
+      ]
+    },
+    {
+      "Encoding Default": [
+        38,
+        "ampersand"
+      ]
+    },
+    {
+      "Encoding Default": [
+        39,
+        "quotesingle"
+      ]
+    },
+    {
+      "Encoding Default": [
+        40,
+        "parenleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        41,
+        "parenright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        42,
+        "asterisk"
+      ]
+    },
+    {
+      "Encoding Default": [
+        43,
+        "plus"
+      ]
+    },
+    {
+      "Encoding Default": [
+        44,
+        "comma"
+      ]
+    },
+    {
+      "Encoding Default": [
+        45,
+        "hyphen"
+      ]
+    },
+    {
+      "Encoding Default": [
+        46,
+        "period"
+      ]
+    },
+    {
+      "Encoding Default": [
+        47,
+        "slash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        48,
+        "zero"
+      ]
+    },
+    {
+      "Encoding Default": [
+        49,
+        "one"
+      ]
+    },
+    {
+      "Encoding Default": [
+        50,
+        "two"
+      ]
+    },
+    {
+      "Encoding Default": [
+        51,
+        "three"
+      ]
+    },
+    {
+      "Encoding Default": [
+        52,
+        "four"
+      ]
+    },
+    {
+      "Encoding Default": [
+        53,
+        "five"
+      ]
+    },
+    {
+      "Encoding Default": [
+        54,
+        "six"
+      ]
+    },
+    {
+      "Encoding Default": [
+        55,
+        "seven"
+      ]
+    },
+    {
+      "Encoding Default": [
+        56,
+        "eight"
+      ]
+    },
+    {
+      "Encoding Default": [
+        57,
+        "nine"
+      ]
+    },
+    {
+      "Encoding Default": [
+        58,
+        "colon"
+      ]
+    },
+    {
+      "Encoding Default": [
+        59,
+        "semicolon"
+      ]
+    },
+    {
+      "Encoding Default": [
+        60,
+        "less"
+      ]
+    },
+    {
+      "Encoding Default": [
+        61,
+        "equal"
+      ]
+    },
+    {
+      "Encoding Default": [
+        62,
+        "greater"
+      ]
+    },
+    {
+      "Encoding Default": [
+        63,
+        "question"
+      ]
+    },
+    {
+      "Encoding Default": [
+        64,
+        "at"
+      ]
+    },
+    {
+      "Encoding Default": [
+        65,
+        "A"
+      ]
+    },
+    {
+      "Encoding Default": [
+        66,
+        "B"
+      ]
+    },
+    {
+      "Encoding Default": [
+        67,
+        "C"
+      ]
+    },
+    {
+      "Encoding Default": [
+        68,
+        "D"
+      ]
+    },
+    {
+      "Encoding Default": [
+        69,
+        "E"
+      ]
+    },
+    {
+      "Encoding Default": [
+        70,
+        "F"
+      ]
+    },
+    {
+      "Encoding Default": [
+        71,
+        "G"
+      ]
+    },
+    {
+      "Encoding Default": [
+        72,
+        "H"
+      ]
+    },
+    {
+      "Encoding Default": [
+        73,
+        "I"
+      ]
+    },
+    {
+      "Encoding Default": [
+        74,
+        "J"
+      ]
+    },
+    {
+      "Encoding Default": [
+        75,
+        "K"
+      ]
+    },
+    {
+      "Encoding Default": [
+        76,
+        "L"
+      ]
+    },
+    {
+      "Encoding Default": [
+        77,
+        "M"
+      ]
+    },
+    {
+      "Encoding Default": [
+        78,
+        "N"
+      ]
+    },
+    {
+      "Encoding Default": [
+        79,
+        "O"
+      ]
+    },
+    {
+      "Encoding Default": [
+        80,
+        "P"
+      ]
+    },
+    {
+      "Encoding Default": [
+        81,
+        "Q"
+      ]
+    },
+    {
+      "Encoding Default": [
+        82,
+        "R"
+      ]
+    },
+    {
+      "Encoding Default": [
+        83,
+        "S"
+      ]
+    },
+    {
+      "Encoding Default": [
+        84,
+        "T"
+      ]
+    },
+    {
+      "Encoding Default": [
+        85,
+        "U"
+      ]
+    },
+    {
+      "Encoding Default": [
+        86,
+        "V"
+      ]
+    },
+    {
+      "Encoding Default": [
+        87,
+        "W"
+      ]
+    },
+    {
+      "Encoding Default": [
+        88,
+        "X"
+      ]
+    },
+    {
+      "Encoding Default": [
+        89,
+        "Y"
+      ]
+    },
+    {
+      "Encoding Default": [
+        90,
+        "Z"
+      ]
+    },
+    {
+      "Encoding Default": [
+        91,
+        "bracketleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        92,
+        "backslash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        93,
+        "bracketright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        94,
+        "asciicircum"
+      ]
+    },
+    {
+      "Encoding Default": [
+        95,
+        "underscore"
+      ]
+    },
+    {
+      "Encoding Default": [
+        96,
+        "grave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        97,
+        "a"
+      ]
+    },
+    {
+      "Encoding Default": [
+        98,
+        "b"
+      ]
+    },
+    {
+      "Encoding Default": [
+        99,
+        "c"
+      ]
+    },
+    {
+      "Encoding Default": [
+        100,
+        "d"
+      ]
+    },
+    {
+      "Encoding Default": [
+        101,
+        "e"
+      ]
+    },
+    {
+      "Encoding Default": [
+        102,
+        "f"
+      ]
+    },
+    {
+      "Encoding Default": [
+        103,
+        "g"
+      ]
+    },
+    {
+      "Encoding Default": [
+        104,
+        "h"
+      ]
+    },
+    {
+      "Encoding Default": [
+        105,
+        "i"
+      ]
+    },
+    {
+      "Encoding Default": [
+        106,
+        "j"
+      ]
+    },
+    {
+      "Encoding Default": [
+        107,
+        "k"
+      ]
+    },
+    {
+      "Encoding Default": [
+        108,
+        "l"
+      ]
+    },
+    {
+      "Encoding Default": [
+        109,
+        "m"
+      ]
+    },
+    {
+      "Encoding Default": [
+        110,
+        "n"
+      ]
+    },
+    {
+      "Encoding Default": [
+        111,
+        "o"
+      ]
+    },
+    {
+      "Encoding Default": [
+        112,
+        "p"
+      ]
+    },
+    {
+      "Encoding Default": [
+        113,
+        "q"
+      ]
+    },
+    {
+      "Encoding Default": [
+        114,
+        "r"
+      ]
+    },
+    {
+      "Encoding Default": [
+        115,
+        "s"
+      ]
+    },
+    {
+      "Encoding Default": [
+        116,
+        "t"
+      ]
+    },
+    {
+      "Encoding Default": [
+        117,
+        "u"
+      ]
+    },
+    {
+      "Encoding Default": [
+        118,
+        "v"
+      ]
+    },
+    {
+      "Encoding Default": [
+        119,
+        "w"
+      ]
+    },
+    {
+      "Encoding Default": [
+        120,
+        "x"
+      ]
+    },
+    {
+      "Encoding Default": [
+        121,
+        "y"
+      ]
+    },
+    {
+      "Encoding Default": [
+        122,
+        "z"
+      ]
+    },
+    {
+      "Encoding Default": [
+        123,
+        "braceleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        124,
+        "bar"
+      ]
+    },
+    {
+      "Encoding Default": [
+        125,
+        "braceright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        126,
+        "asciitilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        127,
+        "FL0127"
+      ]
+    },
+    {
+      "Encoding Default": [
+        128,
+        "Adieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        129,
+        "Aring"
+      ]
+    },
+    {
+      "Encoding Default": [
+        130,
+        "Ccedilla"
+      ]
+    },
+    {
+      "Encoding Default": [
+        131,
+        "Eacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        132,
+        "Ntilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        133,
+        "Odieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        134,
+        "Udieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        135,
+        "aacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        136,
+        "agrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        137,
+        "acircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        138,
+        "adieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        139,
+        "atilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        140,
+        "aring"
+      ]
+    },
+    {
+      "Encoding Default": [
+        141,
+        "ccedilla"
+      ]
+    },
+    {
+      "Encoding Default": [
+        142,
+        "eacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        143,
+        "egrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        144,
+        "ecircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        145,
+        "edieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        146,
+        "iacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        147,
+        "igrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        148,
+        "icircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        149,
+        "idieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        150,
+        "ntilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        151,
+        "oacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        152,
+        "ograve"
+      ]
+    },
+    {
+      "Encoding Default": [
+        153,
+        "ocircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        154,
+        "odieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        155,
+        "otilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        156,
+        "uacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        157,
+        "ugrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        158,
+        "ucircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        159,
+        "udieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        160,
+        "dagger"
+      ]
+    },
+    {
+      "Encoding Default": [
+        161,
+        "degree"
+      ]
+    },
+    {
+      "Encoding Default": [
+        162,
+        "cent"
+      ]
+    },
+    {
+      "Encoding Default": [
+        163,
+        "sterling"
+      ]
+    },
+    {
+      "Encoding Default": [
+        164,
+        "section"
+      ]
+    },
+    {
+      "Encoding Default": [
+        165,
+        "bullet"
+      ]
+    },
+    {
+      "Encoding Default": [
+        166,
+        "paragraph"
+      ]
+    },
+    {
+      "Encoding Default": [
+        167,
+        "germandbls"
+      ]
+    },
+    {
+      "Encoding Default": [
+        168,
+        "registered"
+      ]
+    },
+    {
+      "Encoding Default": [
+        169,
+        "copyright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        170,
+        "trademark"
+      ]
+    },
+    {
+      "Encoding Default": [
+        171,
+        "acute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        172,
+        "dieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        173,
+        "notequal"
+      ]
+    },
+    {
+      "Encoding Default": [
+        174,
+        "AE"
+      ]
+    },
+    {
+      "Encoding Default": [
+        175,
+        "Oslash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        176,
+        "infinity"
+      ]
+    },
+    {
+      "Encoding Default": [
+        177,
+        "plusminus"
+      ]
+    },
+    {
+      "Encoding Default": [
+        178,
+        "lessequal"
+      ]
+    },
+    {
+      "Encoding Default": [
+        179,
+        "greaterequal"
+      ]
+    },
+    {
+      "Encoding Default": [
+        180,
+        "yen"
+      ]
+    },
+    {
+      "Encoding Default": [
+        181,
+        "mu"
+      ]
+    },
+    {
+      "Encoding Default": [
+        182,
+        "partialdiff"
+      ]
+    },
+    {
+      "Encoding Default": [
+        183,
+        "summation"
+      ]
+    },
+    {
+      "Encoding Default": [
+        184,
+        "product"
+      ]
+    },
+    {
+      "Encoding Default": [
+        185,
+        "pi"
+      ]
+    },
+    {
+      "Encoding Default": [
+        186,
+        "integral"
+      ]
+    },
+    {
+      "Encoding Default": [
+        187,
+        "ordfeminine"
+      ]
+    },
+    {
+      "Encoding Default": [
+        188,
+        "ordmasculine"
+      ]
+    },
+    {
+      "Encoding Default": [
+        189,
+        "Omega"
+      ]
+    },
+    {
+      "Encoding Default": [
+        190,
+        "ae"
+      ]
+    },
+    {
+      "Encoding Default": [
+        191,
+        "oslash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        192,
+        "questiondown"
+      ]
+    },
+    {
+      "Encoding Default": [
+        193,
+        "exclamdown"
+      ]
+    },
+    {
+      "Encoding Default": [
+        194,
+        "logicalnot"
+      ]
+    },
+    {
+      "Encoding Default": [
+        195,
+        "radical"
+      ]
+    },
+    {
+      "Encoding Default": [
+        196,
+        "florin"
+      ]
+    },
+    {
+      "Encoding Default": [
+        197,
+        "approxequal"
+      ]
+    },
+    {
+      "Encoding Default": [
+        198,
+        "Delta"
+      ]
+    },
+    {
+      "Encoding Default": [
+        199,
+        "guillemotleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        200,
+        "guillemotright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        201,
+        "ellipsis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        202,
+        "nbspace"
+      ]
+    },
+    {
+      "Encoding Default": [
+        203,
+        "Agrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        204,
+        "Atilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        205,
+        "Otilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        206,
+        "OE"
+      ]
+    },
+    {
+      "Encoding Default": [
+        207,
+        "oe"
+      ]
+    },
+    {
+      "Encoding Default": [
+        208,
+        "endash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        209,
+        "emdash"
+      ]
+    },
+    {
+      "Encoding Default": [
+        210,
+        "quotedblleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        211,
+        "quotedblright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        212,
+        "quoteleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        213,
+        "quoteright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        214,
+        "divide"
+      ]
+    },
+    {
+      "Encoding Default": [
+        215,
+        "lozenge"
+      ]
+    },
+    {
+      "Encoding Default": [
+        216,
+        "ydieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        217,
+        "Ydieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        218,
+        "fraction"
+      ]
+    },
+    {
+      "Encoding Default": [
+        219,
+        "uni20AC"
+      ]
+    },
+    {
+      "Encoding Default": [
+        220,
+        "guilsinglleft"
+      ]
+    },
+    {
+      "Encoding Default": [
+        221,
+        "guilsinglright"
+      ]
+    },
+    {
+      "Encoding Default": [
+        222,
+        "fi"
+      ]
+    },
+    {
+      "Encoding Default": [
+        223,
+        "fl"
+      ]
+    },
+    {
+      "Encoding Default": [
+        224,
+        "daggerdbl"
+      ]
+    },
+    {
+      "Encoding Default": [
+        225,
+        "periodcentered"
+      ]
+    },
+    {
+      "Encoding Default": [
+        226,
+        "quotesinglbase"
+      ]
+    },
+    {
+      "Encoding Default": [
+        227,
+        "quotedblbase"
+      ]
+    },
+    {
+      "Encoding Default": [
+        228,
+        "perthousand"
+      ]
+    },
+    {
+      "Encoding Default": [
+        229,
+        "Acircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        230,
+        "Ecircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        231,
+        "Aacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        232,
+        "Edieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        233,
+        "Egrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        234,
+        "Iacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        235,
+        "Icircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        236,
+        "Idieresis"
+      ]
+    },
+    {
+      "Encoding Default": [
+        237,
+        "Igrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        238,
+        "Oacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        239,
+        "Ocircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        240,
+        "apple"
+      ]
+    },
+    {
+      "Encoding Default": [
+        241,
+        "Ograve"
+      ]
+    },
+    {
+      "Encoding Default": [
+        242,
+        "Uacute"
+      ]
+    },
+    {
+      "Encoding Default": [
+        243,
+        "Ucircumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        244,
+        "Ugrave"
+      ]
+    },
+    {
+      "Encoding Default": [
+        245,
+        "dotlessi"
+      ]
+    },
+    {
+      "Encoding Default": [
+        246,
+        "circumflex"
+      ]
+    },
+    {
+      "Encoding Default": [
+        247,
+        "tilde"
+      ]
+    },
+    {
+      "Encoding Default": [
+        248,
+        "macron"
+      ]
+    },
+    {
+      "Encoding Default": [
+        249,
+        "breve"
+      ]
+    },
+    {
+      "Encoding Default": [
+        250,
+        "dotaccent"
+      ]
+    },
+    {
+      "Encoding Default": [
+        251,
+        "ring"
+      ]
+    },
+    {
+      "Encoding Default": [
+        252,
+        "cedilla"
+      ]
+    },
+    {
+      "Encoding Default": [
+        253,
+        "hungarumlaut"
+      ]
+    },
+    {
+      "Encoding Default": [
+        254,
+        "ogonek"
+      ]
+    },
+    {
+      "Encoding Default": [
+        255,
+        "caron"
+      ]
+    },
+    {
+      "Encoding": [
+        0,
+        "n"
+      ]
+    },
+    {
+      "Encoding": [
+        1,
+        "n.hints"
+      ]
+    },
+    {
+      "Encoding": [
+        2,
+        "o"
+      ]
+    },
+    {
+      "Encoding": [
+        3,
+        "__END__"
+      ]
+    },
+    {
+      "Encoding": [
+        4,
+        "_0004"
+      ]
+    },
+    {
+      "Encoding": [
+        5,
+        "_0005"
+      ]
+    },
+    {
+      "Encoding": [
+        6,
+        "_0006"
+      ]
+    },
+    {
+      "Encoding": [
+        7,
+        "_0007"
+      ]
+    },
+    {
+      "Encoding": [
+        8,
+        "_0008"
+      ]
+    },
+    {
+      "Encoding": [
+        9,
+        "_0009"
+      ]
+    },
+    {
+      "Encoding": [
+        10,
+        "_0010"
+      ]
+    },
+    {
+      "Encoding": [
+        11,
+        "_0011"
+      ]
+    },
+    {
+      "Encoding": [
+        12,
+        "_0012"
+      ]
+    },
+    {
+      "Encoding": [
+        13,
+        "_0013"
+      ]
+    },
+    {
+      "Encoding": [
+        14,
+        "_0014"
+      ]
+    },
+    {
+      "Encoding": [
+        15,
+        "_0015"
+      ]
+    },
+    {
+      "Encoding": [
+        16,
+        "_0016"
+      ]
+    },
+    {
+      "Encoding": [
+        17,
+        "_0017"
+      ]
+    },
+    {
+      "Encoding": [
+        18,
+        "_0018"
+      ]
+    },
+    {
+      "Encoding": [
+        19,
+        "_0019"
+      ]
+    },
+    {
+      "Encoding": [
+        20,
+        "_0020"
+      ]
+    },
+    {
+      "Encoding": [
+        21,
+        "_0021"
+      ]
+    },
+    {
+      "Encoding": [
+        22,
+        "_0022"
+      ]
+    },
+    {
+      "Encoding": [
+        23,
+        "_0023"
+      ]
+    },
+    {
+      "Encoding": [
+        24,
+        "_0024"
+      ]
+    },
+    {
+      "Encoding": [
+        25,
+        "_0025"
+      ]
+    },
+    {
+      "Encoding": [
+        26,
+        "_0026"
+      ]
+    },
+    {
+      "Encoding": [
+        27,
+        "_0027"
+      ]
+    },
+    {
+      "Encoding": [
+        28,
+        "_0028"
+      ]
+    },
+    {
+      "Encoding": [
+        29,
+        "_0029"
+      ]
+    },
+    {
+      "Encoding": [
+        30,
+        "_0030"
+      ]
+    },
+    {
+      "Encoding": [
+        31,
+        "_0031"
+      ]
+    },
+    {
+      "Encoding": [
+        32,
+        "_0032"
+      ]
+    },
+    {
+      "Encoding": [
+        33,
+        "_0033"
+      ]
+    },
+    {
+      "Encoding": [
+        34,
+        "_0034"
+      ]
+    },
+    {
+      "Encoding": [
+        35,
+        "_0035"
+      ]
+    },
+    {
+      "Encoding": [
+        36,
+        "_0036"
+      ]
+    },
+    {
+      "Encoding": [
+        37,
+        "_0037"
+      ]
+    },
+    {
+      "Encoding": [
+        38,
+        "_0038"
+      ]
+    },
+    {
+      "Encoding": [
+        39,
+        "_0039"
+      ]
+    },
+    {
+      "Encoding": [
+        40,
+        "_0040"
+      ]
+    },
+    {
+      "Encoding": [
+        41,
+        "_0041"
+      ]
+    },
+    {
+      "Encoding": [
+        42,
+        "_0042"
+      ]
+    },
+    {
+      "Encoding": [
+        43,
+        "_0043"
+      ]
+    },
+    {
+      "Encoding": [
+        44,
+        "_0044"
+      ]
+    },
+    {
+      "Encoding": [
+        45,
+        "_0045"
+      ]
+    },
+    {
+      "Encoding": [
+        46,
+        "_0046"
+      ]
+    },
+    {
+      "Encoding": [
+        47,
+        "_0047"
+      ]
+    },
+    {
+      "Encoding": [
+        48,
+        "_0048"
+      ]
+    },
+    {
+      "Encoding": [
+        49,
+        "_0049"
+      ]
+    },
+    {
+      "Encoding": [
+        50,
+        "_0050"
+      ]
+    },
+    {
+      "Encoding": [
+        51,
+        "_0051"
+      ]
+    },
+    {
+      "Encoding": [
+        52,
+        "_0052"
+      ]
+    },
+    {
+      "Encoding": [
+        53,
+        "_0053"
+      ]
+    },
+    {
+      "Encoding": [
+        54,
+        "_0054"
+      ]
+    },
+    {
+      "Encoding": [
+        55,
+        "_0055"
+      ]
+    },
+    {
+      "Encoding": [
+        56,
+        "_0056"
+      ]
+    },
+    {
+      "Encoding": [
+        57,
+        "_0057"
+      ]
+    },
+    {
+      "Encoding": [
+        58,
+        "_0058"
+      ]
+    },
+    {
+      "Encoding": [
+        59,
+        "_0059"
+      ]
+    },
+    {
+      "Encoding": [
+        60,
+        "_0060"
+      ]
+    },
+    {
+      "Encoding": [
+        61,
+        "_0061"
+      ]
+    },
+    {
+      "Encoding": [
+        62,
+        "_0062"
+      ]
+    },
+    {
+      "Encoding": [
+        63,
+        "_0063"
+      ]
+    },
+    {
+      "Encoding": [
+        64,
+        "_0064"
+      ]
+    },
+    {
+      "Encoding": [
+        65,
+        "_0065"
+      ]
+    },
+    {
+      "Encoding": [
+        66,
+        "_0066"
+      ]
+    },
+    {
+      "Encoding": [
+        67,
+        "_0067"
+      ]
+    },
+    {
+      "Encoding": [
+        68,
+        "_0068"
+      ]
+    },
+    {
+      "Encoding": [
+        69,
+        "_0069"
+      ]
+    },
+    {
+      "Encoding": [
+        70,
+        "_0070"
+      ]
+    },
+    {
+      "Encoding": [
+        71,
+        "_0071"
+      ]
+    },
+    {
+      "Encoding": [
+        72,
+        "_0072"
+      ]
+    },
+    {
+      "Encoding": [
+        73,
+        "_0073"
+      ]
+    },
+    {
+      "Encoding": [
+        74,
+        "_0074"
+      ]
+    },
+    {
+      "Encoding": [
+        75,
+        "_0075"
+      ]
+    },
+    {
+      "Encoding": [
+        76,
+        "_0076"
+      ]
+    },
+    {
+      "Encoding": [
+        77,
+        "_0077"
+      ]
+    },
+    {
+      "Encoding": [
+        78,
+        "_0078"
+      ]
+    },
+    {
+      "Encoding": [
+        79,
+        "_0079"
+      ]
+    },
+    {
+      "Encoding": [
+        80,
+        "_0080"
+      ]
+    },
+    {
+      "Encoding": [
+        81,
+        "_0081"
+      ]
+    },
+    {
+      "Encoding": [
+        82,
+        "_0082"
+      ]
+    },
+    {
+      "Encoding": [
+        83,
+        "_0083"
+      ]
+    },
+    {
+      "Encoding": [
+        84,
+        "_0084"
+      ]
+    },
+    {
+      "Encoding": [
+        85,
+        "_0085"
+      ]
+    },
+    {
+      "Encoding": [
+        86,
+        "_0086"
+      ]
+    },
+    {
+      "Encoding": [
+        87,
+        "_0087"
+      ]
+    },
+    {
+      "Encoding": [
+        88,
+        "_0088"
+      ]
+    },
+    {
+      "Encoding": [
+        89,
+        "_0089"
+      ]
+    },
+    {
+      "Encoding": [
+        90,
+        "_0090"
+      ]
+    },
+    {
+      "Encoding": [
+        91,
+        "_0091"
+      ]
+    },
+    {
+      "Encoding": [
+        92,
+        "_0092"
+      ]
+    },
+    {
+      "Encoding": [
+        93,
+        "_0093"
+      ]
+    },
+    {
+      "Encoding": [
+        94,
+        "_0094"
+      ]
+    },
+    {
+      "Encoding": [
+        95,
+        "_0095"
+      ]
+    },
+    {
+      "Encoding": [
+        96,
+        "_0096"
+      ]
+    },
+    {
+      "Encoding": [
+        97,
+        "_0097"
+      ]
+    },
+    {
+      "Encoding": [
+        98,
+        "_0098"
+      ]
+    },
+    {
+      "Encoding": [
+        99,
+        "_0099"
+      ]
+    },
+    {
+      "Encoding": [
+        100,
+        "_0100"
+      ]
+    },
+    {
+      "Encoding": [
+        101,
+        "_0101"
+      ]
+    },
+    {
+      "Encoding": [
+        102,
+        "_0102"
+      ]
+    },
+    {
+      "Encoding": [
+        103,
+        "_0103"
+      ]
+    },
+    {
+      "Encoding": [
+        104,
+        "_0104"
+      ]
+    },
+    {
+      "Encoding": [
+        105,
+        "_0105"
+      ]
+    },
+    {
+      "Encoding": [
+        106,
+        "_0106"
+      ]
+    },
+    {
+      "Encoding": [
+        107,
+        "_0107"
+      ]
+    },
+    {
+      "Encoding": [
+        108,
+        "_0108"
+      ]
+    },
+    {
+      "Encoding": [
+        109,
+        "_0109"
+      ]
+    },
+    {
+      "Encoding": [
+        110,
+        "_0110"
+      ]
+    },
+    {
+      "Encoding": [
+        111,
+        "_0111"
+      ]
+    },
+    {
+      "Encoding": [
+        112,
+        "_0112"
+      ]
+    },
+    {
+      "Encoding": [
+        113,
+        "_0113"
+      ]
+    },
+    {
+      "Encoding": [
+        114,
+        "_0114"
+      ]
+    },
+    {
+      "Encoding": [
+        115,
+        "_0115"
+      ]
+    },
+    {
+      "Encoding": [
+        116,
+        "_0116"
+      ]
+    },
+    {
+      "Encoding": [
+        117,
+        "_0117"
+      ]
+    },
+    {
+      "Encoding": [
+        118,
+        "_0118"
+      ]
+    },
+    {
+      "Encoding": [
+        119,
+        "_0119"
+      ]
+    },
+    {
+      "Encoding": [
+        120,
+        "_0120"
+      ]
+    },
+    {
+      "Encoding": [
+        121,
+        "_0121"
+      ]
+    },
+    {
+      "Encoding": [
+        122,
+        "_0122"
+      ]
+    },
+    {
+      "Encoding": [
+        123,
+        "_0123"
+      ]
+    },
+    {
+      "Encoding": [
+        124,
+        "_0124"
+      ]
+    },
+    {
+      "Encoding": [
+        125,
+        "_0125"
+      ]
+    },
+    {
+      "Encoding": [
+        126,
+        "_0126"
+      ]
+    },
+    {
+      "Encoding": [
+        127,
+        "_0127"
+      ]
+    },
+    {
+      "Encoding": [
+        128,
+        "_0128"
+      ]
+    },
+    {
+      "Encoding": [
+        129,
+        "_0129"
+      ]
+    },
+    {
+      "Encoding": [
+        130,
+        "_0130"
+      ]
+    },
+    {
+      "Encoding": [
+        131,
+        "_0131"
+      ]
+    },
+    {
+      "Encoding": [
+        132,
+        "_0132"
+      ]
+    },
+    {
+      "Encoding": [
+        133,
+        "_0133"
+      ]
+    },
+    {
+      "Encoding": [
+        134,
+        "_0134"
+      ]
+    },
+    {
+      "Encoding": [
+        135,
+        "_0135"
+      ]
+    },
+    {
+      "Encoding": [
+        136,
+        "_0136"
+      ]
+    },
+    {
+      "Encoding": [
+        137,
+        "_0137"
+      ]
+    },
+    {
+      "Encoding": [
+        138,
+        "_0138"
+      ]
+    },
+    {
+      "Encoding": [
+        139,
+        "_0139"
+      ]
+    },
+    {
+      "Encoding": [
+        140,
+        "_0140"
+      ]
+    },
+    {
+      "Encoding": [
+        141,
+        "_0141"
+      ]
+    },
+    {
+      "Encoding": [
+        142,
+        "_0142"
+      ]
+    },
+    {
+      "Encoding": [
+        143,
+        "_0143"
+      ]
+    },
+    {
+      "Encoding": [
+        144,
+        "_0144"
+      ]
+    },
+    {
+      "Encoding": [
+        145,
+        "_0145"
+      ]
+    },
+    {
+      "Encoding": [
+        146,
+        "_0146"
+      ]
+    },
+    {
+      "Encoding": [
+        147,
+        "_0147"
+      ]
+    },
+    {
+      "Encoding": [
+        148,
+        "_0148"
+      ]
+    },
+    {
+      "Encoding": [
+        149,
+        "_0149"
+      ]
+    },
+    {
+      "Encoding": [
+        150,
+        "_0150"
+      ]
+    },
+    {
+      "Encoding": [
+        151,
+        "_0151"
+      ]
+    },
+    {
+      "Encoding": [
+        152,
+        "_0152"
+      ]
+    },
+    {
+      "Encoding": [
+        153,
+        "_0153"
+      ]
+    },
+    {
+      "Encoding": [
+        154,
+        "_0154"
+      ]
+    },
+    {
+      "Encoding": [
+        155,
+        "_0155"
+      ]
+    },
+    {
+      "Encoding": [
+        156,
+        "_0156"
+      ]
+    },
+    {
+      "Encoding": [
+        157,
+        "_0157"
+      ]
+    },
+    {
+      "Encoding": [
+        158,
+        "_0158"
+      ]
+    },
+    {
+      "Encoding": [
+        159,
+        "_0159"
+      ]
+    },
+    {
+      "Encoding": [
+        160,
+        "_0160"
+      ]
+    },
+    {
+      "Encoding": [
+        161,
+        "_0161"
+      ]
+    },
+    {
+      "Encoding": [
+        162,
+        "_0162"
+      ]
+    },
+    {
+      "Encoding": [
+        163,
+        "_0163"
+      ]
+    },
+    {
+      "Encoding": [
+        164,
+        "_0164"
+      ]
+    },
+    {
+      "Encoding": [
+        165,
+        "_0165"
+      ]
+    },
+    {
+      "Encoding": [
+        166,
+        "_0166"
+      ]
+    },
+    {
+      "Encoding": [
+        167,
+        "_0167"
+      ]
+    },
+    {
+      "Encoding": [
+        168,
+        "_0168"
+      ]
+    },
+    {
+      "Encoding": [
+        169,
+        "_0169"
+      ]
+    },
+    {
+      "Encoding": [
+        170,
+        "_0170"
+      ]
+    },
+    {
+      "Encoding": [
+        171,
+        "_0171"
+      ]
+    },
+    {
+      "Encoding": [
+        172,
+        "_0172"
+      ]
+    },
+    {
+      "Encoding": [
+        173,
+        "_0173"
+      ]
+    },
+    {
+      "Encoding": [
+        174,
+        "_0174"
+      ]
+    },
+    {
+      "Encoding": [
+        175,
+        "_0175"
+      ]
+    },
+    {
+      "Encoding": [
+        176,
+        "_0176"
+      ]
+    },
+    {
+      "Encoding": [
+        177,
+        "_0177"
+      ]
+    },
+    {
+      "Encoding": [
+        178,
+        "_0178"
+      ]
+    },
+    {
+      "Encoding": [
+        179,
+        "_0179"
+      ]
+    },
+    {
+      "Encoding": [
+        180,
+        "_0180"
+      ]
+    },
+    {
+      "Encoding": [
+        181,
+        "_0181"
+      ]
+    },
+    {
+      "Encoding": [
+        182,
+        "_0182"
+      ]
+    },
+    {
+      "Encoding": [
+        183,
+        "_0183"
+      ]
+    },
+    {
+      "Encoding": [
+        184,
+        "_0184"
+      ]
+    },
+    {
+      "Encoding": [
+        185,
+        "_0185"
+      ]
+    },
+    {
+      "Encoding": [
+        186,
+        "_0186"
+      ]
+    },
+    {
+      "Encoding": [
+        187,
+        "_0187"
+      ]
+    },
+    {
+      "Encoding": [
+        188,
+        "_0188"
+      ]
+    },
+    {
+      "Encoding": [
+        189,
+        "_0189"
+      ]
+    },
+    {
+      "Encoding": [
+        190,
+        "_0190"
+      ]
+    },
+    {
+      "Encoding": [
+        191,
+        "_0191"
+      ]
+    },
+    {
+      "Encoding": [
+        192,
+        "_0192"
+      ]
+    },
+    {
+      "Encoding": [
+        193,
+        "_0193"
+      ]
+    },
+    {
+      "Encoding": [
+        194,
+        "_0194"
+      ]
+    },
+    {
+      "Encoding": [
+        195,
+        "_0195"
+      ]
+    },
+    {
+      "Encoding": [
+        196,
+        "_0196"
+      ]
+    },
+    {
+      "Encoding": [
+        197,
+        "_0197"
+      ]
+    },
+    {
+      "Encoding": [
+        198,
+        "_0198"
+      ]
+    },
+    {
+      "Encoding": [
+        199,
+        "_0199"
+      ]
+    },
+    {
+      "Encoding": [
+        200,
+        "_0200"
+      ]
+    },
+    {
+      "Encoding": [
+        201,
+        "_0201"
+      ]
+    },
+    {
+      "Encoding": [
+        202,
+        "_0202"
+      ]
+    },
+    {
+      "Encoding": [
+        203,
+        "_0203"
+      ]
+    },
+    {
+      "Encoding": [
+        204,
+        "_0204"
+      ]
+    },
+    {
+      "Encoding": [
+        205,
+        "_0205"
+      ]
+    },
+    {
+      "Encoding": [
+        206,
+        "_0206"
+      ]
+    },
+    {
+      "Encoding": [
+        207,
+        "_0207"
+      ]
+    },
+    {
+      "Encoding": [
+        208,
+        "_0208"
+      ]
+    },
+    {
+      "Encoding": [
+        209,
+        "_0209"
+      ]
+    },
+    {
+      "Encoding": [
+        210,
+        "_0210"
+      ]
+    },
+    {
+      "Encoding": [
+        211,
+        "_0211"
+      ]
+    },
+    {
+      "Encoding": [
+        212,
+        "_0212"
+      ]
+    },
+    {
+      "Encoding": [
+        213,
+        "_0213"
+      ]
+    },
+    {
+      "Encoding": [
+        214,
+        "_0214"
+      ]
+    },
+    {
+      "Encoding": [
+        215,
+        "_0215"
+      ]
+    },
+    {
+      "Encoding": [
+        216,
+        "_0216"
+      ]
+    },
+    {
+      "Encoding": [
+        217,
+        "_0217"
+      ]
+    },
+    {
+      "Encoding": [
+        218,
+        "_0218"
+      ]
+    },
+    {
+      "Encoding": [
+        219,
+        "_0219"
+      ]
+    },
+    {
+      "Encoding": [
+        220,
+        "_0220"
+      ]
+    },
+    {
+      "Encoding": [
+        221,
+        "_0221"
+      ]
+    },
+    {
+      "Encoding": [
+        222,
+        "_0222"
+      ]
+    },
+    {
+      "Encoding": [
+        223,
+        "_0223"
+      ]
+    },
+    {
+      "Encoding": [
+        224,
+        "_0224"
+      ]
+    },
+    {
+      "Encoding": [
+        225,
+        "_0225"
+      ]
+    },
+    {
+      "Encoding": [
+        226,
+        "_0226"
+      ]
+    },
+    {
+      "Encoding": [
+        227,
+        "_0227"
+      ]
+    },
+    {
+      "Encoding": [
+        228,
+        "_0228"
+      ]
+    },
+    {
+      "Encoding": [
+        229,
+        "_0229"
+      ]
+    },
+    {
+      "Encoding": [
+        230,
+        "_0230"
+      ]
+    },
+    {
+      "Encoding": [
+        231,
+        "_0231"
+      ]
+    },
+    {
+      "Encoding": [
+        232,
+        "_0232"
+      ]
+    },
+    {
+      "Encoding": [
+        233,
+        "_0233"
+      ]
+    },
+    {
+      "Encoding": [
+        234,
+        "_0234"
+      ]
+    },
+    {
+      "Encoding": [
+        235,
+        "_0235"
+      ]
+    },
+    {
+      "Encoding": [
+        236,
+        "_0236"
+      ]
+    },
+    {
+      "Encoding": [
+        237,
+        "_0237"
+      ]
+    },
+    {
+      "Encoding": [
+        238,
+        "_0238"
+      ]
+    },
+    {
+      "Encoding": [
+        239,
+        "_0239"
+      ]
+    },
+    {
+      "Encoding": [
+        240,
+        "_0240"
+      ]
+    },
+    {
+      "Encoding": [
+        241,
+        "_0241"
+      ]
+    },
+    {
+      "Encoding": [
+        242,
+        "_0242"
+      ]
+    },
+    {
+      "Encoding": [
+        243,
+        "_0243"
+      ]
+    },
+    {
+      "Encoding": [
+        244,
+        "_0244"
+      ]
+    },
+    {
+      "Encoding": [
+        245,
+        "_0245"
+      ]
+    },
+    {
+      "Encoding": [
+        246,
+        "_0246"
+      ]
+    },
+    {
+      "Encoding": [
+        247,
+        "_0247"
+      ]
+    },
+    {
+      "Encoding": [
+        248,
+        "_0248"
+      ]
+    },
+    {
+      "Encoding": [
+        249,
+        "_0249"
+      ]
+    },
+    {
+      "Encoding": [
+        250,
+        "_0250"
+      ]
+    },
+    {
+      "Encoding": [
+        251,
+        "_0251"
+      ]
+    },
+    {
+      "Encoding": [
+        252,
+        "_0252"
+      ]
+    },
+    {
+      "Encoding": [
+        253,
+        "_0253"
+      ]
+    },
+    {
+      "Encoding": [
+        254,
+        "_0254"
+      ]
+    },
+    {
+      "Encoding": [
+        255,
+        "_0255"
+      ]
+    },
+    {
+      "MM Encoding Type": 0
+    },
+    {
+      "Block Names End": ""
+    },
+    {
+      "Block Font Info Start": ""
+    },
+    {
+      "font_name": "TheAntiquaB-W5Plain"
+    },
+    {
+      "Master Count": 1
+    },
+    {
+      "weight_vector": [
+        1.0
+      ]
+    },
+    {
+      "unique_id": -1
+    },
+    {
+      "version": "1.73"
+    },
+    {
+      "notice": "Copyright (c) Luc[as] de Groot, 2013. All rights reserved. Published by LucasFonts <www.LucasFonts.com>"
+    },
+    {
+      "full_name": "TheAntiquaB W5 Plain"
+    },
+    {
+      "family_name": "TheAntiquaB W5 Plain"
+    },
+    {
+      "pref_family_name": "TheAntiquaB"
+    },
+    {
+      "menu_name": "TheAntiquaB W5 Plain"
+    },
+    {
+      "apple_name": "TheAntiquaB W5 Plain"
+    },
+    {
+      "weight": "W5 Plain"
+    },
+    {
+      "width": "Normal"
+    },
+    {
+      "License": ""
+    },
+    {
+      "License URL": ""
+    },
+    {
+      "copyright": "Copyright (c) Luc[as] de Groot, 2013. All rights reserved. Published by LucasFonts <www.LucasFonts.com>"
+    },
+    {
+      "trademark": "TheAntiquaB is a trademark of LucasFonts"
+    },
+    {
+      "designer": "Luc(as) de groot"
+    },
+    {
+      "designer_url": "http://www.fontfabrik.com"
+    },
+    {
+      "vendor_url": "http:/www.lucasfonts.com"
+    },
+    {
+      "source": "Luc[as] de Groot"
+    },
+    {
+      "is_fixed_pitch": 0
+    },
+    {
+      "weight_code": 360
+    },
+    {
+      "italic_angle": 0.0
+    },
+    {
+      "slant_angle": -0.0
+    },
+    {
+      "underline_position": -222
+    },
+    {
+      "underline_thickness": 62
+    },
+    {
+      "ms_charset": 0
+    },
+    {
+      "panose": [
+        2,
+        10,
+        5,
+        3,
+        7,
+        3,
+        2,
+        2,
+        2,
+        4
+      ]
+    },
+    {
+      "tt_version": "Version 1.73"
+    },
+    {
+      "tt_u_id": "Luc[as]deGroot: TheAntiquaB W5 Plain: 2013"
+    },
+    {
+      "style_name": "Regular"
+    },
+    {
+      "pref_style_name": "W5 Plain"
+    },
+    {
+      "mac_compatible": "TheAntiquaB W5 Plain"
+    },
+    {
+      "Sample Text": ""
+    },
+    {
+      "vendor": "LuFo"
+    },
+    {
+      "xuid": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "xuid_num": 0
+    },
+    {
+      "year": 2013
+    },
+    {
+      "version_major": 1
+    },
+    {
+      "version_minor": 73
+    },
+    {
+      "upm": 1000
+    },
+    {
+      "fond_id": 2462
+    },
+    {
+      "PostScript Hinting Options": {
+        "other": []
+      }
+    },
+    {
+      "Collection": []
+    },
+    {
+      "blue_values_num": 14
+    },
+    {
+      "other_blues_num": 10
+    },
+    {
+      "family_blues_num": 8
+    },
+    {
+      "family_other_blues_num": 4
+    },
+    {
+      "stem_snap_h_num": 2
+    },
+    {
+      "stem_snap_v_num": 1
+    },
+    {
+      "font_style": 64
+    },
+    {
+      "ms_id": 1
+    },
+    {
+      "pcl_chars_set": "9U"
+    },
+    {
+      "gasp": [
+        {
+          "maxPpem": 8,
+          "flags": 2
+        },
+        {
+          "maxPpem": 16,
+          "flags": 1
+        },
+        {
+          "maxPpem": 65535,
+          "flags": 3
+        }
+      ]
+    },
+    {
+      "ttinfo": {
+        "max_zones": 0,
+        "max_twilight_points": 0,
+        "max_storage": 0,
+        "max_function_defs": 0,
+        "max_instruction_defs": 0,
+        "max_stack_elements": 0,
+        "head_flags": {
+          "flags": [],
+          "options": [
+            "use_custom_tt_values",
+            "create_vdmx"
+          ]
+        },
+        "head_units_per_em": 1000,
+        "head_mac_style": 0,
+        "head_lowest_rec_ppem": 9,
+        "head_creation": -829474096,
+        "head_creation2": 0,
+        "head_font_direction_hint": 2,
+        "os2_us_weight_class": 400,
+        "os2_us_width_class": 5,
+        "os2_fs_type": 4,
+        "os2_y_subscript_x_size": 700,
+        "os2_y_subscript_y_size": 650,
+        "os2_y_subscript_x_offset": 0,
+        "os2_y_subscript_y_offset": 138,
+        "os2_y_superscript_x_size": 700,
+        "os2_y_superscript_y_size": 650,
+        "os2_y_superscript_x_offset": 0,
+        "os2_y_superscript_y_offset": 477,
+        "os2_y_strikeout_size": 68,
+        "os2_y_strikeout_position": 286,
+        "os2_s_family_class": 262,
+        "OpenTypeOS2Panose": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "os2_s_typo_ascender": 740,
+        "os2_s_typo_descender": -260,
+        "os2_s_typo_line_gap": 300,
+        "os2_fs_selection": 0,
+        "os2_us_win_ascent": 980,
+        "os2_us_win_descent": 320,
+        "Average Width": 0,
+        "Hdmx PPMs 1": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          19,
+          21,
+          24,
+          27,
+          29,
+          32,
+          33,
+          37,
+          42,
+          46,
+          50,
+          54,
+          58,
+          67,
+          75,
+          83,
+          92,
+          96,
+          100
+        ],
+        "Hdmx PPMs 2": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          19,
+          21,
+          24,
+          27,
+          29,
+          32,
+          33,
+          37,
+          42,
+          46,
+          50,
+          54,
+          58,
+          67,
+          75,
+          83,
+          92,
+          96,
+          100
+        ],
+        "Codepages": {
+          "os2_ul_code_page_range1": 536871067,
+          "os2_ul_code_page_range2": 0
+        }
+      }
+    },
+    {
+      "vdmx": []
+    },
+    {
+      "hhea_line_gap": 0
+    },
+    {
+      "hhea_ascender": 980
+    },
+    {
+      "hhea_descender": -320
+    },
+    {
+      "TrueType Stem PPEMs": {
+        "ttStemsV": [
+          {
+            "stem": 0,
+            "round": {
+              "2": 33,
+              "3": 55,
+              "4": 77,
+              "5": 98
+            }
+          },
+          {
+            "stem": 1,
+            "round": {
+              "2": 50,
+              "3": 84,
+              "4": 117,
+              "5": 150
+            }
+          }
+        ],
+        "ttStemsH": [
+          {
+            "stem": 0,
+            "round": {
+              "2": 17,
+              "3": 27,
+              "4": 38,
+              "5": 49
+            }
+          }
+        ]
+      }
+    },
+    {
+      "TrueType Stems": {
+        "ttStemsV": [
+          {
+            "value": 46,
+            "name": "",
+            "round": {
+              "6": 120
+            }
+          },
+          {
+            "value": 30,
+            "name": "",
+            "round": {
+              "6": 184
+            }
+          }
+        ],
+        "ttStemsH": [
+          {
+            "value": 93,
+            "name": "",
+            "round": {
+              "6": 60
+            }
+          }
+        ]
+      }
+    },
+    {
+      "TrueType Stem PPEMs 1": {
+        "ttStemsV": [
+          {
+            "stem": 0,
+            "round": {
+              "1": 0
+            }
+          },
+          {
+            "stem": 1,
+            "round": {
+              "1": 0
+            }
+          }
+        ],
+        "ttStemsH": [
+          {
+            "stem": 0,
+            "round": {
+              "1": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "TrueType Zones": {
+        "ttZonesT": [
+          {
+            "position": 496,
+            "value": 10,
+            "name": "t: 0"
+          },
+          {
+            "position": 540,
+            "value": 10,
+            "name": "t: 1"
+          },
+          {
+            "position": 675,
+            "value": 10,
+            "name": "t: 2"
+          }
+        ],
+        "ttZonesB": [
+          {
+            "position": 0,
+            "value": 10,
+            "name": "b: 0"
+          },
+          {
+            "position": -250,
+            "value": 10,
+            "name": "b: 1"
+          },
+          {
+            "position": -174,
+            "value": 10,
+            "name": "b: 2"
+          }
+        ]
+      }
+    },
+    {
+      "unicoderanges": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        29,
+        31,
+        32,
+        33,
+        35,
+        36,
+        37,
+        45,
+        60,
+        62
+      ]
+    },
+    {
+      "stemsnaplimit": 68
+    },
+    {
+      "zoneppm": 48
+    },
+    {
+      "codeppm": 0
+    },
+    {
+      "dropoutppm": 255
+    },
+    {
+      "Measurement Line": 300
+    },
+    {
+      "TrueType Zone Deltas": {}
+    },
+    {
+      "fontnames": []
+    },
+    {
+      "Custom CMAPs": []
+    },
+    {
+      "PCLT Table": {
+        "font_number": 0,
+        "pitch": 0,
+        "x_height": 0,
+        "style": 0,
+        "type_family": 0,
+        "cap_height": 0,
+        "symbol_set": 0,
+        "typeface": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+        "character_complement": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "file_name": "\u0000\u0000\u0000\u0000\u0000\u0000",
+        "stroke_weight": 0,
+        "width_type": 0,
+        "serif_style": 0
+      }
+    },
+    {
+      "Export PCLT Table": 0
+    },
+    {
+      "note": "Make Mask for Italic:\r\n- Select all\r\n- Decompose\r\n- Select MonospacedGlyphs (class)\r\n- Macro: invert selection\r\n- Slant 11 degrees to the right, both masters\r\n- Horizontal Scale 98%, both masters\r\n- Select MonospacedGlyphs (class)\r\n- Slant 10.78065 degrees to the right, both masters\r\n- Select all\r\n- Light master: Move H -54\r\n- Black master: Move H -45\r\n- Macro: Make MM character box\r\n- exchange a and a.alt1\r\n- exchange g and g.alt1"
+    },
+    {
+      "Font Flags": "01000000"
+    },
+    {
+      "Block Font Info End": ""
+    },
+    {
+      "Block MM Font Info Start": ""
+    },
+    {
+      "Axis Count": 0
+    },
+    {
+      "Anisotropic Interpolation Mappings": []
+    },
+    {
+      "Axis Mappings Count": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Axis Mappings": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "Master Name": "Untitled"
+    },
+    {
+      "Master Location": [
+        1,
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "PostScript Info": {
+        "font_matrix": [
+          0.001,
+          0.0,
+          0.0,
+          0.001,
+          0.0,
+          0.0
+        ],
+        "force_bold": 0,
+        "blue_values": [
+          -12,
+          0,
+          317,
+          325,
+          498,
+          510,
+          542,
+          554,
+          675,
+          687,
+          734,
+          746,
+          789,
+          797
+        ],
+        "other_blues": [
+          -258,
+          -247,
+          -182,
+          -170,
+          -130,
+          -122,
+          187,
+          191,
+          343,
+          350
+        ],
+        "family_blues": [
+          -13,
+          0,
+          501,
+          514,
+          546,
+          559,
+          675,
+          688,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "family_other_blues": [
+          -255,
+          -242,
+          -177,
+          -164,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "blue_scale": 0.04379193666666667,
+        "blue_shift": 7,
+        "blue_fuzz": 0,
+        "std_hw": 32,
+        "std_vw": 70,
+        "stem_snap_h": [
+          46,
+          30,
+          46,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stem_snap_v": [
+          93,
+          17,
+          187,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "bounding_box": {
+          "xMin": 38,
+          "yMin": 0,
+          "xMax": 600,
+          "yMax": 635
+        },
+        "adv_width_min": 619,
+        "adv_width_max": 14010,
+        "adv_width_avg": 500,
+        "ascender": 740,
+        "descender": -260,
+        "x_height": 498,
+        "cap_height": 675
+      }
+    },
+    {
+      "Block MM Font Info End": ""
+    },
+    {
+      "Global Guides": {
+        "h": [
+          [
+            {
+              "pos": 11379,
+              "angle": 0.0
+            }
+          ],
+          [
+            {
+              "pos": -320,
+              "angle": 0.0
+            }
+          ],
+          [
+            {
+              "pos": 2452,
+              "angle": 0.0
+            }
+          ]
+        ],
+        "v": []
+      }
+    },
+    {
+      "Global Guide Properties": {
+        "h": [],
+        "v": []
+      }
+    },
+    {
+      "default_character": ".notdef"
+    },
+    {
+      "Glyph": {
+        "name": "n",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  600,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  600,
+                  30
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  532,
+                  60
+                ],
+                [
+                  600,
+                  30
+                ],
+                [
+                  569,
+                  49
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  537,
+                  285
+                ],
+                [
+                  532,
+                  60
+                ],
+                [
+                  537,
+                  154
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  376,
+                  507
+                ],
+                [
+                  537,
+                  435
+                ],
+                [
+                  485,
+                  507
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  202,
+                  397
+                ],
+                [
+                  288,
+                  507
+                ],
+                [
+                  226,
+                  456
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  200,
+                  397
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  207,
+                  501
+                ],
+                [
+                  200,
+                  397
+                ],
+                [
+                  207,
+                  439
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  489
+                ],
+                [
+                  111,
+                  504
+                ],
+                [
+                  38,
+                  489
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  458
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  114,
+                  439
+                ],
+                [
+                  83,
+                  450
+                ],
+                [
+                  114,
+                  439
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  114,
+                  60
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  30
+                ],
+                [
+                  72,
+                  49
+                ],
+                [
+                  38,
+                  30
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  275,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  275,
+                  29
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  208,
+                  59
+                ],
+                [
+                  275,
+                  29
+                ],
+                [
+                  244,
+                  47
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 1,
+            "points": [
+              [
+                [
+                  208,
+                  278
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  341,
+                  444
+                ],
+                [
+                  208,
+                  357
+                ],
+                [
+                  256,
+                  444
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  442,
+                  260
+                ],
+                [
+                  420,
+                  444
+                ],
+                [
+                  442,
+                  372
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  438,
+                  59
+                ],
+                [
+                  442,
+                  147
+                ],
+                [
+                  438,
+                  59
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  371,
+                  29
+                ],
+                [
+                  402,
+                  47
+                ],
+                [
+                  371,
+                  29
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  371,
+                  0
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            629,
+            0
+          ]
+        ],
+        "hints": {
+          "v": [],
+          "h": [],
+          "hintmasks": [
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "h",
+              0
+            ],
+            [
+              "v",
+              0
+            ],
+            [
+              "r",
+              7
+            ],
+            [
+              "h",
+              2
+            ],
+            [
+              "v",
+              0
+            ],
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "r",
+              18
+            ],
+            [
+              "h",
+              0
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "Links": {
+        "x": [
+          [
+            10,
+            17
+          ],
+          [
+            19,
+            3
+          ]
+        ],
+        "y": [
+          [
+            18,
+            4
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            10,
+            7
+          ]
+        ]
+      }
+    },
+    {
+      "VSB": [
+        0
+      ]
+    },
+    {
+      "Glyph Hinting Options": {
+        "hint_replacement": 1,
+        "horizontal_3_stem": 1,
+        "vertical_3_stem": 1,
+        "other": [
+          2
+        ]
+      }
+    },
+    {
+      "Glyph Origin": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "unicodes": [
+        110
+      ]
+    },
+    {
+      "Glyph": {
+        "name": "n.hints",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  600,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  600,
+                  30
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  532,
+                  60
+                ],
+                [
+                  600,
+                  30
+                ],
+                [
+                  569,
+                  49
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  537,
+                  285
+                ],
+                [
+                  532,
+                  60
+                ],
+                [
+                  537,
+                  154
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  376,
+                  507
+                ],
+                [
+                  537,
+                  435
+                ],
+                [
+                  485,
+                  507
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  202,
+                  397
+                ],
+                [
+                  288,
+                  507
+                ],
+                [
+                  226,
+                  456
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  200,
+                  397
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  207,
+                  501
+                ],
+                [
+                  200,
+                  397
+                ],
+                [
+                  207,
+                  439
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  489
+                ],
+                [
+                  111,
+                  504
+                ],
+                [
+                  38,
+                  489
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  458
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  114,
+                  439
+                ],
+                [
+                  83,
+                  450
+                ],
+                [
+                  114,
+                  439
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  114,
+                  60
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  30
+                ],
+                [
+                  72,
+                  49
+                ],
+                [
+                  38,
+                  30
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  38,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  275,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  275,
+                  29
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  208,
+                  59
+                ],
+                [
+                  275,
+                  29
+                ],
+                [
+                  244,
+                  47
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 1,
+            "points": [
+              [
+                [
+                  208,
+                  278
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  341,
+                  444
+                ],
+                [
+                  208,
+                  357
+                ],
+                [
+                  256,
+                  444
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 3,
+            "points": [
+              [
+                [
+                  442,
+                  260
+                ],
+                [
+                  420,
+                  444
+                ],
+                [
+                  442,
+                  372
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  438,
+                  59
+                ],
+                [
+                  442,
+                  147
+                ],
+                [
+                  438,
+                  59
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "curve",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  371,
+                  29
+                ],
+                [
+                  402,
+                  47
+                ],
+                [
+                  371,
+                  29
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  371,
+                  0
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            629,
+            0
+          ]
+        ],
+        "hints": {
+          "v": [
+            [
+              {
+                "pos": 114,
+                "width": 94
+              }
+            ],
+            [
+              {
+                "pos": 442,
+                "width": 95
+              }
+            ]
+          ],
+          "h": [
+            [
+              {
+                "pos": 444,
+                "width": 63
+              }
+            ],
+            [
+              {
+                "pos": 0,
+                "width": 30
+              }
+            ],
+            [
+              {
+                "pos": 439,
+                "width": 62
+              }
+            ]
+          ],
+          "hintmasks": [
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "h",
+              0
+            ],
+            [
+              "v",
+              0
+            ],
+            [
+              "r",
+              7
+            ],
+            [
+              "h",
+              2
+            ],
+            [
+              "v",
+              0
+            ],
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "r",
+              18
+            ],
+            [
+              "h",
+              0
+            ],
+            [
+              "v",
+              1
+            ],
+            [
+              "h",
+              1
+            ],
+            [
+              "v",
+              0
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "Links": {
+        "x": [],
+        "y": []
+      }
+    },
+    {
+      "VSB": [
+        0
+      ]
+    },
+    {
+      "Glyph Hinting Options": {
+        "hint_replacement": 1,
+        "horizontal_3_stem": 1,
+        "vertical_3_stem": 1,
+        "other": [
+          2
+        ]
+      }
+    },
+    {
+      "Glyph Origin": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "Glyph": {
+        "name": "o",
+        "num_masters": 1,
+        "nodes": [
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  83,
+                  8
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  505,
+                  8
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  505,
+                  635
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  83,
+                  635
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "move",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  142,
+                  576
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  440,
+                  576
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  440,
+                  61
+                ]
+              ]
+            ]
+          },
+          {
+            "type": "line",
+            "flags": 0,
+            "points": [
+              [
+                [
+                  142,
+                  61
+                ]
+              ]
+            ]
+          }
+        ],
+        "metrics": [
+          [
+            600,
+            0
+          ]
+        ],
+        "hints": {
+          "v": [
+            [
+              {
+                "pos": 83,
+                "width": 59
+              }
+            ],
+            [
+              {
+                "pos": 440,
+                "width": 65
+              }
+            ]
+          ],
+          "h": [
+            [
+              {
+                "pos": 8,
+                "width": 53
+              }
+            ],
+            [
+              {
+                "pos": 576,
+                "width": 59
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "Links": {
+        "x": [],
+        "y": []
+      }
+    },
+    {
+      "VSB": [
+        0
+      ]
+    },
+    {
+      "Glyph Hinting Options": {
+        "horizontal_3_stem": 1,
+        "vertical_3_stem": 1,
+        "other": [
+          2
+        ]
+      }
+    },
+    {
+      "Glyph Origin": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "unicodes": [
+        111
+      ]
+    },
+    {
+      "Font Options": {
+        "fit_ascender": 1000,
+        "fit_descender": -400,
+        "auto_metrics_left": 30,
+        "auto_metrics_right": 30,
+        "auto_metrics_close": 10,
+        "auto_hinting_min_h_len": 60,
+        "auto_hinting_min_v_len": 60,
+        "auto_hinting_min_h_width": 20,
+        "auto_hinting_min_v_width": 20,
+        "auto_hinting_max_h_width": 250,
+        "auto_hinting_max_v_width": 250,
+        "auto_hinting_h_ratio": 2.0,
+        "auto_hinting_v_ratio": 2.0,
+        "duplicate_place_x": 100,
+        "duplicate_place_y": 100,
+        "paste_place_x": 0,
+        "paste_place_y": 0,
+        "opentype_name_records": 0,
+        "codepage_for_cmap_1_0": 0,
+        "dont_ignore_unicode_indexes": 1,
+        "head_bbox_savings": 64,
+        "autohinting_options": {
+          "single_link_attachment_precision": 7,
+          "generate_triple_hints": 0,
+          "generate_delta_instructions": 0,
+          "direct_links_to_center_of_the_glyph_where_possible": 0,
+          "interpolate_positions_of_cusp_points": 0,
+          "interpolate_positions_of_double_links": 0,
+          "add_link_to_rsb": 0
+        },
+        "export_hinted_truetype_font": 1,
+        "autohint_unhinted_glyphs": 0,
+        "keep_existing_truetype_instructions": 1,
+        "export_visual_truetype_hints": 1,
+        "apply_bbox_savings": 1,
+        "auto_win_asc_desc": 0,
+        "add_characters": 1,
+        "export_embedded_bitmaps": 0,
+        "copy_hdmx_data_from_base_to_composite_glyph": 0,
+        "dont_automatically_reorder_glyphs": 1,
+        "subrize": 1,
+        "decompose": 0,
+        "export_ot": 1,
+        "export_volt": 0,
+        "write_kern_feature": 0,
+        "ot_write_gdef": 1,
+        "t1_terminal": 0,
+        "t1_pfm": 1,
+        "t1_afm": 1,
+        "t1_fs_type": 0,
+        "t1_autohint": 1,
+        "t1_unicode": 1,
+        "optimize_align": 2,
+        "optimize_reduce": 2,
+        "t1_encoding": 1,
+        "t1_use_os2": 0,
+        "t1_sort": 1,
+        "export_kern_table": 1,
+        "expand_kern_flags": {
+          "limit_action": 0,
+          "limit_codepage": 1,
+          "limit_cmap_10": 1,
+          "limit_font_window": 0,
+          "limit_count": 0,
+          "limit_keep": 0,
+          "apply_to_assistance": 0
+        },
+        "expand_kern_count": 2048,
+        "expand_kern_codepage": -1
+      }
+    },
+    {
+      "Export Options": []
+    },
+    {
+      "Mapping Mode": {
+        "mapping_mode": "names_or_index",
+        "m2": 152,
+        "m3": 54,
+        "mapping_id": 0
+      }
+    },
+    {
+      "Block Font End": ""
+    },
+    {
+      "Block File Data End": ""
+    }
+  ]
+}
