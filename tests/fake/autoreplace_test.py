@@ -168,7 +168,7 @@ class HintReplacementTest(TestCase):
         duration1 = (stop1 - start1) * 1000
         print(duration1)
 
-    def test_charstring_hints(self) -> None:
+    def test_charstring_hints_n(self) -> None:
         # BlueValues etc. are taken from the font
         fl_font = Font()
         fl_font.fake_set_master_blue_values(
@@ -183,7 +183,9 @@ class HintReplacementTest(TestCase):
         fl_glyph.fake_deserialize(G.Glyph, vfb_glyph)
         fl_font.glyphs.append(fl_glyph)
         autoreplace_glyph(fl_glyph)
+        fl_font.Save("replacement_n_fakelab.vfb", save_json=True)
         result = [(r.type, r.index) for r in fl_glyph.replace_table]
+        # TODO: Sort entries for better comparison, or build sets to compare
         assert result == [
             (1, 1),  # TYPE_HORIZONTAL_HINT
             (2, 1),  # TYPE_VERTICAL_HINT
