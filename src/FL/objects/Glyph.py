@@ -23,6 +23,7 @@ from FL.constants import (
     nOFF,
     nSMOOTH,
 )
+from FL.fake.autohint import autohint_glyph, autoreplace_glyph
 from FL.fake.Base import Copyable
 from FL.fake.mixins import GuideMixin, GuidePropertiesMixin
 from FL.helpers.FLList import adjust_list
@@ -254,6 +255,15 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
             self._index = -1
         for n in self.nodes:
             n.fake_update(self)
+
+    def fake_autoreplace(self, master_index: int = 0) -> None:
+        """
+        Calculate the hint replacement table for the glyph and master.
+
+        Args:
+            master_index (int, optional): The master index. Defaults to 0.
+        """
+        autoreplace_glyph(self, master_index)
 
     def fake_deserialize(self, key: int, data: Any) -> None:
         """
@@ -1568,14 +1578,20 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
 
     # HINTS-METHODS
 
-    def RemoveHints(self, mode: int) -> None:
+    def RemoveHints(self, mode: int = 3) -> None:
         """
         Remove hints and links.
 
         Args:
-            mode (int): _description_
+            mode (int): 1: Remove horizontal hints and links; 2: Remove vertical hints
+                and links
         """
-        raise NotImplementedError
+        if mode & 1:
+            self.hhints.clean()
+            self.hlinks.clean()
+        if mode & 2:
+            self.vhints.clean()
+            self.vlinks.clean()
 
     def Autohint(self, masterindex: int = 0) -> None:
         """
@@ -1584,7 +1600,7 @@ class Glyph(Copyable, GuideMixin, GuidePropertiesMixin):
         Args:
             masterindex (int, optional): The master index. Defaults to 0.
         """
-        raise NotImplementedError
+        autohint_glyph(self, masterindex)
 
     # ANCHOR-METHODS
 
