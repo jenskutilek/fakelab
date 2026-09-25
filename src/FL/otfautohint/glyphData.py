@@ -25,6 +25,8 @@ from fontTools.misc.bezierTools import (
 from fontTools.pens.basePen import BasePen
 
 if TYPE_CHECKING:
+    from fontTools.pens.pointPen import AbstractPointPen
+
     from . import Number
     from .hintstate import glyphHintState
 
@@ -868,7 +870,7 @@ class glyphData(BasePen):
         self.subpaths: list[list[pathElement]] = []
         self.hstems: list[stem] = []
         self.vstems: list[stem] = []
-        self.startmasks: list[Any] | None = None
+        self.startmasks: list[list[bool]] | None = None
         self.cntr: list[Any] = []
         self.name = name
         self.wdth: int | None = None
@@ -877,7 +879,7 @@ class glyphData(BasePen):
         self.flex_count = 0
         self.lastcp: pathElement | None = None
 
-        self.nextmasks: list[Any] | None = None
+        self.nextmasks: list[list[bool]] | None = None
         self.nextflex: int | None = None
         self.changed = False
         self.pathEdited = False
@@ -1138,7 +1140,7 @@ class glyphData(BasePen):
             prog.append("endchar")
         return prog
 
-    def drawPoints(self, pen: Any, ufoH: Callable | None = None) -> None:
+    def drawPoints(self, pen: "AbstractPointPen", ufoH: Callable | None = None) -> None:
         """
         Calls pointPen commands on pen to draw the glyph, optionally naming some points
         and building a library of hint annotations

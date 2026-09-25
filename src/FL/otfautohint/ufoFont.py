@@ -112,7 +112,7 @@ import logging
 import os
 import shutil
 from types import SimpleNamespace
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 # from fontTools.pens.basePen import BasePen
 from fontTools.pens.pointPen import AbstractPointPen
@@ -123,6 +123,11 @@ from fontTools.ufoLib.glifLib import Glyph, GlyphSet
 from . import FontParseError, fdTools
 from .fdTools import FDDict
 from .glyphData import Pt, glyphData, norm_float
+
+if TYPE_CHECKING:
+    from vfbLib.ufo.typing import UfoHintingV2, UfoHintSet
+
+    from .glyphData import pathElement
 
 log = logging.getLogger(__name__)
 
@@ -870,7 +875,9 @@ class GlyphDataWrapper:
             uhl[FLEX_INDEX_LIST_NAME] = []
         uhl[FLEX_INDEX_LIST_NAME].append(pointname)
 
-    def addUfoMask(self, uhl: dict[str, Any], masks, pointname: str):
+    def addUfoMask(
+        self, uhl: "UfoHintingV2", masks: list[list[bool]] | None, pointname: str
+    ):
         """Associates the hint set represented by masks with the named point"""
         if uhl.get(HINT_SET_LIST_NAME, None) is None:
             uhl[HINT_SET_LIST_NAME] = []
@@ -898,13 +905,17 @@ class GlyphDataWrapper:
                 for s in sl:
                     p, w = s.UFOVals()
                     ustems.append(f"{opname[i]} {norm_float(p)} {norm_float(w)}")
-        hintset: dict[str, Any] = {}
+        hintset: UfoHintSet = {}
         hintset[POINT_TAG] = pointname
         hintset[STEMS_NAME] = ustems
         uhl[HINT_SET_LIST_NAME].append(hintset)
 
     def addUfoHints(
-        self, uhl: dict[str, Any] | None, pe, labelnum: int, startSubpath=False
+        self,
+        uhl: "UfoHintingV2 | None",
+        pe: "pathElement",
+        labelnum: int,
+        startSubpath: bool = False,
     ) -> tuple[int, str | None]:
         """Adds hints to the pathElement, naming points as necessary"""
         pn = POINT_NAME_PATTERN % labelnum
@@ -924,13 +935,13 @@ class GlyphDataWrapper:
             self.addUfoMask(uhl, self._glyph.startmasks, pn)
         return labelnum + 1, pn
 
-    def drawPoints(self, pen, ufoHintLib=True):
+    def drawPoints(self, pen: "AbstractPointPen", ufoHintLib: bool = True) -> None:
         """
         Calls pointPen commands on pen to draw the glyph, optionally naming
         some points and building a library of hint annotations
         """
         if ufoHintLib is not None:
-            uhl: dict[str, Any] = {}
+            uhl: UfoHintingV2 = {}
             ufoH = lambda pe, lm, ss=False: self.addUfoHints(uhl, pe, lm, ss)
         else:
             ufoH = None
