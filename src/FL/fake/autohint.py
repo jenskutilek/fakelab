@@ -36,83 +36,105 @@ def do_hints_overlap(hints: "Iterable[Hint]") -> bool:
     return hint_values != sorted(hint_values_unique)
 
 
-def autoreplace_glyph(glyph: "Glyph", master_index: int = 0) -> None:
+def autohint_glyph(glyph: "Glyph", master_index: int = 0) -> None:
     """
-    Recalculate the hint masks for a glyph.
+    Autohint a glyph and recalculate the hint masks.
 
     Args:
         glyph (Glyph): The FLS5 glyph.
     """
     glyph.replace_table.clean()
 
+    if glyph.parent is None:
+        raise ValueError(
+            f"Can't calculate hint replacements for a glyph witout a font: {glyph.name}"
+        )
+    # Calculate hint masks
+
+    # Initialize the hinter
+    options = fake_HintOptions()
+    dr = build_dict_record(glyph.parent)
+    glyphHinter.initialize(options, dictRecord=dr)
+
+    # Build glyph data in a format the hinter understands
+    glyph_data = glyphData(roundCoords=False, name=glyph.name)
+    glyph.fake_draw(glyph_data, master_index)
+
+    # The original glyph_data object is modified after .hint()
+    glyphHinter.hint(glyph.name, glyphTuple=(glyph_data,), fdKey=(0, 0))
+
+    # Clear existing hints and links and add auto-generated hints
+    glyph.hlinks.clean()
+    glyph.hhints.clean()
+    for y0, y1 in glyph_data.hstems:
+        hint = Hint(y0, y1 - y0)
+        glyph.hhints.append(hint)
+
+    glyph.vlinks.clean()
+    glyph.vhints.clean()
+    for x0, x1 in glyph_data.vstems:
+        hint = Hint(x0, x1 - x0)
+        glyph.vhints.append(hint)
+
+    # Transfer hint sets from the glyph_data object to the Glyph
+
+    current_mask = glyph_data.startmasks
+    if current_mask is None:
+        # Hints don't overlap, remove hint replacement flag
+        clear_hint_replacement_flag(glyph)
+    else:
+        node_index = 0
+        for subpath in glyph_data.subpaths:
+            for path_element in subpath:
+                if current_mask is not None:
+                    if node_index != 0:
+                        glyph.replace_table.append(Replace(TYPE_NODE, node_index))
+                    hintmask_hints: list[tuple[int, int]] = []
+                    for i, hintmask in enumerate(current_mask):
+                        for hint_index, hint_is_active in enumerate(hintmask):
+                            if hint_is_active:
+                                hintmask_hints.append((i + 1, hint_index))
+                    # The order of hints for each hintmask is arbitrary, but we sort
+                    # the hints for compatibility
+                    for r_type, r_index in sorted(hintmask_hints):
+                        glyph.replace_table.append(Replace(r_type, r_index))
+                current_mask = path_element.masks
+                node_index += 1
+
+    # print([(r.type, r.index) for r in glyph.replace_table])
+
+    # Set green hint replacement flag
+    set_hint_replacement_flag_ok(glyph)
+
+
+def autoreplace_glyph(glyph: "Glyph", master_index: int = 0) -> None:
+    glyph.replace_table.clean()
+
     # Check if any hints overlap
-    # FIXME: They may overlap after autohinting
     if do_hints_overlap(glyph.hhints) or do_hints_overlap(glyph.vhints):
-        if glyph.parent is None:
-            raise ValueError(
-                f"Can't calculate hint replacements for a glyph witout a font: {glyph.name}"
-            )
-        # Calculate hint masks
-
-        # Initialize the hinter
-        options = fake_HintOptions()
-        dr = build_dict_record(glyph.parent)
-        glyphHinter.initialize(options, dictRecord=dr)
-
-        # Build glyph data in a format the hinter understands
-        glyph_data = glyphData(roundCoords=False, name=glyph.name)
-        glyph.fake_draw(glyph_data, master_index)
-
-        # The original glyph_data object is modified after .hint()
-        glyphHinter.hint(glyph.name, glyphTuple=(glyph_data,), fdKey=(0, 0))
-
-        # Clear existing hints and links and add auto-generated hints
-        glyph.hlinks.clean()
-        glyph.hhints.clean()
-        for y0, y1 in glyph_data.hstems:
-            hint = Hint(y0, y1 - y0)
-            glyph.hhints.append(hint)
-
-        glyph.vlinks.clean()
-        glyph.vhints.clean()
-        for x0, x1 in glyph_data.vstems:
-            hint = Hint(x0, x1 - x0)
-            glyph.vhints.append(hint)
-
-        # Transfer hint sets from the glyph_data object to the Glyph
-
-        current_mask = glyph_data.startmasks
-        if current_mask is not None:
-            node_index = 0
-            for subpath in glyph_data.subpaths:
-                for path_element in subpath:
-                    if current_mask is not None:
-                        if node_index != 0:
-                            glyph.replace_table.append(Replace(TYPE_NODE, node_index))
-                        hintmask_hints: list[tuple[int, int]] = []
-                        for i, hintmask in enumerate(current_mask):
-                            for hint_index, hint_is_active in enumerate(hintmask):
-                                if hint_is_active:
-                                    hintmask_hints.append((i + 1, hint_index))
-                        # The order of hints for each hintmask is arbitrary, but we sort
-                        # the hints for compatibility
-                        for r_type, r_index in sorted(hintmask_hints):
-                            glyph.replace_table.append(Replace(r_type, r_index))
-                    current_mask = path_element.masks
-                    node_index += 1
-
-        # print([(r.type, r.index) for r in glyph.replace_table])
+        # TODO: Do the actual hint replacement calculations
 
         # Set green hint replacement flag
-        glyph._glyph_hinting_options["hint_replacement"] = 1
-        if "other" in glyph._glyph_hinting_options:
-            opts = glyph._glyph_hinting_options["other"]
-            if 28 in opts:
-                opts.remove(28)
+        set_hint_replacement_flag_ok(glyph)
     else:
         # Hints don't overlap, remove hint replacement flag
-        if "hint_replacement" in glyph._glyph_hinting_options:
-            del glyph._glyph_hinting_options["hint_replacement"]
+        clear_hint_replacement_flag(glyph)
+
+
+def clear_hint_replacement_flag(glyph: "Glyph") -> None:
+    # TODO: Move to Glyph?
+    if "hint_replacement" in glyph._glyph_hinting_options:
+        del glyph._glyph_hinting_options["hint_replacement"]
+
+
+def set_hint_replacement_flag_ok(glyph: "Glyph") -> None:
+    # TODO: Move to Glyph?
+    # Set green hint replacement flag
+    glyph._glyph_hinting_options["hint_replacement"] = 1
+    if "other" in glyph._glyph_hinting_options:
+        opts = glyph._glyph_hinting_options["other"]
+        if 28 in opts:
+            opts.remove(28)
 
 
 def build_dict_record(

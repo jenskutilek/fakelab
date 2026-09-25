@@ -5,8 +5,8 @@ from vfbLib.enum import G
 from vfbLib.typing import GlyphData, MMNode
 
 from FL import Font, Glyph, Hint
-from FL.fake.autoreplace import autoreplace_glyph, do_hints_overlap
-from FL.objects.Replace import TYPE_HORIZONTAL_HINT, TYPE_NODE, TYPE_VERTICAL_HINT
+from FL.fake.autohint import autohint_glyph, autoreplace_glyph, do_hints_overlap
+from FL.objects.Replace import TYPE_NODE
 
 vfb_glyph = GlyphData(
     name="n",
@@ -182,23 +182,24 @@ class HintReplacementTest(TestCase):
         fl_glyph = Glyph()
         fl_glyph.fake_deserialize(G.Glyph, vfb_glyph)
         fl_font.glyphs.append(fl_glyph)
-        autoreplace_glyph(fl_glyph)
+        autohint_glyph(fl_glyph)
         fl_font.Save("replacement_n_fakelab.vfb", save_json=True)
         result = [(r.type, r.index) for r in fl_glyph.replace_table]
-        # TODO: Sort entries for better comparison, or build sets to compare
+        # TODO: Order of entries is modified from VFB; sort entries for easier
+        # comparison, or build sets to compare
         assert result == [
-            (1, 1),  # TYPE_HORIZONTAL_HINT
-            (2, 1),  # TYPE_VERTICAL_HINT
             (1, 0),  # TYPE_HORIZONTAL_HINT
+            (1, 1),  # TYPE_HORIZONTAL_HINT
             (2, 0),  # TYPE_VERTICAL_HINT
+            (2, 1),  # TYPE_VERTICAL_HINT
             (TYPE_NODE, 7),
+            (1, 1),  # TYPE_HORIZONTAL_HINT
             (1, 2),  # TYPE_HORIZONTAL_HINT
             (2, 0),  # TYPE_VERTICAL_HINT
-            (1, 1),  # TYPE_HORIZONTAL_HINT
             (2, 1),  # TYPE_VERTICAL_HINT
             (TYPE_NODE, 18),
             (1, 0),  # TYPE_HORIZONTAL_HINT
-            (2, 1),  # TYPE_VERTICAL_HINT
             (1, 1),  # TYPE_HORIZONTAL_HINT
             (2, 0),  # TYPE_VERTICAL_HINT
+            (2, 1),  # TYPE_VERTICAL_HINT
         ]
