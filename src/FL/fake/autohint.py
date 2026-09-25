@@ -113,6 +113,7 @@ def autoreplace_glyph(glyph: "Glyph", master_index: int = 0) -> None:
     # Check if any hints overlap
     if do_hints_overlap(glyph.hhints) or do_hints_overlap(glyph.vhints):
         # TODO: Do the actual hint replacement calculations
+        raise NotImplementedError
 
         # Set green hint replacement flag
         set_hint_replacement_flag_ok(glyph)
